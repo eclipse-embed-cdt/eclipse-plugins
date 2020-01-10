@@ -1,4 +1,9 @@
-# All contributions are highly appreciated!
+# Contributions to Eclipse Embedded CDT
+
+The Eclipse Embedded CDT project is hosted on GitHub as 
+[gnu-mcu-eclipse/eclipse-plugins](https://github.com/gnu-mcu-eclipse/eclipse-plugins)
+
+TODO: update URLs
 
 There are many ways you can contribute to this project, and all
 contributions are highly appreciated.
@@ -63,3 +68,51 @@ In short, the process is something like this:
 * make the desired changes
 * commit to the custom branch
 * submit the pull request to the develop branch
+
+## How to build
+
+### Prerequisites
+
+* JavaSE-1.8 or later
+* Maven 3
+
+### Command line
+
+```bash
+$ git clone --branch=master --recurse-submodules https://github.com/gnu-mcu-eclipse/eclipse-plugins.git eclipse-plugins.git
+$ cd eclipse-plugins.git
+$ mvn clean verify
+```
+
+The result is a p2 repository:
+
+* `repositories/ilg.gnumcueclipse.repository/target/repository`
+
+Note: in some older versions, maven complained something about local
+artefacts; in case this happens, add `-Dtycho.localArtifacts=ignore` when
+invoking maven.
+
+### Eclipse
+
+The Eclipse build is described in the
+[project web](http://gnu-mcu-eclipse.github.io/developer/build-procedure/).
+
+## Developer
+
+https://www.eclipse.org/cdt/developers.php
+
+### Formatting
+
+https://wiki.eclipse.org/CDT/policy
+
+* use tabs, at 4
+* code line size: 120 chars
+* comments line size: 80 chars
+
+Currently these settings are provided by the default Eclipse Java formatter.
+
+## Legal
+
+Contributors should agree to the Eclipse Contributor Agreement
+(https://www.eclipse.org/legal/ECA.php).
+
