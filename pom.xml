@@ -35,66 +35,66 @@
 
 	<modules>
 		<!-- MCU common modules. -->
-		<module>bundles/ilg.gnumcueclipse.core</module>
+		<module>plugins/ilg.gnumcueclipse.core</module>
 
-		<module>bundles/ilg.gnumcueclipse.managedbuild.cross</module>
-		<module>bundles/ilg.gnumcueclipse.managedbuild.packs</module>
+		<module>plugins/ilg.gnumcueclipse.managedbuild.cross</module>
+		<module>plugins/ilg.gnumcueclipse.managedbuild.packs</module>
 
-		<module>bundles/ilg.gnumcueclipse.packs</module>
-		<module>bundles/ilg.gnumcueclipse.packs.core</module>
-		<module>bundles/ilg.gnumcueclipse.packs.data</module>
-		<module>bundles/ilg.gnumcueclipse.packs.ui</module>
+		<module>plugins/ilg.gnumcueclipse.packs</module>
+		<module>plugins/ilg.gnumcueclipse.packs.core</module>
+		<module>plugins/ilg.gnumcueclipse.packs.data</module>
+		<module>plugins/ilg.gnumcueclipse.packs.ui</module>
 		<module>features/ilg.gnumcueclipse.packs.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.core</module>
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag</module>
-		<module>bundles/ilg.gnumcueclipse.debug.packs</module>
+		<module>plugins/ilg.gnumcueclipse.debug.core</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag</module>
+		<module>plugins/ilg.gnumcueclipse.debug.packs</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.jlink</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.jlink</module>
 		<module>features/ilg.gnumcueclipse.debug.gdbjtag.jlink.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.openocd</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.openocd</module>
 		<module>features/ilg.gnumcueclipse.debug.gdbjtag.openocd.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.pyocd</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.pyocd</module>
 		<module>features/ilg.gnumcueclipse.debug.gdbjtag.pyocd.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.qemu</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.qemu</module>
 		<module>features/ilg.gnumcueclipse.debug.gdbjtag.qemu.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.jumper</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.jumper</module>
 		<module>features/ilg.gnumcueclipse.debug.gdbjtag.jumper.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.restart</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.restart</module>
 
-		<module>bundles/ilg.gnumcueclipse.codered</module>
+		<module>plugins/ilg.gnumcueclipse.codered</module>
 		<module>features/ilg.gnumcueclipse.codered.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.doc.user</module>
+		<module>plugins/ilg.gnumcueclipse.doc.user</module>
 		<module>features/ilg.gnumcueclipse.doc.user.feature</module>
 
 		<module>repositories/ilg.gnumcueclipse.repository</module>
 
 		<!-- ARM specific modules. -->
-		<module>bundles/ilg.gnumcueclipse.managedbuild.cross.arm</module>
+		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.arm</module>
 		<module>features/ilg.gnumcueclipse.managedbuild.cross.arm.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.templates.core</module>
-		<module>bundles/ilg.gnumcueclipse.templates.cortexm</module>
+		<module>plugins/ilg.gnumcueclipse.templates.core</module>
+		<module>plugins/ilg.gnumcueclipse.templates.cortexm</module>
 		<module>features/ilg.gnumcueclipse.templates.cortexm.feature</module>
-		<module>bundles/ilg.gnumcueclipse.templates.stm</module>
+		<module>plugins/ilg.gnumcueclipse.templates.stm</module>
 		<module>features/ilg.gnumcueclipse.templates.stm.feature</module>
-		<module>bundles/ilg.gnumcueclipse.templates.freescale</module>
-		<module>bundles/ilg.gnumcueclipse.templates.freescale.pe</module>
+		<module>plugins/ilg.gnumcueclipse.templates.freescale</module>
+		<module>plugins/ilg.gnumcueclipse.templates.freescale.pe</module>
 		<module>features/ilg.gnumcueclipse.templates.freescale.feature</module>
-		<module>bundles/ilg.gnumcueclipse.templates.ad</module>
+		<module>plugins/ilg.gnumcueclipse.templates.ad</module>
 		<module>features/ilg.gnumcueclipse.templates.ad.feature</module>
 
 		<!-- RISC-V specific modules. -->
-		<module>bundles/ilg.gnumcueclipse.managedbuild.cross.riscv</module>
+		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.riscv</module>
 		<module>features/ilg.gnumcueclipse.managedbuild.cross.riscv.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.templates.sifive</module>
+		<module>plugins/ilg.gnumcueclipse.templates.sifive</module>
 		<module>features/ilg.gnumcueclipse.templates.sifive.feature</module>
 		
 	</modules>
