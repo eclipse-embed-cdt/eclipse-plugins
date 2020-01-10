@@ -22,7 +22,7 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class ConsoleStream {
 
-	public static String CONSOLE_NAME = "GNU MCU Eclipse Packs console";
+	public static String CONSOLE_NAME = "Eclipse Embedded CDT Packs console";
 
 	private static MessageConsoleStream fgConsoleOutput;
 

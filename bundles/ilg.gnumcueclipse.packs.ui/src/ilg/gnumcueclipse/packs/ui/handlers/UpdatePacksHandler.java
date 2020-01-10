@@ -280,7 +280,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 
 		contentRoot.putProperty(Property.TYPE, "cmsis.repo");
 		contentRoot.putProperty(Property.REPO_URL, repoUrl);
-		contentRoot.putProperty(Property.GENERATOR, "GNU MCU Eclipse Plug-ins");
+		contentRoot.putProperty(Property.GENERATOR, "Eclipse Embedded CDT Plug-ins");
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));

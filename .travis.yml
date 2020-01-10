@@ -1,5 +1,5 @@
 # Travis CI configuration file to validate 
-# the GNU MCU Eclipse plug-ins.
+# the Eclipse Embedded CDT plug-ins.
 # https://docs.travis-ci.com/user/getting-started/
 
 # https://docs.travis-ci.com/user/multi-os/

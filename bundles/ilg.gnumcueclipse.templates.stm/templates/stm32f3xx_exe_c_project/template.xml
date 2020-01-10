@@ -2,7 +2,7 @@
 <template
 	type="ProjTempl"
 	version="1.0"
-	supplier="GNU MCU Eclipse"
+	supplier="Eclipse Embedded CDT"
 	revision="1.0"
 	author="Liviu Ionescu"
 	copyright="Copyright (c) 2013 Liviu Ionescu."

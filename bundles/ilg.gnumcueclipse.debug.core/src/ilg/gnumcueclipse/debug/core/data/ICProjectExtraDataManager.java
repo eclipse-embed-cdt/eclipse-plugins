@@ -34,7 +34,7 @@ public interface ICProjectExtraDataManager {
 	/**
 	 * Get a map of additional properties associated to a configuration.
 	 * <p>
-	 * For the GNU MCU Eclipse MBS plug-in, these properties are assigned by the
+	 * For the Eclipse Embedded CDT MBS plug-in, these properties are assigned by the
 	 * Devices tab, contributed by the packs feature.
 	 * <p>
 	 * For projects managed by other plug-ins, this should return null.
