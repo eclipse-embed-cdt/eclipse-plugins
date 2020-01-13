@@ -58,5 +58,5 @@
    <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.jumper.feature_1.2.1.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.jumper.feature" version="1.2.1.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <category-def name="ilg.gnumcueclipse.category" label="Embedded C/C++ Cross Development Tools"/>
+   <category-def name="ilg.gnumcueclipse.category" label="Embedded C/C++ Cross Development Tools (incubation)"/>
 </site>
