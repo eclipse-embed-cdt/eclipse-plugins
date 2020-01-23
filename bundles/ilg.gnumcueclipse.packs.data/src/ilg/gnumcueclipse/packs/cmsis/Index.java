@@ -16,10 +16,14 @@ import ilg.gnumcueclipse.core.Xml;
 import ilg.gnumcueclipse.packs.data.Repos;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -72,13 +76,45 @@ public class Index {
 	// Append string arrays to the given list
 	// new String[] { url, name, version }
 
+	private final static int TIME_OUT = 60 * 000;
+
 	public static int readIndex(String indexUrl, List<String[]> pdscList)
 			throws ParserConfigurationException, SAXException, IOException {
 
-		URL u = new URL(indexUrl);
+		URL url = new URL(indexUrl);
+		URLConnection connection;
+		while (true) {
+			// Read from url to local buffer
+			connection = url.openConnection();
+			if (connection instanceof HttpURLConnection) {
+				connection.setConnectTimeout(TIME_OUT);
+				connection.setReadTimeout(TIME_OUT);
+				HttpURLConnection httpURLConnection = (HttpURLConnection) connection;
+				
+				int responseCode = httpURLConnection.getResponseCode();
+				if (responseCode == HttpURLConnection.HTTP_OK) {
+					break;
+				} else if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP
+						|| responseCode == HttpURLConnection.HTTP_MOVED_PERM
+						|| responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
+					String newUrl = connection.getHeaderField("Location");
+					url = new URL(newUrl);
+					continue;
+				} else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+					httpURLConnection.disconnect();
+					throw new FileNotFoundException(
+							"File \"" + url + "\" not found (" + responseCode + ").");
+				} else {
+					httpURLConnection.disconnect();
+					throw new FileNotFoundException("Failed to open connection, response code " + responseCode);
+				}
+			}
+			break; // When non http protocol, for example.
+		}
+		
+		InputStream is = connection.getInputStream();
+		BufferedReader in = new BufferedReader(new InputStreamReader(is));
 
-		// Read from url to local buffer
-		BufferedReader in = new BufferedReader(new InputStreamReader(u.openStream()));
 		String line = null;
 
 		// Insert missing root element
@@ -137,14 +173,14 @@ public class Index {
 		List<Element> pdscElements = Xml.getChildrenElementsList(pindex, "pdsc");
 		for (Element pdscElement : pdscElements) {
 
-			String url = pdscElement.getAttribute("url").trim();
+			String aUrl = pdscElement.getAttribute("url").trim();
 			String vendor = pdscElement.getAttribute("vendor").trim();
 			String name = pdscElement.getAttribute("name").trim();
 			String version = pdscElement.getAttribute("version").trim();
 			String deprecated = pdscElement.getAttribute("deprecated").trim();
 			String replacement = pdscElement.getAttribute("replacement").trim();
 
-			pdscList.add(new String[] { url, vendor + "." + name + ".pdsc", version, vendor, name, deprecated,
+			pdscList.add(new String[] { aUrl, vendor + "." + name + ".pdsc", version, vendor, name, deprecated,
 					replacement });
 			++count;
 		}
