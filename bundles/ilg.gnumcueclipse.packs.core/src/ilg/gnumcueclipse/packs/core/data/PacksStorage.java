@@ -13,6 +13,7 @@ package ilg.gnumcueclipse.packs.core.data;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -41,6 +42,8 @@ public class PacksStorage {
 	public static final String INSTALLED_DEVICES_FILE_NAME = ".installed_devices_boards_books.xml";
 
 	private static IPath fgFolderPath = null;
+
+	private final static int TIME_OUT = 60 * 000;
 
 	// ------------------------------------------------------------------------
 
@@ -175,26 +178,32 @@ public class PacksStorage {
 		while (true) {
 			out.println("Getting size of \"" + url + "\"...");
 			connection = url.openConnection();
-			if ("file".equals(url.getProtocol())) { //$NON-NLS-1$
-				break;
-			}
 			if (connection instanceof HttpURLConnection) {
-				int responseCode = ((HttpURLConnection) connection).getResponseCode();
+				connection.setConnectTimeout(TIME_OUT);
+				connection.setReadTimeout(TIME_OUT);
+				HttpURLConnection httpURLConnection = (HttpURLConnection) connection;
+
+				int responseCode = httpURLConnection.getResponseCode();
 				if (responseCode == HttpURLConnection.HTTP_OK) {
 					break;
+				} else if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP
+						|| responseCode == HttpURLConnection.HTTP_MOVED_PERM
+						|| responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
+					String newUrl = connection.getHeaderField("Location");
+					url = new URL(newUrl);
+					continue;
+					// System.out.println("Redirect to URL : " + newUrl);
+				} else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+					httpURLConnection.disconnect();
+					throw new FileNotFoundException(
+							"File \"" + url + "\" not found (" + responseCode + ").");
 				} else {
-					if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP
-							|| responseCode == HttpURLConnection.HTTP_MOVED_PERM
-							|| responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
-						String newUrl = connection.getHeaderField("Location");
-						url = new URL(newUrl);
-
-						// System.out.println("Redirect to URL : " + newUrl);
-					} else {
-						throw new FileNotFoundException("Failed to open connection, response code " + responseCode);
-					}
+					httpURLConnection.disconnect();
+					throw new FileNotFoundException("Failed to open connection, response code " + responseCode);
 				}
+
 			}
+			break; // When non http protocol, for example.
 		}
 
 		long length = connection.getContentLength();

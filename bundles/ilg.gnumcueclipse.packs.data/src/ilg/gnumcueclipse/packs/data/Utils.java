@@ -37,6 +37,8 @@ import ilg.gnumcueclipse.packs.core.data.FileNotFoundException;
 
 public class Utils {
 
+	private final static int TIME_OUT = 60 * 000;
+
 	public static InputStream checkForUtf8BOM(InputStream inputStream) throws IOException {
 
 		PushbackInputStream pushbackInputStream = new PushbackInputStream(new BufferedInputStream(inputStream), 3);
@@ -108,30 +110,32 @@ public class Utils {
 		URLConnection connection;
 		while (true) {
 			connection = url.openConnection();
-			if ("file".equals(url.getProtocol())) { //$NON-NLS-1$
-				break;
-			}
 			if (connection instanceof HttpURLConnection) {
-				connection.setConnectTimeout(60 * 1000);
-				connection.setReadTimeout(60 * 1000);
-				int responseCode = ((HttpURLConnection) connection).getResponseCode();
+				connection.setConnectTimeout(TIME_OUT);
+				connection.setReadTimeout(TIME_OUT);
+				HttpURLConnection httpURLConnection = (HttpURLConnection) connection;
+
+				int responseCode = httpURLConnection.getResponseCode();
 				if (responseCode == HttpURLConnection.HTTP_OK) {
 					break;
+				} else if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP
+						|| responseCode == HttpURLConnection.HTTP_MOVED_PERM
+						|| responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
+					String newUrl = connection.getHeaderField("Location");
+					url = new URL(newUrl);
+					continue;
+					// System.out.println("Redirect to URL : " + newUrl);
+				} else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+					httpURLConnection.disconnect();
+					throw new FileNotFoundException(
+							"File \"" + url + "\" not found (" + responseCode + "), pack not installed.");
 				} else {
-					if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP
-							|| responseCode == HttpURLConnection.HTTP_MOVED_PERM
-							|| responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
-						String newUrl = connection.getHeaderField("Location");
-						url = new URL(newUrl);
-
-						// System.out.println("Redirect to URL : " + newUrl);
-					} else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
-						throw new FileNotFoundException("File \"" + url + "\" not found (" + responseCode + "), pack not installed.");
-					} else {
-						throw new IOException("Failed to open connection, response code " + responseCode);
-					}
+					httpURLConnection.disconnect();
+					throw new IOException("Failed to open connection, response code " + responseCode);
 				}
+
 			}
+			break; // When non http protocol, for example.
 		}
 
 		destinationFile.getParentFile().mkdirs();
@@ -142,7 +146,7 @@ public class Utils {
 		// conn.getContentLength() returns -1 when the file is sent in
 		// chunks, so it cannot be used; instead it is computed.
 		int totalBytes = 0;
-		
+
 		byte[] buf = new byte[1024];
 		int bytesRead;
 		while ((bytesRead = input.read(buf)) > 0) {
