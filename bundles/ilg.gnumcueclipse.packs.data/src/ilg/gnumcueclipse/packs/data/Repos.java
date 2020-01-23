@@ -85,7 +85,7 @@ public class Repos {
 		map = new HashMap<String, Object>();
 		map.put("type", CMSIS_PACK_TYPE);
 		map.put("name", "Keil");
-		map.put("url", "http://www.keil.com/pack/index.pidx");
+		map.put("url", "https://www.keil.com/pack/index.pidx");
 		list.add(map);
 
 		fList = list;
