@@ -27,7 +27,7 @@
    <feature url="features/ilg.gnumcueclipse.templates.cortexm.feature_1.5.1.qualifier.jar" id="ilg.gnumcueclipse.templates.cortexm.feature" version="1.5.1.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.packs.feature_2.4.1.qualifier.jar" id="ilg.gnumcueclipse.packs.feature" version="2.4.1.qualifier">
+   <feature url="features/ilg.gnumcueclipse.packs.feature_2.4.2.qualifier.jar" id="ilg.gnumcueclipse.packs.feature" version="2.4.2.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
    <feature url="features/ilg.gnumcueclipse.doc.user.feature_1.1.2.qualifier.jar" id="ilg.gnumcueclipse.doc.user.feature" version="1.1.2.qualifier">

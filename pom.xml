@@ -21,13 +21,13 @@
 	<!-- Generally unique amongst an organization or a project. -->
 	<groupId>ilg.gnumcueclipse</groupId>
 	<artifactId>ilg.gnumcueclipse.plugins</artifactId>
-	<version>4.7.1-SNAPSHOT</version>
+	<version>4.7.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>ilg.gnumcueclipse</groupId>
 		<artifactId>ilg.gnumcueclipse.parent</artifactId>
-		<version>4.7.1-SNAPSHOT</version>
+		<version>4.7.2-SNAPSHOT</version>
 		<relativePath>parent/pom.xml</relativePath>
 	</parent>
 
