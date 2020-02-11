@@ -48,7 +48,7 @@
 			<layout>p2</layout>
 			<!-- Explicit reference to Neon.3 with CDT 9.2.1 -->
 			<!-- (Do a run without version and retain the most recent one) -->
-			<url>http://download.eclipse.org/releases/neon/201705151400</url>
+			<url>https://download.eclipse.org/releases/neon/201705151400</url>
 		</repository>
 	</repositories>
 
