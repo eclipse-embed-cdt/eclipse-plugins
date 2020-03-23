@@ -16,5 +16,8 @@ do
   rm -rf $dir
 done
 
+# NOTE: should have removed the semver sources from
+# plugins/ilg.gnumcueclipse.core/src/com/github/zafarkhaja/semver
+
 cd ~/tmp
 tar czf ${folder_name}.tgz ${folder_name}
