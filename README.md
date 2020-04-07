@@ -1,8 +1,8 @@
-[![GitHub release](https://img.shields.io/github/release/gnu-mcu-eclipse/eclipse-plugins.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) 
-[![Github Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/eclipse-plugins/latest/total.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) 
-[![Github Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/eclipse-plugins/total.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) 
+[![GitHub release](https://img.shields.io/github/release/eclipse-embed-cdt/eclipse-plugins.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases/latest) 
+[![Github Releases](https://img.shields.io/github/downloads/eclipse-embed-cdt/eclipse-plugins/latest/total.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases/latest) 
+[![Github Releases](https://img.shields.io/github/downloads/eclipse-embed-cdt/eclipse-plugins/total.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases/latest) 
 [![SourceForge](https://img.shields.io/sourceforge/dt/gnuarmeclipse.svg?label=SF%20downloads)](https://sourceforge.net/projects/gnuarmeclipse/files/) 
-[![Build Status](https://travis-ci.org/gnu-mcu-eclipse/eclipse-plugins.svg?branch=develop)](https://travis-ci.org/gnu-mcu-eclipse/eclipse-plugins) 
+[![Build Status](https://travis-ci.org/eclipse-embed-cdt/eclipse-plugins.svg?branch=develop)](https://travis-ci.org/eclipse-embed-cdt/eclipse-plugins) 
 
 # The Eclipse Embedded CDT plug-ins
 

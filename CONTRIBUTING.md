@@ -1,7 +1,7 @@
 # Contributions to Eclipse Embedded CDT
 
 The Eclipse Embedded CDT project is hosted on GitHub as 
-[gnu-mcu-eclipse/eclipse-plugins](https://github.com/gnu-mcu-eclipse/eclipse-plugins)
+[eclipse-embed-cdt/eclipse-plugins](https://github.com/eclipse-embed-cdt/eclipse-plugins)
 
 TODO: update URLs
 
@@ -20,7 +20,7 @@ others, please use the
 If you are convinced you identified a bug (if you have doubts,
 use the forum), or you have a pertinent suggestion how to enhance
 the **Eclipse Embedded CDT plug-ins**, please use the
-[GitHub Issues](https://github.com/gnu-mcu-eclipse/eclipse-plugins/issues)
+[GitHub Issues](https://github.com/eclipse-embed-cdt/eclipse-plugins/issues)
 tracker.
 
 Be sure you report only issues related to the **Eclipse Embedded CDT plug-ins**.
@@ -79,7 +79,7 @@ In short, the process is something like this:
 ### Command line
 
 ```bash
-$ git clone --branch=master --recurse-submodules https://github.com/gnu-mcu-eclipse/eclipse-plugins.git eclipse-plugins.git
+$ git clone --branch=master --recurse-submodules https://github.com/eclipse-embed-cdt/eclipse-plugins.git eclipse-plugins.git
 $ cd eclipse-plugins.git
 $ mvn clean verify
 ```

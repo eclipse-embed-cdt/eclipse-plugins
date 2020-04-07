@@ -10,7 +10,7 @@ To add them to the project, in the `plugin.xml` editor, the _Runtime_ tab,
 _Classpath_ -> _Add..._; then, to export the `liqp` class, in the 
 _Exported Packages_ -> _Add..._.
 
-Note: The [Liquid parser](https://github.com/bkiers/Liqp) is [patched](https://github.com/gnu-mcu-eclipse/Liqp), to allow for more convenient white space processing, i.e. `-%}` should not be greedy and stop after the first line terminator.
+Note: The [Liquid parser](https://github.com/bkiers/Liqp) is [patched](https://github.com/eclipse-embed-cdt/Liqp), to allow for more convenient white space processing, i.e. `-%}` should not be greedy and stop after the first line terminator.
 
 To build the liqp library
 

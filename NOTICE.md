@@ -28,7 +28,7 @@ SPDX-License-Identifier: EPL-2.0
 
 The project maintains the following source code repositories:
 
- * https://github.com/gnu-mcu-eclipse/eclipse-plugins
+ * https://github.com/eclipse-embed-cdt/eclipse-plugins
 
 TODO: update URL
 
