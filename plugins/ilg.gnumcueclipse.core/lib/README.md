@@ -75,16 +75,27 @@ little easier. CQ#14504 is for 4.0.8
 Jackson comment as per above.
 ```
 
-### ST4-4.0.7.jar
+### antlr ST4-*.jar
 
-[CQ#14504](https://dev.eclipse.org/ipzilla/show_bug.cgi?id=14504)
+Was ST4-4.0.7.jar.
+
+[CQ#14504](https://dev.eclipse.org/ipzilla/show_bug.cgi?id=14504) for 4.0.8
 
 org.antlr.ST4 Version:4.0.8, StringTemplate is a java template engine ...
 
 https://mvnrepository.com/artifact/org.antlr/ST4/4.0.8
 https://repo1.maven.org/maven2/org/antlr/ST4/4.0.8/ST4-4.0.8.jar
 
+### antlr-runtime-*.jar
 
+Was antlr-runtime-3.5.1.jar.
+
+[CQ#9433](https://dev.eclipse.org/ipzilla/show_bug.cgi?id=9433) for 3.5.2
+
+https://mvnrepository.com/artifact/org.antlr/antlr-runtime/3.5.2
+https://repo1.maven.org/maven2/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.jar
+
+ 
 
 
 
