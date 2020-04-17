@@ -40,6 +40,9 @@
 
 		<!-- The usual Eclipse timestamp, down to minutes. -->
 		<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
+
+		<!-- Eclipse provided plug-ins for signing JARs with Eclipse infra -->
+		<cbi-plugins.version>1.1.7</cbi-plugins.version>
 	</properties>
 
 	<licenses>
@@ -65,6 +68,13 @@
 			<url>https://download.eclipse.org/releases/neon/201705151400</url>
 		</repository>
 	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<!-- Eclipse provided plug-ins for signing JARs with Eclipse infra -->
+			<id>cbi</id>
+			<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<build>
 		<plugins>
@@ -165,6 +175,29 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<profiles>
+		<profile>
+			<id>production</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.cbi.maven.plugins</groupId>
+						<artifactId>eclipse-jarsigner-plugin</artifactId>
+						<version>${cbi-plugins.version}</version>
+						<executions>
+							<execution>
+								<id>sign</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<name>Eclipse Embedded CDT parent</name>
 	<url>https://www.eclipse.org/embed-cdt</url>
