@@ -24,7 +24,7 @@ pipeline {
         stage('Upload') {
             steps {
                 sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
-                   sh './scripts/nightly-upload.sh'
+                   sh './scripts/builds-upload.sh'
                 }
             }
         }

@@ -2,7 +2,7 @@
 [![Github Releases](https://img.shields.io/github/downloads/eclipse-embed-cdt/eclipse-plugins/latest/total.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases/latest) 
 [![Github Releases](https://img.shields.io/github/downloads/eclipse-embed-cdt/eclipse-plugins/total.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases/latest) 
 [![SourceForge](https://img.shields.io/sourceforge/dt/gnuarmeclipse.svg?label=SF%20downloads)](https://sourceforge.net/projects/gnuarmeclipse/files/) 
-[![Build Status](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.eclipse.org%2Fembed-cdt%2Fjob%2Fnightly%2Fjob%2Fdevelop%2F)](https://ci.eclipse.org/embed-cdt/job/nightly/job/develop/) 
+[![Build Status](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.eclipse.org%2Fembed-cdt%2Fjob%2Fbuilds%2Fjob%2Fdevelop%2F)](https://ci.eclipse.org/embed-cdt/job/builds/job/develop/) 
 
 # The Eclipse Embedded CDT plug-ins
 
@@ -26,7 +26,7 @@ Eclipse Marketplace; search for **GNU MCU Eclipse**.
  * Stable: http://gnu-mcu-eclipse.netlify.com/v4-neon-updates  
     This is the official release; it is also referred by the Eclipse 
     Marketplace and the same content is packed as **Eclipse IDE for C/C++ Developers**.
- * Pre-release versions: https://download.eclipse.org/embed-cdt/nightly/develop/
+ * Pre-release versions: https://download.eclipse.org/embed-cdt/builds/develop/
     Usually this site should be safe to use, but use it with caution.
  * Experimental versions: http://gnu-mcu-eclipse.netlify.com/v4-neon-updates-experimental  
     Sometimes you can use this site to test some features that are not 
