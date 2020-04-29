@@ -27,3 +27,10 @@ A sample process to copy files is:
 		</complex-array>
 	</process>
 
+---
+
+The main-NNN-*.{c|cpp} files are pieces combined by the template engine to 
+create the main.{c|cpp} files.
+
+Similarly the BlinkLed-NN-*.h files are pieces combined by the template engine to 
+create the BlinkLed.h file.
