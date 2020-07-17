@@ -89,10 +89,17 @@ public class XpackDirectoryNotStrictFieldEditor extends DirectoryNotStrictFieldE
 		if (dlg.open() == Dialog.OK) {
 			int index = dlg.getData();
 			String version = fVersions[index];
-			IPath path = XpackUtils.getPackPath(fXpackNames[index]);
-			// TODO: remove hard reference to .content/bin
-			path = path.append(version).append(".content").append("bin");
-			setStringValue(path.toString());
+
+			for (String name : fXpackNames) {
+				IPath path = XpackUtils.getPackPath(name).append(version);
+				if (!path.toFile().isDirectory()) {
+					continue;
+				}
+				// TODO: remove hard reference to .content/bin
+				path = path.append(".content").append("bin");
+				setStringValue(path.toString());
+				break;
+			}
 		}
 	}
 
