@@ -222,6 +222,7 @@ public class DefaultPreferences {
 			}
 		}
 
+		
 		// Add paths for manually installed packages
 		// ${XPACK_REPO_PATH}/<name>
 		IPath repoPath = XpackUtils.getRepoPath();
@@ -229,14 +230,14 @@ public class DefaultPreferences {
 		if (repoFolder.isDirectory()) {
 
 			for (String uniqueName : uniqueNames) {
-				IPath p2 = repoPath.append(uniqueName);
+				IPath path = repoPath.append(uniqueName);
 
-				File p2Folder = p2.toFile();
+				File p2Folder = path.toFile();
 				if (p2Folder.isDirectory()) {
-					newSearchPath = p2.toPortableString() + EclipseUtils.getPathSeparator() + newSearchPath;
+					newSearchPath = path.toPortableString() + EclipseUtils.getPathSeparator() + newSearchPath;
 					if (Activator.getInstance().isDebugging()) {
 						System.out.println("DefaultPreferences.searchLatestExecutable() prepend \""
-								+ p2.toPortableString() + "\" to path ");
+								+ path.toPortableString() + "\" to path ");
 					}
 				}
 			}
@@ -246,8 +247,16 @@ public class DefaultPreferences {
 		// Iterate in reverse order.
 		for (int i = xpackNames.length - 1; i >= 0; --i) {
 			if (!xpackNames[i].isEmpty()) {
-				// Add xPack path in front of the search path.
-				String xpackPath = XpackUtils.getPackPath(xpackNames[i]).toPortableString();
+				// Add system xPack path in front of the search path.
+				String xpackPath = XpackUtils.getSysPackPath(xpackNames[i]).toPortableString();
+				newSearchPath = xpackPath + EclipseUtils.getPathSeparator() + newSearchPath;
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println(
+							"DefaultPreferences.searchLatestExecutable() prepend \"" + xpackPath + "\" to path ");
+				}
+				
+				// Add user xPack path in front of the search path.
+				xpackPath = XpackUtils.getPackPath(xpackNames[i]).toPortableString();
 				newSearchPath = xpackPath + EclipseUtils.getPathSeparator() + newSearchPath;
 				if (Activator.getInstance().isDebugging()) {
 					System.out.println(

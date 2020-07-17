@@ -48,6 +48,11 @@ public class XpackDirectoryNotStrictFieldEditor extends DirectoryNotStrictFieldE
 					fXpackButton.setEnabled(true);
 					break;
 				}
+				packPath = XpackUtils.getSysPackPath(xpackName);
+				if (packPath.toFile().isDirectory()) {
+					fXpackButton.setEnabled(true);
+					break;
+				}
 			}
 		}
 	}
@@ -93,7 +98,10 @@ public class XpackDirectoryNotStrictFieldEditor extends DirectoryNotStrictFieldE
 			for (String name : fXpackNames) {
 				IPath path = XpackUtils.getPackPath(name).append(version);
 				if (!path.toFile().isDirectory()) {
-					continue;
+					path = XpackUtils.getSysPackPath(name).append(version);
+					if (!path.toFile().isDirectory()) {
+						continue;
+					}
 				}
 				// TODO: remove hard reference to .content/bin
 				path = path.append(".content").append("bin");

@@ -18,9 +18,11 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -66,7 +68,25 @@ public class XpackUtils {
 		}
 		return null;
 	}
-	
+
+	public static IPath getSysRepoBasePath() {
+		
+		Map<String, String> env = System.getenv();
+		
+		if (EclipseUtils.isMacOSX()) {
+			IPath path = new Path("/opt");
+			return path;
+		} else if (EclipseUtils.isLinux()) {
+			IPath path = new Path("/opt");
+			return path;
+		} else if (EclipseUtils.isWindows()) {
+			String progFolder = env.get("ProgramFiles");
+			IPath path = new Path(progFolder);
+			return path;
+		}
+		return null;
+	}
+
 	public static IPath getRepoPath() {
 
 		Map<String, String> env = System.getenv();
@@ -88,6 +108,27 @@ public class XpackUtils {
 		return null;
 	}
 
+	public static IPath getSysRepoPath() {
+
+		Map<String, String> env = System.getenv();
+		String folder = env.get("XPACKS_SYSTEM_FOLDER");
+		
+		IPath path;
+		if (folder != null) {
+			path = new Path(folder);
+			if (path.toFile().isDirectory()) {
+				return path;
+			}
+		}
+
+		path = getSysRepoBasePath();
+		if (path != null) {
+			return path.append("xPacks");
+		}
+
+		return null;
+	}
+
 	public static IPath getPackPath(String packName) {
 		IPath repoPath = getRepoPath();
 		String arr[] = packName.split("[/]", 2);
@@ -98,43 +139,63 @@ public class XpackUtils {
 		}
 	}
 
+	public static IPath getSysPackPath(String packName) {
+		IPath repoPath = getSysRepoPath();
+		String arr[] = packName.split("[/]", 2);
+		if (arr.length == 1) {
+			return repoPath.append(arr[0]);
+		} else {
+			return repoPath.append(arr[0]).append(arr[1]);
+		}
+	}
+
 	public static String[] getPackVersions(String[] packNames) {
 
-		List<String> list = new LinkedList<String>();
+		Set<String> versions = new LinkedHashSet<String>();
 
-		for (String packName : packNames) {
-			IPath packPath = getPackPath(packName);
-			File folder = packPath.toFile();
-			if (folder.isDirectory()) {
-				
-				folder.listFiles(new FilenameFilter() {
+		FilenameFilter filter = new FilenameFilter() {
 
-					@Override
-					public boolean accept(File dir, String name) {
-						IPath path = (new Path(dir.getAbsolutePath())).append(name);
-						if (path.toFile().isDirectory()) {
-							IPath packagePath = path.append("package.json");
-							if (packagePath.toFile().isFile()) {
-								if (".link".equals(name)) {
-									list.add("current");
-								} else {
-									list.add(name);
-								}
-								return true;
-							}
-
+			@Override
+			public boolean accept(File dir, String name) {
+				IPath path = (new Path(dir.getAbsolutePath())).append(name);
+				if (path.toFile().isDirectory()) {
+					IPath packagePath = path.append("package.json");
+					if (packagePath.toFile().isFile()) {
+						if (".link".equals(name)) {
+							versions.add("current");
+						} else {
+							versions.add(name);
 						}
-						return false;
+						return true;
 					}
 
-				});
+				}
+				return false;
+			}
+
+		};
+		
+		for (String packName : packNames) {
+			// Enumerate user home versions.
+			IPath packPath = getPackPath(packName);
+			File folder = packPath.toFile();
+			if (folder.isDirectory()) {			
+				folder.listFiles(filter);
+			}
+			
+			// Enumerate system version.
+			packPath = getSysPackPath(packName);
+			folder = packPath.toFile();
+			if (folder.isDirectory()) {			
+				folder.listFiles(filter);
 			}
 		}
 		
-		if (list.isEmpty()) {
+		if (versions.isEmpty()) {
 			return new String[] {};		
 		}
 
+		List<String> list = new LinkedList<String>(versions);
 
 		Collections.sort(list, new Comparator<String>() {
 			@Override
