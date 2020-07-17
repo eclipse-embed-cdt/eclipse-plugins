@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -199,16 +200,66 @@ public class DefaultPreferences {
 					+ searchPath + "\", " + subFolder + "\", " + executableName + ") ");
 		}
 
+		// Each folder in the search path will be searched for versioned subfolders.
+		// The names are not relevant, just that the extra folders must exits.
+		String newSearchPath = searchPath;
+
+		// Compute the list of unique names in xpackNames (ignore scope).
+		Set<String> uniqueNames = new LinkedHashSet<String>();
+		// Iterate in reverse order.
+		for (int i = xpackNames.length - 1; i >= 0; --i) {
+			if (!xpackNames[i].isEmpty()) {
+				String name;
+				int ix = xpackNames[i].indexOf('/');
+				if (ix == -1) {
+					name = xpackNames[i];
+				} else {
+					name = xpackNames[i].substring(ix + 1);
+				}
+				if (!name.isEmpty()) {
+					uniqueNames.add(name);
+				}
+			}
+		}
+
+		// Add paths for manually installed packages
+		// ${XPACK_REPO_PATH}/<name>
+		IPath repoPath = XpackUtils.getRepoPath();
+		File repoFolder = repoPath.toFile();
+		if (repoFolder.isDirectory()) {
+
+			for (String uniqueName : uniqueNames) {
+				IPath p2 = repoPath.append(uniqueName);
+
+				File p2Folder = p2.toFile();
+				if (p2Folder.isDirectory()) {
+					newSearchPath = p2.toPortableString() + EclipseUtils.getPathSeparator() + newSearchPath;
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("DefaultPreferences.searchLatestExecutable() prepend \""
+								+ p2.toPortableString() + "\" to path ");
+					}
+				}
+			}
+		}
+
+		// Add actual xPack paths, as installed by xpm.
 		// Iterate in reverse order.
 		for (int i = xpackNames.length - 1; i >= 0; --i) {
 			if (!xpackNames[i].isEmpty()) {
 				// Add xPack path in front of the search path.
 				String xpackPath = XpackUtils.getPackPath(xpackNames[i]).toPortableString();
-				searchPath = xpackPath + EclipseUtils.getPathSeparator() + searchPath;
+				newSearchPath = xpackPath + EclipseUtils.getPathSeparator() + newSearchPath;
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println(
+							"DefaultPreferences.searchLatestExecutable() prepend \"" + xpackPath + "\" to path ");
+				}
 			}
 		}
+		// At his point, the actual xPack paths are in front of the list;
+		// the selection is still done by date, but in case of identical date,
+		// the xPacks are preferred.
 
-		String resolvedPath = EclipseUtils.performStringSubstitution(searchPath);
+		String resolvedPath = EclipseUtils.performStringSubstitution(newSearchPath);
 		if (resolvedPath == null || resolvedPath.isEmpty()) {
 			return null;
 		}
