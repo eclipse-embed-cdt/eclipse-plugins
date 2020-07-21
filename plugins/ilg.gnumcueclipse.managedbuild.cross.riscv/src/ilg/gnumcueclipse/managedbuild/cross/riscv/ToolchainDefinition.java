@@ -20,9 +20,17 @@ import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 
-public class ToolchainDefinition {
+import ilg.gnumcueclipse.managedbuild.cross.Activator;
+
+public class ToolchainDefinition extends ilg.gnumcueclipse.managedbuild.cross.ToolchainDefinition {
 
 	// ------------------------------------------------------------------------
+
+	// 2021824384
+	public static final String XPACK_RISCV_GCC = "xPack GNU RISC-V Embedded GCC";
+
+	// 512258282
+	public static final String GME_RISCV_GCC = "GNU MCU RISC-V GCC";
 
 	// 2032619395
 	public static final String RISC_V_GCC_NEWLIB = "RISC-V GCC/Newlib";
@@ -30,49 +38,20 @@ public class ToolchainDefinition {
 	public static final String RISC_V_GCC_LINUX = "RISC-V GCC/Linux";
 	// 339524431
 	public static final String RISC_V_GCC_RTEMS = "RISC-V GCC/RTEMS";
-	// 512258282
-	public static final String GME_RISCV_GCC = "GNU MCU RISC-V GCC";
-	// 2021824384
-	public static final String XPACK_RISCV_GCC = "xPack GNU RISC-V Embedded GCC";
 
 	public static final String DEFAULT_TOOLCHAIN_NAME = XPACK_RISCV_GCC;
 
 	// ------------------------------------------------------------------------
 
-	private String fName;
-	private long fHash;
-	private String fPrefix;
-	private String fSuffix;
-	private String fArchitecture;
-	private String fCmdMake;
-	private String fCmdRm;
-	private String fCmdWinMake;
-	private String fCmdWinRm;
-	private String fCmdC;
-	private String fCmdCpp;
-	private String fCmdAr;
-	private String fCmdObjcopy;
-	private String fCmdObjdump;
-	private String fCmdSize;
-
-	private static String fArchitectures[] = { "RISC-V" };
+	// Static members
+	protected static List<ToolchainDefinition> fgList = new ArrayList<ToolchainDefinition>();
+	protected static String fgArchitectures[] = { "RISC-V" };
 
 	// ------------------------------------------------------------------------
 
 	public ToolchainDefinition(String sName) {
-		fName = sName;
-		fHash = Integer.toUnsignedLong(fName.hashCode());
-		fPrefix = "";
-		fSuffix = "";
+		super(sName);
 		fArchitecture = "risc-v";
-		fCmdMake = "make";
-		fCmdRm = "rm";
-		fCmdC = "gcc";
-		fCmdCpp = "g++";
-		fCmdAr = "ar";
-		fCmdObjcopy = "objcopy";
-		fCmdObjdump = "objdump";
-		fCmdSize = "size";
 	}
 
 	public ToolchainDefinition(String sName, String sPrefix) {
@@ -87,150 +66,11 @@ public class ToolchainDefinition {
 
 	public ToolchainDefinition(String sName, String sPrefix, String sArchitecture, String cmdMake, String cmdRm) {
 		this(sName, sPrefix, sArchitecture);
-		fArchitecture = sArchitecture;
 		fCmdMake = cmdMake;
 		fCmdRm = cmdRm;
 	}
 
 	// ------------------------------------------------------------------------
-
-	public void setWin(String cmdMake, String cmdRm) {
-		fCmdMake = cmdMake;
-		fCmdRm = cmdRm;
-	}
-
-	public String getName() {
-		return fName;
-	}
-
-	public void setName(String name) {
-		fName = name;
-	}
-
-	public long getHash() {
-		return fHash;
-	}
-
-	public void setHash(int hash) {
-		fHash = Integer.toUnsignedLong(hash);;
-	}
-
-	public String getPrefix() {
-		return fPrefix;
-	}
-
-	public void setPrefix(String prefix) {
-		fPrefix = prefix;
-	}
-
-	public String getSuffix() {
-		return fSuffix;
-	}
-
-	public void setSuffix(String suffix) {
-		fSuffix = suffix;
-	}
-
-	public String getArchitecture() {
-		return fArchitecture;
-	}
-
-	public void setArchitecture(String architecture) {
-		fArchitecture = architecture;
-	}
-
-	public String getCmdMake() {
-		return fCmdMake;
-	}
-
-	public void setCmdMake(String cmdMake) {
-		fCmdMake = cmdMake;
-	}
-
-	public String getCmdRm() {
-		return fCmdRm;
-	}
-
-	public void setCmdRm(String cmdRm) {
-		fCmdRm = cmdRm;
-	}
-
-	public String getCmdWinMake() {
-		return fCmdWinMake;
-	}
-
-	public void setCmdWinMake(String cmdWinMake) {
-		fCmdWinMake = cmdWinMake;
-	}
-
-	public String getCmdWinRm() {
-		return fCmdWinRm;
-	}
-
-	public void setCmdWinRm(String cmdWinRm) {
-		fCmdWinRm = cmdWinRm;
-	}
-
-	public String getCmdC() {
-		return fCmdC;
-	}
-
-	public void setCmdC(String cmdC) {
-		fCmdC = cmdC;
-	}
-
-	public String getCmdCpp() {
-		return fCmdCpp;
-	}
-
-	public void setCmdCpp(String cmdCpp) {
-		fCmdCpp = cmdCpp;
-	}
-
-	public String getCmdAr() {
-		return fCmdAr;
-	}
-
-	public void setCmdAr(String cmdAr) {
-		fCmdAr = cmdAr;
-	}
-
-	public String getCmdObjcopy() {
-		return fCmdObjcopy;
-	}
-
-	public void setCmdObjcopy(String cmdObjcopy) {
-		fCmdObjcopy = cmdObjcopy;
-	}
-
-	public String getCmdObjdump() {
-		return fCmdObjdump;
-	}
-
-	public void setCmdObjdump(String cmdObjdump) {
-		fCmdObjdump = cmdObjdump;
-	}
-
-	public String getCmdSize() {
-		return fCmdSize;
-	}
-
-	public void setCmdSize(String cmdSize) {
-		fCmdSize = cmdSize;
-	}
-
-	public String getFullCmdC() {
-		return getPrefix() + getCmdC() + getSuffix();
-	}
-
-	public String getFullName() {
-		return getName() + " (" + getFullCmdC() + ")";
-	}
-
-	// Static members
-	private static List<ToolchainDefinition> fgList;
-
-	private static final String CUSTOM_TOOLCHAINS_EXT_POINT_ID = Activator.PLUGIN_ID + ".toolchains";
 
 	public static List<ToolchainDefinition> getList() {
 		return fgList;
@@ -248,12 +88,15 @@ public class ToolchainDefinition {
 		return fgList.size();
 	}
 
+	public static void addToolchain(ToolchainDefinition toolchain) {
+		fgList.add(toolchain);
+	}
+
 	/**
 	 * Try to identify toolcahin by name. If not possible, throw
 	 * IndexOutOfBoundsException().
 	 * 
-	 * @param sName
-	 *            a string with the toolchain name.
+	 * @param sName a string with the toolchain name.
 	 * @return non-negative index.
 	 */
 	public static int findToolchainByName(String sName) {
@@ -286,19 +129,19 @@ public class ToolchainDefinition {
 	}
 
 	public static String[] getArchitectures() {
-		return fArchitectures;
+		return fgArchitectures;
 	}
 
 	public static String getArchitecture(int index) {
-		return fArchitectures[index];
+		return fgArchitectures[index];
 	}
 
 	/*
 	 * Additional toolchains to be considered.
 	 */
-	private static void addToolchains() {
+	public static void addExtensionsToolchains(String extensionPointId) {
 		IConfigurationElement[] elements = Platform.getExtensionRegistry()
-				.getConfigurationElementsFor(CUSTOM_TOOLCHAINS_EXT_POINT_ID);
+				.getConfigurationElementsFor(extensionPointId);
 		for (IConfigurationElement element : elements) {
 			String name = element.getAttribute("name");
 
@@ -333,21 +176,23 @@ public class ToolchainDefinition {
 		}
 	}
 
+	// ------------------------------------------------------------------------
+
+	private static final String CUSTOM_TOOLCHAINS_EXT_POINT_ID = Activator.PLUGIN_ID + ".toolchains";
+
 	// Initialise the list of known toolchains
 	static {
-		fgList = new ArrayList<ToolchainDefinition>();
+		addToolchain(new ToolchainDefinition(XPACK_RISCV_GCC, "riscv-none-embed-"));
+		addToolchain(new ToolchainDefinition(GME_RISCV_GCC, "riscv-none-embed-"));
 
-		fgList.add(new ToolchainDefinition(XPACK_RISCV_GCC, "riscv-none-embed-"));
-		fgList.add(new ToolchainDefinition(GME_RISCV_GCC, "riscv-none-embed-"));
+		addToolchain(new ToolchainDefinition(RISC_V_GCC_NEWLIB, "riscv64-unknown-elf-"));
 
-		fgList.add(new ToolchainDefinition(RISC_V_GCC_NEWLIB, "riscv64-unknown-elf-"));
+		addToolchain(new ToolchainDefinition(RISC_V_GCC_LINUX, "riscv64-unknown-linux-gnu-"));
 
-		fgList.add(new ToolchainDefinition(RISC_V_GCC_LINUX, "riscv64-unknown-linux-gnu-"));
-
-		fgList.add(new ToolchainDefinition(RISC_V_GCC_RTEMS, "riscv64-unknown-rtems-"));
+		addToolchain(new ToolchainDefinition(RISC_V_GCC_RTEMS, "riscv64-unknown-rtems-"));
 
 		// Enumerate extension points and add custom toolchains.
-		addToolchains();
+		addExtensionsToolchains(CUSTOM_TOOLCHAINS_EXT_POINT_ID);
 	}
 
 	// ------------------------------------------------------------------------

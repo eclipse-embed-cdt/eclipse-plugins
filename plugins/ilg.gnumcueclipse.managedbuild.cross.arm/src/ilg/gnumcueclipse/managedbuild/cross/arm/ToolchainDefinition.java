@@ -22,53 +22,31 @@ import org.eclipse.core.runtime.Platform;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 
-public class ToolchainDefinition {
+public class ToolchainDefinition extends ilg.gnumcueclipse.managedbuild.cross.ToolchainDefinition {
 
 	// ------------------------------------------------------------------------
 
 	// 435435382
 	public static final String XPACK_ARM_GCC = "xPack GNU Arm Embedded GCC";
+
 	// 962691777
 	public static final String GME_ARM_GCC = "GNU MCU Eclipse ARM Embedded GCC";
+
 	public static final String GNU_TOOLS_FOR_ARM_EMBEDDED = "GNU Tools for ARM Embedded Processors";
+
 	public static final String DEFAULT_TOOLCHAIN_NAME = XPACK_ARM_GCC;
 
 	// ------------------------------------------------------------------------
 
-	private String fName;
-	private long fHash;
-	private String fPrefix;
-	private String fSuffix;
-	private String fArchitecture;
-	private String fCmdMake;
-	private String fCmdRm;
-	private String fCmdWinMake;
-	private String fCmdWinRm;
-	private String fCmdC;
-	private String fCmdCpp;
-	private String fCmdAr;
-	private String fCmdObjcopy;
-	private String fCmdObjdump;
-	private String fCmdSize;
-
-	private static String fArchitectures[] = { "ARM (AArch32)", "ARM64 (AArch64)" };
+	// Static members
+	protected static List<ToolchainDefinition> fgList = new ArrayList<ToolchainDefinition>();
+	protected static String fArchitectures[] = { "ARM (AArch32)", "ARM64 (AArch64)" };
 
 	// ------------------------------------------------------------------------
 
 	public ToolchainDefinition(String sName) {
-		fName = sName;
-		fHash = Integer.toUnsignedLong(fName.hashCode());
-		fPrefix = "";
-		fSuffix = "";
+		super(sName);
 		fArchitecture = "arm";
-		fCmdMake = "make";
-		fCmdRm = "rm";
-		fCmdC = "gcc";
-		fCmdCpp = "g++";
-		fCmdAr = "ar";
-		fCmdObjcopy = "objcopy";
-		fCmdObjdump = "objdump";
-		fCmdSize = "size";
 	}
 
 	public ToolchainDefinition(String sName, String sPrefix) {
@@ -83,150 +61,11 @@ public class ToolchainDefinition {
 
 	public ToolchainDefinition(String sName, String sPrefix, String sArchitecture, String cmdMake, String cmdRm) {
 		this(sName, sPrefix, sArchitecture);
-		fArchitecture = sArchitecture;
 		fCmdMake = cmdMake;
 		fCmdRm = cmdRm;
 	}
 
 	// ------------------------------------------------------------------------
-
-	public void setWin(String cmdMake, String cmdRm) {
-		fCmdMake = cmdMake;
-		fCmdRm = cmdRm;
-	}
-
-	public String getName() {
-		return fName;
-	}
-
-	public void setName(String name) {
-		fName = name;
-	}
-
-	public long getHash() {
-		return fHash;
-	}
-
-	public void setHash(int hash) {
-		fHash = Integer.toUnsignedLong(hash);;
-	}
-
-	public String getPrefix() {
-		return fPrefix;
-	}
-
-	public void setPrefix(String prefix) {
-		fPrefix = prefix;
-	}
-
-	public String getSuffix() {
-		return fSuffix;
-	}
-
-	public void setSuffix(String suffix) {
-		fSuffix = suffix;
-	}
-
-	public String getArchitecture() {
-		return fArchitecture;
-	}
-
-	public void setArchitecture(String architecture) {
-		fArchitecture = architecture;
-	}
-
-	public String getCmdMake() {
-		return fCmdMake;
-	}
-
-	public void setCmdMake(String cmdMake) {
-		fCmdMake = cmdMake;
-	}
-
-	public String getCmdRm() {
-		return fCmdRm;
-	}
-
-	public void setCmdRm(String cmdRm) {
-		fCmdRm = cmdRm;
-	}
-
-	public String getCmdWinMake() {
-		return fCmdWinMake;
-	}
-
-	public void setCmdWinMake(String cmdWinMake) {
-		fCmdWinMake = cmdWinMake;
-	}
-
-	public String getCmdWinRm() {
-		return fCmdWinRm;
-	}
-
-	public void setCmdWinRm(String cmdWinRm) {
-		fCmdWinRm = cmdWinRm;
-	}
-
-	public String getCmdC() {
-		return fCmdC;
-	}
-
-	public void setCmdC(String cmdC) {
-		fCmdC = cmdC;
-	}
-
-	public String getCmdCpp() {
-		return fCmdCpp;
-	}
-
-	public void setCmdCpp(String cmdCpp) {
-		fCmdCpp = cmdCpp;
-	}
-
-	public String getCmdAr() {
-		return fCmdAr;
-	}
-
-	public void setCmdAr(String cmdAr) {
-		fCmdAr = cmdAr;
-	}
-
-	public String getCmdObjcopy() {
-		return fCmdObjcopy;
-	}
-
-	public void setCmdObjcopy(String cmdObjcopy) {
-		fCmdObjcopy = cmdObjcopy;
-	}
-
-	public String getCmdObjdump() {
-		return fCmdObjdump;
-	}
-
-	public void setCmdObjdump(String cmdObjdump) {
-		fCmdObjdump = cmdObjdump;
-	}
-
-	public String getCmdSize() {
-		return fCmdSize;
-	}
-
-	public void setCmdSize(String cmdSize) {
-		fCmdSize = cmdSize;
-	}
-
-	public String getFullCmdC() {
-		return getPrefix() + getCmdC() + getSuffix();
-	}
-
-	public String getFullName() {
-		return getName() + " (" + getFullCmdC() + ")";
-	}
-
-	// Static members
-	private static List<ToolchainDefinition> fgList;
-
-	private static final String CUSTOM_TOOLCHAINS_EXT_POTNT_ID = Activator.PLUGIN_ID + ".toolchains";
 
 	public static List<ToolchainDefinition> getList() {
 		return fgList;
@@ -244,12 +83,15 @@ public class ToolchainDefinition {
 		return fgList.size();
 	}
 
+	public static void addToolchain(ToolchainDefinition toolchain) {
+		fgList.add(toolchain);
+	}
+
 	/**
 	 * Try to identify toolcahin by name. If not possible, throw
 	 * IndexOutOfBoundsException().
 	 * 
-	 * @param sName
-	 *            a string with the toolchain name.
+	 * @param sName a string with the toolchain name.
 	 * @return non-negative index.
 	 */
 	public static int findToolchainByName(String sName) {
@@ -292,9 +134,9 @@ public class ToolchainDefinition {
 	/*
 	 * Additional toolchains to be considered.
 	 */
-	private static void addToolchains() {
+	private static void addExtensionsToolchains(String extensionPointId) {
 		IConfigurationElement[] elements = Platform.getExtensionRegistry()
-				.getConfigurationElementsFor(CUSTOM_TOOLCHAINS_EXT_POTNT_ID);
+				.getConfigurationElementsFor(extensionPointId);
 		for (IConfigurationElement element : elements) {
 			String name = element.getAttribute("name");
 
@@ -329,53 +171,56 @@ public class ToolchainDefinition {
 		}
 	}
 
+	// ------------------------------------------------------------------------
+
+	private static final String CUSTOM_TOOLCHAINS_EXT_POTNT_ID = Activator.PLUGIN_ID + ".toolchains";
+
 	// Initialise the list of known toolchains
 	static {
-		fgList = new ArrayList<ToolchainDefinition>();
+		addToolchain(new ToolchainDefinition(XPACK_ARM_GCC, "arm-none-eabi-"));
+		addToolchain(new ToolchainDefinition(GME_ARM_GCC, "arm-none-eabi-"));
 
-		fgList.add(new ToolchainDefinition(XPACK_ARM_GCC, "arm-none-eabi-"));
-		fgList.add(new ToolchainDefinition(GME_ARM_GCC, "arm-none-eabi-"));
-
-		fgList.add(new ToolchainDefinition(GNU_TOOLS_FOR_ARM_EMBEDDED, "arm-none-eabi-"));
+		addToolchain(new ToolchainDefinition(GNU_TOOLS_FOR_ARM_EMBEDDED, "arm-none-eabi-"));
 
 		ToolchainDefinition tc;
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI", "arm-none-eabi-");
 		if (EclipseUtils.isWindows()) {
 			tc.setWin("cs-make", "cs-rm");
 		}
-		fgList.add(tc);
+		addToolchain(tc);
 
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM GNU/Linux", "arm-none-linux-gnueabi-");
 		if (EclipseUtils.isWindows()) {
 			tc.setWin("cs-make", "cs-rm");
 		}
-		fgList.add(tc);
+		addToolchain(tc);
 
-		fgList.add(new ToolchainDefinition("devkitPro ARM EABI", "arm-eabi-"));
+		addToolchain(new ToolchainDefinition("devkitPro ARM EABI", "arm-eabi-"));
 
-		fgList.add(new ToolchainDefinition("Yagarto, Summon, etc. ARM EABI", "arm-none-eabi-"));
+		addToolchain(new ToolchainDefinition("Yagarto, Summon, etc. ARM EABI", "arm-none-eabi-"));
 
-		fgList.add(new ToolchainDefinition("Linaro ARMv7 bare-metal EABI", "arm-none-eabi-"));
+		addToolchain(new ToolchainDefinition("Linaro ARMv7 bare-metal EABI", "arm-none-eabi-"));
 
-		fgList.add(new ToolchainDefinition("Linaro ARMv7 big-endian bare-metal EABI", "armeb-none-eabi-"));
+		addToolchain(new ToolchainDefinition("Linaro ARMv7 big-endian bare-metal EABI", "armeb-none-eabi-"));
 
-		fgList.add(new ToolchainDefinition("Linaro ARMv7 Linux GNU EABI HF", "arm-linux-gnueabihf-"));
+		addToolchain(new ToolchainDefinition("Linaro ARMv7 Linux GNU EABI HF", "arm-linux-gnueabihf-"));
 
-		fgList.add(new ToolchainDefinition("Linaro ARMv7 big-endian Linux GNU EABI HF", "armeb-linux-gnueabihf-"));
+		addToolchain(new ToolchainDefinition("Linaro ARMv7 big-endian Linux GNU EABI HF", "armeb-linux-gnueabihf-"));
 
 		// 64 bit toolchains
-		fgList.add(new ToolchainDefinition("Linaro AArch64 bare-metal ELF", "aarch64-elf-", "aarch64"));
+		addToolchain(new ToolchainDefinition("Linaro AArch64 bare-metal ELF", "aarch64-elf-", "aarch64"));
 
-		fgList.add(new ToolchainDefinition("Linaro AArch64 big-endian bare-metal ELF", "aarch64_be-elf-", "aarch64"));
+		addToolchain(new ToolchainDefinition("Linaro AArch64 big-endian bare-metal ELF", "aarch64_be-elf-", "aarch64"));
 
-		fgList.add(new ToolchainDefinition("Linaro AArch64 Linux GNU", "aarch64-linux-gnu-", "aarch64"));
+		addToolchain(new ToolchainDefinition("Linaro AArch64 Linux GNU", "aarch64-linux-gnu-", "aarch64"));
 
-		fgList.add(new ToolchainDefinition("Linaro AArch64 big-endian Linux GNU", "aarch64_be-linux-gnu-", "aarch64"));
+		addToolchain(
+				new ToolchainDefinition("Linaro AArch64 big-endian Linux GNU", "aarch64_be-linux-gnu-", "aarch64"));
 
 		// fgList.add(new ToolchainDefinition("Custom", "arm-none-eabi-"));
 
 		// Enumerate extension points and add custom toolchains.
-		addToolchains();
+		addExtensionsToolchains(CUSTOM_TOOLCHAINS_EXT_POTNT_ID);
 	}
 
 	// ------------------------------------------------------------------------
