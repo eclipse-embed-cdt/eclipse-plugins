@@ -38,7 +38,7 @@ public class ToolchainDefinition {
 	// ------------------------------------------------------------------------
 
 	private String fName;
-	private int fHash;
+	private long fHash;
 	private String fPrefix;
 	private String fSuffix;
 	private String fArchitecture;
@@ -59,7 +59,7 @@ public class ToolchainDefinition {
 
 	public ToolchainDefinition(String sName) {
 		fName = sName;
-		fHash = fName.hashCode();
+		fHash = Integer.toUnsignedLong(fName.hashCode());
 		fPrefix = "";
 		fSuffix = "";
 		fArchitecture = "risc-v";
@@ -105,12 +105,12 @@ public class ToolchainDefinition {
 		fName = name;
 	}
 
-	public int getHash() {
+	public long getHash() {
 		return fHash;
 	}
 
 	public void setHash(int hash) {
-		fHash = hash;
+		fHash = Integer.toUnsignedLong(hash);;
 	}
 
 	public String getPrefix() {
