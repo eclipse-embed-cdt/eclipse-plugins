@@ -26,9 +26,12 @@ public class ToolchainDefinition {
 
 	// ------------------------------------------------------------------------
 
+	// 435435382
+	public static final String XPACK_ARM_GCC = "xPack GNU Arm Embedded GCC";
+	// 962691777
 	public static final String GME_ARM_GCC = "GNU MCU Eclipse ARM Embedded GCC";
 	public static final String GNU_TOOLS_FOR_ARM_EMBEDDED = "GNU Tools for ARM Embedded Processors";
-	public static final String DEFAULT_TOOLCHAIN_NAME = GME_ARM_GCC;
+	public static final String DEFAULT_TOOLCHAIN_NAME = XPACK_ARM_GCC;
 
 	// ------------------------------------------------------------------------
 
@@ -330,12 +333,11 @@ public class ToolchainDefinition {
 	static {
 		fgList = new ArrayList<ToolchainDefinition>();
 
-		// 0
+		fgList.add(new ToolchainDefinition(XPACK_ARM_GCC, "arm-none-eabi-"));
 		fgList.add(new ToolchainDefinition(GME_ARM_GCC, "arm-none-eabi-"));
 
-		// 1
 		fgList.add(new ToolchainDefinition(GNU_TOOLS_FOR_ARM_EMBEDDED, "arm-none-eabi-"));
-		// 2
+
 		ToolchainDefinition tc;
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI", "arm-none-eabi-");
 		if (EclipseUtils.isWindows()) {
@@ -343,45 +345,33 @@ public class ToolchainDefinition {
 		}
 		fgList.add(tc);
 
-		// 3
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM GNU/Linux", "arm-none-linux-gnueabi-");
 		if (EclipseUtils.isWindows()) {
 			tc.setWin("cs-make", "cs-rm");
 		}
 		fgList.add(tc);
 
-		// 4
 		fgList.add(new ToolchainDefinition("devkitPro ARM EABI", "arm-eabi-"));
 
-		// 5
 		fgList.add(new ToolchainDefinition("Yagarto, Summon, etc. ARM EABI", "arm-none-eabi-"));
 
-		// 6
 		fgList.add(new ToolchainDefinition("Linaro ARMv7 bare-metal EABI", "arm-none-eabi-"));
 
-		// 7
 		fgList.add(new ToolchainDefinition("Linaro ARMv7 big-endian bare-metal EABI", "armeb-none-eabi-"));
 
-		// 8
 		fgList.add(new ToolchainDefinition("Linaro ARMv7 Linux GNU EABI HF", "arm-linux-gnueabihf-"));
 
-		// 9
 		fgList.add(new ToolchainDefinition("Linaro ARMv7 big-endian Linux GNU EABI HF", "armeb-linux-gnueabihf-"));
 
 		// 64 bit toolchains
-		// 10
 		fgList.add(new ToolchainDefinition("Linaro AArch64 bare-metal ELF", "aarch64-elf-", "aarch64"));
 
-		// 11
 		fgList.add(new ToolchainDefinition("Linaro AArch64 big-endian bare-metal ELF", "aarch64_be-elf-", "aarch64"));
 
-		// 12
 		fgList.add(new ToolchainDefinition("Linaro AArch64 Linux GNU", "aarch64-linux-gnu-", "aarch64"));
 
-		// 13
 		fgList.add(new ToolchainDefinition("Linaro AArch64 big-endian Linux GNU", "aarch64_be-linux-gnu-", "aarch64"));
 
-		// 14 - Moved to extension point
 		// fgList.add(new ToolchainDefinition("Custom", "arm-none-eabi-"));
 
 		// Enumerate extension points and add custom toolchains.
