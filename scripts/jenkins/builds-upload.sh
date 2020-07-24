@@ -16,13 +16,13 @@ P2ZIP=repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.reposit
 DOWNLOAD_ROOT=/home/data/httpd/download.eclipse.org/embed-cdt
 DOWNLOAD=${DOWNLOAD_ROOT}/builds/${BRANCH_NAME}
 
-${SSH} /bin/bash << _EOF_
+${SSH} /bin/bash -x << _EOF_
 rm -rf ${DOWNLOAD}-temp
 rm -rf ${DOWNLOAD}-last
 mkdir -p ${DOWNLOAD}-temp
 _EOF_
 ${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository.zip
-${SSH} /bin/bash << _EOF_
+${SSH} /bin/bash -x << _EOF_
 (cd ${DOWNLOAD}-temp && unzip ilg.gnumcueclipse.repository.zip)
 [ -d "${DOWNLOAD}" ] && mv ${DOWNLOAD} ${DOWNLOAD}-last
 mv ${DOWNLOAD}-temp ${DOWNLOAD}
