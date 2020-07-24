@@ -18,6 +18,12 @@ DOWNLOAD=${DOWNLOAD_ROOT}/builds/${BRANCH_NAME}
 VERSION=$(ls repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.repository-*.zip | sed -e 's/.*repository-\([0-9]*[.][0-9]*[.][0-9]*\)-\(.*\)[.]zip/\1/')
 # NUMDATE=$(ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins/ilg.gnumcueclipse.core* | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
 
+${SSH} /bin/bash -x << _EOF_
+rm -rf ${DOWNLOAD}-temp
+rm -rf ${DOWNLOAD}-last
+mkdir -p ${DOWNLOAD}-temp
+_EOF_
+
 (
   cd repositories/ilg.gnumcueclipse.repository/target
 
@@ -26,27 +32,16 @@ VERSION=$(ls repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.
     # Remove the SNAPSHOT part
     mv "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" "ilg.gnumcueclipse.repository-${VERSION}.zip" 
   fi
+
+  ${SCP} ilg.gnumcueclipse.repository-${VERSION}.zip ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip
+
   shasum -a 256 -p "ilg.gnumcueclipse.repository-${VERSION}.zip" >"ilg.gnumcueclipse.repository-${VERSION}.zip.sha"
+  ${SCP} ilg.gnumcueclipse.repository-${VERSION}.zip.sha ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip.sha
 )
 
-P2ZIP="repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.repository-${VERSION}.zip"
-
 ${SSH} /bin/bash -x << _EOF_
-rm -rf ${DOWNLOAD}-temp
-rm -rf ${DOWNLOAD}-last
-mkdir -p ${DOWNLOAD}-temp
-_EOF_
+(cd ${DOWNLOAD}-temp && unzip ilg.gnumcueclipse.repository-${VERSION}.zip)
 
-${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository.zip
-
-${SSH} /bin/bash -x << _EOF_
-(cd ${DOWNLOAD}-temp && unzip ilg.gnumcueclipse.repository.zip)
-_EOF_
-
-${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip
-${SCP} ${P2ZIP}.sha ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip.sha
-
-${SSH} /bin/bash -x << _EOF_
 if [ -d "${DOWNLOAD}" ] 
 then
   mv ${DOWNLOAD} ${DOWNLOAD}-last
