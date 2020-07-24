@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+  Copyright (c) 2012, 2017 Liviu Ionescu.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
+  https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+
+  Contributors:
+    Liviu Ionescu
+-->
+
+<plugin>
+	<extension point="org.eclipse.cdt.core.templates">
+		<template
+			filterPattern=".*gcc"
+			id="ilg.gnumcueclipse.templates.freescale.pe.pex.c.project"
+			location="$nl$/templates/pex_c_project/template.xml"
+			projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+		</template>
+	</extension>
+
+	<extension point="org.eclipse.cdt.core.templateAssociations">
+		<template id="ilg.gnumcueclipse.templates.freescale.pe.pex.c.project">
+			<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+			</toolChain>
+		</template>
+	</extension>
+   
+<!--
+   <extension
+         point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
+      <wizardPage
+            ID="ilg.gnumcueclipse.templates.freescale.pe.wizardPage"
+            operationClass="ilg.gnumcueclipse.templates.freescale.pe.ui.WizardPageOperation"
+            pageClass="ilg.gnumcueclipse.templates.freescale.pe.ui.WizardPage">
+         <nature
+               natureID="com.freescale.processorexpert.core.expertprojectnature">
+         </nature>
+      </wizardPage>
+   </extension>
+   -->
+
+	<extension point="org.eclipse.cdt.core.templateProcessTypes">
+		<processType
+			name="RunProcessorExpertWizard"
+			processRunner="ilg.gnumcueclipse.templates.freescale.pe.processes.RunProcessorExpertWizard">
+			<simple name="projectName">
+			</simple>
+		</processType>
+	</extension>
+   
+   <!-- 
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="My Category"
+            id="ilg.pewc">
+      </category>
+      <wizard
+            class="ilg.gnumcueclipse.templates.freescale.pe.ui.PEW"
+            id="ilg.peww"
+            name="My wizard">
+         <description>
+            My Description
+         </description>
+      </wizard>
+   </extension>
+   -->
+
+</plugin>

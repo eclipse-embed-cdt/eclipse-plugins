@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright (c) 2012, 2017 Liviu Ionescu.
-  All rights reserved. This program and the accompanying materials
-  are made available under the terms of the Eclipse Distribution License v1.0
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
   which accompanies this distribution, and is available at
-  http://www.eclipse.org/org/documents/edl-v10.php
+  https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
 
   Contributors:
     Liviu Ionescu
@@ -21,82 +23,82 @@
 	<!-- Generally unique amongst an organization or a project. -->
 	<groupId>ilg.gnumcueclipse</groupId>
 	<artifactId>ilg.gnumcueclipse.plugins</artifactId>
-	<version>4.7.2-SNAPSHOT</version>
+	<version>5.1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>ilg.gnumcueclipse</groupId>
 		<artifactId>ilg.gnumcueclipse.parent</artifactId>
-		<version>4.7.2-SNAPSHOT</version>
+		<version>5.1.1-SNAPSHOT</version>
 		<relativePath>parent/pom.xml</relativePath>
 	</parent>
 
 	<modules>
 		<!-- MCU common modules. -->
-		<module>bundles/ilg.gnumcueclipse.core</module>
+		<module>plugins/ilg.gnumcueclipse.core</module>
 
-		<module>bundles/ilg.gnumcueclipse.managedbuild.cross</module>
-		<module>bundles/ilg.gnumcueclipse.managedbuild.packs</module>
+		<module>plugins/ilg.gnumcueclipse.managedbuild.cross</module>
+		<module>plugins/ilg.gnumcueclipse.managedbuild.packs</module>
 
-		<module>bundles/ilg.gnumcueclipse.packs</module>
-		<module>bundles/ilg.gnumcueclipse.packs.core</module>
-		<module>bundles/ilg.gnumcueclipse.packs.data</module>
-		<module>bundles/ilg.gnumcueclipse.packs.ui</module>
+		<module>plugins/ilg.gnumcueclipse.packs</module>
+		<module>plugins/ilg.gnumcueclipse.packs.core</module>
+		<module>plugins/ilg.gnumcueclipse.packs.data</module>
+		<module>plugins/ilg.gnumcueclipse.packs.ui</module>
 		<module>features/ilg.gnumcueclipse.packs.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.core</module>
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag</module>
-		<module>bundles/ilg.gnumcueclipse.debug.packs</module>
+		<module>plugins/ilg.gnumcueclipse.debug.core</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag</module>
+		<module>plugins/ilg.gnumcueclipse.debug.packs</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.jlink</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.jlink</module>
 		<module>features/ilg.gnumcueclipse.debug.gdbjtag.jlink.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.openocd</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.openocd</module>
 		<module>features/ilg.gnumcueclipse.debug.gdbjtag.openocd.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.pyocd</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.pyocd</module>
 		<module>features/ilg.gnumcueclipse.debug.gdbjtag.pyocd.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.qemu</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.qemu</module>
 		<module>features/ilg.gnumcueclipse.debug.gdbjtag.qemu.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.jumper</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.jumper</module>
 		<module>features/ilg.gnumcueclipse.debug.gdbjtag.jumper.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.restart</module>
+		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.restart</module>
 
-		<module>bundles/ilg.gnumcueclipse.codered</module>
+		<module>plugins/ilg.gnumcueclipse.codered</module>
 		<module>features/ilg.gnumcueclipse.codered.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.doc.user</module>
+		<module>plugins/ilg.gnumcueclipse.doc.user</module>
 		<module>features/ilg.gnumcueclipse.doc.user.feature</module>
 
 		<module>repositories/ilg.gnumcueclipse.repository</module>
 
 		<!-- ARM specific modules. -->
-		<module>bundles/ilg.gnumcueclipse.managedbuild.cross.arm</module>
+		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.arm</module>
 		<module>features/ilg.gnumcueclipse.managedbuild.cross.arm.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.templates.core</module>
-		<module>bundles/ilg.gnumcueclipse.templates.cortexm</module>
+		<module>plugins/ilg.gnumcueclipse.templates.core</module>
+		<module>plugins/ilg.gnumcueclipse.templates.cortexm</module>
 		<module>features/ilg.gnumcueclipse.templates.cortexm.feature</module>
-		<module>bundles/ilg.gnumcueclipse.templates.stm</module>
+		<module>plugins/ilg.gnumcueclipse.templates.stm</module>
 		<module>features/ilg.gnumcueclipse.templates.stm.feature</module>
-		<module>bundles/ilg.gnumcueclipse.templates.freescale</module>
-		<module>bundles/ilg.gnumcueclipse.templates.freescale.pe</module>
+		<module>plugins/ilg.gnumcueclipse.templates.freescale</module>
+		<module>plugins/ilg.gnumcueclipse.templates.freescale.pe</module>
 		<module>features/ilg.gnumcueclipse.templates.freescale.feature</module>
-		<module>bundles/ilg.gnumcueclipse.templates.ad</module>
+		<module>plugins/ilg.gnumcueclipse.templates.ad</module>
 		<module>features/ilg.gnumcueclipse.templates.ad.feature</module>
 
 		<!-- RISC-V specific modules. -->
-		<module>bundles/ilg.gnumcueclipse.managedbuild.cross.riscv</module>
+		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.riscv</module>
 		<module>features/ilg.gnumcueclipse.managedbuild.cross.riscv.feature</module>
 
-		<module>bundles/ilg.gnumcueclipse.templates.sifive</module>
+		<module>plugins/ilg.gnumcueclipse.templates.sifive</module>
 		<module>features/ilg.gnumcueclipse.templates.sifive.feature</module>
 		
 	</modules>
 
-	<name>GNU MCU Eclipse plug-ins root</name>
-	<url>http://gnu-mcu-eclipse.github.io</url>
+	<name>Eclipse Embedded CDT plug-ins root</name>
+	<url>https://www.eclipse.org/embed-cdt</url>
 </project>

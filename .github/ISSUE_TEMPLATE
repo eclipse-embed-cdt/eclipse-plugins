@@ -6,7 +6,7 @@ In case you encounter problems while using the plug-ins, please consider the fol
 * [ ] check the [Known issues](http://gnu-mcu-eclipse.github.io/support/known-issues/)
 * [ ] check the [FAQ](http://gnu-mcu-eclipse.github.io/support/faq/)
 * [ ] check the [GNU MCU Eclipse forum](http://gnu-mcu-eclipse.github.io/support/forum/) for similar problems
-* [ ] check the GitHub Issues [tracker](https://github.com/gnu-mcu-eclipse/plug-ins/issues/)
+* [ ] check the GitHub Issues [tracker](https://github.com/eclipse-embed-cdt/eclipse-plugins/issues/)
 
 If you still could not find a solution, if you have interesting use cases, if you have custom 
 configurations, and generally if you have any experience that you want to share with others, 

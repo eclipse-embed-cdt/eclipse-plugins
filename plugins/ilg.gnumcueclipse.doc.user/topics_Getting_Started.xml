@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+<!--
+  Copyright (c) 2012, 2017 Liviu Ionescu.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
+  https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+
+  Contributors:
+    Liviu Ionescu
+-->
+
+<toc label="Getting Started">
+	<topic
+		label="Overview"
+		href="getting_started/overview.html" />
+	<topic
+		label="Creating a simple project"
+		href="getting_started/simple_project.html" />
+	<topic
+		label="Building a project"
+		href="getting_started/build_project.html" />
+	<topic
+		label="Debugging a project"
+		href="getting_started/debug_project.html" />
+</toc>

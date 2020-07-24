@@ -1,3 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2012, 2017 Liviu Ionescu.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
+  https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+
+  Contributors:
+    Liviu Ionescu
+-->
+
 <project
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -14,7 +28,7 @@
 	<groupId>ilg.gnumcueclipse</groupId>
 	<!-- Generally the name that the project is known by. -->
 	<artifactId>ilg.gnumcueclipse.parent</artifactId>
-	<version>4.7.2-SNAPSHOT</version>
+	<version>5.1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -26,18 +40,21 @@
 
 		<!-- The usual Eclipse timestamp, down to minutes. -->
 		<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
+
+		<!-- Eclipse provided plug-ins for signing JARs with Eclipse infra -->
+		<cbi-plugins.version>1.1.7</cbi-plugins.version>
 	</properties>
 
 	<licenses>
 		<license>
-			<name>Eclipse Public License v1.0</name>
+			<name>Eclipse Public License 2.0</name>
 			<comments>
-       All rights reserved.
+       
 
        This program and the accompanying materials are made
-       available under the terms of the Eclipse Public License v1.0
+       available under the terms of the Eclipse Public License 2.0
        which accompanies this distribution, and is available at
-       http://www.eclipse.org/legal/epl-v10.htm
+       https://www.eclipse.org/legal/epl-2.0/
       		</comments>
 		</license>
 	</licenses>
@@ -51,6 +68,13 @@
 			<url>https://download.eclipse.org/releases/neon/201705151400</url>
 		</repository>
 	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<!-- Eclipse provided plug-ins for signing JARs with Eclipse infra -->
+			<id>cbi</id>
+			<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<build>
 		<plugins>
@@ -151,7 +175,30 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<profiles>
+		<profile>
+			<id>production</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.cbi.maven.plugins</groupId>
+						<artifactId>eclipse-jarsigner-plugin</artifactId>
+						<version>${cbi-plugins.version}</version>
+						<executions>
+							<execution>
+								<id>sign</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
-	<name>GNU MCU Eclipse parent</name>
-	<url>http://gnu-mcu-eclipse.github.io</url>
+	<name>Eclipse Embedded CDT parent</name>
+	<url>https://www.eclipse.org/embed-cdt</url>
 </project>

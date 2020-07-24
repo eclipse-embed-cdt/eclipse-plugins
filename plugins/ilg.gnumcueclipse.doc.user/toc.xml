@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+<!-- Defines topics that will be inserted under the C/C++ Development User Guide menu-->
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2012, 2017 Liviu Ionescu.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
+  https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+
+  Contributors:
+    Liviu Ionescu
+-->
+
+<toc
+	id="gnumcueclipse"
+	label="Eclipse Embedded CDT Plug-ins User Guide"
+	topic="concepts/home.html">
+
+	<topic
+		label="Before you begin"
+		href="concepts/before_you_begin.html" />
+
+	<topic
+		label="Getting Started"
+		href="getting_started/tutorial.html">
+		<link toc="topics_Getting_Started.xml" />
+	</topic>
+
+	<topic
+		label="Concepts"
+		href="concepts/concepts.html">
+		<link toc="topics_Concepts.xml" />
+	</topic>
+
+	<topic
+		label="Tasks"
+		href="tasks/tasks.html">
+		<link toc="topics_Tasks.xml" />
+	</topic>
+
+	<topic
+		label="Reference"
+		href="references/references.html">
+		<link toc="topics_References.xml" />
+	</topic>
+
+</toc>
+
