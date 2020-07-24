@@ -24,18 +24,18 @@ rm -rf ${DOWNLOAD}-temp
 rm -rf ${DOWNLOAD}-last
 mkdir -p ${DOWNLOAD}-temp
 _EOF_
+
 ${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository.zip
 ${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip
-${SSH} /bin/bash -x << _EOF_
 
+echo BABURIBA
+
+${SSH} /bin/bash -x << _EOF_
 cd ${DOWNLOAD}-temp
 ls -lL
-  
 AP="$(ls ilg.gnumcueclipse.repository-*.zip)"
 shasum -a 256 -p "${AP}" >"${AP}.sha"
-
 unzip ilg.gnumcueclipse.repository.zip
-
 cd
 if [ -d "${DOWNLOAD}" ] 
 then
