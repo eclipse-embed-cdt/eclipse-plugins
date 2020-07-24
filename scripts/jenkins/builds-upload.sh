@@ -16,7 +16,9 @@ DOWNLOAD_ROOT=/home/data/httpd/download.eclipse.org/embed-cdt
 DOWNLOAD=${DOWNLOAD_ROOT}/builds/${BRANCH_NAME}
 
 VERSION=$(ls repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.repository-*.zip | sed -e 's/.*repository-\([0-9]*[.][0-9]*[.][0-9]*\)-\(.*\)[.]zip/\1/')
-# NUMDATE=$(ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins/ilg.gnumcueclipse.core* | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
+NUMDATE=$(ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins/ilg.gnumcueclipse.core* | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
+
+ARCHIVE_NAME="ilg.gnumcueclipse.repository-${VERSION}-${NUMDATE}"
 
 ${SSH} /bin/bash -x << _EOF_
 rm -rf ${DOWNLOAD}-temp
@@ -29,18 +31,18 @@ _EOF_
 
   if [ -f "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" ]
   then
-    # Remove the SNAPSHOT part
-    mv "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" "ilg.gnumcueclipse.repository-${VERSION}.zip" 
+    # Rename the SNAPSHOT part to the actual timestamp.
+    mv "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" "${ARCHIVE_NAME}.zip" 
   fi
 
-  ${SCP} ilg.gnumcueclipse.repository-${VERSION}.zip ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip
+  ${SCP} "${ARCHIVE_NAME}.zip" "${SSHUSER}:${DOWNLOAD}-temp/${ARCHIVE_NAME}.zip"
 
-  shasum -a 256 -p "ilg.gnumcueclipse.repository-${VERSION}.zip" >"ilg.gnumcueclipse.repository-${VERSION}.zip.sha"
-  ${SCP} ilg.gnumcueclipse.repository-${VERSION}.zip.sha ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip.sha
+  shasum -a 256 -p "${ARCHIVE_NAME}.zip" >"${ARCHIVE_NAME}.zip.sha"
+  ${SCP} "${ARCHIVE_NAME}.zip.sha" "${SSHUSER}:${DOWNLOAD}-temp/${ARCHIVE_NAME}.zip.sha"
 )
 
 ${SSH} /bin/bash -x << _EOF_
-(cd ${DOWNLOAD}-temp && unzip ilg.gnumcueclipse.repository-${VERSION}.zip)
+(cd ${DOWNLOAD}-temp && unzip "${ARCHIVE_NAME}.zip")
 
 if [ -d "${DOWNLOAD}" ] 
 then
