@@ -41,6 +41,12 @@ ${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository.zip
 
 ${SSH} /bin/bash -x << _EOF_
 (cd ${DOWNLOAD}-temp && unzip ilg.gnumcueclipse.repository.zip)
+_EOF_
+
+${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip
+${SCP} ${P2ZIP}.sha ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip.sha
+
+${SSH} /bin/bash -x << _EOF_
 if [ -d "${DOWNLOAD}" ] 
 then
   mv ${DOWNLOAD} ${DOWNLOAD}-last
@@ -49,5 +55,3 @@ mv ${DOWNLOAD}-temp ${DOWNLOAD}
 rm -rf ${DOWNLOAD}-last
 _EOF_
 
-${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip
-${SCP} ${P2ZIP}.sha ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip.sha
