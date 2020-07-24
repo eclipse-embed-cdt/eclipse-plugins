@@ -8,7 +8,6 @@ SSHUSER="genie.embed-cdt@projects-storage.eclipse.org"
 SSH="ssh ${SSHUSER}"
 SCP="scp"
 
-P2ZIP=repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.repository-*.zip
 # The download location is chosen to be a non-mirrored URL according to
 #  https://wiki.eclipse.org/IT_Infrastructure_Doc#Use_mirror_sites.2Fsee_which_mirrors_are_mirroring_my_files.3F
 # It is accessible at:
@@ -19,6 +18,19 @@ DOWNLOAD=${DOWNLOAD_ROOT}/builds/${BRANCH_NAME}
 VERSION=$(ls repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.repository-*.zip | sed -e 's/.*repository-\([0-9]*[.][0-9]*[.][0-9]*\)-\(.*\)[.]zip/\1/')
 # NUMDATE=$(ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins/ilg.gnumcueclipse.core* | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
 
+(
+  cd repositories/ilg.gnumcueclipse.repository/target
+
+  if [ -f "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" ]
+  then
+    # Remove the SNAPSHOT part
+    mv "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" "ilg.gnumcueclipse.repository-${VERSION}.zip" 
+  fi
+  shasum -a 256 -p "ilg.gnumcueclipse.repository-${VERSION}.zip" >"ilg.gnumcueclipse.repository-${VERSION}.zip.sha"
+)
+
+P2ZIP="repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.repository-${VERSION}.zip"
+
 ${SSH} /bin/bash -x << _EOF_
 rm -rf ${DOWNLOAD}-temp
 rm -rf ${DOWNLOAD}-last
@@ -26,14 +38,9 @@ mkdir -p ${DOWNLOAD}-temp
 _EOF_
 
 ${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository.zip
-${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip
 
 ${SSH} /bin/bash -x << _EOF_
-(cd ${DOWNLOAD}-temp; ls -lL)
-AP="$(cd ${DOWNLOAD}-temp; ls ilg.gnumcueclipse.repository-*.zip)"
-(cd ${DOWNLOAD}-temp; shasum -a 256 -p "${AP}" >"${AP}.sha")
-(cd ${DOWNLOAD}-temp; unzip ilg.gnumcueclipse.repository.zip)
-
+(cd ${DOWNLOAD}-temp && unzip ilg.gnumcueclipse.repository.zip)
 if [ -d "${DOWNLOAD}" ] 
 then
   mv ${DOWNLOAD} ${DOWNLOAD}-last
@@ -41,3 +48,6 @@ fi
 mv ${DOWNLOAD}-temp ${DOWNLOAD}
 rm -rf ${DOWNLOAD}-last
 _EOF_
+
+${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip
+${SCP} ${P2ZIP}.sha ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository-${VERSION}.zip.sha
