@@ -11,7 +11,10 @@ SCP="scp"
 P2ZIP=repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.repository-*.zip
 # The download location is chosen to be a non-mirrored URL according to
 #  https://wiki.eclipse.org/IT_Infrastructure_Doc#Use_mirror_sites.2Fsee_which_mirrors_are_mirroring_my_files.3F
-DOWNLOAD=/home/data/httpd/download.eclipse.org/embed-cdt/builds/${BRANCH_NAME}
+# It is accessible at:
+#  https://download.eclipse.org/embed-cdt/
+DOWNLOAD_ROOT=/home/data/httpd/download.eclipse.org/embed-cdt
+DOWNLOAD=${DOWNLOAD_ROOT}/builds/${BRANCH_NAME}
 
 ${SSH} rm -rf ${DOWNLOAD}-temp
 ${SSH} rm -rf ${DOWNLOAD}-last
