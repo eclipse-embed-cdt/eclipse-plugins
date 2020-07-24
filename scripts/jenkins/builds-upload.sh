@@ -21,6 +21,6 @@ ${SSH} rm -rf ${DOWNLOAD}-last
 ${SSH} mkdir -p ${DOWNLOAD}-temp
 ${SCP} ${P2ZIP} ${SSHUSER}:${DOWNLOAD}-temp/ilg.gnumcueclipse.repository.zip
 ${SSH} "cd ${DOWNLOAD}-temp && unzip ilg.gnumcueclipse.repository.zip"
-${SSH} [ -d "${DOWNLOAD}" ] && mv ${DOWNLOAD} ${DOWNLOAD}-last
+${SSH} "[ -d "${DOWNLOAD}" ] && mv ${DOWNLOAD} ${DOWNLOAD}-last"
 ${SSH} mv ${DOWNLOAD}-temp ${DOWNLOAD}
 ${SSH} rm -rf ${DOWNLOAD}-last
