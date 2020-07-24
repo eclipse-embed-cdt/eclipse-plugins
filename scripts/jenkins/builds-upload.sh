@@ -48,5 +48,7 @@ then
 fi
 mv ${DOWNLOAD}-temp ${DOWNLOAD}
 rm -rf ${DOWNLOAD}-last
+
+ls -lLR "${DOWNLOAD}"
 _EOF_
 
