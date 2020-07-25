@@ -7,9 +7,8 @@
 # The Eclipse Embedded CDT plug-ins
 
 These are the Eclipse projects used to build the 
-[Eclipse Embedded CDT](http://gnu-mcu-eclipse.github.io) plug-ins.
-
-TODO: update names and URLs after migration is completed.
+[Eclipse Embedded CDT](http://www.eclipse.org/embed-cdt) plug-ins,
+formerly the [GNU MCU Eclipse](http://gnu-mcu-eclipse.github.io) plug-ins.
 
 ## How to install
 
@@ -21,14 +20,16 @@ all **Eclipse Embedded CDT plug-ins** already installed.
 For existing Eclipse instances, the recommended install method is via 
 Eclipse Marketplace; search for **GNU MCU Eclipse**.
 
+TODO: update after rename.
+
 ## Update Sites (for manual installs)
 
- * Stable: http://gnu-mcu-eclipse.netlify.com/v4-neon-updates  
+ * Stable: https://download.eclipse.org/embed-cdt/updates/neon  
     This is the official release; it is also referred by the Eclipse 
     Marketplace and the same content is packed as **Eclipse IDE for C/C++ Developers**.
- * Pre-release versions: https://download.eclipse.org/embed-cdt/builds/develop/
+ * Pre-release versions: https://download.eclipse.org/embed-cdt/updates/neon-test
     Usually this site should be safe to use, but use it with caution.
- * Experimental versions: http://gnu-mcu-eclipse.netlify.com/v4-neon-updates-experimental  
+ * Development versions: https://download.eclipse.org/embed-cdt/builds/develop
     Sometimes you can use this site to test some features that are not 
     completely implemented, or that might change before a final version is released.  
 **Note:** This site is not always updated; use it carefully, back up your
