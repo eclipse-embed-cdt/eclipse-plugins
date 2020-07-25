@@ -14,7 +14,7 @@ When the code is ready for a release, build the master branch.
 
 ## Publish the pre-release
 
-Use the the [copy-master-to-neon-test]('https://ci.eclipse.org/embed-cdt/job/copy-master-to-neon-test') 
+Use the [make-pre-release-from-master]('https://ci.eclipse.org/embed-cdt/job/make-pre-release-from-master') 
 Jenkins job to copy the files from `builds/master` to `updates/neon-test`, which is the public address 
 for the pre-release.
 
