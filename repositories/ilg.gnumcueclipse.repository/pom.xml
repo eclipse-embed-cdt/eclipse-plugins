@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2012, 2017 Liviu Ionescu.
+  Copyright (c) 2012, 2020 Liviu Ionescu.
   This program and the accompanying materials
   are made available under the terms of the Eclipse Public License 2.0
   which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
 
   Contributors:
     Liviu Ionescu
+    Alexander Fedorov
 -->
 
 <project
@@ -18,9 +19,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>ilg.gnumcueclipse</groupId>
 	<artifactId>ilg.gnumcueclipse.repository</artifactId>
-	<version>5.1.1-SNAPSHOT</version>
 	<packaging>eclipse-repository</packaging>
 
 	<parent>
