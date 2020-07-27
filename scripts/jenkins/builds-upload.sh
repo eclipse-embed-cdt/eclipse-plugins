@@ -12,8 +12,9 @@ SCP="scp"
 #  https://wiki.eclipse.org/IT_Infrastructure_Doc#Use_mirror_sites.2Fsee_which_mirrors_are_mirroring_my_files.3F
 # It is accessible at:
 #  https://download.eclipse.org/embed-cdt/
-DOWNLOAD_ROOT=/home/data/httpd/download.eclipse.org/embed-cdt
-DOWNLOAD=${DOWNLOAD_ROOT}/builds/${BRANCH_NAME}
+DOWNLOAD_ROOT="/home/data/httpd/download.eclipse.org/embed-cdt"
+UPDATES_DEST="${DOWNLOAD_ROOT}//builds/${BRANCH_NAME}"
+
 
 VERSION=$(ls repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.repository-*.zip | sed -e 's/.*repository-\([0-9]*[.][0-9]*[.][0-9]*\)-\(.*\)[.]zip/\1/')
 NUMDATE=$(ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins/ilg.gnumcueclipse.core* | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
@@ -21,36 +22,36 @@ NUMDATE=$(ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins
 ARCHIVE_NAME="ilg.gnumcueclipse.repository-${VERSION}-${NUMDATE}"
 
 ${SSH} /bin/bash -x << _EOF_
-rm -rf ${DOWNLOAD}-temp
-rm -rf ${DOWNLOAD}-last
-mkdir -p ${DOWNLOAD}-temp
+rm -rvf "${UPDATES_DEST}-temp"
+rm -rvf "${UPDATES_DEST}-last"
+mkdir -pv "${UPDATES_DEST}-temp"
 _EOF_
 
 (
-  cd repositories/ilg.gnumcueclipse.repository/target
+  cd "repositories/ilg.gnumcueclipse.repository/target"
 
   if [ -f "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" ]
   then
     # Rename the SNAPSHOT part to the actual timestamp.
-    mv "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" "${ARCHIVE_NAME}.zip" 
+    mv -v "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" "${ARCHIVE_NAME}.zip" 
   fi
 
-  ${SCP} "${ARCHIVE_NAME}.zip" "${SSHUSER}:${DOWNLOAD}-temp/${ARCHIVE_NAME}.zip"
+  ${SCP} -v "${ARCHIVE_NAME}.zip" "${SSHUSER}:${UPDATES_DEST}-temp/${ARCHIVE_NAME}.zip"
 
   shasum -a 256 -p "${ARCHIVE_NAME}.zip" >"${ARCHIVE_NAME}.zip.sha"
-  ${SCP} "${ARCHIVE_NAME}.zip.sha" "${SSHUSER}:${DOWNLOAD}-temp/${ARCHIVE_NAME}.zip.sha"
+  ${SCP} -v "${ARCHIVE_NAME}.zip.sha" "${SSHUSER}:${UPDATES_DEST}-temp/${ARCHIVE_NAME}.zip.sha"
 )
 
 ${SSH} /bin/bash -x << _EOF_
-(cd ${DOWNLOAD}-temp && unzip "${ARCHIVE_NAME}.zip")
+(cd ${UPDATES_DEST}-temp && unzip "${ARCHIVE_NAME}.zip")
 
-if [ -d "${DOWNLOAD}" ] 
+if [ -d "${UPDATES_DEST}" ] 
 then
-  mv ${DOWNLOAD} ${DOWNLOAD}-last
+  mv -v "${UPDATES_DEST}" "${UPDATES_DEST}-last"
 fi
-mv ${DOWNLOAD}-temp ${DOWNLOAD}
-rm -rf ${DOWNLOAD}-last
+mv -v "${UPDATES_DEST}-temp" "${UPDATES_DEST}"
+rm -rvf "${UPDATES_DEST}-last"
 
-ls -lLR "${DOWNLOAD}"
+ls -lLR "${UPDATES_DEST}"
 _EOF_
 
