@@ -44,6 +44,7 @@ The minimum requirements for running the Eclipse Embedded CDT plug-ins are:
 
 Recommended:
 
-* JavaSE-1.8-111 or later
-* Eclipse Neon.3
+* JavaSE-1.11 or later
+* Eclipse 2019-12
 
+Please note that since 2020-03, installing CDT requires Java 11.
