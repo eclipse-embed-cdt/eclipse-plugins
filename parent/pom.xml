@@ -33,7 +33,7 @@
 
 	<properties>
 		<!-- https://wiki.eclipse.org/Tycho/Release_Notes -->
-		<tycho.version>0.25.0</tycho.version>
+		<tycho.version>1.7.0</tycho.version>
 
 		<!-- Silence a Maven warning -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
