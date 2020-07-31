@@ -20,7 +20,7 @@ all **Eclipse Embedded CDT plug-ins** already installed.
 For existing Eclipse instances, the recommended install method is via
 Eclipse Marketplace; search for **GNU MCU Eclipse**.
 
-## Manual (Update Sites)
+### Eclipse Update Sites
 
 - Stable: https://download.eclipse.org/embed-cdt/updates/neon  
    This is the official release; it is also referred by the Eclipse
