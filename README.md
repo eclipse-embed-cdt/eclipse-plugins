@@ -2,7 +2,7 @@
 [![Github Releases](https://img.shields.io/github/downloads/eclipse-embed-cdt/eclipse-plugins/latest/total.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases/latest) 
 [![Github Releases](https://img.shields.io/github/downloads/eclipse-embed-cdt/eclipse-plugins/total.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases/latest) 
 [![SourceForge](https://img.shields.io/sourceforge/dt/gnuarmeclipse.svg?label=SF%20downloads)](https://sourceforge.net/projects/gnuarmeclipse/files/) 
-[![Build Status](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.eclipse.org%2Fembed-cdt%2Fjob%2Fbuild%2F)](https://ci.eclipse.org/embed-cdt/job/builds/job/develop/) 
+[![Build Status](https://github.com/eclipse-embed-cdt/eclipse-plugins/workflows/CI/badge.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/actions)
 
 # The Eclipse Embedded CDT plug-ins
 
