@@ -67,13 +67,13 @@ In short, the process is something like this:
 * create a custom branch
 * make the desired changes
 * commit to the custom branch
-* submit the pull request to the develop branch
+* submit the pull request to the `develop` branch
 
 ## How to build
 
 ### Prerequisites
 
-* JavaSE-1.8 or later
+* JavaSE-11 or later
 * Maven 3
 
 ### Command line
