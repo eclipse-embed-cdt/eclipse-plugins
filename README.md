@@ -8,21 +8,23 @@ formerly the [GNU MCU Eclipse](http://gnu-mcu-eclipse.github.io) plug-ins.
 
 ## How to install
 
+### Eclipse Packages
+
 For new installs, the preferred method is via
-[Eclipse Embedded IDE for C/C++ Developers](https://github.com/gnu-mcu-eclipse/org.eclipse.epp.packages/releases),
-which packs the official **Eclipse IDE for C/C++ Developers*- release with
-all **Eclipse Embedded CDT plug-ins*- already installed.
+[Eclipse IDE for Embedded C/C++ Developers](https://github.com/gnu-mcu-eclipse/org.eclipse.epp.packages/releases),
+which packs the official **Eclipse IDE for C/C++ Developers** release with
+all **Eclipse Embedded CDT plug-ins** already installed.
+
+### Eclipse Marketplace
 
 For existing Eclipse instances, the recommended install method is via
 Eclipse Marketplace; search for **GNU MCU Eclipse**.
 
-TODO: update after rename.
-
-## Update Sites (for manual installs)
+## Manual (Update Sites)
 
 - Stable: https://download.eclipse.org/embed-cdt/updates/neon  
    This is the official release; it is also referred by the Eclipse
-   Marketplace and the same content is packed as **Eclipse IDE for C/C++ Developers**.
+   Marketplace and the same content is packed as **Eclipse IDE for Embedded C/C++ Developers**.
 - Pre-release versions: https://download.eclipse.org/embed-cdt/updates/neon-test
    Usually this site should be safe to use, but use it with caution.
 - Development versions: https://download.eclipse.org/embed-cdt/builds/develop
