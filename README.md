@@ -18,7 +18,7 @@ all **Eclipse Embedded CDT plug-ins** already installed.
 ### Eclipse Marketplace
 
 For existing Eclipse instances, the recommended install method is via
-Eclipse Marketplace; search for **GNU MCU Eclipse**.
+Eclipse Marketplace; search for **Embedded CDT**.
 
 ### Eclipse Update Sites
 
