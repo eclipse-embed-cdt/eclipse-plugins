@@ -25,9 +25,9 @@ Eclipse Marketplace; search for **Embedded CDT**.
 - Stable: https://download.eclipse.org/embed-cdt/updates/neon  
    This is the official release; it is also referred by the Eclipse
    Marketplace and the same content is packed as **Eclipse IDE for Embedded C/C++ Developers**.
-- Pre-release versions: https://download.eclipse.org/embed-cdt/updates/neon-test
-   Usually this site should be safe to use, but use it with caution.
-- Development versions: https://download.eclipse.org/embed-cdt/builds/develop
+- Pre-release versions: https://download.eclipse.org/embed-cdt/updates/neon-test  
+   Usually this site should be safe, but use it with caution.
+- Development versions: https://download.eclipse.org/embed-cdt/builds/develop  
    Sometimes you can use this site to test some features that are not
    completely implemented, or that might change before a final version is released.  
    **Note:** This site is not always functional; use it carefully,
@@ -42,7 +42,7 @@ The minimum requirements for running the Eclipse Embedded CDT plug-ins are:
 
 Recommended:
 
-- JavaSE-1.11 or later
-- Eclipse 2019-12
+- JavaSE-11 or later
+- Eclipse 2019-12 or later
 
 Please note that since 2020-03, installing CDT requires Java 11.
