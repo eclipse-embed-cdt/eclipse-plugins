@@ -1,5 +1,7 @@
 [![Build Status](https://github.com/eclipse-embed-cdt/eclipse-plugins/workflows/CI/badge.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/actions)
 
+[![Eclipse License](https://img.shields.io/badge/license-EPL--2.0-brightgreen.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/blob/master/LICENSE)
+
 # The Eclipse Embedded CDT plug-ins
 
 These are the Eclipse projects used to build the
@@ -46,3 +48,13 @@ Recommended:
 - Eclipse 2019-12 or later
 
 Please note that since 2020-03, installing CDT requires Java 11.
+
+## License
+
+Copyright (c) 2012, 2020 Liviu Ionescu and others.
+
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License 2.0 which is available at
+[https://www.eclipse.org/legal/epl-2.0/](https://www.eclipse.org/legal/epl-2.0/).
+
+SPDX-License-Identifier: EPL-2.0
