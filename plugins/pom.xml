@@ -25,7 +25,7 @@
 	<parent>
 		<groupId>ilg.gnumcueclipse</groupId>
 		<artifactId>ilg.gnumcueclipse.parent</artifactId>
-		<version>5.1.1-SNAPSHOT</version>
+		<version>5.1.2-SNAPSHOT</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
