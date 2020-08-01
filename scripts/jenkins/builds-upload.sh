@@ -25,7 +25,7 @@ ${SSH} /bin/bash -x << _EOF_
 rm -rvf "${UPDATES_DEST}-temp"
 rm -rvf "${UPDATES_DEST}-last"
 mkdir -pv "${UPDATES_DEST}-temp"
-_EOF__
+_EOF_
 
 (
   cd "repositories/ilg.gnumcueclipse.repository/target"
