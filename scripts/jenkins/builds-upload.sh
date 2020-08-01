@@ -17,7 +17,7 @@ UPDATES_DEST="${DOWNLOAD_ROOT}//builds/${BRANCH_NAME}"
 
 
 VERSION=$(ls repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.repository-*.zip | sed -e 's/.*repository-\([0-9]*[.][0-9]*[.][0-9]*\)-\(.*\)[.]zip/\1/')
-NUMDATE=$(ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins/ilg.gnumcueclipse.core* | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
+NUMDATE=$(ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins/ilg.gnumcueclipse.core_*.jar | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
 
 ARCHIVE_NAME="ilg.gnumcueclipse.repository-${VERSION}-${NUMDATE}"
 
@@ -25,7 +25,7 @@ ${SSH} /bin/bash -x << _EOF_
 rm -rvf "${UPDATES_DEST}-temp"
 rm -rvf "${UPDATES_DEST}-last"
 mkdir -pv "${UPDATES_DEST}-temp"
-_EOF_
+_EOF__
 
 (
   cd "repositories/ilg.gnumcueclipse.repository/target"
