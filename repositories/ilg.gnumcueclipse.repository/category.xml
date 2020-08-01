@@ -14,6 +14,7 @@
 -->
 
 <site>
+   <category-def name="ilg.gnumcueclipse.category" label="Embedded C/C++ Cross Development Tools (incubation)"/>
    <feature id="ilg.gnumcueclipse.managedbuild.cross.arm.feature">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
@@ -59,5 +60,50 @@
    <feature id="ilg.gnumcueclipse.debug.gdbjtag.jumper.feature">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <category-def name="ilg.gnumcueclipse.category" label="Embedded C/C++ Cross Development Tools (incubation)"/>
+   <category-def name="ilg.gnumcueclipse.category.source" label="Embedded C/C++ Cross Development Tools (incubation) Developer Resources"/>
+   <feature id="ilg.gnumcueclipse.managedbuild.cross.arm.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.managedbuild.cross.riscv.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.templates.stm.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.templates.freescale.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.templates.sifive.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.debug.gdbjtag.jlink.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.debug.gdbjtag.openocd.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.templates.cortexm.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.packs.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.doc.user.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.templates.ad.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.codered.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.debug.gdbjtag.qemu.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
+   <feature id="ilg.gnumcueclipse.debug.gdbjtag.jumper.feature.source">
+      <category name="ilg.gnumcueclipse.category.source"/>
+   </feature>
 </site>
