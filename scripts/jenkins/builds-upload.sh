@@ -21,8 +21,8 @@ NUMDATE=$(ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins
 ARCHIVE_NAME="ilg.gnumcueclipse.repository-${VERSION}-${NUMDATE}"
 
 ls -lA repositories/ilg.gnumcueclipse.repository/target
-ls -lA repositories/ilg.gnumcueclipse.repository/target/repository/features
-ls -lA repositories/ilg.gnumcueclipse.repository/target/repository/plugins
+ls repositories/ilg.gnumcueclipse.repository/target/repository/features
+ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins
 
 ${SSH} /bin/bash -x << _EOF_
 rm -rvf "${UPDATES_DEST}-temp"
@@ -46,7 +46,7 @@ _EOF_
 )
 
 ${SSH} /bin/bash -x << _EOF_
-(cd ${UPDATES_DEST}-temp/p2 && unzip "${ARCHIVE_NAME}.zip")
+(cd ${UPDATES_DEST}-temp/p2 && unzip "../${ARCHIVE_NAME}.zip")
 
 if [ -d "${UPDATES_DEST}" ] 
 then
