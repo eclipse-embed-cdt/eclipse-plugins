@@ -28,7 +28,7 @@ Eclipse Marketplace; search for **Embedded CDT**.
    Marketplace and the same content is packed as **Eclipse IDE for Embedded C/C++ Developers**.
 - Pre-release versions: https://download.eclipse.org/embed-cdt/updates/neon-test  
    Usually this site should be safe, but use it with caution.
-- Development versions: https://download.eclipse.org/embed-cdt/builds/develop  
+- Development versions: https://download.eclipse.org/embed-cdt/builds/develop/p2  
    Sometimes you can use this site to test some features that are not
    completely implemented, or that might change before a final version is released.  
    **Note:** This site is not always functional; use it carefully,
