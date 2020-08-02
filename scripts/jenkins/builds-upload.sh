@@ -15,16 +15,19 @@ SCP="scp"
 DOWNLOAD_ROOT="/home/data/httpd/download.eclipse.org/embed-cdt"
 UPDATES_DEST="${DOWNLOAD_ROOT}//builds/${BRANCH_NAME}"
 
-
 VERSION=$(ls repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.repository-*.zip | sed -e 's/.*repository-\([0-9]*[.][0-9]*[.][0-9]*\)-\(.*\)[.]zip/\1/')
 NUMDATE=$(ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins/ilg.gnumcueclipse.core_*.jar | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
 
 ARCHIVE_NAME="ilg.gnumcueclipse.repository-${VERSION}-${NUMDATE}"
 
+ls -lA repositories/ilg.gnumcueclipse.repository/target
+ls -lA repositories/ilg.gnumcueclipse.repository/target/repository/features
+ls -lA repositories/ilg.gnumcueclipse.repository/target/repository/plugins
+
 ${SSH} /bin/bash -x << _EOF_
 rm -rvf "${UPDATES_DEST}-temp"
 rm -rvf "${UPDATES_DEST}-last"
-mkdir -pv "${UPDATES_DEST}-temp"
+mkdir -pv "${UPDATES_DEST}-temp/p2"
 _EOF_
 
 (
@@ -43,7 +46,7 @@ _EOF_
 )
 
 ${SSH} /bin/bash -x << _EOF_
-(cd ${UPDATES_DEST}-temp && unzip "${ARCHIVE_NAME}.zip")
+(cd ${UPDATES_DEST}-temp/p2 && unzip "${ARCHIVE_NAME}.zip")
 
 if [ -d "${UPDATES_DEST}" ] 
 then
