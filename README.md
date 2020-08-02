@@ -1,6 +1,5 @@
-[![Build Status](https://github.com/eclipse-embed-cdt/eclipse-plugins/workflows/CI/badge.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/actions)
-
 [![Eclipse License](https://img.shields.io/badge/license-EPL--2.0-brightgreen.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/blob/master/LICENSE)
+[![Build Status](https://github.com/eclipse-embed-cdt/eclipse-plugins/workflows/CI/badge.svg)](https://github.com/eclipse-embed-cdt/eclipse-plugins/actions)
 
 # The Eclipse Embedded CDT plug-ins
 
