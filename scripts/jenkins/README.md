@@ -1,34 +1,12 @@
-# How to build & publish
+# The Jenkins scripts
 
-## Build the plug-ins
+The main Jenkins build script is `builds.Jenkins`, which also refers to
+`builds-upload.sh`.
 
-- go to [https://ci.eclipse.org/embed-cdt/job/build-plug-ins/](https://ci.eclipse.org/embed-cdt/job/build-plug-ins/)
-- click the **Scan Multibranch Pipeline Now**
-- the p2 repository is published at
-[https://download.eclipse.org/embed-cdt/builds](https://download.eclipse.org/embed-cdt/builds)
+The job does not start automatically, but needs to be triggered manually
+when the content is ready for a public release.(the
+**Scan Multibranch Pipeline Now** link in the
+[build-plug-ins](https://ci.eclipse.org/embed-cdt/job/build-plug-ins/) page).
 
-Developer builds will result in a [builds/develop](https://download.eclipse.org/embed-cdt/builds) folder.
-
-When the code is ready for a release, build the master branch.
-
-## Publish the pre-release
-
-Use the [make-pre-release-from-master]('https://ci.eclipse.org/embed-cdt/job/make-pre-release-from-master')
-Jenkins job to copy the files from `builds/master` to `updates/neon-test`, which is the public address
-for the pre-release.
-
-Users can test the pre-release via
-
-- https://download.eclipse.org/embed-cdt/updates/neon-test
-
-## Publish the release
-
-Use the [make-release-from-neon-test](https://ci.eclipse.org/embed-cdt/job/make-release-from-neon-test/)
-Jenkins job to copy from `updates/neon-test` to `updates/neon` and `releases/<version>`.
-
-In the versioned `releases` folder are stored both the release archives and the expanded p2 repository,
-which can be used in Eclipse to install new software.
-
-The public update URL is:
-
-- https://download.eclipse.org/embed-cdt/updates/neon
+For the build and publish procedure, please see the
+../../README-MAINTAINER.md file.
