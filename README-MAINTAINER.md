@@ -136,71 +136,9 @@ To get the release content, download the archive and do a
 - click **Edit**
 - update version number, minimum Eclipse versions.
 
----
+## Create a package
 
-TODO: update
-
-## Build a local test version of the Eclipse packages
-
-The Eclipse Packaging Project allows to create complete Eclipse packages
-for all relevant platforms.
-
-- clone the `gnu-mcu-eclipse/org.eclipse.epp.packages` project
-- select the `master` branch
-- merge from upstream
-- merge into the local GME branch (like `master-gme`)
-- edit `org.eclipse.epp.packages.git/releng/org.eclipse.epp.config/parent/pom.xml`
-  - update the latest version `<gnumcueclipse.version>4.3.1</gnumcueclipse.version>`
-  - temporarily update the site URL to the test site `<gnumcueclipse.repository>http://gnu-mcu-eclipse.netlify.com/v4-neon-updates-test</gnumcueclipse.repository>`
-- **remove** the `archive` folder
-- run the `org.eclipse.epp.packages.git/scripts/build.mac.command` script
-- check if the retrieved plug-ins versions match the expected versions; if not, check if the update site was published correctly and the URL is right;
-- the result should be in the `archive` folder, including the computed `.sha` values.
-
-## Test the resulted packages
-
-- install the packages on macOS, Windows & GNU/Linux
-- create ARM and RISC-V projects 
-- build & run.
-
-## Eclipse Packaging
-
-The Eclipse Packaging Project allows to create complete Eclipse packages for all relevant platforms.
-
-### Build
-
-- in the `gnu-mcu-eclipse/org.eclipse.epp.packages` project
-- edit `org.eclipse.epp.packages.git/releng/org.eclipse.epp.config/parent/pom.xml`
-  - update the site URL to the release site `<gnumcueclipse.repository>http://gnu-mcu-eclipse.netlify.com/v4-neon-updates</gnumcueclipse.repository>`
-- **remove** the `archive` folder
-- run the `org.eclipse.epp.packages.git/scripts/build.mac.command` script
-- check if the retrieved plug-ins versions match the expected versions; if not, check if the update site was published correctly and the URL is right
-- the result should be in the `archive` folder, including the computed `.sha` values
-- push the `gnu-mcu-eclipse/org.eclipse.epp.packages` project.
-
-### Create the EPP GitHub release
-
-- be sure the `org.eclipse.epp.packages.git` is up to date and pushed
-- go to the [GitHub Releases](https://github.com/eclipse-embed-cdt/org.eclipse.epp.packages/releases) page
-- click **Draft a new release**
-- name the tag like **v4.4.2-20180930-2018-09**; mind the `-` in the middle, the short date and the 2018-09 which is the official Eclipse release name 
-- select the corresponding GME branch, like **master-gme**
-- name the release like **GNU MCU Eclipse IDE for C/C++ Developers 2018-09 20180930**; mind the short date
-- as first line of the description, copy the download badge
-```
-[![Github Releases (by Release)](https://img.shields.io/github/downloads/eclipse-embed-cdt/org.eclipse.epp.packages/v4.3.1-20180110-o2/total.svg)]({{ site.baseurl }}/blog/2018/01/10/plugins-v4.3.1-201801092051-released/)
-```
-- update the URL to the actual release post
-- copy the description from a previous release, and update 
-- copy the SHA numbers from the maven console
-- **attach binaries** (drag and drop from the archives folder will do it)
-- click the **Publish Release** button
-
-### Update the main release
-
-- go to the [GitHub Releases](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases) page
-- copy the text related to the EPP package from a previous release
-- paste to the current release, updating the link
+TODO
 
 ## Share on Twitter
 
