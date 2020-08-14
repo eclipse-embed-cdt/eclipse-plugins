@@ -229,6 +229,7 @@
 						<compress>true</compress>
 						<!-- https://wiki.eclipse.org/Tycho/Release_Notes/1.3#Extra_artifact_repository_properties_.28like_p2.statsURI_or_p2.mirrorsURL.29 -->
 						<!-- https://wiki.eclipse.org/Equinox/p2/p2.mirrorsURL -->
+						<!-- https://wiki.eclipse.org/Equinox_p2_download_stats -->
 						<extraArtifactRepositoryProperties>
 							<p2.statsURI>https://download.eclipse.org/stats/embed-cdt/releases/${semverVersion}/</p2.statsURI>
 							<p2.mirrorsURL>https://www.eclipse.org/downloads/download.php?file=/embed-cdt/updates/neon&amp;format=xml</p2.mirrorsURL>
