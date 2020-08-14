@@ -61,7 +61,7 @@ After fixing issues, run the maven build locally:
 $ mvn clean verify
 ```
 
-Try the result in a child Eclipse.
+Start a Debug/Run session and try the result in a child Eclipse.
 
 ### Push to GitHub
 
@@ -79,9 +79,10 @@ This will also trigger a CI job that will run a maven build.
 
 ### Install on a separate Eclipse
 
-Test if the new build can be used as an update site, by installing from
-`https://download.eclipse.org/embed-cdt/builds/develop/p2` on a separate
-Eclipse (not the one used for development).
+Test if the new build can be used as an update site, by installing it
+on a separate Eclipse (not the one used for development); use the URL:
+
+- `https://download.eclipse.org/embed-cdt/builds/develop/p2`
 
 ## How to make a new release
 
@@ -89,7 +90,7 @@ Eclipse (not the one used for development).
 
 When ready, merge the `develop` branch into `master`, and push them to GitHub.
 
-Wait for the GitHub Actions to confirm that the build passed.
+Wait for the CI to confirm that the build passed.
 
 ### Trigger the Jenkins master build
 
@@ -101,7 +102,9 @@ Wait for the GitHub Actions to confirm that the build passed.
 
 ### Publish the pre-release
 
-Use the [make-pre-release-from-master]('https://ci.eclipse.org/embed-cdt/job/make-pre-release-from-master')
+- go to https://ci.eclipse.org/embed-cdt/job/build-plug-ins/
+- login (otherwise the next link is not visible!)
+- use the [make-pre-release-from-master]('https://ci.eclipse.org/embed-cdt/job/make-pre-release-from-master')
 Jenkins job to copy the files from `builds/master` to `updates/neon-test`,
 which is the public address for the pre-release.
 
@@ -111,16 +114,19 @@ Beta testers can install the pre-release from:
 
 ### Publish the release
 
-Use the [make-release-from-neon-test](https://ci.eclipse.org/embed-cdt/job/make-release-from-neon-test/)
+- go to https://ci.eclipse.org/embed-cdt/job/build-plug-ins/
+- login (otherwise the next link is not visible!)
+- use the [make-release-from-neon-test](https://ci.eclipse.org/embed-cdt/job/make-release-from-neon-test/)
 Jenkins job to copy from `updates/neon-test` to `updates/neon` and `releases/<version>`.
 
-In the versioned `releases` folder are stored both the release archives and
-the expanded p2 repository,
-which can be used in Eclipse to install new software.
+Both the release archives and the expanded p2 repository,
+which can be used in Eclipse to Install New Software,
+are stored in the versioned `releases` folder.
 
-The public update URL is:
+The public update URLs are:
 
 - `https://download.eclipse.org/embed-cdt/updates/neon`
+- `https://download.eclipse.org/embed-cdt/releases/<version>/p2`
 
 ### Create a release record
 
@@ -129,7 +135,8 @@ page, click the **Create a new release** link in the right sidebar.
 
 Copy/paste content from the previous release.
 
-To get the changes, scan the Git log and add new entries, grouped by days.
+To get the list oc changes, scan the Git log and add new entries,
+grouped by days.
 
 ```console
 $ git log --pretty='%cd * %h - %s' --date=short
