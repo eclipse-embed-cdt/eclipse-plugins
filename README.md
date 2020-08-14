@@ -5,7 +5,7 @@
 
 These are the Eclipse projects used to build the
 [Eclipse Embedded CDT](http://www.eclipse.org/embed-cdt) plug-ins,
-formerly the [GNU MCU Eclipse](http://gnu-mcu-eclipse.github.io) plug-ins.
+formerly the [GNU MCU/ARM Eclipse](http://gnu-mcu-eclipse.github.io) plug-ins.
 
 ## How to install
 
@@ -19,29 +19,33 @@ all **Eclipse Embedded CDT plug-ins** already installed.
 ### Eclipse Marketplace
 
 For existing Eclipse instances, the recommended install method is via
-Eclipse Marketplace; search for **Embedded CDT**.
+Eclipse Marketplace; search for _Embedded CDT_.
 
 ### Eclipse Update Sites
 
-- Stable: https://download.eclipse.org/embed-cdt/updates/neon  
+- Stable: `https://download.eclipse.org/embed-cdt/updates/neon`  
    This is the official release; it is also referred by the Eclipse
    Marketplace and the same content is packed as **Eclipse IDE for Embedded C/C++ Developers**.
-- Pre-release versions: https://download.eclipse.org/embed-cdt/updates/neon-test  
+- Pre-release versions: `https://download.eclipse.org/embed-cdt/updates/neon-test`  
    Usually this site should be safe, but use it with caution.
-- Development versions: https://download.eclipse.org/embed-cdt/builds/develop/p2  
-   Sometimes you can use this site to test some features that are not
+- Development versions: `https://download.eclipse.org/embed-cdt/builds/develop/p2`
+   Sometimes you can use this site to test features that are not
    completely implemented, or that might change before a final version is released.  
    **Note:** This site is not always functional; use it carefully,
    back up your workspace, and do not use it for production projects.
+
+## Maintainer info
+
+Plese read the separate [README-MAINTAINER.md](README-MAINTAINER.md) page.
 
 ## Run-time dependencies
 
 The minimum requirements for running the Eclipse Embedded CDT plug-ins are:
 
-- JavaSE-1.8-111 or later
+- JavaSE-1.8 or later
 - CDT 9.2.1 (Neon.3)
 
-Recommended:
+The recommended:
 
 - JavaSE-11 or later
 - Eclipse 2019-12 or later
