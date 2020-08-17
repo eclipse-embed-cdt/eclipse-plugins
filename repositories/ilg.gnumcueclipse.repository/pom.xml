@@ -29,6 +29,7 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
-	<name>Eclipse Embedded CDT repository</name>
+	<!-- This name is visible in the list of update sites. -->
+	<name>Eclipse Embedded CDT Repository</name>
 	<url>https://www.eclipse.org/embed-cdt</url>
 </project>
