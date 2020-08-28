@@ -2178,7 +2178,6 @@
 				<element value=".*/$(CMSIS_name)_hal_dma.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_dsi.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_eth[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_flash_.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_fmpi2c.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_hash.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_hcd[.]c" />
