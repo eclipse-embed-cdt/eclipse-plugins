@@ -117,7 +117,7 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory, I
 
 	@Override
 	public boolean isAvailable() {
-		// Return true if the Packs plug-in is available
+		// Return true if the CMSIS Packs plug-in is available
 		return false;
 	}
 

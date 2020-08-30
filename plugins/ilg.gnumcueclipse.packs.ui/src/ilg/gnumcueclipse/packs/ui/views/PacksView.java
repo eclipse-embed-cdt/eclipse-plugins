@@ -584,7 +584,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 					System.out.println(selection);
 				}
 
-				Job job = new InstallJob("Install Packs", selection);
+				Job job = new InstallJob("Install CMSIS Packs", selection);
 				job.schedule();
 			}
 		};
@@ -604,7 +604,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				TreeSelection selection = (TreeSelection) fViewer.getSelection();
 				// System.out.println(selection);
 
-				Job job = new RemoveJob("Remove Packs", selection);
+				Job job = new RemoveJob("Remove CMSIS Packs", selection);
 				job.schedule();
 			}
 		};
@@ -860,7 +860,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		final Node packsTree = DataManager.getInstance().getRepositoriesTree();
 
 		final Node packsRoot = new Node(Type.ROOT);
-		packsRoot.setName("Packs");
+		packsRoot.setName("CMSIS Packs");
 
 		if (packsTree.hasChildren()) {
 

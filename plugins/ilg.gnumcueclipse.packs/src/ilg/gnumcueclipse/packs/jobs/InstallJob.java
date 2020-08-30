@@ -259,7 +259,7 @@ public class InstallJob extends Job {
 
 					archiveFileDownload.renameTo(archiveFile);
 
-					Utils.reportInfo("Pack " + archiveName + " downloaded.");
+					Utils.reportInfo("CMSIS Pack " + archiveName + " downloaded.");
 				} else {
 					return false;
 				}
@@ -309,7 +309,7 @@ public class InstallJob extends Job {
 
 		Utils.makeFolderReadOnlyRecursive(destRelPath.toFile());
 
-		Utils.reportInfo("Pack " + archiveName + " installed.");
+		Utils.reportInfo("CMSIS Pack " + archiveName + " installed.");
 
 		fOut.println("All files set to read only.");
 

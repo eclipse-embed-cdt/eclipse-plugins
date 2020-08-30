@@ -129,7 +129,7 @@ public class RemoveJob extends Job {
 				// Add it to the list for final notifications
 				removedPacksList.add(versionNode);
 
-				Utils.reportInfo("Pack " + packFullName + " removed.");
+				Utils.reportInfo("CMSIS Pack " + packFullName + " removed.");
 
 			} catch (IOException e) {
 				fOut.println(Utils.reportError(e.getMessage()));

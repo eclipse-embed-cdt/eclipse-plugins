@@ -22,7 +22,7 @@
 			icon="icons/hardware_chip.png"
 			name="%tab.deviceSettings"
 			parent="org.eclipse.cdt.managedbuilder.ui.properties.Page_BuildSettings"
-			tooltip="Select the device from the available device in Packs."
+			tooltip="Select the device from the available device in CMSIS Packs."
 			weight="013">
 		</tab>
 

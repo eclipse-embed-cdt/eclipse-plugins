@@ -375,7 +375,7 @@ public class SvdUtils {
 
 			if (dataManager == null) {
 				throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID,
-						"Peripherals descriptions are available only via the Packs plug-in."));
+						"Peripherals descriptions are available only via the CMSIS Packs plug-in."));
 			}
 
 			path = dataManager.getSVDAbsolutePath(packType, deviceSupplierId, deviceId, config);

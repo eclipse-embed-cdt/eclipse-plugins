@@ -16,7 +16,7 @@
 <plugin>
 	<extension
 		id="ilg.gnumcueclipse.packs.marker"
-		name="Packs"
+		name="CMSIS Packs"
 		point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.core.resources.problemmarker">
 		</super>

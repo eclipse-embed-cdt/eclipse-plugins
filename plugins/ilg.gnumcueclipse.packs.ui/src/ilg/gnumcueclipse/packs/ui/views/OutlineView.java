@@ -414,7 +414,7 @@ public class OutlineView extends ViewPart {
 	}
 
 	/**
-	 * Called when selection in the Packs view changes.
+	 * Called when selection in the CMSIS Packs view changes.
 	 * 
 	 * @param part
 	 *            the Packs view.

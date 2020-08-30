@@ -211,7 +211,7 @@ public class DataManager implements IPacksDataManager {
 		notifyListener(event);
 	}
 
-	// 'Install/Remove Pack' notifies Type.UPDATE_VERSIONS
+	// 'Install/Remove CMSIS Pack' notifies Type.UPDATE_VERSIONS
 	public void notifyUpdateView(String type, List<Leaf> list) {
 
 		// System.out.println("PacksStorage notifyUpdateView()");

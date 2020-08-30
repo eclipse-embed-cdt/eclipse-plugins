@@ -16,7 +16,7 @@
 <plugin>
 	<extension-point
 		id="data"
-		name="Packs Data Manager"
+		name="CMSIS Packs Data Manager"
 		schema="schema/packs_data.exsd" />
 
 	<extension point="org.eclipse.core.runtime.preferences">
