@@ -7,23 +7,32 @@ sites and as archives.
 
 Development builds are published as p2 sub-folders like:
 
-- https://download.eclipse.org/embed-cdt/builds/develop/p2
-- https://download.eclipse.org/embed-cdt/builds/master/p2
+- https://download.eclipse.org/embed-cdt/builds/develop/p2/
+- https://download.eclipse.org/embed-cdt/builds/master/p2/
 
 When the content is stable, it is promoted as a pre-release and published as:
 
-- https://download.eclipse.org/embed-cdt/updates/neon-test
+- https://download.eclipse.org/embed-cdt/updates/neon-test/
 
 The final release is published in the main update site:
 
-- https://download.eclipse.org/embed-cdt/updates/neon
+- https://download.eclipse.org/embed-cdt/updates/neon/
 
 For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
 - https://download.eclipse.org/embed-cdt/releases/5.1.1/ilg.gnumcueclipse.repository-5.1.1-202007271621.zip
-- https://download.eclipse.org/embed-cdt/releases/5.1.1/p2
+- https://download.eclipse.org/embed-cdt/releases/5.1.1/p2/
+
+Packages are published at:
+
+- https://download.eclipse.org/embed-cdt/packages/
+- https://download.eclipse.org/embed-cdt/packages-test/
+
+The official download page is
+
+- https://projects.eclipse.org/projects/iot.embed-cdt/downloads/
 
 ## How to fix issues
 
@@ -106,7 +115,7 @@ Wait for the CI to confirm that the build passed.
 - login (otherwise the next link is not visible!)
 - use the [make-pre-release-from-master]('https://ci.eclipse.org/embed-cdt/job/make-pre-release-from-master')
 Jenkins job to copy the files from `builds/master` to `updates/neon-test`,
-which is the public address for the pre-release.
+which is the public location for the pre-release.
 
 Beta testers can install the pre-release from:
 
@@ -116,12 +125,15 @@ Beta testers can install the pre-release from:
 
 - go to https://ci.eclipse.org/embed-cdt/job/build-plug-ins/
 - login (otherwise the next link is not visible!)
-- use the [make-release-from-neon-test](https://ci.eclipse.org/embed-cdt/job/make-release-from-neon-test/)
-Jenkins job to copy from `updates/neon-test` to `updates/neon` and `releases/<version>`.
+- use the [make-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-from-master/)
+Jenkins job to copy from `builds/master` to `updates/neon` and `releases/<version>`.
 
-Both the release archives and the expanded p2 repository,
-which can be used in Eclipse to Install New Software,
-are stored in the versioned `releases` folder.
+The `updates/neon` includes only the expanded p2 repository.
+
+The `releases` folder includes both the release archives and the expanded
+p2 repository.
+
+Both can be used in Eclipse to Install New Software.
 
 The public update URLs are:
 
