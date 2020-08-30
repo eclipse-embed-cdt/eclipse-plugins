@@ -154,7 +154,17 @@ To get the release content, download the archive and do a
 
 ### Create a package
 
-TODO
+TODO: explain how to edit/update the EPP project.
+
+- go to https://ci.eclipse.org/embed-cdt/job/build-plug-ins/
+- login (otherwise the next link is not visible!)
+- use the [make-packages](https://ci.eclipse.org/embed-cdt/job/make-packages/)
+Jenkins job to maven build the `embed-cdt` and `embed-cdt-develop` branches and
+copy the result in `packages/<version>.
+
+The direct download URL is
+
+- `https://download.eclipse.org/embed-cdt/packages`
 
 ### Share on Twitter
 
