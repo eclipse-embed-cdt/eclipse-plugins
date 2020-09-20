@@ -184,5 +184,5 @@ The direct download URL is
 - copy the content to the clipboard
 - DO NOT click the Tweet button here, it'll not use the right account
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
-- using the `@gnu_mcu_eclipse` account, paste the content
+- using the `@embed-cdt` account, paste the content
 - click the Tweet button
