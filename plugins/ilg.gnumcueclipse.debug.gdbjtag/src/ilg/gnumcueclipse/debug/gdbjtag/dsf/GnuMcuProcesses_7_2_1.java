@@ -10,7 +10,7 @@
  * 
  * Contributors:
  *     Marc Khouzam (Ericsson) - initial API and implementation
- *     Liviu Ionescu - ARM version
+ *     Liviu Ionescu - Arm version
  *******************************************************************************/
 package ilg.gnumcueclipse.debug.gdbjtag.dsf;
 

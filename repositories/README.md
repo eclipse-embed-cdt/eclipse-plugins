@@ -7,6 +7,6 @@ and must be processed externally by the publish script. (using
 the entire build starts, which is before the moment when plug-ins
 are internally deployed to the repository).
 
-The main repository contains all (ARM & RISC-V) plug-ins.
+The main repository contains all (Arm & RISC-V) plug-ins.
 
 The RISC-V repository contains only the RISC-V plug-ins.

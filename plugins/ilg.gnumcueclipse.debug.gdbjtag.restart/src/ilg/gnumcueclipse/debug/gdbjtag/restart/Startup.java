@@ -10,7 +10,7 @@
  * 
  * Contributors:
  *     Ningareddy Modase - initial implementation.
- *     Liviu Ionescu - ARM version.
+ *     Liviu Ionescu - Arm version.
  *******************************************************************************/
 
 package ilg.gnumcueclipse.debug.gdbjtag.restart;

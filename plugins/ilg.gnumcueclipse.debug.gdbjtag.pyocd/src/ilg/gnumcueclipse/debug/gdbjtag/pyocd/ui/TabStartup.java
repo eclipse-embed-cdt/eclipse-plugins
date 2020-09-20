@@ -12,7 +12,7 @@
  *     QNX Software Systems - Initial API and implementation
  *     Andy Jin - Hardware debugging UI improvements, bug 229946
  *     Andy Jin - Added DSF debugging, bug 248593
- *     Liviu Ionescu - ARM version
+ *     Liviu Ionescu - Arm version
  *     Chris Reed - pyOCD changes
  *******************************************************************************/
 

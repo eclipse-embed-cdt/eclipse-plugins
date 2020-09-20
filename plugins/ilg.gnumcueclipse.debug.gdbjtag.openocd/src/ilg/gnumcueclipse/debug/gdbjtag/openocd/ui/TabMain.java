@@ -10,7 +10,7 @@
  *
  * Contributors:
  *     QNX Software Systems - Initial implementation
- *     Liviu Ionescu - ARM version
+ *     Liviu Ionescu - Arm version
  *******************************************************************************/
 
 package ilg.gnumcueclipse.debug.gdbjtag.openocd.ui;

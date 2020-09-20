@@ -108,7 +108,7 @@
 				label="None (no trace output)" />
 			<item
 				value="ITM"
-				label="ARM ITM (via SWO)" />
+				label="Arm ITM (via SWO)" />
 			<item
 				value="STDOUT"
 				label="Semihosting STDOUT stream" />

@@ -115,7 +115,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				label="None (no trace output)" />
 			<item
 				value="ITM"
-				label="ARM ITM (via SWO)" />
+				label="Arm ITM (via SWO)" />
 			<item
 				value="STDOUT"
 				label="Semihosting STDOUT stream" />

@@ -18,7 +18,7 @@
  *     Bruce Griffith, Sage Electronic Engineering, LLC - bug 305943
  *              - API generalization to become transport-independent (e.g. to
  *                allow connections via serial ports and pipes).
- *     Liviu Ionescu - ARM & RISC-V versions
+ *     Liviu Ionescu - Arm & RISC-V versions
  *     Jonah Graham - fix for Neon
  ******************************************************************************/
 

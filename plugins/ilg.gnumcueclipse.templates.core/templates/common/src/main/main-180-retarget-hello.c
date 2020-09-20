@@ -4,7 +4,7 @@
   // trace_dump_args(argc, argv);
 
   // Send a greeting to the trace device (skipped on Release).
-  trace_puts("Hello ARM World!");
+  trace_puts("Hello Arm World!");
 
   // The standard output and the standard error should be forwarded to
   // the trace device. For this to work, a redirection in _write.c is

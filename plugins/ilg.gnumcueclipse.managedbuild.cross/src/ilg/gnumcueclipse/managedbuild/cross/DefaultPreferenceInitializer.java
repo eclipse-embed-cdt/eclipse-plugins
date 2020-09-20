@@ -94,7 +94,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			DefaultPreferences deprecatedDefaultPreferences = new DefaultPreferences(
 					"ilg.gnuarmeclipse.managedbuild.cross");
 
-			// Try to get the build tools path from the GNU MCU ARM Eclipse
+			// Try to get the build tools path from the GNU MCU Eclipse
 			// store.
 			String path = defaultPreferences.getBuildToolsPath();
 			if (path.isEmpty()) {

@@ -145,7 +145,7 @@ public class Option {
 	public static final String CHOICE_SYMBOLSREC = "symbolsrec";
 	public static final String CHOICE_BINARY = "binary";
 
-	// ARM enumeration values
+	// Arm enumeration values
 	public static final String OPTION_ARM_MCPU_CORTEXM3 = OPTION_PREFIX + ".arm.target.mcpu.cortex-m3";
 	public static final String OPTION_ARM_MCPU_CORTEXM4 = OPTION_PREFIX + ".arm.target.mcpu.cortex-m4";
 

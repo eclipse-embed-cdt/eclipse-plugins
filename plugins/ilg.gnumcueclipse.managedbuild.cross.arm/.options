@@ -11,7 +11,7 @@
 # Contributors:
 #   Doug Schaefer (Wind River) - initial API and implementation
 #   IBM Corporation
-#   Liviu Ionescu - ARM version   
+#   Liviu Ionescu - Arm version   
 ###############################################################################
 
 # Control if trace messages are shown.

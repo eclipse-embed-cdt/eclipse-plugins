@@ -18,7 +18,7 @@
  *     Bruce Griffith, Sage Electronic Engineering, LLC - bug 305943
  *              - API generalization to become transport-independent (e.g. to
  *                allow connections via serial ports and pipes).
- *     Liviu Ionescu - ARM version
+ *     Liviu Ionescu - Arm version
  *     Chris Reed - pyOCD changes
  *     John Cortell - cleanup and fixes
  *     Jonah Graham - fix for Neon

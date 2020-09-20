@@ -10,7 +10,7 @@
  * 
  * Contributors:
  *     Marc-Andre Laperle - initial API and implementation
- *     Liviu Ionescu - ARM version
+ *     Liviu Ionescu - Arm version
  *******************************************************************************/
 
 package ilg.gnumcueclipse.managedbuild.cross.arm.ui;

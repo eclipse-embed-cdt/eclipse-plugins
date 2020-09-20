@@ -74,7 +74,7 @@
 
 		<module>repositories/ilg.gnumcueclipse.repository</module>
 
-		<!-- ARM specific modules. -->
+		<!-- Arm specific modules. -->
 		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.arm</module>
 		<module>features/ilg.gnumcueclipse.managedbuild.cross.arm.feature</module>
 

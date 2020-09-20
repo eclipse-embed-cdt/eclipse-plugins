@@ -24,7 +24,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// The list of external handlers is from the ARM assembly startup files.
+// The list of external handlers is from the Arm assembly startup files.
 
 // ----------------------------------------------------------------------------
 

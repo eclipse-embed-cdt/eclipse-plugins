@@ -153,7 +153,7 @@ main (int argc, char* argv[])
 //@XCDL		} // syscalls
 
   // Send a greeting to the trace device (skipped on Release).
-  trace_puts ("Hello ARM World!");
+  trace_puts ("Hello Arm World!");
 
 //@XCDL		if (syscalls==="retarget") {
   // The standard output and the standard error should be forwarded to

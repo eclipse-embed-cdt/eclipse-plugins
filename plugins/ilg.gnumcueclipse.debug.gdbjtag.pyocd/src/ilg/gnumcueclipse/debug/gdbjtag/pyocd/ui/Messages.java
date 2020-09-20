@@ -10,7 +10,7 @@
  *
  *  Contributors:
  *      QNX Software Systems - initial API and implementation
- *      Liviu Ionescu - ARM version
+ *      Liviu Ionescu - Arm version
  *      Chris Reed - pyOCD changes
  *******************************************************************************/
 

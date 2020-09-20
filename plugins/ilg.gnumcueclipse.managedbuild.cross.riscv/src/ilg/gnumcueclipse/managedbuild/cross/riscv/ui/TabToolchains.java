@@ -11,7 +11,7 @@
  * Contributors:
  *    Intel Corporation - Initial API and implementation
  *    James Blackburn (Broadcom Corp.)
- *    Liviu Ionescu - ARM version
+ *    Liviu Ionescu - Arm version
  *    Liviu Ionescu - RISC-V version
  *******************************************************************************/
 

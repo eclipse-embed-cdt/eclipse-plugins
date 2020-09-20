@@ -283,7 +283,7 @@ public class DataManager implements IPacksDataManager {
 	 * Find a given package version.
 	 * 
 	 * @param vendorName
-	 *            a string with the package vendor name (for example ARM).
+	 *            a string with the package vendor name (for example Arm).
 	 * @param packName
 	 *            a string with the package name (for example CMSIS).
 	 * @param version
@@ -315,7 +315,7 @@ public class DataManager implements IPacksDataManager {
 	 * Find the latest version of a package.
 	 * 
 	 * @param vendorName
-	 *            a string with the package vendor name (for example ARM).
+	 *            a string with the package vendor name (for example Arm).
 	 * @param packName
 	 *            a string with the package name (for example CMSIS).
 	 * @return a version node or null if not found.
@@ -355,7 +355,7 @@ public class DataManager implements IPacksDataManager {
 	 * @param packType
 	 *            a string with the pack type (from PackTypes)
 	 * @param vendorName
-	 *            a string with the package vendor name (for example ARM)
+	 *            a string with the package vendor name (for example Arm)
 	 * @param packName
 	 *            a string with the package name (for example CMSIS)
 	 * @return a string combining the vendor and the pack names.
@@ -1828,7 +1828,7 @@ public class DataManager implements IPacksDataManager {
 
 	// Will be called from template code
 	/**
-	 * Get the list of files referring to CMSIS Core (ARM headers and vendor headers
+	 * Get the list of files referring to CMSIS Core (Arm headers and vendor headers
 	 * and source files), for the given device and compiler.
 	 * 
 	 * @param deviceName

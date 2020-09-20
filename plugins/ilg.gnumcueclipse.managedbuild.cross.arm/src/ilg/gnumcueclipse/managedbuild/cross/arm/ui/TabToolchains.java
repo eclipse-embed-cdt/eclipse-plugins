@@ -11,7 +11,7 @@
  * Contributors:
  *    Intel Corporation - Initial API and implementation
  *    James Blackburn (Broadcom Corp.)
- *    Liviu Ionescu - ARM version
+ *    Liviu Ionescu - Arm version
  *******************************************************************************/
 
 package ilg.gnumcueclipse.managedbuild.cross.arm.ui;
@@ -501,7 +501,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		} else if ("aarch64".equals(sArchitecture)) {
 			index = 1;
 		} else {
-			index = 0; // default is ARM
+			index = 0; // default is "arm"
 		}
 		fArchitectureCombo.setText(ToolchainDefinition.getArchitecture(index));
 
@@ -705,9 +705,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			else if (sSelectedArchitecture.endsWith("." + Option.ARCHITECTURE_AARCH64))
 				index = 1;
 			else
-				index = 0; // default is ARM
+				index = 0; // default is "arm"
 		} catch (NullPointerException e) {
-			index = 0; // default is ARM
+			index = 0; // default is "arm"
 		}
 		fArchitectureCombo.setText(ToolchainDefinition.getArchitecture(index));
 
@@ -846,7 +846,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			} else if (ToolchainDefinition.getArchitecture(1).equals(sSelectedArchitecture)) {
 				val = Option.OPTION_ARCHITECTURE_AARCH64;
 			} else {
-				val = Option.OPTION_ARCHITECTURE_ARM; // default is ARM
+				val = Option.OPTION_ARCHITECTURE_ARM; // default is "arm"
 			}
 			option = toolchain.getOptionBySuperClassId(Option.OPTION_ARCHITECTURE); // $NON-NLS-1$
 			config.setOption(toolchain, option, val);

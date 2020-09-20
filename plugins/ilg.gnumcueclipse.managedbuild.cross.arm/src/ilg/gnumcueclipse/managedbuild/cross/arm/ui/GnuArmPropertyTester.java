@@ -29,7 +29,7 @@ import ilg.gnumcueclipse.managedbuild.cross.arm.Option;
 /**
  * Property tester for the Tools Paths page.
  * 
- * The project must be managed and the type must be one of the GNU ARM defined
+ * The project must be managed and the type must be one of the GNU Arm defined
  * type.
  */
 public class GnuArmPropertyTester extends PropertyTester {
