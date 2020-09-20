@@ -17,9 +17,12 @@ using namespace std;
 // For example, for toolchains derived from GNU Tools for Embedded,
 // to enable semi-hosting, the following was added to the linker:
 //
-// --specs=rdimon.specs -Wl,--start-group -lgcc -lc -lc -lm -lrdimon -Wl,--end-group
+// `--specs=rdimon.specs -Wl,--start-group -lgcc -lc -lc -lm -lrdimon -Wl,--end-group`
 //
 // Adjust it for other toolchains.
+//
+// If functionality is not required, to only pass the build, use
+// `--specs=nosys.specs`.
 //
 
 int
