@@ -115,7 +115,8 @@ Wait for the CI to confirm that the build passed.
 - login (otherwise the next link is not visible!)
 - use the [make-pre-release-from-master]('https://ci.eclipse.org/embed-cdt/job/make-pre-release-from-master')
 Jenkins job to copy the files from `builds/master` to `updates/neon-test`,
-which is the public location for the pre-release.
+which is the public location for the pre-release
+- click the **Build Now** link
 
 Beta testers can install the pre-release from:
 
@@ -126,12 +127,15 @@ Beta testers can install the pre-release from:
 - go to https://ci.eclipse.org/embed-cdt/job/build-plug-ins/
 - login (otherwise the next link is not visible!)
 - use the [make-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-from-master/)
-Jenkins job to copy from `builds/master` to `updates/neon` and `releases/<version>`.
-
-The `updates/neon` includes only the expanded p2 repository.
+Jenkins job to copy from `builds/master` to `updates/neon` and
+`releases/<version>`
+- click the **Build Now** link
 
 The `releases` folder includes both the release archives and the expanded
 p2 repository.
+
+The `updates/neon` includes only the expanded p2 repository, for the archives
+see the `releases` folder.
 
 Both can be used in Eclipse to Install New Software.
 
