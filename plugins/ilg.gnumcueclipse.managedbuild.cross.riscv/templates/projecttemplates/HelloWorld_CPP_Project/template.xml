@@ -54,7 +54,7 @@
 			pattern="[a-zA-Z0-9]+"
 			persist="true" />
 		<property
-			id="semihostingOptions"
+			id="linkoptionsriscv"
 			label="%HelloWorld.semihostingOptions.label"
 			description="%HelloWorld.semihostingOptions.description"
 			type="input"
@@ -115,7 +115,7 @@
 					value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.linker.other" />
 				<simple
 					name="value"
-					value="$(semihostingOptions)" />
+					value="$(linkoptionsriscv)" />
 				<simple
 					name="path"
 					value="" />

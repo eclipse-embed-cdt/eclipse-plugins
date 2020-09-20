@@ -16,6 +16,8 @@
  *
  * WARNING: This is a build-only project. Do not try to run it on a
  * physical board, since it lacks the device specific startup.
+ *
+ * If semihosting is not available, use `--specs=nosys.specs` during link.
  */
 
 int
