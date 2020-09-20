@@ -2,7 +2,7 @@
 
 This content is produced and maintained by the Eclipse Embedded CDT project.
 
- * Project home: https://projects.eclipse.org/projects/embed-cdt
+- Project home: https://projects.eclipse.org/projects/embed-cdt
 
 ## Trademarks
 
@@ -28,7 +28,7 @@ SPDX-License-Identifier: EPL-2.0
 
 The project maintains the following source code repositories:
 
- * https://github.com/eclipse-embed-cdt/eclipse-plugins
+- https://github.com/eclipse-embed-cdt/eclipse-plugins
 
 TODO: update URL
 
