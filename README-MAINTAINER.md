@@ -325,12 +325,12 @@ The direct download URL is:
 <p>On macOS, if you download&nbsp;the archive with the browser, the strict security checks&nbsp;on recent macOS will prevent it to run, and complain that the program is damaged. That&#39;s obviously not true, and&nbsp;the fix is simple, you need to&nbsp;remove the <strong>com.apple.quarantine</strong> extended attribute.</p>
 
 <pre>
-$ xattr -d com.apple.quarantine eclipse-embedcdt-2020-06-R-macosx.cocoa.x86_64.tar.gz</pre>
+$ xattr -d com.apple.quarantine ~/Downloads/eclipse-embedcdt-2020-06-R-macosx.cocoa.x86_64.tar.gz</pre>
 
 <p>After un-archiving, if the Eclipse.app still does not run,&nbsp;check/remove the attribute from the Eclipse.app folder too:</p>
 
 <pre>
-$ xattr -dr com.apple.quarantine Eclipse.app
+$ xattr -dr com.apple.quarantine ~/Downloads/Eclipse.app
 </pre>
 
 ```
