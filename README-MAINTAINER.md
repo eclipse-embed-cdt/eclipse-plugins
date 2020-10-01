@@ -49,7 +49,7 @@ page, click the
 [Milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones)
 button and add a
 [new](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/new)
-milestone. As title, use the current version, like _v5.1.2_.
+milestone. As title, use the current version, like _v5.1.3_.
 
 ### Fix issues
 
@@ -136,7 +136,7 @@ Start with _Pre-release_ (Header 3).
 ```html
 <h3>Pre-release</h3>
 
-<p>Version <strong>5.1.2</strong> is a maintenance release, fixing some bugs and adding some enhancements</p>
+<p>Version <strong>5.1.3</strong> is a maintenance release, fixing some bugs and adding some enhancements</p>
 
 <p>For those who want to beta test, the pre-release is available via <strong>Install New Software</strong> from:</p>
 
