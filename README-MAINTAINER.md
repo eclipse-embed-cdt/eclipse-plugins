@@ -111,14 +111,14 @@ Wait for the CI to confirm that the build passed.
 
 ### Publish the pre-release
 
-- go to https://ci.eclipse.org/embed-cdt/job/build-plug-ins/
+- go to https://ci.eclipse.org/embed-cdt/
 - login (otherwise the next link is not visible!)
 - use the [make-pre-release-from-master]('https://ci.eclipse.org/embed-cdt/job/make-pre-release-from-master')
 Jenkins job to copy the files from `builds/master` to `updates/neon-test`,
 which is the public location for the pre-release
 - click the **Build Now** link
 
-Announce the pre-release to the embed-cdt-dev list.
+Announce the pre-release to the **embed-cdt-dev** list.
 
 Beta testers can install the pre-release from:
 
