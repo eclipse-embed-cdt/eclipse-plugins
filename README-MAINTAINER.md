@@ -131,12 +131,16 @@ In the official
 page, click the
 [Create a new release](https://projects.eclipse.org/node/18638/create-release) link in the right sidebar.
 
+Name it like `5.1.3` (no v).
+
+Click on Edit, The Basics; switch to Source mode
+
 Start with _Pre-release_ (Header 3).
 
 ```html
 <h3>Pre-release</h3>
 
-<p>Version <strong>5.1.3</strong> is a maintenance release, fixing some bugs and adding some enhancements</p>
+<p>Version <strong>5.1.3</strong> is a maintenance release, fixing some bugs and adding some enhancements.</p>
 
 <p>For those who want to beta test, the pre-release is available via <strong>Install New Software</strong> from:</p>
 
@@ -197,7 +201,7 @@ To get the release content, check the Jenkins output after the command
 
 ### Publish the release
 
-- go to https://ci.eclipse.org/embed-cdt/job/build-plug-ins/
+- go to https://ci.eclipse.org/embed-cdt/
 - login (otherwise the next link is not visible!)
 - use the [make-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-from-master/)
 Jenkins job to copy from `builds/master` to `updates/neon` and
@@ -224,9 +228,15 @@ The public update URLs are:
 - go to [Eclipse Marketplace](https://marketplace.eclipse.org/content/eclipse-embedded-cdt)
 - log in
 - click **Edit**
-- update version number, minimum Eclipse versions.
+- update version number, minimum Eclipse versions
+- click the bottom page **Save**.
 
 ### Update the release record
+
+- go to the release record
+- click Edit -> The Basics
+- switch to Source mode
+- replace the Pre-release section with the above:
 
 ```html
 <h3>Eclipse Marketplace</h3>
@@ -238,13 +248,13 @@ The public update URLs are:
 <p>For those who prefer to do it manually, the latest version is available via&nbsp;<strong>Install New Software</strong> from:</p>
 
 <ul>
-	<li><a href="https://download.eclipse.org/embed-cdt/updates/neon">https://download.eclipse.org/embed-cdt/updates/neon</a></li>
+	<li><a href="https://download.eclipse.org/embed-cdt/updates/neon/">https://download.eclipse.org/embed-cdt/updates/neon/</a></li>
 </ul>
 
 <p>To get exactly this version, <strong>Install New Software</strong> from:</p>
 
 <ul>
-	<li><a href="https://download.eclipse.org/embed-cdt/releases/5.1.1/p2">https://download.eclipse.org/embed-cdt/releases/5.1.1/p2</a></li>
+	<li><a href="https://download.eclipse.org/embed-cdt/releases/5.1.1/p2/">https://download.eclipse.org/embed-cdt/releases/5.1.1/p2/</a></li>
 </ul>
 
 <h3>Local install</h3>
@@ -256,10 +266,15 @@ The public update URLs are:
 </ul>
 ```
 
-As links for the latest two, open https://download.eclipse.org/embed-cdt/releases and get something like:
+As links for the latest two, open https://download.eclipse.org/embed-cdt/releases/ and get something like:
 
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.1.1/ilg.gnumcueclipse.repository-5.1.1-202007271621.zip
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.1.1/ilg.gnumcueclipse.repository-5.1.1-202007271621.zip.sha
+- https://download.eclipse.org/embed-cdt/releases/5.1.3/ilg.gnumcueclipse.repository-5.1.3-202010011906.zip
+- https://download.eclipse.org/embed-cdt/releases/5.1.3/ilg.gnumcueclipse.repository-5.1.3-202010011906.zip.sha
+
+Update the URLs to use the download redirect:
+
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.1.3/ilg.gnumcueclipse.repository-5.1.3-202010011906.zip
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.1.3/ilg.gnumcueclipse.repository-5.1.3-202010011906.zip.sha
 
 Remove the _Pre-release_ top header.
 
