@@ -28,7 +28,7 @@
 	<groupId>ilg.gnumcueclipse</groupId>
 	<!-- Generally the name that the project is known by. -->
 	<artifactId>ilg.gnumcueclipse.parent</artifactId>
-	<version>5.1.3-SNAPSHOT</version>
+	<version>5.1.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -44,7 +44,7 @@
 		<!-- Eclipse provided plug-ins for signing JARs with Eclipse infra -->
 		<cbi-plugins.version>1.1.7</cbi-plugins.version>
 
-		<semverVersion>5.1.3</semverVersion>
+		<semverVersion>5.1.4</semverVersion>
 	</properties>
 
 	<licenses>

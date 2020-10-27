@@ -15,7 +15,7 @@
 <feature
       id="ilg.gnumcueclipse.managedbuild.cross.riscv.feature"
       label="%featureName"
-      version="2.9.3.qualifier"
+      version="2.9.4.qualifier"
       provider-name="%providerName"
       plugin="ilg.gnumcueclipse.managedbuild.cross.riscv">
 
