@@ -153,24 +153,24 @@ Start with _Pre-release_ (Header 3).
 <p>The bug fixes are:</p>
 
 <ul>
-	<li>...</li>
+	<li>none</li>
 </ul>
 
 <p>The enhancements are:</p>
 
 <ul>
-	<li>...</li>
+	<li>none</li>
 </ul>
 
 <p>The developer changes are:</p>
 
 <ul>
-	<li>...</li>
+	<li>none</li>
 </ul>
 
 <p>More details at GitHub:<br />
 <br />
--&nbsp;<a href="https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19?closed=1">https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19?closed=1</a></p>
+-&nbsp;<a href="https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19">https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19</a></p>
 
 <h3>Release content</h3>
 
