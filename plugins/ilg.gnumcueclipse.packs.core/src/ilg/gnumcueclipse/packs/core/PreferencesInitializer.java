@@ -37,7 +37,7 @@ public class PreferencesInitializer extends AbstractPreferenceInitializer {
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("PreferenceInitializer.initializeDefaultPreferences()");
 		}
-		
+
 		// Get workspace
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
@@ -67,13 +67,31 @@ public class PreferencesInitializer extends AbstractPreferenceInitializer {
 		}
 
 		if (packagesPath == null) {
-			packagesPath = XpackUtils.getRepoBasePath();
-			if (EclipseUtils.isLinux()) {
-				packagesPath = packagesPath.append("cmsis-packs");
-			} else {
-				packagesPath = packagesPath.append("CMSIS-Packs");
+			IPath[] paths = XpackUtils.getRepoBasePaths();
+			assert (paths != null);
+
+			for (IPath path : paths) {
+				if (EclipseUtils.isLinux()) {
+					path = path.append("cmsis-packs");
+				} else {
+					path = path.append("CMSIS-Packs");
+				}
+				if (path.toFile().isDirectory()) {
+					packagesPath = path;
+					break;
+				}
+			}
+			if (packagesPath == null) {
+				packagesPath = paths[0];
+				if (EclipseUtils.isLinux()) {
+					packagesPath = packagesPath.append("cmsis-packs");
+				} else {
+					packagesPath = packagesPath.append("CMSIS-Packs");
+				}
 			}
 		}
+
+		assert (packagesPath != null);
 		
 		IPreferenceStore store = Preferences.getPreferenceStore();
 		store.setDefault(Preferences.PACKS_FOLDER_PATH, packagesPath.toOSString());
@@ -86,7 +104,8 @@ public class PreferencesInitializer extends AbstractPreferenceInitializer {
 		if (!packagesFolder.exists()) {
 			packagesFolder.mkdir();
 			System.out.println("Folder \"" + packagesFolder + "\" created");
-		} if (!packagesFolder.isDirectory()) {
+		}
+		if (!packagesFolder.isDirectory()) {
 			Activator.log("\"" + folderPath + "\" present, but not a folder; not good.");
 		}
 	}
