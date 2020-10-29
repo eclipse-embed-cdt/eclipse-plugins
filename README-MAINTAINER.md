@@ -101,6 +101,8 @@ When ready, merge the `develop` branch into `master`, and push them to GitHub.
 
 Wait for the CI to confirm that the build passed.
 
+Add a tag like `v5.1.3` (with `v`).
+
 ### Trigger the Jenkins master build
 
 - go to [https://ci.eclipse.org/embed-cdt/job/build-plug-ins/](https://ci.eclipse.org/embed-cdt/job/build-plug-ins/)
