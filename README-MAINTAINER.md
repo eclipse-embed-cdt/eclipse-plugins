@@ -138,9 +138,9 @@ Click on Edit, The Basics; switch to Source mode
 Start with _Pre-release_ (Header 3).
 
 ```html
-<h3>Pre-release</h3>
-
 <p>Version <strong>5.1.3</strong> is a maintenance release, fixing some bugs and adding some enhancements.</p>
+
+<h3>Pre-release</h3>
 
 <p>For those who want to beta test, the pre-release is available via <strong>Install New Software</strong> from:</p>
 
@@ -199,6 +199,8 @@ $ git log --pretty='%cd * %h - %s' --date=short
 To get the release content, check the Jenkins output after the command
 `ls -L features plugins`.
 
+Select the **Release Type** (major, minor, service).
+
 ### Publish the release
 
 - go to https://ci.eclipse.org/embed-cdt/
@@ -233,10 +235,10 @@ The public update URLs are:
 
 ### Update the release record
 
-- go to the release record
+- go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/governance) and select the new release
 - click Edit -> The Basics
 - switch to Source mode
-- replace the Pre-release section with the above:
+- replace the **Pre-release** section with the above:
 
 ```html
 <h3>Eclipse Marketplace</h3>
