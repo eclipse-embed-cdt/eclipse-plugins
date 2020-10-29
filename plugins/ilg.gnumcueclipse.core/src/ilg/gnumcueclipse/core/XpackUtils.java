@@ -158,7 +158,7 @@ public class XpackUtils {
 			}
 		}
 
-		return null;
+		return paths[0].append("xPacks");
 	}
 
 	public static IPath getSysRepoPath() {
@@ -185,7 +185,7 @@ public class XpackUtils {
 			}
 		}
 
-		return null;
+		return paths[0].append("xPacks");
 	}
 
 	public static IPath getPackPath(String packName) {
