@@ -60,7 +60,7 @@ public class XpackUtils {
 		} else if (EclipseUtils.isLinux()) {
 			String homeFolder = env.get("HOME");
 			IPath path = new Path(homeFolder);
-			return path.append("/opt");
+			return path.append("/.local");
 		} else if (EclipseUtils.isWindows()) {
 			String homeFolder = env.get("APPDATA");
 			IPath path = new Path(homeFolder);
