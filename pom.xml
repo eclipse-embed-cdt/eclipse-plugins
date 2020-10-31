@@ -43,26 +43,26 @@
 		<module>plugins/ilg.gnumcueclipse.packs.core</module>
 		<module>plugins/ilg.gnumcueclipse.packs.data</module>
 		<module>plugins/ilg.gnumcueclipse.packs.ui</module>
-		<module>features/ilg.gnumcueclipse.packs.feature</module>
+		<module>features/org.eclipse.embedcdt.packs.feature</module>
 
 		<module>plugins/ilg.gnumcueclipse.debug.core</module>
 		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag</module>
 		<module>plugins/ilg.gnumcueclipse.debug.packs</module>
 
 		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.jlink</module>
-		<module>features/ilg.gnumcueclipse.debug.gdbjtag.jlink.feature</module>
+		<module>features/org.eclipse.embedcdt.debug.gdbjtag.jlink.feature</module>
 
 		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.openocd</module>
-		<module>features/ilg.gnumcueclipse.debug.gdbjtag.openocd.feature</module>
+		<module>features/org.eclipse.embedcdt.debug.gdbjtag.openocd.feature</module>
 
 		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.pyocd</module>
-		<module>features/ilg.gnumcueclipse.debug.gdbjtag.pyocd.feature</module>
+		<module>features/org.eclipse.embedcdt.debug.gdbjtag.pyocd.feature</module>
 
 		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.qemu</module>
-		<module>features/ilg.gnumcueclipse.debug.gdbjtag.qemu.feature</module>
+		<module>features/org.eclipse.embedcdt.debug.gdbjtag.qemu.feature</module>
 
 		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.jumper</module>
-		<module>features/ilg.gnumcueclipse.debug.gdbjtag.jumper.feature</module>
+		<module>features/org.eclipse.embedcdt.debug.gdbjtag.jumper.feature</module>
 
 		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.restart</module>
 
@@ -70,31 +70,31 @@
 		<module>features/org.eclipse.embedcdt.codered-feature</module>
 
 		<module>plugins/ilg.gnumcueclipse.doc.user</module>
-		<module>features/ilg.gnumcueclipse.doc.user.feature</module>
+		<module>features/org.eclipse.embedcdt.doc.user.feature</module>
 
 		<module>repositories/ilg.gnumcueclipse.repository</module>
 
 		<!-- Arm specific modules. -->
 		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.arm</module>
-		<module>features/ilg.gnumcueclipse.managedbuild.cross.arm.feature</module>
+		<module>features/org.eclipse.embedcdt.managedbuild.cross.arm.feature</module>
 
 		<module>plugins/ilg.gnumcueclipse.templates.core</module>
 		<module>plugins/ilg.gnumcueclipse.templates.cortexm</module>
-		<module>features/ilg.gnumcueclipse.templates.cortexm.feature</module>
+		<module>features/org.eclipse.embedcdt.templates.cortexm.feature</module>
 		<module>plugins/ilg.gnumcueclipse.templates.stm</module>
-		<module>features/ilg.gnumcueclipse.templates.stm.feature</module>
+		<module>features/org.eclipse.embedcdt.templates.stm.feature</module>
 		<module>plugins/ilg.gnumcueclipse.templates.freescale</module>
 		<module>plugins/ilg.gnumcueclipse.templates.freescale.pe</module>
-		<module>features/ilg.gnumcueclipse.templates.freescale.feature</module>
+		<module>features/org.eclipse.embedcdt.templates.freescale.feature</module>
 		<module>plugins/ilg.gnumcueclipse.templates.ad</module>
-		<module>features/ilg.gnumcueclipse.templates.ad.feature</module>
+		<module>features/org.eclipse.embedcdt.templates.ad.feature</module>
 
 		<!-- RISC-V specific modules. -->
 		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.riscv</module>
-		<module>features/ilg.gnumcueclipse.managedbuild.cross.riscv.feature</module>
+		<module>features/org.eclipse.embedcdt.managedbuild.cross.riscv.feature</module>
 
 		<module>plugins/ilg.gnumcueclipse.templates.sifive</module>
-		<module>features/ilg.gnumcueclipse.templates.sifive.feature</module>
+		<module>features/org.eclipse.embedcdt.templates.sifive.feature</module>
 		
 	</modules>
 
