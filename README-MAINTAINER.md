@@ -22,8 +22,8 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- https://download.eclipse.org/embed-cdt/releases/5.1.1/ilg.gnumcueclipse.repository-5.1.1-202007271621.zip
-- https://download.eclipse.org/embed-cdt/releases/5.1.1/p2/
+- https://download.eclipse.org/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip
+- https://download.eclipse.org/embed-cdt/releases/5.2.1/p2/
 
 Packages are published at:
 
@@ -44,18 +44,18 @@ a GitHub Issue.
 If not already done, create a new milestone.
 
 - in the
-[plug-ins issues](https://github.com/eclipse-embed-cdt/eclipse-plugins/issues)
+[plug-ins issues](https://github.com/eclipse-embed-cdt/eclipse-plugins/issues/)
 page, click the
-[Milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones)
+[Milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/)
 button and add a
-[new](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/new)
-milestone. As title, use the current version, like _v5.1.3_.
+[new](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/new/)
+milestone. As title, use the current version, like _v5.2.1_.
 
 ### Fix issues
 
 - be sure the `develop` branch is selected
 - scan the
-[plug-ins issues](https://github.com/eclipse-embed-cdt/eclipse-plugins/issues)
+[plug-ins issues](https://github.com/eclipse-embed-cdt/eclipse-plugins/issues/)
 list, and fix them. The commit message should be prefixed with the issue
 number, like `[#122]`;
 - mark all fixed issues as part of the new milestone;
@@ -84,14 +84,14 @@ This will also trigger a CI job that will run a maven build.
 - login (otherwise the next link is not visible!)
 - click the **Scan Multibranch Pipeline Now** link
 - when ready, the p2 repository is published at
-[https://download.eclipse.org/embed-cdt/builds/develop/p2](https://download.eclipse.org/embed-cdt/builds/develop/p2)
+[https://download.eclipse.org/embed-cdt/builds/develop/p2/](https://download.eclipse.org/embed-cdt/builds/develop/p2/)
 
 ### Install on a separate Eclipse
 
 Test if the new build can be used as an update site, by installing it
 on a separate Eclipse (not the one used for development); use the URL:
 
-- `https://download.eclipse.org/embed-cdt/builds/develop/p2`
+- `https://download.eclipse.org/embed-cdt/builds/develop/p2/`
 
 ## How to make a new release
 
@@ -101,7 +101,7 @@ When ready, merge the `develop` branch into `master`, and push them to GitHub.
 
 Wait for the CI to confirm that the build passed.
 
-Add a tag like `v5.1.3` (with `v`).
+Add a tag like `v5.2.1` (with `v`).
 
 ### Trigger the Jenkins master build
 
@@ -109,18 +109,20 @@ Add a tag like `v5.1.3` (with `v`).
 - login (otherwise the next link will not be visible!)
 - click the **Scan Multibranch Pipeline Now** link
 - when ready, the p2 repository is published at
-[https://download.eclipse.org/embed-cdt/builds/master/p2](https://download.eclipse.org/embed-cdt/builds/master/p2)
+[https://download.eclipse.org/embed-cdt/builds/master/p2/](https://download.eclipse.org/embed-cdt/builds/master/p2/)
 
 ### Publish the pre-release
 
 - go to https://ci.eclipse.org/embed-cdt/
 - login (otherwise the next link is not visible!)
-- use the [make-pre-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-pre-release-from-master)
+- use the [make-pre-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-pre-release-from-master/)
 Jenkins job to copy the files from `builds/master` to `updates/neon-test`,
 which is the public location for the pre-release
 - click the **Build Now** link
 
-Announce the pre-release to the **embed-cdt-dev** list.
+Announce the pre-release to the **embed-cdt-dev@eclipse.org** list;
+use a subject like **Eclipse Embedded CDT v5.2.1 released**, and
+pass a link to the release page.
 
 Beta testers can install the pre-release from:
 
@@ -129,25 +131,25 @@ Beta testers can install the pre-release from:
 ### Create a pre-release record
 
 In the official
-[iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt)
+[iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/)
 page, click the
-[Create a new release](https://projects.eclipse.org/node/18638/create-release) link in the right sidebar.
+[Create a new release](https://projects.eclipse.org/node/18638/create-release/) link in the right sidebar.
 
-Name it like `5.1.3` (no v).
+Name it like `5.2.1` (no v).
 
 Click on Edit, The Basics; switch to Source mode
 
 Start with _Pre-release_ (Header 3).
 
 ```html
-<p>Version <strong>5.1.3</strong> is a maintenance release, fixing some bugs and adding some enhancements.</p>
+<p>Version <strong>5.2.1</strong> is a maintenance release; if fixes XXX.</p>
 
 <h3>Pre-release</h3>
 
 <p>For those who want to beta test, the pre-release is available via <strong>Install New Software</strong> from:</p>
 
 <ul>
-	<li><a href="https://download.eclipse.org/embed-cdt/updates/neon-test/">https://download.eclipse.org/embed-cdt/updates/neon-test/</a></li>
+	<li>https://download.eclipse.org/embed-cdt/updates/neon-test/</li>
 </ul>
 
 <h3>Changes</h3>
@@ -172,7 +174,7 @@ Start with _Pre-release_ (Header 3).
 
 <p>More details at GitHub:<br />
 <br />
--&nbsp;<a href="https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19">https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19</a></p>
+- <a href="https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19">https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19</a></p>
 
 <h3>Release content</h3>
 
@@ -180,14 +182,14 @@ Start with _Pre-release_ (Header 3).
 
 <pre>
 features:
-ilg.gnumcueclipse.codered.feature_1.1.2.202009201439.jar
+ilg.gnumcueclipse.codered.feature_1.1.2.202010292017.jar
 ...
-ilg.gnumcueclipse.templates.stm.feature.source_2.7.2.202009201439.jar
+ilg.gnumcueclipse.templates.stm.feature.source_2.7.2.202010292017.jar
 
 plugins:
-ilg.gnumcueclipse.codered_1.1.2.202009201439.jar
+ilg.gnumcueclipse.codered_1.1.2.202010292017.jar
 ...
-ilg.gnumcueclipse.templates.stm.source_2.7.2.202009201439.jar
+ilg.gnumcueclipse.templates.stm.source_2.7.2.202010292017.jar
 </pre>
 
 ```
@@ -203,7 +205,13 @@ To get the release content, check the Jenkins output after the command
 
 Select the **Release Type** (major, minor, service).
 
-### Publish the release
+### Test
+
+Install the plug-ins on several platforms.
+
+### Publish the final release
+
+When the plug-ins are considered stable:
 
 - go to https://ci.eclipse.org/embed-cdt/
 - login (otherwise the next link is not visible!)
@@ -225,11 +233,11 @@ Both can be used in Eclipse to **Install New Software**.
 The public update URLs are:
 
 - `https://download.eclipse.org/embed-cdt/updates/neon/`
-- `https://download.eclipse.org/embed-cdt/releases/<version>/p2/`
+- `https://download.eclipse.org/embed-cdt/releases/5.2.1/p2/`
 
 ### Update the Eclipse Marketplace records
 
-- go to [Eclipse Marketplace](https://marketplace.eclipse.org/content/eclipse-embedded-cdt)
+- go to [Eclipse Marketplace](https://marketplace.eclipse.org/content/eclipse-embedded-cdt/)
 - log in
 - click **Edit**
 - update version number, minimum Eclipse versions
@@ -237,7 +245,7 @@ The public update URLs are:
 
 ### Update the release record
 
-- go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/governance) and select the new release
+- go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/governance/) and select the new release
 - click Edit -> The Basics
 - switch to Source mode
 - replace the **Pre-release** section with the above:
@@ -245,11 +253,11 @@ The public update URLs are:
 ```html
 <h3>Eclipse Marketplace</h3>
 
-<p>The recommended way to update to&nbsp;the latest plug-ins is via the <strong>Eclipse Marketplace</strong>; search for <em>Embedded CDT</em>.</p>
+<p>The recommended way to update to the latest plug-ins is via the <strong>Eclipse Marketplace</strong>; search for <em>Embedded CDT</em>.</p>
 
 <h3>Eclipse Update Sites</h3>
 
-<p>For those who prefer to do it manually, the latest version is available via&nbsp;<strong>Install New Software</strong> from:</p>
+<p>For those who prefer to do it manually, the latest version is available via <strong>Install New Software</strong> from:</p>
 
 <ul>
 	<li><a href="https://download.eclipse.org/embed-cdt/updates/neon/">https://download.eclipse.org/embed-cdt/updates/neon/</a></li>
@@ -258,7 +266,7 @@ The public update URLs are:
 <p>To get exactly this version, <strong>Install New Software</strong> from:</p>
 
 <ul>
-	<li><a href="https://download.eclipse.org/embed-cdt/releases/5.1.1/p2/">https://download.eclipse.org/embed-cdt/releases/5.1.1/p2/</a></li>
+	<li><a href="https://download.eclipse.org/embed-cdt/releases/5.2.1/p2/">https://download.eclipse.org/embed-cdt/releases/5.2.1/p2/</a></li>
 </ul>
 
 <h3>Local install</h3>
@@ -266,23 +274,23 @@ The public update URLs are:
 <p>For manual installs, the plug-ins are also available as regular archives, that can be downloaded locally and installed.</p>
 
 <ul>
-	<li><a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.1.1/ilg.gnumcueclipse.repository-5.1.1-202007271621.zip">ilg.gnumcueclipse.repository-5.1.1-202007271621.zip</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.1.1/ilg.gnumcueclipse.repository-5.1.1-202007271621.zip.sha">(SHA)</a></li>
+	<li><a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip">ilg.gnumcueclipse.repository-5.2.1-202010292017.zip</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip.sha">(SHA)</a></li>
 </ul>
 ```
 
 As links for the latest two, open https://download.eclipse.org/embed-cdt/releases/ and get something like:
 
-- https://download.eclipse.org/embed-cdt/releases/5.1.3/ilg.gnumcueclipse.repository-5.1.3-202010011906.zip
-- https://download.eclipse.org/embed-cdt/releases/5.1.3/ilg.gnumcueclipse.repository-5.1.3-202010011906.zip.sha
+- https://download.eclipse.org/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip
+- https://download.eclipse.org/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip.sha
 
 Update the URLs to use the download redirect:
 
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.1.3/ilg.gnumcueclipse.repository-5.1.3-202010011906.zip
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.1.3/ilg.gnumcueclipse.repository-5.1.3-202010011906.zip.sha
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip.sha
 
 Remove the _Pre-release_ top header.
 
-### Create the test package
+### Create the test package (deprecated)
 
 TODO: explain how to edit/update the EPP project.
 
@@ -306,7 +314,7 @@ Check if everything is fine and test.
 
 Test on various platforms.
 
-### Create the final package
+### Create the final package (deprecated)
 
 - merge `embed-cdt-develop` int `embed-cdt`
 - push `embed-cdt` to GitHub
@@ -323,12 +331,16 @@ The direct download URL is:
 
 - `https://download.eclipse.org/embed-cdt/packages/`
 
-### Update the release record
+### Update the release record (deprecated)
+
+- go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/governance/) and select the new release
+- click Edit -> The Basics
+- switch to Source mode
 
 ```html
 <h3>Eclipse IDE for Embedded C/C++ Developers</h3>
 
-<p>For convenience, this version of the plug-ins is also available as Eclipse packages, which pack&nbsp;together the <strong>Eclipse IDE for C/C++ Developers</strong> standard distribution with the <strong>Eclipse Embedded CDT plug-ins</strong>:</p>
+<p>For convenience, this version of the plug-ins is also available as Eclipse packages, which pack together the <strong>Eclipse IDE for C/C++ Developers</strong> standard distribution with the <strong>Eclipse Embedded CDT plug-ins</strong>:</p>
 
 <h4>2020-06 (Eclipse 4.16)</h4>
 
@@ -341,12 +353,12 @@ The direct download URL is:
 
 <h4>macOS security notice</h4>
 
-<p>On macOS, if you download&nbsp;the archive with the browser, the strict security checks&nbsp;on recent macOS will prevent it to run, and complain that the program is damaged. That&#39;s obviously not true, and&nbsp;the fix is simple, you need to&nbsp;remove the <strong>com.apple.quarantine</strong> extended attribute.</p>
+<p>On macOS, if you download the archive with the browser, the strict security checks on recent macOS will prevent it to run, and complain that the program is damaged. That&#39;s obviously not true, and the fix is simple, you need to remove the <strong>com.apple.quarantine</strong> extended attribute.</p>
 
 <pre>
 $ xattr -d com.apple.quarantine ~/Downloads/eclipse-embedcdt-2020-06-R-macosx.cocoa.x86_64.tar.gz</pre>
 
-<p>After un-archiving, if the Eclipse.app still does not run,&nbsp;check/remove the attribute from the Eclipse.app folder too:</p>
+<p>After un-archiving, if the Eclipse.app still does not run, check/remove the attribute from the Eclipse.app folder too:</p>
 
 <pre>
 $ xattr -dr com.apple.quarantine ~/Downloads/Eclipse.app
@@ -356,13 +368,16 @@ $ xattr -dr com.apple.quarantine ~/Downloads/Eclipse.app
 
 ### Update the Downloads page
 
-Use the Source view and copy/paste/edit.
+- go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/) and select the new release
+- click Edit -> The Basics
+- switch to Source mode
+
+Use copy/paste/edit.
 
 ### Share on Twitter
 
-- go to the new post and follow the Tweet link
-- copy the content to the clipboard
-- DO NOT click the Tweet button here, it'll not use the right account
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
-- using the `@embed-cdt` account, paste the content
+- using the `@embedCDT` account, enter a message like
+**Eclipse Embedded CDT v5.2.1 released** and on the next line
+paste the link to the release
 - click the Tweet button
