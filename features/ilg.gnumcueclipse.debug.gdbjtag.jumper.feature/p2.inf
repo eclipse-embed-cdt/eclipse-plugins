@@ -7,6 +7,6 @@ instructions.configure=\
 # The pc.name should define both the new and the old feature names, followed
 # by `.feature.group`.
 # The pc.namespace seems fixed to `org.eclipse.equinox.p2.iu`.
-update.matchExp=providedCapabilities.exists(pc | pc.namespace == 'org.eclipse.equinox.p2.iu' && (pc.name == 'org.eclipse.embedcdt.debug.gdbjtag.jumper.group' || pc.name == 'ilg.gnumcueclipse.debug.gdbjtag.jumper.feature.group'))
+update.matchExp=providedCapabilities.exists(pc | pc.namespace == 'org.eclipse.equinox.p2.iu' && (pc.name == 'org.eclipse.embedcdt.debug.gdbjtag.jumper.feature.group' || pc.name == 'ilg.gnumcueclipse.debug.gdbjtag.jumper.feature.feature.group'))
 
 # eof
