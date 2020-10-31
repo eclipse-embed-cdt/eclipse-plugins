@@ -67,7 +67,7 @@
 		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.restart</module>
 
 		<module>plugins/ilg.gnumcueclipse.codered</module>
-		<module>features/ilg.gnumcueclipse.codered.feature</module>
+		<module>features/org.eclipse.embedcdt.codered-feature<</module>
 
 		<module>plugins/ilg.gnumcueclipse.doc.user</module>
 		<module>features/ilg.gnumcueclipse.doc.user.feature</module>
