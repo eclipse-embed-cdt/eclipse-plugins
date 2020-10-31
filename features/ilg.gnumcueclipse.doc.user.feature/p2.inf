@@ -4,4 +4,8 @@ instructions.configure=\
  org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:https${#58}//download.eclipse.org/embed-cdt/updates/neon,type:0,name:Eclipse Embedded CDT Plug-ins);\
  org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:https${#58}//download.eclipse.org/embed-cdt/updates/neon,type:1,name:Eclipse Embedded CDT Plug-ins);
      
+# The pc.name should define both the new and the old feature names.
+# The pc.namespace seems fixed.
+update.matchExp=providedCapabilities.exists(pc | pc.namespace == 'org.eclipse.equinox.p2.iu' && (pc.name == 'org.eclipse.embedcdt.doc.user.feature' || pc.name == 'ilg.gnumcueclipse.doc.user.feature'))
+
 # eof

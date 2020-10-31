@@ -45,7 +45,7 @@
    <feature id="ilg.gnumcueclipse.packs.feature">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.doc.user.feature">
+   <feature id="org.eclipse.embedcdt.doc.user.feature">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
    <feature id="ilg.gnumcueclipse.templates.ad.feature">
@@ -91,7 +91,7 @@
    <feature id="ilg.gnumcueclipse.packs.feature.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.doc.user.feature.source">
+   <feature id="org.eclipse.embedcdt.doc.user.feature.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
    <feature id="ilg.gnumcueclipse.templates.ad.feature.source">
