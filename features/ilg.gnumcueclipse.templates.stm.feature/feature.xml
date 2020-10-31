@@ -13,7 +13,7 @@
 -->
 
 <feature
-      id="ilg.gnumcueclipse.templates.stm.feature"
+      id="org.eclipse.embedcdt.templates.stm"
       label="%featureName"
       version="2.7.2.qualifier"
       provider-name="%providerName"

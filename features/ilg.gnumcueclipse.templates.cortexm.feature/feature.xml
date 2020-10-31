@@ -13,7 +13,7 @@
 -->
 
 <feature
-      id="ilg.gnumcueclipse.templates.cortexm.feature"
+      id="org.eclipse.embedcdt.templates.cortexm"
       label="%featureName"
       version="1.5.2.qualifier"
       provider-name="%providerName"

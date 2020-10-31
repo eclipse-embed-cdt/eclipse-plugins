@@ -13,7 +13,7 @@
 -->
 
 <feature
-      id="ilg.gnumcueclipse.templates.freescale.feature"
+      id="org.eclipse.embedcdt.templates.freescale"
       label="%featureName"
       version="2.3.1.qualifier"
       provider-name="%providerName"

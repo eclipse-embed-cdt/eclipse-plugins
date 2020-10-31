@@ -15,95 +15,95 @@
 
 <site>
    <category-def name="ilg.gnumcueclipse.category" label="Embedded C/C++ Cross Development Tools (incubation)"/>
-   <feature id="ilg.gnumcueclipse.managedbuild.cross.arm.feature">
+   <feature id="org.eclipse.embedcdt.managedbuild.cross.arm">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.managedbuild.cross.riscv.feature">
+   <feature id="org.eclipse.embedcdt.managedbuild.cross.riscv">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.templates.stm.feature">
+   <feature id="org.eclipse.embedcdt.templates.stm">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.templates.freescale.feature">
+   <feature id="org.eclipse.embedcdt.templates.freescale">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.templates.sifive.feature">
+   <feature id="org.eclipse.embedcdt.templates.sifive">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.debug.gdbjtag.jlink.feature">
+   <feature id="org.eclipse.embedcdt.debug.gdbjtag.jlink">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.debug.gdbjtag.openocd.feature">
+   <feature id="org.eclipse.embedcdt.debug.gdbjtag.openocd">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.feature">
+   <feature id="org.eclipse.embedcdt.debug.gdbjtag.pyocd">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.templates.cortexm.feature">
+   <feature id="org.eclipse.embedcdt.templates.cortexm">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.packs.feature">
+   <feature id="org.eclipse.embedcdt.packs">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="org.eclipse.embedcdt.doc.user.feature">
+   <feature id="org.eclipse.embedcdt.doc.user">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.templates.ad.feature">
+   <feature id="org.eclipse.embedcdt.templates.ad">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.codered.feature">
+   <feature id="org.eclipse.embedcdt.codered">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.debug.gdbjtag.qemu.feature">
+   <feature id="org.eclipse.embedcdt.debug.gdbjtag.qemu">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.debug.gdbjtag.jumper.feature">
+   <feature id="org.eclipse.embedcdt.debug.gdbjtag.jumper">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
    <category-def name="ilg.gnumcueclipse.category.source" label="Embedded C/C++ Cross Development Tools (incubation) Developer Resources"/>
-   <feature id="ilg.gnumcueclipse.managedbuild.cross.arm.feature.source">
+   <feature id="org.eclipse.embedcdt.managedbuild.cross.arm.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.managedbuild.cross.riscv.feature.source">
+   <feature id="org.eclipse.embedcdt.managedbuild.cross.riscv.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.templates.stm.feature.source">
+   <feature id="org.eclipse.embedcdt.templates.stm.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.templates.freescale.feature.source">
+   <feature id="org.eclipse.embedcdt.templates.freescale.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.templates.sifive.feature.source">
+   <feature id="org.eclipse.embedcdt.templates.sifive.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.debug.gdbjtag.jlink.feature.source">
+   <feature id="org.eclipse.embedcdt.debug.gdbjtag.jlink.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.debug.gdbjtag.openocd.feature.source">
+   <feature id="org.eclipse.embedcdt.debug.gdbjtag.openocd.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.feature.source">
+   <feature id="org.eclipse.embedcdt.debug.gdbjtag.pyocd.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.templates.cortexm.feature.source">
+   <feature id="org.eclipse.embedcdt.templates.cortexm.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.packs.feature.source">
+   <feature id="org.eclipse.embedcdt.packs.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="org.eclipse.embedcdt.doc.user.feature.source">
+   <feature id="org.eclipse.embedcdt.doc.user.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.templates.ad.feature.source">
+   <feature id="org.eclipse.embedcdt.templates.ad.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.codered.feature.source">
+   <feature id="org.eclipse.embedcdt.codered.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.debug.gdbjtag.qemu.feature.source">
+   <feature id="org.eclipse.embedcdt.debug.gdbjtag.qemu.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
-   <feature id="ilg.gnumcueclipse.debug.gdbjtag.jumper.feature.source">
+   <feature id="org.eclipse.embedcdt.debug.gdbjtag.jumper.source">
       <category name="ilg.gnumcueclipse.category.source"/>
    </feature>
 </site>

@@ -13,7 +13,7 @@
 -->
 
 <feature
-      id="ilg.gnumcueclipse.debug.gdbjtag.qemu.feature"
+      id="org.eclipse.embedcdt.debug.gdbjtag.qemu"
       label="%featureName"
       version="3.4.2.qualifier"
       provider-name="%providerName"

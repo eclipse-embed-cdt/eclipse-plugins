@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ilg.gnumcueclipse.templates.freescale.feature</name>
+	<name>org.eclipse.embedcdt.templates.freescale-feature</name>
 	<comment></comment>
 	<projects>
 	</projects>
