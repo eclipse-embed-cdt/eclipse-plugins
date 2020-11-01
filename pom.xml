@@ -72,7 +72,7 @@
 		<module>plugins/ilg.gnumcueclipse.doc.user</module>
 		<module>features/org.eclipse.embedcdt.doc.user-feature</module>
 
-		<module>repositories/ilg.gnumcueclipse.repository</module>
+		<module>repositories/org.eclipse.embedcdt-repository</module>
 
 		<!-- Arm specific modules. -->
 		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.arm</module>

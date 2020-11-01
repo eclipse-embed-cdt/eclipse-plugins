@@ -86,7 +86,7 @@ $ mvn clean verify
 
 The result is a p2 repository:
 
-* `repositories/ilg.gnumcueclipse.repository/target/repository`
+* `repositories/org.eclipse.embedcdt-repository/target/repository`
 
 Note: in some older versions, maven complained something about local
 artefacts; in case this happens, add `-Dtycho.localArtifacts=ignore` when

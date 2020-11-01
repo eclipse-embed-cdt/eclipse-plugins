@@ -15,14 +15,14 @@ SCP="scp"
 DOWNLOAD_ROOT="/home/data/httpd/download.eclipse.org/embed-cdt"
 UPDATES_DEST="${DOWNLOAD_ROOT}/builds/${BRANCH_NAME}"
 
-VERSION=$(ls repositories/ilg.gnumcueclipse.repository/target/ilg.gnumcueclipse.repository-*.zip | sed -e 's/.*repository-\([0-9]*[.][0-9]*[.][0-9]*\)-\(.*\)[.]zip/\1/')
-NUMDATE=$(ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins/ilg.gnumcueclipse.core_*.jar | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
+VERSION=$(ls repositories/org.eclipse.embedcdt-repository/target/ilg.gnumcueclipse.repository-*.zip | sed -e 's/.*repository-\([0-9]*[.][0-9]*[.][0-9]*\)-\(.*\)[.]zip/\1/')
+NUMDATE=$(ls repositories/org.eclipse.embedcdt-repository/target/repository/plugins/ilg.gnumcueclipse.core_*.jar | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
 
 ARCHIVE_NAME="ilg.gnumcueclipse.repository-${VERSION}-${NUMDATE}"
 
-ls -lA repositories/ilg.gnumcueclipse.repository/target
-ls repositories/ilg.gnumcueclipse.repository/target/repository/features
-ls repositories/ilg.gnumcueclipse.repository/target/repository/plugins
+ls -lA repositories/org.eclipse.embedcdt-repository/target
+ls repositories/org.eclipse.embedcdt-repository/target/repository/features
+ls repositories/org.eclipse.embedcdt-repository/target/repository/plugins
 
 ${SSH} /bin/bash -x << _EOF_
 rm -rvf "${UPDATES_DEST}-temp"
@@ -31,7 +31,7 @@ mkdir -pv "${UPDATES_DEST}-temp/p2"
 _EOF_
 
 (
-  cd "repositories/ilg.gnumcueclipse.repository/target"
+  cd "repositories/org.eclipse.embedcdt-repository/target"
 
   if [ -f "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" ]
   then
