@@ -31,7 +31,7 @@
    </license>
 
    <plugin
-         id="ilg.gnumcueclipse.doc.user"
+         id="org.eclipse.embedcdt.doc.user"
          download-size="0"
          install-size="0"
          version="0.0.0"
