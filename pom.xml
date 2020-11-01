@@ -69,7 +69,7 @@
 		<module>plugins/ilg.gnumcueclipse.codered</module>
 		<module>features/org.eclipse.embedcdt.codered-feature</module>
 
-		<module>plugins/ilg.gnumcueclipse.doc.user</module>
+		<module>plugins/org.eclipse.embedcdt.doc.user</module>
 		<module>features/org.eclipse.embedcdt.doc.user-feature</module>
 
 		<module>repositories/org.eclipse.embedcdt-repository</module>
