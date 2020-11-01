@@ -23,8 +23,8 @@
 	<packaging>eclipse-repository</packaging>
 
 	<parent>
-		<groupId>ilg.gnumcueclipse</groupId>
-		<artifactId>ilg.gnumcueclipse.parent</artifactId>
+		<groupId>org.eclipse.embedcdt</groupId>
+		<artifactId>org.eclipse.embedcdt.parent</artifactId>
 		<version>5.2.1-SNAPSHOT</version>
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
