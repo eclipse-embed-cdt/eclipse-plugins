@@ -294,6 +294,7 @@
 		</profile>
 	</profiles>
 
-	<name>Eclipse Embedded CDT parent</name>
+	<name>Eclipse Embedded CDT Parent</name>
+	
 	<url>https://www.eclipse.org/embed-cdt</url>
 </project>

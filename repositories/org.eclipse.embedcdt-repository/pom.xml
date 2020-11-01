@@ -30,6 +30,7 @@
 	</parent>
 
 	<!-- This name is visible in the list of update sites. -->
-	<name>Eclipse Embedded CDT Repository</name>
+	<name>Eclipse Embedded CDT repository</name>
+	
 	<url>https://www.eclipse.org/embed-cdt</url>
 </project>
