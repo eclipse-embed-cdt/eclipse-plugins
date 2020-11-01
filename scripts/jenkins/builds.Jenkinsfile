@@ -33,7 +33,7 @@ pipeline {
         success {
             // if/when tests are added, the results can be collected by uncommenting the next line
             // junit '*/*/target/surefire-reports/*.xml'
-            archiveArtifacts 'repositories/org.eclipse.embedcdt-repository/target/ilg.gnumcueclipse.repository-*.zip'
+            archiveArtifacts 'repositories/org.eclipse.embedcdt-repository/target/org.eclipse.embedcdt.repository-*.zip'
         }
     }
 }

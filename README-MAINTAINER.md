@@ -22,7 +22,7 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- https://download.eclipse.org/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip
+- https://download.eclipse.org/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip
 - https://download.eclipse.org/embed-cdt/releases/5.2.1/p2/
 
 Packages are published at:
@@ -274,19 +274,19 @@ The public update URLs are:
 <p>For manual installs, the plug-ins are also available as regular archives, that can be downloaded locally and installed.</p>
 
 <ul>
-	<li><a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip">ilg.gnumcueclipse.repository-5.2.1-202010292017.zip</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip.sha">(SHA)</a></li>
+	<li><a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip">org.eclipse.embedcdt.repository-5.2.1-202010292017.zip</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip.sha">(SHA)</a></li>
 </ul>
 ```
 
 As links for the latest two, open https://download.eclipse.org/embed-cdt/releases/ and get something like:
 
-- https://download.eclipse.org/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip
-- https://download.eclipse.org/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip.sha
+- https://download.eclipse.org/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip
+- https://download.eclipse.org/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip.sha
 
 Update the URLs to use the download redirect:
 
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/ilg.gnumcueclipse.repository-5.2.1-202010292017.zip.sha
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip.sha
 
 Remove the _Pre-release_ top header.
 

@@ -15,10 +15,10 @@ SCP="scp"
 DOWNLOAD_ROOT="/home/data/httpd/download.eclipse.org/embed-cdt"
 UPDATES_DEST="${DOWNLOAD_ROOT}/builds/${BRANCH_NAME}"
 
-VERSION=$(ls repositories/org.eclipse.embedcdt-repository/target/ilg.gnumcueclipse.repository-*.zip | sed -e 's/.*repository-\([0-9]*[.][0-9]*[.][0-9]*\)-\(.*\)[.]zip/\1/')
+VERSION=$(ls repositories/org.eclipse.embedcdt-repository/target/org.eclipse.embedcdt.repository-*.zip | sed -e 's/.*repository-\([0-9]*[.][0-9]*[.][0-9]*\)-\(.*\)[.]zip/\1/')
 NUMDATE=$(ls repositories/org.eclipse.embedcdt-repository/target/repository/plugins/ilg.gnumcueclipse.core_*.jar | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
 
-ARCHIVE_NAME="ilg.gnumcueclipse.repository-${VERSION}-${NUMDATE}"
+ARCHIVE_NAME="org.eclipse.embedcdt.repository-${VERSION}-${NUMDATE}"
 
 ls -lA repositories/org.eclipse.embedcdt-repository/target
 ls repositories/org.eclipse.embedcdt-repository/target/repository/features
@@ -33,10 +33,10 @@ _EOF_
 (
   cd "repositories/org.eclipse.embedcdt-repository/target"
 
-  if [ -f "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" ]
+  if [ -f "org.eclipse.embedcdt.repository-${VERSION}-SNAPSHOT.zip" ]
   then
     # Rename the SNAPSHOT part to the actual timestamp.
-    mv -v "ilg.gnumcueclipse.repository-${VERSION}-SNAPSHOT.zip" "${ARCHIVE_NAME}.zip" 
+    mv -v "org.eclipse.embedcdt.repository-${VERSION}-SNAPSHOT.zip" "${ARCHIVE_NAME}.zip" 
   fi
 
   ${SCP} -v "${ARCHIVE_NAME}.zip" "${SSHUSER}:${UPDATES_DEST}-temp/${ARCHIVE_NAME}.zip"
