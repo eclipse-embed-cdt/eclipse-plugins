@@ -32,5 +32,5 @@
 	<!-- This name is visible in the list of update sites. -->
 	<name>Eclipse Embedded CDT repository</name>
 	
-	<url>https://www.eclipse.org/embed-cdt</url>
+	<url>https://projects.eclipse.org/projects/iot.embed-cdt/</url>
 </project>
