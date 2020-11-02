@@ -431,7 +431,7 @@
 			type="ilg.gnumcueclipse.templates.core.SetPropertyToPluginResource">
 			<simple
 				name="pluginId"
-				value="ilg.gnumcueclipse.templates.core" />
+				value="org.eclipse.embedcdt.templates.core" />
 			<simple
 				name="relativePath"
 				value="templates/common" />

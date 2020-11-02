@@ -15,4 +15,4 @@
 ###############################################################################
 
 # Control if trace messages are shown.
-ilg.gnumcueclipse.templates.core/debug=false
+org.eclipse.embedcdt.templates.core/debug=false

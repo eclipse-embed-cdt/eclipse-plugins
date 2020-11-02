@@ -30,7 +30,7 @@ public class WizardPage extends MBSCustomPage {
 	private Composite composite;
 
 	public WizardPage() {
-		pageID = "ilg.gnumcueclipse.templates.freescale.pe.ui.WizardPage";
+		pageID = "org.eclipse.embedcdt.templates.freescale.pe.ui.WizardPage";
 	}
 
 	@Override

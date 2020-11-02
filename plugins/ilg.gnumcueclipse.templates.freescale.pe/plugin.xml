@@ -17,14 +17,14 @@
 	<extension point="org.eclipse.cdt.core.templates">
 		<template
 			filterPattern=".*gcc"
-			id="ilg.gnumcueclipse.templates.freescale.pe.pex.c.project"
+			id="org.eclipse.embedcdt.templates.freescale.pe.pex.c.project"
 			location="$nl$/templates/pex_c_project/template.xml"
 			projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
 		</template>
 	</extension>
 
 	<extension point="org.eclipse.cdt.core.templateAssociations">
-		<template id="ilg.gnumcueclipse.templates.freescale.pe.pex.c.project">
+		<template id="org.eclipse.embedcdt.templates.freescale.pe.pex.c.project">
 			<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
 			</toolChain>
 		</template>
@@ -34,7 +34,7 @@
    <extension
          point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
       <wizardPage
-            ID="ilg.gnumcueclipse.templates.freescale.pe.wizardPage"
+            ID="org.eclipse.embedcdt.templates.freescale.pe.wizardPage"
             operationClass="ilg.gnumcueclipse.templates.freescale.pe.ui.WizardPageOperation"
             pageClass="ilg.gnumcueclipse.templates.freescale.pe.ui.WizardPage">
          <nature

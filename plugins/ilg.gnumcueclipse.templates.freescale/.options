@@ -13,4 +13,4 @@
 ###############################################################################
 
 # Control if trace messages are shown.
-ilg.gnumcueclipse.templates.freescale/debug=false
+org.eclipse.embedcdt.templates.freescale/debug=false

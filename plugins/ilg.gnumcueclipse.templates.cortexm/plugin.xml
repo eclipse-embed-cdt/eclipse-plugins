@@ -17,13 +17,13 @@
 	<extension point="org.eclipse.cdt.core.templates">
 		<template
 			filterPattern=".*g[c\+][c\+]"
-			id="ilg.gnumcueclipse.templates.cortexm.c.project"
+			id="org.eclipse.embedcdt.templates.cortexm.c.project"
 			location="$nl$/templates/cortexm_project/template.xml"
 			projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
 		</template>
 	</extension>
 	<extension point="org.eclipse.cdt.core.templateAssociations">
-		<template id="ilg.gnumcueclipse.templates.cortexm.c.project">
+		<template id="org.eclipse.embedcdt.templates.cortexm.c.project">
 			<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
 			</toolChain>
 		</template>

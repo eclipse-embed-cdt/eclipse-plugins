@@ -24,9 +24,9 @@ ilg.gnumcueclipse.packs.core/debug=true
 ilg.gnumcueclipse.packs.data/debug=true
 ilg.gnumcueclipse.packs.ui/debug=true
 
-ilg.gnumcueclipse.templates.ad/debug=true
-ilg.gnumcueclipse.templates.core/debug=true
-ilg.gnumcueclipse.templates.cortexm/debug=true
-ilg.gnumcueclipse.templates.freescale/debug=true
-ilg.gnumcueclipse.templates.freescale.pe/debug=true
-ilg.gnumcueclipse.templates.stm/debug=true
+org.eclipse.embedcdt.templates.ad/debug=true
+org.eclipse.embedcdt.templates.core/debug=true
+org.eclipse.embedcdt.templates.cortexm/debug=true
+org.eclipse.embedcdt.templates.freescale/debug=true
+org.eclipse.embedcdt.templates.freescale.pe/debug=true
+org.eclipse.embedcdt.templates.stm/debug=true

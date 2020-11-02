@@ -13,4 +13,4 @@
 ###############################################################################
 
 # Control if trace messages are shown.
-ilg.gnumcueclipse.templates.sifive/debug=false
+org.eclipse.embedcdt.templates.sifive/debug=false

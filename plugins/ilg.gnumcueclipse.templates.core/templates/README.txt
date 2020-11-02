@@ -8,7 +8,7 @@ To access them, each template must get the full path to this folder:
 
 		<process
 			type="ilg.gnumcueclipse.templates.core.SetPropertyToPluginResource">
-			<simple name="pluginId" value="ilg.gnumcueclipse.templates.core" />
+			<simple name="pluginId" value="org.eclipse.embedcdt.templates.core" />
 			<simple name="relativePath" value="templates/common" />
 			<simple name="propertyName" value="commonDir" />
 		</process>
