@@ -78,22 +78,22 @@
 		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.arm</module>
 		<module>features/org.eclipse.embedcdt.managedbuild.cross.arm-feature</module>
 
-		<module>plugins/ilg.gnumcueclipse.templates.core</module>
-		<module>plugins/ilg.gnumcueclipse.templates.cortexm</module>
+		<module>plugins/org.eclipse.embedcdt.templates.core</module>
+		<module>plugins/org.eclipse.embedcdt.templates.cortexm</module>
 		<module>features/org.eclipse.embedcdt.templates.cortexm-feature</module>
-		<module>plugins/ilg.gnumcueclipse.templates.stm</module>
+		<module>plugins/org.eclipse.embedcdt.templates.stm</module>
 		<module>features/org.eclipse.embedcdt.templates.stm-feature</module>
-		<module>plugins/ilg.gnumcueclipse.templates.freescale</module>
-		<module>plugins/ilg.gnumcueclipse.templates.freescale.pe</module>
+		<module>plugins/org.eclipse.embedcdt.templates.freescale</module>
+		<module>plugins/org.eclipse.embedcdt.templates.freescale.pe</module>
 		<module>features/org.eclipse.embedcdt.templates.freescale-feature</module>
-		<module>plugins/ilg.gnumcueclipse.templates.ad</module>
+		<module>plugins/org.eclipse.embedcdt.templates.ad</module>
 		<module>features/org.eclipse.embedcdt.templates.ad-feature</module>
 
 		<!-- RISC-V specific modules. -->
 		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.riscv</module>
 		<module>features/org.eclipse.embedcdt.managedbuild.cross.riscv-feature</module>
 
-		<module>plugins/ilg.gnumcueclipse.templates.sifive</module>
+		<module>plugins/org.eclipse.embedcdt.templates.sifive</module>
 		<module>features/org.eclipse.embedcdt.templates.sifive-feature</module>
 		
 	</modules>

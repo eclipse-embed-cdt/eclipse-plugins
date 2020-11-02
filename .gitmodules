@@ -1,39 +1,39 @@
-[submodule "plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace"]
-	path = plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace
+[submodule "plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace"]
+	path = plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace
 	url = https://github.com/micro-os-plus/diag-trace-xpack.git
 	branch = xpack
-[submodule "plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup"]
-	path = plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup
+[submodule "plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup"]
+	path = plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup
 	url = https://github.com/micro-os-plus/startup-xpack.git
 	branch = xpack
-[submodule "plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-c-libs"]
-	path = plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-c-libs
+[submodule "plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-c-libs"]
+	path = plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-c-libs
 	url = https://github.com/micro-os-plus/c-libs-xpack.git
 	branch = xpack
-[submodule "plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-cpp-libs"]
-	path = plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-cpp-libs
+[submodule "plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-cpp-libs"]
+	path = plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-cpp-libs
 	url = https://github.com/micro-os-plus/cpp-libs-xpack.git
 	branch = xpack
-[submodule "plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-riscv-arch"]
-	path = plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-riscv-arch
+[submodule "plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-riscv-arch"]
+	path = plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-riscv-arch
 	url = https://github.com/micro-os-plus/riscv-arch-xpack.git
 	branch = xpack
-[submodule "plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board"]
-	path = plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
+[submodule "plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board"]
+	path = plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
 	url = https://github.com/micro-os-plus/sifive-hifive1-board-xpack.git
 	branch = xpack
-[submodule "plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-templates"]
-	path = plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-templates
+[submodule "plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-templates"]
+	path = plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-templates
 	url = https://github.com/micro-os-plus/sifive-templates-xpack.git
 	branch = xpack
-[submodule "plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-devices"]
-	path = plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-devices
+[submodule "plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-devices"]
+	path = plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-devices
 	url = https://github.com/micro-os-plus/sifive-devices-xpack.git
 	branch = xpack
-[submodule "plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-arty-boards"]
-	path = plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-arty-boards
+[submodule "plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-arty-boards"]
+	path = plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-arty-boards
 	url = https://github.com/micro-os-plus/sifive-arty-boards-xpack.git
 	branch = xpack
-[submodule "plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting"]
-	path = plugins/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting
+[submodule "plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting"]
+	path = plugins/org.eclipse.embedcdt.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting
 	url = https://ilg-ul@github.com/micro-os-plus/semihosting-xpack.git

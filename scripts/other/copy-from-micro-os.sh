@@ -13,7 +13,7 @@ src=../../../uOS/micro-os-plus-iii.git/packages
 
 # -----------------------------------------------------------------------------
 
-system=../ilg.gnumcueclipse.templates.core/templates/common/system
+system=../org.eclipse.embedcdt.templates.core/templates/common/system
 
 rm -rf $system
 
@@ -52,7 +52,7 @@ cp -nv $src/architectures/arm/cortexm.pack/src/newlib/_write.c $system/src
 
 # -----------------------------------------------------------------------------
 
-lds=../ilg.gnumcueclipse.templates.core/templates/common/ldscripts
+lds=../org.eclipse.embedcdt.templates.core/templates/common/ldscripts
 
 # link scripts
 rm -rf $lds
@@ -62,7 +62,7 @@ cp -nv $src/architectures/arm/cortexm.pack/ldscripts/*.ld $lds
 
 # -----------------------------------------------------------------------------
 
-stm=../ilg.gnumcueclipse.templates.stm/templates/micro-os-plus
+stm=../org.eclipse.embedcdt.templates.stm/templates/micro-os-plus
 
 # stm32f0 cmsis
 echo
@@ -144,7 +144,7 @@ cp -Rnv $src/vendors/stm/stm32f3-stdperiph.pack/* $stm/stm32f3-stdperiph.pack
 
 # Freescale
 vendor=freescale
-vendor_dest=../ilg.gnumcueclipse.templates.freescale/templates/micro-os-plus
+vendor_dest=../org.eclipse.embedcdt.templates.freescale/templates/micro-os-plus
 
 # klxx cmsis
 cmsis=klxx
