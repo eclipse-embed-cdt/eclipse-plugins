@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.templates.cortexm;singleton:=true
 Bundle-Version: 1.5.2.qualifier
-Bundle-Activator: org.eclipse.embedcdt.templates.cortexm.Activator
+Bundle-Activator: ilg.gnumcueclipse.templates.cortexm.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.embedcdt.templates.core,
  org.eclipse.cdt.core;bundle-version="6.2.0",
