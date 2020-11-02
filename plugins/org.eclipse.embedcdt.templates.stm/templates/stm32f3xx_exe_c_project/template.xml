@@ -347,7 +347,7 @@
 		evaluation order. Without it, processes are evaluated after all ifs. -->
 
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.SetPropertyIfHasNature">
+		<process type="org.eclipse.embedcdt.templates.core.SetPropertyIfHasNature">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -372,7 +372,7 @@
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.SetPropertyToPluginResource">
+			type="org.eclipse.embedcdt.templates.core.SetPropertyToPluginResource">
 			<simple
 				name="pluginId"
 				value="org.eclipse.embedcdt.templates.core" />
@@ -384,7 +384,7 @@
 				value="commonDir" />
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -399,7 +399,7 @@
 				value="$(STM32F3chipFamily)" />
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -414,7 +414,7 @@
 				value="$(STM32F3content)" />
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -429,7 +429,7 @@
 				value="$(STM32F3hseValue)" />
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -444,7 +444,7 @@
 				value="stm32f30x" />
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -612,7 +612,7 @@
 
 	<if condition="$(content)==blinky">
 		<!-- main.c - retarget/semihosting/none - blinky -->
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -633,7 +633,7 @@
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAppendCreate">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAppendCreate">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -776,7 +776,7 @@
 			</complex-array>
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -809,7 +809,7 @@
 			</complex-array>
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -831,7 +831,7 @@
 			</complex-array>
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -852,7 +852,7 @@
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAppendCreate">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAppendCreate">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -922,7 +922,7 @@
 
 	<if condition="$(content)==empty">
 		<!-- main.c - retarget/semihosting/none - empty -->
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -943,7 +943,7 @@
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAppendCreate">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAppendCreate">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1022,7 +1022,7 @@
 	</if>
 
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1049,7 +1049,7 @@
 
 	<!-- CMSIS files -->
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1080,7 +1080,7 @@
 	<!-- Vendor CMSIS files -->
 	<if condition="$(STM32F3chipFamily)==STM32F30X">
 		<!-- Copy all vendor CMSIS files -->
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1121,7 +1121,7 @@
 	</if>
 	<if condition="$(STM32F3chipFamily)==STM32F37X">
 		<!-- Copy all vendor CMSIS files -->
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1161,7 +1161,7 @@
 		</process>
 	</if>
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1188,7 +1188,7 @@
 
 	<!-- System files -->
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.AddAbsolutePathFiles">
+		<process type="org.eclipse.embedcdt.templates.core.AddAbsolutePathFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1209,7 +1209,7 @@
 	</if>
 
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.AddAbsolutePathFiles">
+		<process type="org.eclipse.embedcdt.templates.core.AddAbsolutePathFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1230,7 +1230,7 @@
 	</if>
 
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.AddAbsolutePathFiles">
+		<process type="org.eclipse.embedcdt.templates.core.AddAbsolutePathFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1251,7 +1251,7 @@
 	</if>
 
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1275,7 +1275,7 @@
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1299,7 +1299,7 @@
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.AddAbsolutePathFiles">
+		<process type="org.eclipse.embedcdt.templates.core.AddAbsolutePathFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1317,7 +1317,7 @@
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1348,7 +1348,7 @@
 	<!-- Peripheral library -->
 	<if condition="$(STM32F3chipFamily)==STM32F30X">
 		<!-- Copy all folders in peripheral library -->
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1389,7 +1389,7 @@
 	</if>
 	<if condition="$(STM32F3chipFamily)==STM32F37X">
 		<!-- Copy all folders in peripheral library -->
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1492,7 +1492,7 @@
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.AddAbsolutePathFiles">
+		<process type="org.eclipse.embedcdt.templates.core.AddAbsolutePathFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1552,7 +1552,7 @@
 	<!-- Global options -->
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1592,7 +1592,7 @@
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1746,7 +1746,7 @@
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1796,7 +1796,7 @@
 
 	<if condition="$(useOg)==true">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1824,7 +1824,7 @@
 
 	<if condition="$(useOg)!=true">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1852,7 +1852,7 @@
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1880,7 +1880,7 @@
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1908,7 +1908,7 @@
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1958,7 +1958,7 @@
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2089,7 +2089,7 @@
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2218,7 +2218,7 @@
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2246,7 +2246,7 @@
 
 	<if condition="$(useNano)==true">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2274,7 +2274,7 @@
 
 	<if condition="$(useLto)==true">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2305,7 +2305,7 @@
 	<!-- Macro definitions -->
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2347,7 +2347,7 @@
 
 	<if condition="$(syscalls)==semihosting">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2376,7 +2376,7 @@
 	<if condition="$(trace)!=NONE">
 		<!-- Define TRACE only if one of the devices is selected -->
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2404,7 +2404,7 @@
 
 	<if condition="$(trace)==ITM">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2431,7 +2431,7 @@
 	</if>
 	<if condition="$(trace)==STDOUT">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2458,7 +2458,7 @@
 	</if>
 	<if condition="$(trace)==DEBUG">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2486,7 +2486,7 @@
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />

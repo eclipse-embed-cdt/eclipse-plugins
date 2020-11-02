@@ -7,7 +7,7 @@ To access them, each template must get the full path to this folder:
 			mandatory="true" hidden="true" default="commonDir" persist="false" />
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.SetPropertyToPluginResource">
+			type="org.eclipse.embedcdt.templates.core.SetPropertyToPluginResource">
 			<simple name="pluginId" value="org.eclipse.embedcdt.templates.core" />
 			<simple name="relativePath" value="templates/common" />
 			<simple name="propertyName" value="commonDir" />
@@ -15,7 +15,7 @@ To access them, each template must get the full path to this folder:
 
 A sample process to copy files is:
 
-	<process type="ilg.gnumcueclipse.templates.core.AddAbsolutePathFiles">
+	<process type="org.eclipse.embedcdt.templates.core.AddAbsolutePathFiles">
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
 			<element>

@@ -191,7 +191,7 @@
 	<!-- Global options -->
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -231,7 +231,7 @@
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -385,7 +385,7 @@
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -435,7 +435,7 @@
 
 	<if condition="$(useOg)==true">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -463,7 +463,7 @@
 
 	<if condition="$(useOg)!=true">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -491,7 +491,7 @@
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -519,7 +519,7 @@
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -569,7 +569,7 @@
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -622,7 +622,7 @@
 			</complex-array>
 		</process>
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -725,7 +725,7 @@
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -854,7 +854,7 @@
 
 	<if condition="$(useNano)==true">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -885,7 +885,7 @@
 	<!-- Macro definitions -->
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />

@@ -357,7 +357,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	<!-- ================================================================== -->
 
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.SetPropertyIfHasNature">
+		<process type="org.eclipse.embedcdt.templates.core.SetPropertyIfHasNature">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -382,7 +382,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.SetPropertyToPluginResource">
+			type="org.eclipse.embedcdt.templates.core.SetPropertyToPluginResource">
 			<simple
 				name="pluginId"
 				value="org.eclipse.embedcdt.templates.core" />
@@ -394,7 +394,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="commonDir" />
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -409,7 +409,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(KLchipFamily)" />
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -424,7 +424,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(KLcontent)" />
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -439,7 +439,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(KLxtalValue)" />
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -456,7 +456,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	</if>
 
 	<if condition="$(KLchipFamily)==MKL25Z4">
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -470,7 +470,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				name="propertyValue"
 				value="kl25-sc" />
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -487,7 +487,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	</if>
 
 	<if condition="$(KLchipFamily)==MKL46Z4">
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -501,7 +501,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				name="propertyValue"
 				value="kl46-sc" />
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -668,7 +668,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<if condition="$(content)==blinky">
 		<!-- main.c - retarget/semihosting/none - blinky -->
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -689,7 +689,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAppendCreate">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAppendCreate">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -821,7 +821,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 			</complex-array>
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -854,7 +854,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 			</complex-array>
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -876,7 +876,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 			</complex-array>
 		</process>
 
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -897,7 +897,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAppendCreate">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAppendCreate">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -967,7 +967,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<if condition="$(content)==empty">
 		<!-- main.c - retarget/semihosting/none - empty -->
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -988,7 +988,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAppendCreate">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAppendCreate">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1070,7 +1070,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<!-- CMSIS files -->
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1101,7 +1101,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	<!-- Vendor CMSIS files -->
 	<if condition="1==1">
 		<!-- Copy all vendor CMSIS files -->
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1139,7 +1139,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1166,7 +1166,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<!-- System files -->
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.AddAbsolutePathFiles">
+		<process type="org.eclipse.embedcdt.templates.core.AddAbsolutePathFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1187,7 +1187,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	</if>
 
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.AddAbsolutePathFiles">
+		<process type="org.eclipse.embedcdt.templates.core.AddAbsolutePathFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1208,7 +1208,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	</if>
 
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.AddAbsolutePathFiles">
+		<process type="org.eclipse.embedcdt.templates.core.AddAbsolutePathFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1229,7 +1229,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	</if>
 
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1253,7 +1253,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1277,7 +1277,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.AddAbsolutePathFiles">
+		<process type="org.eclipse.embedcdt.templates.core.AddAbsolutePathFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1295,7 +1295,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1326,7 +1326,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	<!-- Peripheral library -->
 	<if condition="1==1">
 		<!-- Copy all folders in peripheral library -->
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1477,7 +1477,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	</if>
 
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.AddAbsolutePathFiles">
+		<process type="org.eclipse.embedcdt.templates.core.AddAbsolutePathFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1537,7 +1537,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	<!-- Global options -->
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1577,7 +1577,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1731,7 +1731,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1781,7 +1781,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<if condition="$(useOg)==true">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1809,7 +1809,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<if condition="$(useOg)!=true">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1837,7 +1837,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1865,7 +1865,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1893,7 +1893,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -1943,7 +1943,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2074,7 +2074,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2203,7 +2203,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 		</process>
 
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2231,7 +2231,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<if condition="$(useNano)==true">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2259,7 +2259,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<if condition="$(useLto)==true">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2290,7 +2290,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	<!-- Macro definitions -->
 	<if condition="1==1">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2318,7 +2318,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<if condition="$(syscalls)==semihosting">
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -2347,7 +2347,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	<if condition="$(trace)!=NONE">
 		<!-- Define TRACE only if one of the devices is selected -->
 		<process
-			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
