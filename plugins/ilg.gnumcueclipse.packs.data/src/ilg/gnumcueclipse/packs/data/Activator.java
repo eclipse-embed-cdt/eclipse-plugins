@@ -27,7 +27,7 @@ public class Activator extends AbstractActivator {
 	// ------------------------------------------------------------------------
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "ilg.gnumcueclipse.packs.data"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.embedcdt.packs.data"; //$NON-NLS-1$
 
 	@Override
 	public String getBundleId() {

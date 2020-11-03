@@ -5,7 +5,7 @@ Bundle-SymbolicName: ilg.gnumcueclipse.managedbuild.cross.arm;singleton:=true
 Bundle-Version: 2.7.3.qualifier
 Bundle-Activator: ilg.gnumcueclipse.managedbuild.cross.arm.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
- ilg.gnumcueclipse.packs.core,
+ org.eclipse.embedcdt.packs.core,
  org.eclipse.embedcdt.debug.core,
  ilg.gnumcueclipse.managedbuild.cross,
  org.eclipse.cdt.core;bundle-version="6.2.0",

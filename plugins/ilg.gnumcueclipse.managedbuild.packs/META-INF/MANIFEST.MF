@@ -5,8 +5,8 @@ Bundle-SymbolicName: ilg.gnumcueclipse.managedbuild.packs;singleton:=true
 Bundle-Version: 1.3.4.qualifier
 Bundle-Activator: ilg.gnumcueclipse.managedbuild.packs.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
- ilg.gnumcueclipse.packs.core,
- ilg.gnumcueclipse.packs.data,
+ org.eclipse.embedcdt.packs.core,
+ org.eclipse.embedcdt.packs.data,
  org.eclipse.cdt.core;bundle-version="6.2.0",
  org.eclipse.cdt.managedbuilder.core;bundle-version="8.4.0",
  org.eclipse.cdt.managedbuilder.ui;bundle-version="9.0.0",

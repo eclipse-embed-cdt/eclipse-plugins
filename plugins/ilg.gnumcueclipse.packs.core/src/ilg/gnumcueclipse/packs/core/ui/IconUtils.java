@@ -22,7 +22,7 @@ import ilg.gnumcueclipse.packs.core.tree.Node;
 
 public class IconUtils {
 
-	public static final String ICONS_PLUGIN_ID = "ilg.gnumcueclipse.packs.core";
+	public static final String ICONS_PLUGIN_ID = "org.eclipse.embedcdt.packs.core";
 
 	public static Image getBookIcon(Leaf node) {
 

@@ -3,7 +3,7 @@
 <schema targetNamespace="ilg.gnumcueclipse.packs.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ilg.gnumcueclipse.packs.core" id="data" name="CMSIS Packs Data Manager"/>
+         <meta.schema plugin="ilg.gnumcueclipse.packs.core" id="ilg.gnumcueclipse.packs.core.data" name="CMSIS Packs Data Manager"/>
       </appinfo>
       <documentation>
          This extension point provides decoupled access to the CMSIS Packs data manager from the managed build and the debug plug-ins.

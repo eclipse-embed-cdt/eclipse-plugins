@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
-Bundle-SymbolicName: ilg.gnumcueclipse.packs.core;singleton:=true
+Bundle-SymbolicName: org.eclipse.embedcdt.packs.core;singleton:=true
 Bundle-Version: 2.4.3.qualifier
 Bundle-Activator: ilg.gnumcueclipse.packs.core.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
-Bundle-SymbolicName: ilg.gnumcueclipse.packs.data;singleton:=true
+Bundle-SymbolicName: org.eclipse.embedcdt.packs.data;singleton:=true
 Bundle-Version: 2.4.2.qualifier
 Bundle-Activator: ilg.gnumcueclipse.packs.data.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -12,7 +12,7 @@ Export-Package: ilg.gnumcueclipse.packs.cmsis,
  ilg.gnumcueclipse.packs.data,
  ilg.gnumcueclipse.packs.xcdl
 Require-Bundle: ilg.gnumcueclipse.core,
- ilg.gnumcueclipse.packs.core,
+ org.eclipse.embedcdt.packs.core,
  org.eclipse.core.jobs;bundle-version="3.8.0",
  org.eclipse.core.resources;bundle-version="3.11.1",
  org.eclipse.core.runtime;bundle-version="3.12.0",

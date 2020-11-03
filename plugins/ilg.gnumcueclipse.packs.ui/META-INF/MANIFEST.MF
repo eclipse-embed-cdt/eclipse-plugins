@@ -1,13 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
-Bundle-SymbolicName: ilg.gnumcueclipse.packs.ui;singleton:=true
+Bundle-SymbolicName: org.eclipse.embedcdt.packs.ui;singleton:=true
 Bundle-Version: 1.4.2.qualifier
 Bundle-Activator: ilg.gnumcueclipse.packs.ui.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
- ilg.gnumcueclipse.packs.core,
- ilg.gnumcueclipse.packs.data,
- ilg.gnumcueclipse.packs,
+ org.eclipse.embedcdt.packs.core,
+ org.eclipse.embedcdt.packs.data,
+ org.eclipse.embedcdt.packs,
  org.eclipse.cdt.ui;bundle-version="6.1.0",
  org.eclipse.core.filesystem;bundle-version="1.6.1",
  org.eclipse.core.runtime;bundle-version="3.12.0",

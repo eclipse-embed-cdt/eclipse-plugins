@@ -19,10 +19,10 @@ ilg.gnumcueclipse.managedbuild.cross.riscv/debug=true
 
 ilg.gnumcueclipse.managedbuild.packs/debug=true
 
-ilg.gnumcueclipse.packs/debug=true
-ilg.gnumcueclipse.packs.core/debug=true
-ilg.gnumcueclipse.packs.data/debug=true
-ilg.gnumcueclipse.packs.ui/debug=true
+org.eclipse.embedcdt.packs/debug=true
+org.eclipse.embedcdt.packs.core/debug=true
+org.eclipse.embedcdt.packs.data/debug=true
+org.eclipse.embedcdt.packs.ui/debug=true
 
 org.eclipse.embedcdt.templates.ad/debug=true
 org.eclipse.embedcdt.templates.core/debug=true

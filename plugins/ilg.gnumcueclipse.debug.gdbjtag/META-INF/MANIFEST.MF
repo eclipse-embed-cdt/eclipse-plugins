@@ -6,7 +6,7 @@ Bundle-Version: 4.2.1.qualifier
 Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.embedcdt.debug.core,
- ilg.gnumcueclipse.packs.core,
+ org.eclipse.embedcdt.packs.core,
  org.eclipse.cdt.debug.gdbjtag.core;bundle-version="9.0.0",
  org.eclipse.cdt.managedbuilder.core;bundle-version="8.4.0",
  org.eclipse.cdt.core;bundle-version="6.2.0",

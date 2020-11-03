@@ -45,12 +45,12 @@
 
 	<extension point="org.eclipse.ui.views">
 		<category
-			id="ilg.gnumcueclipse.packs"
+			id="org.eclipse.embedcdt.packs"
 			name="%views.packs.category">
 		</category>
 		<view
 			allowMultiple="false"
-			category="ilg.gnumcueclipse.packs"
+			category="org.eclipse.embedcdt.packs"
 			class="ilg.gnumcueclipse.managedbuild.packs.ui.views.DocsView"
 			icon="icons/pdficon_small.png"
 			id="ilg.gnumcueclipse.managedbuild.packs.ui.views.DocsView"

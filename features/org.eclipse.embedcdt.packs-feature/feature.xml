@@ -32,28 +32,28 @@
    </license>
 
    <plugin
-         id="ilg.gnumcueclipse.packs"
+         id="org.eclipse.embedcdt.packs"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="ilg.gnumcueclipse.packs.core"
+         id="org.eclipse.embedcdt.packs.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="ilg.gnumcueclipse.packs.data"
+         id="org.eclipse.embedcdt.packs.data"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="ilg.gnumcueclipse.packs.ui"
+         id="org.eclipse.embedcdt.packs.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

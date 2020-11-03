@@ -15,7 +15,7 @@
 
 <plugin>
 	<extension-point
-		id="data"
+		id="ilg.gnumcueclipse.packs.core.data"
 		name="CMSIS Packs Data Manager"
 		schema="schema/packs_data.exsd" />
 
