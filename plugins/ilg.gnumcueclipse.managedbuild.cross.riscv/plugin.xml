@@ -2525,7 +2525,7 @@
 			weight="012">
 		</tab>
 	</extension>
-	<extension point="org.eclipse.embedcdt.debug.core.cprojectExtra">
+	<extension point="ilg.gnumcueclipse.debug.core.cprojectExtra">
 		<factory
 			class="ilg.gnumcueclipse.managedbuild.cross.xpi.CProjectExtraDataManagerFactory">
 		</factory>

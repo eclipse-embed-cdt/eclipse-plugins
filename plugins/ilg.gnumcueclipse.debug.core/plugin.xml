@@ -16,12 +16,12 @@
 <plugin>
 
 	<extension-point
-		id="cprojectExtra"
+		id="ilg.gnumcueclipse.debug.core.cprojectExtra"
 		name="C Project Extra Data Manager"
 		schema="schema/cproject_extra_data.exsd" />
 
 	<extension-point
-		id="svdPath"
+		id="ilg.gnumcueclipse.debug.core.svdPath"
 		name="SVD Path Manager"
 		schema="schema/svd_path.exsd" />
 

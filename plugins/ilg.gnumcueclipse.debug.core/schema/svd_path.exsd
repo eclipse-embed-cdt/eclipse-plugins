@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.embedcdt.debug.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.embedcdt.debug.core" id="svdPath" name="SVD Path Manager"/>
+         <meta.schema plugin="org.eclipse.embedcdt.debug.core" id="ilg.gnumcueclipse.debug.core.svdPath" name="SVD Path Manager"/>
       </appinfo>
       <documentation>
          This extension point provides decoupled access to a SVD file from the debug plug-ins.
