@@ -41,7 +41,7 @@ public class GlobalMcuPage extends FieldEditorPreferencePage implements IWorkben
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.debug.gdbjtag.pyocd.globalPreferencePage";
+	public static final String ID = "org.eclipse.embedcdt.debug.gdbjtag.pyocd.globalPreferencePage";
 
 	// ------------------------------------------------------------------------
 

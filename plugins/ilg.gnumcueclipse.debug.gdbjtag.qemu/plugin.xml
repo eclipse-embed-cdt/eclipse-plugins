@@ -27,7 +27,7 @@
 		<launchDelegate
 			delegate="ilg.gnumcueclipse.debug.gdbjtag.qemu.dsf.LaunchConfigurationDelegate"
 			delegateDescription="%launchDelegate.jtagDsf.description"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.core.dsfLaunchDelegate"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsfLaunchDelegate"
 			modes="debug,run"
 			name="%launchDelegate.jtagDsf.name"
 			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
@@ -46,14 +46,14 @@
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup
 			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.TabGroupLaunchConfiguration"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationTabGroup"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.launchConfigurationTabGroup"
 			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType" />
 	</extension>
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
 			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.JTagDevice"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.core.jtagdevice"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.jtagdevice"
 			name="%JTagDevice.generic.name">
 		</device>
 	</extension>
@@ -61,7 +61,7 @@
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
 			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.JTagDevice"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.core.jtagdevice"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.jtagdevice"
 			name="%JTagDevice.deprecated.name">
 		</device>
 	</extension>
@@ -76,13 +76,13 @@
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
 			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.preferences.WorkspaceMcuPage"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.workspacePreferencePage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.workspacePreferencePage"
 			name="%preferences.workspaceMcu">
 		</page>
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
 			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.preferences.GlobalMcuPage"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.globalPreferencePage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.globalPreferencePage"
 			name="%preferences.globalMcu">
 		</page>
 	</extension>
@@ -90,7 +90,7 @@
 		<page
 			category="ilg.gnumcueclipse.core.ui.properties.mcu"
 			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.properties.ProjectMcuPage"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.projectPropertiesPage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.projectPropertiesPage"
 			name="%properties.mcu">
 			<filter
 				name="projectNature"

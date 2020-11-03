@@ -41,7 +41,7 @@ public class WorkspaceMcuPage extends FieldEditorPreferencePage implements IWork
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.debug.gdbjtag.qemu.workspacePreferencePage";
+	public static final String ID = "org.eclipse.embedcdt.debug.gdbjtag.qemu.workspacePreferencePage";
 
 	// ------------------------------------------------------------------------
 

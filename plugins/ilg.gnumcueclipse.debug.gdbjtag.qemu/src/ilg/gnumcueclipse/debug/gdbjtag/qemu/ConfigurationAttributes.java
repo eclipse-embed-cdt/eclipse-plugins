@@ -16,7 +16,8 @@ package ilg.gnumcueclipse.debug.gdbjtag.qemu;
 
 public interface ConfigurationAttributes {
 
-	public static final String PREFIX = Activator.PLUGIN_ID;
+	// public static final String PREFIX = Activator.PLUGIN_ID;
+	public static final String PREFIX = "ilg.gnumcueclipse.debug.gdbjtag.qemu";
 
 	// TabDebugger
 

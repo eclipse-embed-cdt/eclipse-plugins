@@ -19,4 +19,4 @@
 ###############################################################################
 
 # Control if trace messages are shown.
-ilg.gnumcueclipse.debug.gdbjtag.jlink/debug=false
+org.eclipse.embedcdt.debug.gdbjtag.jlink/debug=false

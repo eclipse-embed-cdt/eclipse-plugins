@@ -27,7 +27,7 @@
 		<launchDelegate
 			delegate="ilg.gnumcueclipse.debug.gdbjtag.pyocd.dsf.LaunchConfigurationDelegate"
 			delegateDescription="%launchDelegate.jtagDsf.description"
-			id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.core.dsfLaunchDelegate"
+			id="org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.dsfLaunchDelegate"
 			modes="debug,run"
 			name="%launchDelegate.jtagDsf.name"
 			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
@@ -46,14 +46,14 @@
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup
 			class="ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.TabGroupLaunchConfiguration"
-			id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.launchConfigurationTabGroup"
+			id="org.eclipse.embedcdt.debug.gdbjtag.pyocd.launchConfigurationTabGroup"
 			type="ilg.gnumcueclipse.debug.gdbjtag.pyocd.launchConfigurationType" />
 	</extension>
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
 			class="ilg.gnumcueclipse.debug.gdbjtag.pyocd.JTagDevice"
-			id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.core.jtagdevice"
+			id="org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.jtagdevice"
 			name="%JTagDevice.generic.name">
 		</device>
 	</extension>
@@ -61,7 +61,7 @@
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
 			class="ilg.gnumcueclipse.debug.gdbjtag.pyocd.JTagDevice"
-			id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.core.jtagdevice"
+			id="org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.jtagdevice"
 			name="%JTagDevice.deprecated.name">
 		</device>
 	</extension>
@@ -70,13 +70,13 @@
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
 			class="ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.preferences.WorkspaceMcuPage"
-			id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.workspacePreferencePage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.pyocd.workspacePreferencePage"
 			name="%preferences.workspaceMcu">
 		</page>
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
 			class="ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.preferences.GlobalMcuPage"
-			id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.globalPreferencePage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.pyocd.globalPreferencePage"
 			name="%preferences.globalMcu">
 		</page>
 	</extension>
@@ -84,7 +84,7 @@
 		<page
 			category="ilg.gnumcueclipse.core.ui.properties.mcu"
 			class="ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.properties.ProjectMcuPage"
-			id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.projectPropertiesPage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.pyocd.projectPropertiesPage"
 			name="%properties.mcu">
 			<filter
 				name="projectNature"

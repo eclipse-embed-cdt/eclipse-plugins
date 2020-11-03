@@ -195,12 +195,12 @@ Start with _Pre-release_ (Header 3).
 
 <pre>
 features:
-ilg.gnumcueclipse.codered.feature_1.1.2.202010292017.jar
+org.eclipse.embedcdt.codered.feature_1.1.2.202010292017.jar
 ...
 org.eclipse.embedcdt.templates.stm.feature.source_2.7.2.202010292017.jar
 
 plugins:
-ilg.gnumcueclipse.codered_1.1.2.202010292017.jar
+org.eclipse.embedcdt.codered_1.1.2.202010292017.jar
 ...
 org.eclipse.embedcdt.templates.stm.source_2.7.2.202010292017.jar
 </pre>

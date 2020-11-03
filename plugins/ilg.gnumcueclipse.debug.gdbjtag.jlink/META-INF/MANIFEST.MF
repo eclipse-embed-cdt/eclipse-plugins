@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
-Bundle-SymbolicName: ilg.gnumcueclipse.debug.gdbjtag.jlink;singleton:=true
+Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag.jlink;singleton:=true
 Bundle-Version: 4.4.2.qualifier
 Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.embedcdt.debug.core,
- ilg.gnumcueclipse.debug.gdbjtag,
+ org.eclipse.embedcdt.debug.gdbjtag,
  ilg.gnumcueclipse.managedbuild.cross,
  org.eclipse.cdt.core;bundle-version="6.2.0",
  org.eclipse.cdt.debug.core;bundle-version="8.1.0",

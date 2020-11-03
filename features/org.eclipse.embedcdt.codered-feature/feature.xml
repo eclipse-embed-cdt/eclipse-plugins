@@ -17,7 +17,7 @@
       label="%featureName"
       version="1.1.2.qualifier"
       provider-name="%providerName"
-      plugin="ilg.gnumcueclipse.codered">
+      plugin="org.eclipse.embedcdt.codered">
 
    <description>
       %description
@@ -32,7 +32,7 @@
    </license>
 
    <plugin
-         id="ilg.gnumcueclipse.codered"
+         id="org.eclipse.embedcdt.codered"
          download-size="0"
          install-size="0"
          version="0.0.0"

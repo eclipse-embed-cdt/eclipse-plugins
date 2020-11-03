@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
-Bundle-SymbolicName: ilg.gnumcueclipse.codered;singleton:=true
+Bundle-SymbolicName: org.eclipse.embedcdt.codered;singleton:=true
 Bundle-Version: 1.1.2.qualifier
 Bundle-Activator: ilg.gnumcueclipse.codered.Activator
 Require-Bundle: ilg.gnumcueclipse.core,

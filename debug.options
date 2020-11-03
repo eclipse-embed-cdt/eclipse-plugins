@@ -1,17 +1,17 @@
 # Enable all debug options
-ilg.gnumcueclipse.codered/debug=true
+org.eclipse.embedcdt.codered/debug=true
 
 ilg.gnumcueclipse.core/debug=true
 
 org.eclipse.embedcdt.debug.core/debug=true
-ilg.gnumcueclipse.debug.gdbjtag/debug=true
+org.eclipse.embedcdt.debug.gdbjtag/debug=true
 
-ilg.gnumcueclipse.debug.gdbjtag.jlink/debug=true
-ilg.gnumcueclipse.debug.gdbjtag.openocd/debug=true
-ilg.gnumcueclipse.debug.gdbjtag.pyocd/debug=true
-ilg.gnumcueclipse.debug.gdbjtag.qemu/debug=true
-ilg.gnumcueclipse.debug.gdbjtag.restart/debug=true
-ilg.gnumcueclipse.debug.packs/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.jlink/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.openocd/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.pyocd/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.qemu/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.restart/debug=true
+org.eclipse.embedcdt.debug.packs/debug=true
 
 ilg.gnumcueclipse.managedbuild.cross/debug=true
 ilg.gnumcueclipse.managedbuild.cross.arm/debug=true

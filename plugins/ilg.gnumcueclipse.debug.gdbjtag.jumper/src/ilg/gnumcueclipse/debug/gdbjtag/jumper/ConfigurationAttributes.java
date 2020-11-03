@@ -16,7 +16,8 @@ package ilg.gnumcueclipse.debug.gdbjtag.jumper;
 
 public interface ConfigurationAttributes {
 
-	public static final String PREFIX = Activator.PLUGIN_ID;
+	// public static final String PREFIX = Activator.PLUGIN_ID;
+	public static final String PREFIX = "ilg.gnumcueclipse.debug.gdbjtag.jumper";
 
 	// TabDebugger
 

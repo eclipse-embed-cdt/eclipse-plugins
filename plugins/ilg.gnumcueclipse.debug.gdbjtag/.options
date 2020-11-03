@@ -13,4 +13,4 @@
 ###############################################################################
 
 # Control if trace messages are shown.
-ilg.gnumcueclipse.debug.gdbjtag/debug=false
+org.eclipse.embedcdt.debug.gdbjtag/debug=false

@@ -42,7 +42,7 @@ public class PeripheralsPage extends FieldEditorPreferencePage implements IWorkb
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.debug.gdbjtag.preferencePage.peripherals";
+	public static final String ID = "org.eclipse.embedcdt.debug.gdbjtag.preferencePage.peripherals";
 
 	// ------------------------------------------------------------------------
 

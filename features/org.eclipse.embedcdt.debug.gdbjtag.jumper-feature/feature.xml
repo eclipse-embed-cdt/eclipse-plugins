@@ -17,7 +17,7 @@
       label="%featureName"
       version="1.2.1.qualifier"
       provider-name="%providerName"
-      plugin="ilg.gnumcueclipse.debug.gdbjtag.jumper">
+      plugin="org.eclipse.embedcdt.debug.gdbjtag.jumper">
 
    <description>
       %description
@@ -32,14 +32,14 @@
    </license>
 
    <plugin
-         id="ilg.gnumcueclipse.debug.gdbjtag.jumper"
+         id="org.eclipse.embedcdt.debug.gdbjtag.jumper"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="ilg.gnumcueclipse.debug.gdbjtag.restart"
+         id="org.eclipse.embedcdt.debug.gdbjtag.restart"
          download-size="0"
          install-size="0"
          version="0.0.0"

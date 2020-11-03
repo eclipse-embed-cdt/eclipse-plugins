@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
-Bundle-SymbolicName: ilg.gnumcueclipse.debug.gdbjtag;singleton:=true
+Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag;singleton:=true
 Bundle-Version: 4.2.1.qualifier
 Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
