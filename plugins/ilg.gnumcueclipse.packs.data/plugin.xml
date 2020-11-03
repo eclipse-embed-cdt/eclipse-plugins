@@ -14,7 +14,7 @@
 -->
 
 <plugin>
-	<extension point="org.eclipse.embedcdt.packs.core.data">
+	<extension point="ilg.gnumcueclipse.packs.core.data">
 		<factory class="ilg.gnumcueclipse.packs.data.DataManagerFactory">
 		</factory>
 	</extension>

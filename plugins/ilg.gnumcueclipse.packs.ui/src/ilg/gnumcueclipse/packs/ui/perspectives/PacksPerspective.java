@@ -29,7 +29,7 @@ import org.eclipse.ui.console.IConsoleConstants;
  */
 public class PacksPerspective implements IPerspectiveFactory {
 
-	public static final String ID = "org.eclipse.embedcdt.packs.ui.perspectives.PacksPerspective";
+	public static final String ID = "ilg.gnumcueclipse.packs.ui.perspectives.PacksPerspective";
 
 	private IPageLayout fFactory;
 
@@ -69,17 +69,17 @@ public class PacksPerspective implements IPerspectiveFactory {
 		IFolderLayout topLeft = fFactory.createFolder("packsNav", // NON-NLS-1
 				IPageLayout.LEFT, 0.20f, fFactory.getEditorArea());
 		// topLeft.addView(IPageLayout.ID_RES_NAV);
-		topLeft.addView("org.eclipse.embedcdt.packs.ui.views.DevicesView");
-		topLeft.addView("org.eclipse.embedcdt.packs.ui.views.BoardsView");
-		topLeft.addView("org.eclipse.embedcdt.packs.ui.views.KeywordsView");
+		topLeft.addView("ilg.gnumcueclipse.packs.ui.views.DevicesView");
+		topLeft.addView("ilg.gnumcueclipse.packs.ui.views.BoardsView");
+		topLeft.addView("ilg.gnumcueclipse.packs.ui.views.KeywordsView");
 
 		IFolderLayout topRight = fFactory.createFolder("packsOutline", // NON-NLS-1
 				IPageLayout.RIGHT, 0.66f, fFactory.getEditorArea());
-		topRight.addView("org.eclipse.embedcdt.packs.ui.views.OutlineView");
-		// topRight.addView("org.eclipse.embedcdt.packs.ui.views.PackagesView");
+		topRight.addView("ilg.gnumcueclipse.packs.ui.views.OutlineView");
+		// topRight.addView("ilg.gnumcueclipse.packs.ui.views.PackagesView");
 
 		// Leave 20% for the editor
-		fFactory.addView("org.eclipse.embedcdt.packs.ui.views.PackagesView", IPageLayout.TOP, 0.8f,
+		fFactory.addView("ilg.gnumcueclipse.packs.ui.views.PackagesView", IPageLayout.TOP, 0.8f,
 				fFactory.getEditorArea());
 
 		// factory.addFastView("org.eclipse.team.ccvs.ui.RepositoriesView",0.50f);

@@ -17,14 +17,14 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
-			id="org.eclipse.embedcdt.packs.ui.preferencePage.packages"
+			id="ilg.gnumcueclipse.packs.ui.preferencePage.packages"
 			class="ilg.gnumcueclipse.packs.ui.preferences.FolderPage"
 			name="%preferences.packages">
 		</page>
 		<page
-			category="org.eclipse.embedcdt.packs.ui.preferencePage.packages"
+			category="ilg.gnumcueclipse.packs.ui.preferencePage.packages"
 			class="ilg.gnumcueclipse.packs.ui.preferences.ReposPage"
-			id="org.eclipse.embedcdt.packs.ui.preferences.SitesPage"
+			id="ilg.gnumcueclipse.packs.ui.preferences.SitesPage"
 			name="%preferences.sites">
 		</page>
 	</extension>
@@ -36,70 +36,70 @@
 		<perspective
 			class="ilg.gnumcueclipse.packs.ui.perspectives.PacksPerspective"
 			icon="icons/packages.png"
-			id="org.eclipse.embedcdt.packs.ui.perspectives.PacksPerspective"
+			id="ilg.gnumcueclipse.packs.ui.perspectives.PacksPerspective"
 			name="%perspectives.packs">
 		</perspective>
 	</extension>
 	<extension point="org.eclipse.ui.views">
 		<category
-			id="org.eclipse.embedcdt.packs"
+			id="ilg.gnumcueclipse.packs"
 			name="%views.packs.category">
 		</category>
 		<view
 			allowMultiple="false"
-			category="org.eclipse.embedcdt.packs"
+			category="ilg.gnumcueclipse.packs"
 			class="ilg.gnumcueclipse.packs.ui.views.DevicesView"
 			icon="icons/hardware_chip.png"
-			id="org.eclipse.embedcdt.packs.ui.views.DevicesView"
+			id="ilg.gnumcueclipse.packs.ui.views.DevicesView"
 			name="%views.packs.devices">
 		</view>
 		<view
 			allowMultiple="false"
-			category="org.eclipse.embedcdt.packs"
+			category="ilg.gnumcueclipse.packs"
 			class="ilg.gnumcueclipse.packs.ui.views.BoardsView"
 			icon="icons/board.png"
-			id="org.eclipse.embedcdt.packs.ui.views.BoardsView"
+			id="ilg.gnumcueclipse.packs.ui.views.BoardsView"
 			name="%viwes.packs.boards">
 		</view>
 		<view
 			allowMultiple="false"
-			category="org.eclipse.embedcdt.packs"
+			category="ilg.gnumcueclipse.packs"
 			class="ilg.gnumcueclipse.packs.ui.views.KeywordsView"
 			icon="icons/info_obj.png"
-			id="org.eclipse.embedcdt.packs.ui.views.KeywordsView"
+			id="ilg.gnumcueclipse.packs.ui.views.KeywordsView"
 			name="%viwes.packs.keywords">
 		</view>
 		<view
 			allowMultiple="false"
-			category="org.eclipse.embedcdt.packs"
+			category="ilg.gnumcueclipse.packs"
 			class="ilg.gnumcueclipse.packs.ui.views.PacksView"
 			icon="icons/packages.png"
-			id="org.eclipse.embedcdt.packs.ui.views.PackagesView"
+			id="ilg.gnumcueclipse.packs.ui.views.PackagesView"
 			name="%viwes.packs.packages">
 		</view>
 		<view
 			allowMultiple="false"
-			category="org.eclipse.embedcdt.packs"
+			category="ilg.gnumcueclipse.packs"
 			class="ilg.gnumcueclipse.packs.ui.views.OutlineView"
 			icon="icons/outline_co.png"
-			id="org.eclipse.embedcdt.packs.ui.views.OutlineView"
+			id="ilg.gnumcueclipse.packs.ui.views.OutlineView"
 			name="%viwes.packs.outline"
 			restorable="true">
 		</view>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<category
-			id="org.eclipse.embedcdt.packs.commands.category"
+			id="ilg.gnumcueclipse.packs.commands.category"
 			name="%commands.packs.category">
 		</category>
 		<command
-			categoryId="org.eclipse.embedcdt.packs.commands.category"
-			id="org.eclipse.embedcdt.packs.commands.updateCommand"
+			categoryId="ilg.gnumcueclipse.packs.commands.category"
+			id="ilg.gnumcueclipse.packs.commands.updateCommand"
 			name="%commands.packs.refresh">
 		</command>
 		<command
-			categoryId="org.eclipse.embedcdt.packs.commands.category"
-			id="org.eclipse.embedcdt.packs.commands.showPerspectiveCommand"
+			categoryId="ilg.gnumcueclipse.packs.commands.category"
+			id="ilg.gnumcueclipse.packs.commands.showPerspectiveCommand"
 			name="%commands.packs.showPerspective">
 		</command>
 	</extension>
@@ -107,9 +107,9 @@
 		<menuContribution
 			allPopups="false"
 			locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-			<toolbar id="org.eclipse.embedcdt.packs.toolbar.main.showPerspective">
+			<toolbar id="ilg.gnumcueclipse.packs.toolbar.main.showPerspective">
 				<command
-					commandId="org.eclipse.embedcdt.packs.commands.showPerspectiveCommand"
+					commandId="ilg.gnumcueclipse.packs.commands.showPerspectiveCommand"
 					icon="icons/packages.png"
 					style="push"
 					tooltip="%menus.toolbar.showPerspective.tooltip">
@@ -118,7 +118,7 @@
 		</menuContribution>
 	</extension>
 	<extension
-		id="org.eclipse.embedcdt.packs.marker"
+		id="ilg.gnumcueclipse.packs.marker"
 		name="CMSIS Packs"
 		point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.core.resources.problemmarker">
@@ -129,11 +129,11 @@
 	<extension point="org.eclipse.ui.handlers">
 		<handler
 			class="ilg.gnumcueclipse.packs.ui.handlers.UpdatePacksHandler"
-			commandId="org.eclipse.embedcdt.packs.commands.updateCommand">
+			commandId="ilg.gnumcueclipse.packs.commands.updateCommand">
 		</handler>
 		<handler
 			class="ilg.gnumcueclipse.packs.ui.handlers.ShowPerspectiveHandler"
-			commandId="org.eclipse.embedcdt.packs.commands.showPerspectiveCommand">
+			commandId="ilg.gnumcueclipse.packs.commands.showPerspectiveCommand">
 		</handler>
 	</extension>
 
