@@ -4,7 +4,7 @@ Bundle-Name: %bundle.name
 Bundle-SymbolicName: ilg.gnumcueclipse.managedbuild.cross.riscv;singleton:=true
 Bundle-Version: 2.9.4.qualifier
 Bundle-Activator: ilg.gnumcueclipse.managedbuild.cross.riscv.Activator
-Require-Bundle: ilg.gnumcueclipse.core,
+Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.packs.core,
  org.eclipse.embedcdt.debug.core,
  ilg.gnumcueclipse.managedbuild.cross,

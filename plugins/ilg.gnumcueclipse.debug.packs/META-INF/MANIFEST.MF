@@ -4,7 +4,7 @@ Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.packs;singleton:=true
 Bundle-Version: 1.1.2.qualifier
 Bundle-Activator: ilg.gnumcueclipse.debug.packs.Activator
-Require-Bundle: ilg.gnumcueclipse.core,
+Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.packs.core,
  org.eclipse.embedcdt.packs.data,
  org.eclipse.cdt.dsf;bundle-version="2.8.0",

@@ -11,7 +11,7 @@ Bundle-Localization: plugin
 Export-Package: ilg.gnumcueclipse.packs.cmsis,
  ilg.gnumcueclipse.packs.data,
  ilg.gnumcueclipse.packs.xcdl
-Require-Bundle: ilg.gnumcueclipse.core,
+Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.packs.core,
  org.eclipse.core.jobs;bundle-version="3.8.0",
  org.eclipse.core.resources;bundle-version="3.11.1",

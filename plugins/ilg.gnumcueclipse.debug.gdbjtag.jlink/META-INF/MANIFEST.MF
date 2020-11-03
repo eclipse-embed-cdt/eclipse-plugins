@@ -4,7 +4,7 @@ Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag.jlink;singleton:=true
 Bundle-Version: 4.4.2.qualifier
 Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator
-Require-Bundle: ilg.gnumcueclipse.core,
+Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.debug.core,
  org.eclipse.embedcdt.debug.gdbjtag,
  ilg.gnumcueclipse.managedbuild.cross,

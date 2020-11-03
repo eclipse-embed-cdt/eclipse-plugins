@@ -39,7 +39,7 @@
          unpack="false"/>
 
    <plugin
-         id="ilg.gnumcueclipse.core"
+         id="org.eclipse.embedcdt.core"
          download-size="0"
          install-size="0"
          version="0.0.0"

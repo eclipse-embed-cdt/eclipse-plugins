@@ -4,7 +4,7 @@ Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag;singleton:=true
 Bundle-Version: 4.2.1.qualifier
 Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.Activator
-Require-Bundle: ilg.gnumcueclipse.core,
+Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.debug.core,
  org.eclipse.embedcdt.packs.core,
  org.eclipse.cdt.debug.gdbjtag.core;bundle-version="9.0.0",

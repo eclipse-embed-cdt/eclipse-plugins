@@ -4,7 +4,7 @@ Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag.pyocd;singleton:=true
 Bundle-Version: 1.4.2.qualifier
 Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator
-Require-Bundle: ilg.gnumcueclipse.core,
+Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.debug.core,
  org.eclipse.embedcdt.debug.gdbjtag,
  ilg.gnumcueclipse.managedbuild.cross,
