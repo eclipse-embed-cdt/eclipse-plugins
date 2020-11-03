@@ -44,7 +44,7 @@ public class DirectoryNotStrictFieldEditor extends DirectoryFieldEditor {
 		if (fIsStrict) {
 			String fileName = getTextControl().getText();
 			fileName = fileName.trim();
-			if (fileName.length() == 0 && isEmptyStringAllowed()) {
+			if (fileName.isEmpty() && isEmptyStringAllowed()) {
 				// Empty fields are accepted.
 				return true;
 			}

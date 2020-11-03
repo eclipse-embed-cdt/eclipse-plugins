@@ -941,7 +941,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	 */
 	private String getPyOCDExecutablePath() {
 		String path = Configuration.getGdbServerCommand(fConfiguration, fGdbServerExecutable.getText());
-		if (path.length() == 0) {
+		if (path.isEmpty()) {
 			return null;
 		}
 

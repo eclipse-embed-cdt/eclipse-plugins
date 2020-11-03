@@ -25,7 +25,7 @@ public class Utils {
 
 		// If suffix not given, assume it is ok
 		buildTypeSuffix = buildTypeSuffix.trim();
-		if (buildTypeSuffix.length() == 0)
+		if (buildTypeSuffix.isEmpty())
 			return true;
 
 		String configBuildTypeValue = config.getBuildProperties().getProperty("org.eclipse.cdt.build.core.buildType")
@@ -43,7 +43,7 @@ public class Utils {
 			return true;
 
 		condition = condition.trim();
-		if (condition.length() == 0) {
+		if (condition.isEmpty()) {
 			// No condition string present, take it as ALWAYS
 			return true;
 		}

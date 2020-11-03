@@ -685,13 +685,13 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 							// 'line' is either new or partly filled in
 							// The order is
 							// section,start,size,startup
-							if (line[1].length() == 0) {
+							if (line[1].isEmpty()) {
 								line[1] = child.getProperty(Node.START_PROPERTY);
 							}
-							if (line[2].length() == 0) {
+							if (line[2].isEmpty()) {
 								line[2] = child.getProperty(Node.SIZE_PROPERTY);
 							}
-							if (line[3].length() == 0) {
+							if (line[3].isEmpty()) {
 								line[3] = child.getProperty(Node.STARTUP_PROPERTY);
 							}
 
@@ -708,7 +708,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 			// Default [startup] values to 0
 			for (int i = 3; i < line.length; ++i) {
-				if (line[i].length() == 0) {
+				if (line[i].isEmpty()) {
 					line[i] = "0";
 				}
 			}

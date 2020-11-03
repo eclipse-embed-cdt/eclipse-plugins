@@ -791,7 +791,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		if (fLoadExecutable.getSelection()) {
 			if (!fUseProjectBinaryForImage.getSelection()) {
-				if (fImageFileName.getText().trim().length() == 0) {
+				if (fImageFileName.getText().trim().isEmpty()) {
 					setErrorMessage(Messages.getString("StartupTab.imageFileName_not_specified"));
 					return false;
 				}
@@ -815,7 +815,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 		if (fLoadSymbols.getSelection()) {
 			if (!fUseProjectBinaryForSymbols.getSelection()) {
-				if (fSymbolsFileName.getText().trim().length() == 0) {
+				if (fSymbolsFileName.getText().trim().isEmpty()) {
 					setErrorMessage(Messages.getString("StartupTab.symbolsFileName_not_specified"));
 					return false;
 				}
@@ -839,7 +839,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 
 		if (fSetPcRegister.getSelection()) {
-			if (fPcRegister.getText().trim().length() == 0) {
+			if (fPcRegister.getText().trim().isEmpty()) {
 				setErrorMessage(Messages.getString("StartupTab.pcRegister_not_specified"));
 				return false;
 			}
@@ -847,7 +847,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			setErrorMessage(null);
 		}
 		if (fSetStopAt.getSelection()) {
-			if (fStopAt.getText().trim().length() == 0) {
+			if (fStopAt.getText().trim().isEmpty()) {
 				setErrorMessage(Messages.getString("StartupTab.stopAt_not_specified"));
 			}
 		} else {

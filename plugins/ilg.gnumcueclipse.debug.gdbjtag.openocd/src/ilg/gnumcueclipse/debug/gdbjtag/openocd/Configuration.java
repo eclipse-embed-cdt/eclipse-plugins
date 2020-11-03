@@ -76,7 +76,7 @@ public class Configuration {
 				return null;
 
 			String executable = getGdbServerCommand(configuration, null);
-			if (executable == null || executable.length() == 0)
+			if (executable == null || executable.isEmpty())
 				return null;
 
 			lst.add(executable);
@@ -161,7 +161,7 @@ public class Configuration {
 		List<String> lst = new ArrayList<String>();
 
 		String executable = getGdbClientCommand(configuration, null);
-		if (executable == null || executable.length() == 0)
+		if (executable == null || executable.isEmpty())
 			return null;
 
 		lst.add(executable);
@@ -206,7 +206,7 @@ public class Configuration {
 	public static String resolveAll(String str, ILaunchConfiguration configuration) throws CoreException {
 		String value = str;
 		value = value.trim();
-		if (value.length() == 0)
+		if (value.isEmpty())
 			return null;
 
 		if (value.indexOf("${") >= 0) {

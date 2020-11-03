@@ -63,7 +63,7 @@ public class PdscParserForContent extends PdscParser {
 		// TODO: use a better condition
 		Element urlElement = Xml.getFirstChildElement(packageElement, "url");
 		urlRef = Xml.getElementContent(urlElement);
-		if (urlRef.length() == 0) {
+		if (urlRef.isEmpty()) {
 
 			// Deprecate
 			return;
@@ -357,7 +357,7 @@ public class PdscParserForContent extends PdscParser {
 					Node boardNode = Node.addUniqueChild(externNode, Type.BOARD, boardName);
 					boardNode.putProperty(Property.VENDOR_NAME, boardVendor);
 
-					if (firstBoardName.length() == 0) {
+					if (firstBoardName.isEmpty()) {
 						firstBoardName = boardName;
 						// firstBoardVendorName = boardVendor;
 					}

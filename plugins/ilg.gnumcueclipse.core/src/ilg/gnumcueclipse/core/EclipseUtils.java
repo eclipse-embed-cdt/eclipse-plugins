@@ -629,7 +629,7 @@ public class EclipseUtils {
 
 			String buildConfigID = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_BUILD_CONFIG_ID,
 					""); //$NON-NLS-1$
-			if (buildConfigID.length() != 0) {
+			if (!buildConfigID.isEmpty()) {
 				cfg = projDesc.getConfigurationById(buildConfigID);
 			}
 			// if configuration is null fall-back to active

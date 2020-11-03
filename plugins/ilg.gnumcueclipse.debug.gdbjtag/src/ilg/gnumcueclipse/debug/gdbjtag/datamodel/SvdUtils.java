@@ -517,7 +517,7 @@ public class SvdUtils {
 	public static String resolveAll(String str, ILaunchConfiguration configuration) throws CoreException {
 		String value = str;
 		value = value.trim();
-		if (value.length() == 0)
+		if (value.isEmpty())
 			return null;
 
 		if (value.indexOf("${") >= 0) {

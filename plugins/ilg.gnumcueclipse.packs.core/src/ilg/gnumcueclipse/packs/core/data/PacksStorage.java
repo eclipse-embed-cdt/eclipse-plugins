@@ -110,7 +110,7 @@ public class PacksStorage {
 			folderPath = folderPath.substring(0, folderPath.length() - 1);
 		}
 
-		if (folderPath.length() == 0) {
+		if (folderPath.isEmpty()) {
 			throw new IOException("Missing folder path.");
 		}
 		return folderPath;

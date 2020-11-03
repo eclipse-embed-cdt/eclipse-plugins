@@ -199,7 +199,7 @@ public class Repos {
 			// Pack all attributes as a map.
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("type", type);
-			if (name.length() == 0) {
+			if (name.isEmpty()) {
 				name = getDomaninNameFromUrl(url);
 			}
 			map.put("name", name);
