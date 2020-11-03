@@ -52,6 +52,7 @@ public class PeripheralMemoryBlockRetrieval extends DsfMemoryBlockRetrieval {
 	// ------------------------------------------------------------------------
 
 	private static final String PERIPHERALS_MEMENTO_ID = Activator.PLUGIN_ID + ".PERIPHERALS";
+	private static final String PERIPHERALS_MEMENTO_COMPAT_ID = "ilg.gnumcueclipse.debug.gdbjtag" + ".PERIPHERALS";
 
 	// Duplicate hear for not being public in parent class
 	private static final String DSF_LAUNCH_ID = "org.eclipse.dsf.launch"; //$NON-NLS-1$
@@ -98,7 +99,10 @@ public class PeripheralMemoryBlockRetrieval extends DsfMemoryBlockRetrieval {
 			String memento;
 			try {
 				memento = fLaunchConfig.getAttribute(PERIPHERALS_MEMENTO_ID, "");
-				if (memento != null && memento.trim().length() != 0) {
+				if (memento == null || memento.trim().isEmpty()) {
+					memento = fLaunchConfig.getAttribute(PERIPHERALS_MEMENTO_COMPAT_ID, "");
+				}
+				if (memento != null && !memento.trim().isEmpty()) {
 					fPersistentPeripherals = parsePeripheralsMemento(memento);
 				}
 			} catch (CoreException e) {

@@ -19,6 +19,7 @@ import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
@@ -52,10 +53,23 @@ public class PersistentPreferences {
 	public static String getPreferenceValueForId(String pluginId, String key, String defaultValue,
 			IScopeContext[] contexts) {
 
+		String pluginCompatId = pluginId.replace("org.eclipse.embedcdt.", "ilg.gnumcueclipse.");
 		String value = null;
 		String from = null;
+		IEclipsePreferences node;
 		for (int i = 0; i < contexts.length; ++i) {
-			value = contexts[i].getNode(pluginId).get(key, null);
+			value = null;
+			node = contexts[i].getNode(pluginId);
+			if (node != null) {
+			  value = node.get(key, null);
+			}
+			
+			if (value == null) {
+				node = contexts[i].getNode(pluginCompatId);
+				if (node != null) {
+				  value = node.get(key, null);
+				}
+			}
 
 			if (value != null) {
 				value = value.trim();

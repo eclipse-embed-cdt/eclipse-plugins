@@ -59,6 +59,10 @@ public class PersistentPreferences extends ilg.gnumcueclipse.core.preferences.Pe
 			return value;
 		}
 
+		value = getPreferenceValueForId("ilg.gnumcueclipse.managedbuild.cross", key, null, project);
+		if (value != null && !value.isEmpty()) {
+			return value;
+		}
 		return defaultValue;
 	}
 

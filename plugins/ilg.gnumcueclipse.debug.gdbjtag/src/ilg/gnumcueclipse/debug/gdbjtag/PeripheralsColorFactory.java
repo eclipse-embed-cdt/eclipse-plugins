@@ -42,7 +42,10 @@ public class PeripheralsColorFactory implements IColorFactory {
 		String value;
 		value = InstanceScope.INSTANCE.getNode("org.eclipse.ui.workbench").get(fThemeColorName, null);
 		if (value == null) {
-			value = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID).get(fPreferenceName, "0,0,0");
+			value = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID).get(fPreferenceName, null);
+		}
+		if (value == null) {
+			value = DefaultScope.INSTANCE.getNode("ilg.gnumcueclipse.debug.gdbjtag").get(fPreferenceName, "0,0,0");
 		}
 		String a[] = value.split(",");
 		RGB rgb;

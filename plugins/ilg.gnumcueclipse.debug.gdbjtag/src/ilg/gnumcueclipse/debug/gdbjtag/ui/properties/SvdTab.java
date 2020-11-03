@@ -48,6 +48,7 @@ public class SvdTab extends AbstractCPropertyTab {
 	protected DirectoryNotStrictFieldEditor fEditor;
 
 	protected Preferences fPreferences;
+	protected Preferences fCompatPreferences;
 
 	@Override
 	public void createControls(Composite parent) {
@@ -58,6 +59,7 @@ public class SvdTab extends AbstractCPropertyTab {
 
 		IProject project = page.getProject();
 		fPreferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
+		fCompatPreferences = new ProjectScope(project).getNode("ilg.gnumcueclipse.debug.gdbjtag");
 
 		super.createControls(parent);
 
@@ -147,7 +149,7 @@ public class SvdTab extends AbstractCPropertyTab {
 	protected void updateData(ICResourceDescription cfg) {
 
 		String key = PersistentProperties.getSvdAbsolutePathKey(cfg.getConfiguration().getId());
-		String value = fPreferences.get(key, "");
+		String value = fPreferences.get(key, fCompatPreferences.get(key, ""));
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("SvdTab.updateData(" + cfg.getConfiguration().getName() + ") '" + value + "'");
