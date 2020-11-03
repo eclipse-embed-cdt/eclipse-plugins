@@ -3,7 +3,7 @@
 <schema targetNamespace="ilg.gnumcueclipse.debug.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ilg.gnumcueclipse.debug.core" id="cprojectExtra" name="C Project Extra Data Manager"/>
+         <meta.schema plugin="org.eclipse.embedcdt.debug.core" id="cprojectExtra" name="C Project Extra Data Manager"/>
       </appinfo>
       <documentation>
          This extension point provides decoupled access to the C project extra data from the debug plug-ins.

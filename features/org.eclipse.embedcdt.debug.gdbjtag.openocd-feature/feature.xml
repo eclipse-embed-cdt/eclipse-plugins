@@ -46,7 +46,7 @@
          unpack="false"/>
 
    <plugin
-         id="ilg.gnumcueclipse.debug.core"
+         id="org.eclipse.embedcdt.debug.core"
          download-size="0"
          install-size="0"
          version="0.0.0"

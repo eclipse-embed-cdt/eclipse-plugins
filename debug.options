@@ -3,7 +3,7 @@ ilg.gnumcueclipse.codered/debug=true
 
 ilg.gnumcueclipse.core/debug=true
 
-ilg.gnumcueclipse.debug.core/debug=true
+org.eclipse.embedcdt.debug.core/debug=true
 ilg.gnumcueclipse.debug.gdbjtag/debug=true
 
 ilg.gnumcueclipse.debug.gdbjtag.jlink/debug=true

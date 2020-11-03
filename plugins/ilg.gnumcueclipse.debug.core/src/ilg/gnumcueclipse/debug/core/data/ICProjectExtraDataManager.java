@@ -26,7 +26,9 @@ public interface ICProjectExtraDataManager {
 	// ------------------------------------------------------------------------
 
 	public static final String EXTENSION_POINT_NAME = "cprojectExtra";
-	public static final String EXTENSION_POINT_ID = ilg.gnumcueclipse.debug.core.Activator.PLUGIN_ID + "."
+	// public static final String EXTENSION_POINT_ID = ilg.gnumcueclipse.debug.core.Activator.PLUGIN_ID + "."
+	//		+ EXTENSION_POINT_NAME;
+	public static final String EXTENSION_POINT_ID = "ilg.gnumcueclipse.debug.core."
 			+ EXTENSION_POINT_NAME;
 
 	// ------------------------------------------------------------------------

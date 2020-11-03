@@ -6,7 +6,7 @@ Bundle-Version: 2.9.4.qualifier
 Bundle-Activator: ilg.gnumcueclipse.managedbuild.cross.riscv.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
  ilg.gnumcueclipse.packs.core,
- ilg.gnumcueclipse.debug.core,
+ org.eclipse.embedcdt.debug.core,
  ilg.gnumcueclipse.managedbuild.cross,
  org.eclipse.cdt.core;bundle-version="6.2.0",
  org.eclipse.cdt.managedbuilder.core;bundle-version="8.4.0",

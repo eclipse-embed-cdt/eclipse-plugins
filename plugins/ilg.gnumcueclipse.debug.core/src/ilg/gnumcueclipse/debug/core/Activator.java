@@ -26,7 +26,7 @@ public class Activator extends AbstractActivator {
 	// ------------------------------------------------------------------------
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "ilg.gnumcueclipse.debug.core"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.core"; //$NON-NLS-1$
 
 	@Override
 	public String getBundleId() {
