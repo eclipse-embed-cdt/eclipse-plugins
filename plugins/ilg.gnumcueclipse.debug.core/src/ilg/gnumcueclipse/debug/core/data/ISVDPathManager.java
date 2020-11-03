@@ -24,9 +24,7 @@ public interface ISVDPathManager {
 	// ------------------------------------------------------------------------
 
 	public static final String EXTENSION_POINT_NAME = "svdPath";
-	//  static final String EXTENSION_POINT_ID = ilg.gnumcueclipse.debug.core.Activator.PLUGIN_ID + "."
-	//		+ EXTENSION_POINT_NAME;
-	public static final String EXTENSION_POINT_ID = "ilg.gnumcueclipse.debug.core."
+	static final String EXTENSION_POINT_ID = ilg.gnumcueclipse.debug.core.Activator.PLUGIN_ID + "."
 			+ EXTENSION_POINT_NAME;
 
 	// ------------------------------------------------------------------------

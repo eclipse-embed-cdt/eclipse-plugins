@@ -24,6 +24,7 @@ import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 
 public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager {
@@ -51,10 +52,15 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 
 	public CProjectExtraDataManagerProxy() {
 
-		IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID).getExtensions();
-
+		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
+		if (extensionPoint == null) {
+			Activator.log("Extension point " + EXTENSION_POINT_ID + " not found");
+			return;
+		}
+		
+		IExtension[] extensions = extensionPoint.getExtensions();
 		if (extensions.length == 0) {
-			Activator.log("no cprojectExtra extension point");
+			Activator.log("Extension point " + EXTENSION_POINT_ID + " has no extensions");
 			return;
 		}
 

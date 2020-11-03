@@ -21,6 +21,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 
@@ -49,10 +50,15 @@ public class SVDPathManagerProxy implements ISVDPathManager {
 
 	public SVDPathManagerProxy() {
 
-		IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID).getExtensions();
-
+		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
+		if (extensionPoint == null) {
+			Activator.log("Extension point " + EXTENSION_POINT_ID + " not found");
+			return;
+		}
+		
+		IExtension[] extensions = extensionPoint.getExtensions();
 		if (extensions.length == 0) {
-			// System.out.println("no svdPath xp");
+			Activator.log("Extension point " + EXTENSION_POINT_ID + " has no extensions");
 			return;
 		}
 

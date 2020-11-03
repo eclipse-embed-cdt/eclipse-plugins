@@ -17,6 +17,7 @@ package ilg.gnumcueclipse.packs.core.data;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 
 import ilg.gnumcueclipse.packs.core.Activator;
@@ -73,12 +74,16 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory, I
 			System.out.println("DataManagerFactoryProxy.createDataManager()");
 		}
 
-		IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID, "data")
-				.getExtensions();
+		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID, "data");
+		if (extensionPoint == null) {
+			Activator.log("Extension point " + Activator.PLUGIN_ID + " not found");
+			return null;
+		}
+		IExtension[] extensions = extensionPoint.getExtensions();
 
 		if (extensions.length != 1) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("no single core.data xp");
+				System.out.println("No single Activator.PLUGIN_ID extension point");
 			}
 			return null;
 		}
