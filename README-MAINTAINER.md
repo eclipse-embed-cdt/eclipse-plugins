@@ -1,5 +1,18 @@
 # Maintainer info
 
+## Project repository
+
+The project is hosted on GitHub:
+
+- https://github.com/eclipse-embed-cdt/eclipse-plugins
+
+To clone it, be sure the submodules are also cloned:
+
+```
+git clone --recurse-submodule https://github.com/eclipse-embed-cdt/eclipse-plugins \
+  eclipse-plugins.git
+```
+
 ## Development workflow
 
 The plug-ins are published on the Eclipse download servers both as update
@@ -91,7 +104,7 @@ This will also trigger a CI job that will run a maven build.
 Test if the new build can be used as an update site, by installing it
 on a separate Eclipse (not the one used for development); use the URL:
 
-- `https://download.eclipse.org/embed-cdt/builds/develop/p2/`
+- https://download.eclipse.org/embed-cdt/builds/develop/p2/
 
 ## How to make a new release
 
@@ -126,7 +139,7 @@ pass a link to the release page.
 
 Beta testers can install the pre-release from:
 
-- `https://download.eclipse.org/embed-cdt/updates/neon-test/`
+- https://download.eclipse.org/embed-cdt/updates/neon-test/
 
 ### Create a pre-release record
 
@@ -232,8 +245,8 @@ Both can be used in Eclipse to **Install New Software**.
 
 The public update URLs are:
 
-- `https://download.eclipse.org/embed-cdt/updates/neon/`
-- `https://download.eclipse.org/embed-cdt/releases/5.2.1/p2/`
+- https://download.eclipse.org/embed-cdt/updates/neon/
+- https://download.eclipse.org/embed-cdt/releases/5.2.1/p2/
 
 ### Update the Eclipse Marketplace records
 
@@ -308,7 +321,7 @@ copy the result in `packages-test/<version>
 
 The direct download URL is:
 
-- `https://download.eclipse.org/embed-cdt/packages-test/`
+- https://download.eclipse.org/embed-cdt/packages-test/
 
 Check if everything is fine and test.
 
