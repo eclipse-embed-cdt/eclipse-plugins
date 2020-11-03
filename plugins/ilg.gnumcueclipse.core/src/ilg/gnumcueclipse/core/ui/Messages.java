@@ -25,7 +25,7 @@ public class Messages extends NLS {
 
 	// ------------------------------------------------------------------------
 
-	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
+	private static final String MESSAGES = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
 
 	public static String McuPropertiesPage_description;
 	public static String McuPreferencesPage_description;

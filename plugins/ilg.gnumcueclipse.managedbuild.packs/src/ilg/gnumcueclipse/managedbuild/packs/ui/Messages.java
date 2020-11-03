@@ -23,7 +23,7 @@ import ilg.gnumcueclipse.managedbuild.packs.Activator;
 
 public class Messages extends NLS {
 
-	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
+	private static final String MESSAGES = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
 
 	public static String DevicesTab_DeviceGroup_name;
 	public static String DevicesTab_DeviceGroup_architecture_label;
