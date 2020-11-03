@@ -54,7 +54,7 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "ilg.gnumcueclipse.packs.ui.views.KeywordsView";
+	public static final String ID = "org.eclipse.embedcdt.packs.ui.views.KeywordsView";
 
 	// ------------------------------------------------------------------------
 

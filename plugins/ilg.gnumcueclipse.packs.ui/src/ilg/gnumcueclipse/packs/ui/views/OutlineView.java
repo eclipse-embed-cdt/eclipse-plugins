@@ -67,7 +67,7 @@ import ilg.gnumcueclipse.packs.ui.Activator;
 
 public class OutlineView extends ViewPart {
 
-	public static final String ID = "ilg.gnumcueclipse.packs.ui.views.OutlineView";
+	public static final String ID = "org.eclipse.embedcdt.packs.ui.views.OutlineView";
 
 	public static final int AUTOEXPAND_LEVEL = 0;
 

@@ -254,7 +254,7 @@ public class Utils {
 		}
 	}
 
-	static final private String MARKER_ID = "ilg.gnumcueclipse.packs.marker";
+	static final private String MARKER_ID = "org.eclipse.embedcdt.packs.marker";
 
 	// Sample:
 	//
