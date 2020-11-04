@@ -42,8 +42,8 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- https://download.eclipse.org/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip
-- https://download.eclipse.org/embed-cdt/releases/5.2.1/p2/
+- https://download.eclipse.org/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202010292017.zip
+- https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/
 
 Packages are published at:
 
@@ -69,7 +69,7 @@ page, click the
 [Milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/)
 button and add a
 [new](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/new/)
-milestone. As title, use the current version, like _v5.2.1_.
+milestone. As title, use the current version, like _v6.0.0_.
 
 ### Fix issues
 
@@ -121,7 +121,7 @@ When ready, merge the `develop` branch into `master`, and push them to GitHub.
 
 Wait for the CI to confirm that the build passed.
 
-Add a tag like `v5.2.1` (with `v`).
+Add a tag like `v6.0.0` (with `v`).
 
 ### Trigger the Jenkins master build
 
@@ -141,7 +141,7 @@ which is the public location for the pre-release
 - click the **Build Now** link
 
 Announce the pre-release to the **embed-cdt-dev@eclipse.org** list;
-use a subject like **Eclipse Embedded CDT v5.2.1 released**, and
+use a subject like **Eclipse Embedded CDT v6.0.0 released**, and
 pass a link to the release page.
 
 Beta testers can install the pre-release from:
@@ -155,14 +155,14 @@ In the official
 page, click the
 [Create a new release](https://projects.eclipse.org/node/18638/create-release/) link in the right sidebar.
 
-Name it like `5.2.1` (no v).
+Name it like `6.0.0` (no v).
 
 Click on Edit, The Basics; switch to Source mode
 
 Start with _Pre-release_ (Header 3).
 
 ```html
-<p>Version <strong>5.2.1</strong> is a maintenance release; if fixes XXX.</p>
+<p>Version <strong>6.0.0</strong> is a maintenance release; if fixes XXX.</p>
 
 <h3>Pre-release</h3>
 
@@ -253,7 +253,7 @@ Both can be used in Eclipse to **Install New Software**.
 The public update URLs are:
 
 - https://download.eclipse.org/embed-cdt/updates/neon/
-- https://download.eclipse.org/embed-cdt/releases/5.2.1/p2/
+- https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/
 
 ### Update the Eclipse Marketplace records
 
@@ -286,7 +286,7 @@ The public update URLs are:
 <p>To get exactly this version, <strong>Install New Software</strong> from:</p>
 
 <ul>
-	<li><a href="https://download.eclipse.org/embed-cdt/releases/5.2.1/p2/">https://download.eclipse.org/embed-cdt/releases/5.2.1/p2/</a></li>
+	<li><a href="https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/">https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/</a></li>
 </ul>
 
 <h3>Local install</h3>
@@ -294,19 +294,19 @@ The public update URLs are:
 <p>For manual installs, the plug-ins are also available as regular archives, that can be downloaded locally and installed.</p>
 
 <ul>
-	<li><a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip">org.eclipse.embedcdt.repository-5.2.1-202010292017.zip</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip.sha">(SHA)</a></li>
+	<li><a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202010292017.zip">org.eclipse.embedcdt.repository-6.0.0-202010292017.zip</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202010292017.zip.sha">(SHA)</a></li>
 </ul>
 ```
 
 As links for the latest two, open https://download.eclipse.org/embed-cdt/releases/ and get something like:
 
-- https://download.eclipse.org/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip
-- https://download.eclipse.org/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip.sha
+- https://download.eclipse.org/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202010292017.zip
+- https://download.eclipse.org/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202010292017.zip.sha
 
 Update the URLs to use the download redirect:
 
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/5.2.1/org.eclipse.embedcdt.repository-5.2.1-202010292017.zip.sha
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202010292017.zip
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202010292017.zip.sha
 
 Remove the _Pre-release_ top header.
 
@@ -318,12 +318,11 @@ TODO: explain how to edit/update the EPP project.
 - in the `parent/pom.xml` file, edit the Embed CDT specifics
 - commit
 - push `embed-cdt-develop` to GitHub
-
 - go to https://ci.eclipse.org/embed-cdt/
 - login (otherwise the next link is not visible!)
 - use the [make-packages](https://ci.eclipse.org/embed-cdt/job/make-packages/)
-Jenkins job to maven build the `embed-cdt-develop` branch and
-copy the result in `packages-test/<version>
+  Jenkins job to maven build the `embed-cdt-develop` branch and
+  copy the result in `packages-test/<version>
 - click the **Build Now** link
 
 The direct download URL is:
@@ -339,12 +338,11 @@ Test on various platforms.
 - merge `embed-cdt-develop` int `embed-cdt`
 - push `embed-cdt` to GitHub
 - tag `2020-09_R-ecdt`
-
 - go to https://ci.eclipse.org/embed-cdt/
 - login (otherwise the next link is not visible!)
 - use the [make-packages](https://ci.eclipse.org/embed-cdt/job/make-packages/)
-Jenkins job to maven build the `embed-cdt` branch and
-copy the result in `packages/<version>
+  Jenkins job to maven build the `embed-cdt` branch and
+  copy the result in `packages/<version>
 - click the **Build Now** link
 
 The direct download URL is:
@@ -398,6 +396,6 @@ Use copy/paste/edit.
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@embedCDT` account, enter a message like
-**Eclipse Embedded CDT v5.2.1 released** and on the next line
-paste the link to the release
+  **Eclipse Embedded CDT v6.0.0 released** and on the next line
+  paste the link to the release
 - click the Tweet button
