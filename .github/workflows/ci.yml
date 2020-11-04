@@ -31,4 +31,4 @@ jobs:
           ${{ runner.os }}-build-
           ${{ runner.os }}-
     - name: Build with Maven
-      run: mvn clean verify --no-transfer-progress --batch-mode --show-version -P production
+      run: mvn clean verify --no-transfer-progress --batch-mode --show-version
