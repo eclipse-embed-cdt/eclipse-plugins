@@ -173,7 +173,7 @@ public class ToolchainDefinition extends ilg.gnumcueclipse.managedbuild.cross.To
 
 	// ------------------------------------------------------------------------
 
-	private static final String CUSTOM_TOOLCHAINS_EXT_POTNT_ID = Activator.PLUGIN_ID + ".toolchains";
+	private static final String CUSTOM_TOOLCHAINS_EXT_POINT_ID = "ilg.gnumcueclipse.managedbuild.cross.arm" + ".toolchains";
 
 	// Initialise the list of known toolchains
 	static {
@@ -220,7 +220,7 @@ public class ToolchainDefinition extends ilg.gnumcueclipse.managedbuild.cross.To
 		// fgList.add(new ToolchainDefinition("Custom", "arm-none-eabi-"));
 
 		// Enumerate extension points and add custom toolchains.
-		addExtensionsToolchains(CUSTOM_TOOLCHAINS_EXT_POTNT_ID);
+		addExtensionsToolchains(CUSTOM_TOOLCHAINS_EXT_POINT_ID);
 	}
 
 	// ------------------------------------------------------------------------

@@ -176,7 +176,7 @@ public class ToolchainDefinition extends ilg.gnumcueclipse.managedbuild.cross.To
 
 	// ------------------------------------------------------------------------
 
-	private static final String CUSTOM_TOOLCHAINS_EXT_POINT_ID = Activator.PLUGIN_ID + ".toolchains";
+	private static final String CUSTOM_TOOLCHAINS_EXT_POINT_ID = "ilg.gnumcueclipse.managedbuild.cross.riscv" + ".toolchains";
 
 	// Initialise the list of known toolchains
 	static {

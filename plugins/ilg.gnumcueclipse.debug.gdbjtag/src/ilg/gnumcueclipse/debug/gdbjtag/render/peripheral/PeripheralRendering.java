@@ -88,7 +88,7 @@ public class PeripheralRendering extends AbstractTableRendering
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "org.eclipse.embedcdt.debug.gdbjtag.memoryRendering";
+	public static final String ID = "ilg.gnumcueclipse.debug.gdbjtag.memoryRendering";
 
 	private static final PeripheralColumnInfo[] fgColumnInfo = new PeripheralColumnInfo[] {
 			new PeripheralColumnInfo("Register", 4, PeripheralColumnInfo.ColumnType.REGISTER, true), // sortable

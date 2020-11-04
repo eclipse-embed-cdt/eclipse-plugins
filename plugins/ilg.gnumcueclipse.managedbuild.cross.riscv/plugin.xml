@@ -17,7 +17,7 @@
 -->
 <plugin>
 	<extension-point
-		id="toolchains"
+		id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchains"
 		name="Extra toolchains"
 		schema="schema/toolchains.exsd" />
 	<extension point="org.eclipse.cdt.managedbuilder.core.buildDefinitions">
