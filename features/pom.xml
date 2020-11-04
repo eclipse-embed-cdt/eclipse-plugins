@@ -30,7 +30,7 @@
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
-	<name>Eclipse Embedded CDT Features</name>
+	<name>Embedded C/C++ Features</name>
 	
 	<url>https://projects.eclipse.org/projects/iot.embed-cdt/</url>
 </project>
