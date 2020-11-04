@@ -1,8 +1,8 @@
 
 # add update sites
 instructions.configure=\
- org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:https${#58}//download.eclipse.org/embed-cdt/updates/neon-v6,type:0,name:Eclipse Embedded CDT Plug-ins);\
- org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:https${#58}//download.eclipse.org/embed-cdt/updates/neon-v6,type:1,name:Eclipse Embedded CDT Plug-ins);
+ org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:https${#58}//download.eclipse.org/embed-cdt/updates/neon-v6,type:0,name:Embedded C/C++ v6.x Updates);\
+ org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:https${#58}//download.eclipse.org/embed-cdt/updates/neon-v6,type:1,name:Embedded C/C++ v6.x Updates);
  
 # The pc.name should define both the new and the old feature names, followed
 # by `.feature.group`.
