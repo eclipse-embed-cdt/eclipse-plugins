@@ -60,7 +60,7 @@
          unpack="false"/>
 
    <plugin
-         id="ilg.gnumcueclipse.managedbuild.packs"
+         id="org.eclipse.embedcdt.managedbuild.packs"
          download-size="0"
          install-size="0"
          version="0.0.0"

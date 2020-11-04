@@ -429,7 +429,8 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 		}
 
 		fDataManager = PacksDataManagerFactoryProxy.getInstance().createDataManager();
-
+		assert (fDataManager != null);
+		
 		// usercomp is defined in parent class
 
 		GridLayout gridLayout = new GridLayout();

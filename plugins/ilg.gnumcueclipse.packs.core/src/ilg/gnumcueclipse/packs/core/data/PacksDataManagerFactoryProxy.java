@@ -38,6 +38,10 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory, I
 	private static final String FACTORY_ELEMENT = "factory";
 	private static final String CLASS_ATTRIBUTE = "class";
 
+	public static final String EXTENSION_POINT_NAME = "data";
+	public static final String EXTENSION_POINT_ID = "ilg.gnumcueclipse.packs.core."
+			+ EXTENSION_POINT_NAME;
+
 	// ------------------------------------------------------------------------
 
 	private static PacksDataManagerFactoryProxy fgInstance;
@@ -74,16 +78,16 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory, I
 			System.out.println("DataManagerFactoryProxy.createDataManager()");
 		}
 
-		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID, "data");
+		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
 		if (extensionPoint == null) {
-			Activator.log("Extension point " + Activator.PLUGIN_ID + " not found");
+			Activator.log("Extension point " + EXTENSION_POINT_ID + " not found");
 			return null;
 		}
 		IExtension[] extensions = extensionPoint.getExtensions();
 
 		if (extensions.length != 1) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("No single Activator.PLUGIN_ID extension point");
+				System.out.println("No single " + EXTENSION_POINT_ID + " extension point");
 			}
 			return null;
 		}

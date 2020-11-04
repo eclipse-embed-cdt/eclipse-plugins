@@ -13,11 +13,11 @@ org.eclipse.embedcdt.debug.gdbjtag.qemu/debug=true
 org.eclipse.embedcdt.debug.gdbjtag.restart/debug=true
 org.eclipse.embedcdt.debug.packs/debug=true
 
-ilg.gnumcueclipse.managedbuild.cross/debug=true
-ilg.gnumcueclipse.managedbuild.cross.arm/debug=true
-ilg.gnumcueclipse.managedbuild.cross.riscv/debug=true
+org.eclipse.embedcdt.managedbuild.cross/debug=true
+org.eclipse.embedcdt.managedbuild.cross.arm/debug=true
+org.eclipse.embedcdt.managedbuild.cross.riscv/debug=true
 
-ilg.gnumcueclipse.managedbuild.packs/debug=true
+org.eclipse.embedcdt.managedbuild.packs/debug=true
 
 org.eclipse.embedcdt.packs/debug=true
 org.eclipse.embedcdt.packs.core/debug=true

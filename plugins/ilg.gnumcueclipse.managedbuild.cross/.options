@@ -15,4 +15,4 @@
 ###############################################################################
 
 # Control if trace messages are shown.
-ilg.gnumcueclipse.managedbuild.cross/debug=true
+org.eclipse.embedcdt.managedbuild.cross/debug=true

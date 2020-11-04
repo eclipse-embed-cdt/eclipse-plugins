@@ -17,7 +17,7 @@
       label="%featureName"
       version="2.7.3.qualifier"
       provider-name="%providerName"
-      plugin="ilg.gnumcueclipse.managedbuild.cross.arm">
+      plugin="org.eclipse.embedcdt.managedbuild.cross.arm">
 
    <description>
       %description
@@ -32,7 +32,7 @@
    </license>
 
    <plugin
-         id="ilg.gnumcueclipse.managedbuild.cross.arm"
+         id="org.eclipse.embedcdt.managedbuild.cross.arm"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -60,14 +60,14 @@
          unpack="false"/>
 
    <plugin
-         id="ilg.gnumcueclipse.managedbuild.cross"
+         id="org.eclipse.embedcdt.managedbuild.cross"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="ilg.gnumcueclipse.managedbuild.packs"
+         id="org.eclipse.embedcdt.managedbuild.packs"
          download-size="0"
          install-size="0"
          version="0.0.0"
