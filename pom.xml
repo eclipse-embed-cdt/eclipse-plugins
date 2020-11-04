@@ -35,6 +35,7 @@
 	<modules>
 		<!-- MCU common modules. -->
 		<module>plugins/org.eclipse.embedcdt.core</module>
+		<module>features/org.eclipse.embedcdt-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.packs</module>
@@ -98,7 +99,7 @@
 		
 	</modules>
 
-	<name>Eclipse Embedded CDT Root</name>
+	<name>Embedded CDT Root</name>
 	
 	<url>https://projects.eclipse.org/projects/iot.embed-cdt/</url>
 </project>
