@@ -25,7 +25,7 @@ Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.equinox.registry;bundle-version="3.6.100",
  org.eclipse.ui;bundle-version="3.108.1",
  org.eclipse.ui.ide;bundle-version="3.12.3"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

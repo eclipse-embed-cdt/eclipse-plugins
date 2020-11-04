@@ -23,6 +23,6 @@ Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.ui.navigator.resources;bundle-version="3.5.101",
  org.eclipse.ui.workbench;bundle-version="3.108.3"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin

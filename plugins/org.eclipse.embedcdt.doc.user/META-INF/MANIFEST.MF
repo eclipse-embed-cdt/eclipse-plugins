@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.doc.user;singleton:=true
 Bundle-Version: 1.1.2.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.help;bundle-version="3.7.0"
 Bundle-Vendor: %bundle.vendor

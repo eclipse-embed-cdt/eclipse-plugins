@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.ui;bundle-version="3.108.1",
  org.eclipse.ui.ide;bundle-version="3.12.3"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: ilg.gnumcueclipse.managedbuild.cross.arm,

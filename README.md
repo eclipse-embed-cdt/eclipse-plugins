@@ -40,17 +40,16 @@ Plese read the separate [README-MAINTAINER.md](README-MAINTAINER.md) page.
 
 ## Run-time dependencies
 
-The minimum requirements for running the Eclipse Embedded CDT plug-ins are:
+Starting with v6.x, the minimum requirements for running the Eclipse
+Embedded CDT plug-ins are:
 
-- JavaSE-1.8 or later
+- JavaSE-11 or later
 - CDT 9.2.1 (Neon.3)
 
 The recommended:
 
 - JavaSE-11 or later
-- Eclipse 2019-12 or later
-
-Please note that since 2020-03, installing CDT requires Java 11.
+- Eclipse 2020-09 or later
 
 ## License
 
