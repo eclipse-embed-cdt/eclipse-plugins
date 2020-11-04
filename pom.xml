@@ -99,7 +99,7 @@
 		
 	</modules>
 
-	<name>Embedded CDT Root</name>
+	<name>Embedded C/C++ Root</name>
 	
 	<url>https://projects.eclipse.org/projects/iot.embed-cdt/</url>
 </project>
