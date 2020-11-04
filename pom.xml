@@ -34,39 +34,39 @@
 
 	<modules>
 		<!-- MCU common modules. -->
-		<module>plugins/ilg.gnumcueclipse.core</module>
+		<module>plugins/org.eclipse.embedcdt.core</module>
 
-		<module>plugins/ilg.gnumcueclipse.managedbuild.cross</module>
-		<module>plugins/ilg.gnumcueclipse.managedbuild.packs</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.cross</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.packs</module>
 
-		<module>plugins/ilg.gnumcueclipse.packs</module>
-		<module>plugins/ilg.gnumcueclipse.packs.core</module>
-		<module>plugins/ilg.gnumcueclipse.packs.data</module>
-		<module>plugins/ilg.gnumcueclipse.packs.ui</module>
+		<module>plugins/org.eclipse.embedcdt.packs</module>
+		<module>plugins/org.eclipse.embedcdt.packs.core</module>
+		<module>plugins/org.eclipse.embedcdt.packs.data</module>
+		<module>plugins/org.eclipse.embedcdt.packs.ui</module>
 		<module>features/org.eclipse.embedcdt.packs-feature</module>
 
-		<module>plugins/ilg.gnumcueclipse.debug.core</module>
-		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag</module>
-		<module>plugins/ilg.gnumcueclipse.debug.packs</module>
+		<module>plugins/org.eclipse.embedcdt.debug.core</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag</module>
+		<module>plugins/org.eclipse.embedcdt.debug.packs</module>
 
-		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.jlink</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jlink</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.jlink-feature</module>
 
-		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.openocd</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.openocd</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.openocd-feature</module>
 
-		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.pyocd</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.pyocd</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.pyocd-feature</module>
 
-		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.qemu</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.qemu</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.qemu-feature</module>
 
-		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.jumper</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jumper</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.jumper-feature</module>
 
-		<module>plugins/ilg.gnumcueclipse.debug.gdbjtag.restart</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.restart</module>
 
-		<module>plugins/ilg.gnumcueclipse.codered</module>
+		<module>plugins/org.eclipse.embedcdt.codered</module>
 		<module>features/org.eclipse.embedcdt.codered-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.doc.user</module>
@@ -75,7 +75,7 @@
 		<module>repositories/org.eclipse.embedcdt-repository</module>
 
 		<!-- Arm specific modules. -->
-		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.arm</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.arm</module>
 		<module>features/org.eclipse.embedcdt.managedbuild.cross.arm-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.templates.core</module>
@@ -90,7 +90,7 @@
 		<module>features/org.eclipse.embedcdt.templates.ad-feature</module>
 
 		<!-- RISC-V specific modules. -->
-		<module>plugins/ilg.gnumcueclipse.managedbuild.cross.riscv</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.riscv</module>
 		<module>features/org.eclipse.embedcdt.managedbuild.cross.riscv-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.templates.sifive</module>
