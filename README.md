@@ -23,10 +23,10 @@ Eclipse Marketplace; search for _Embedded CDT_.
 
 ### Eclipse Update Sites
 
-- Stable: `https://download.eclipse.org/embed-cdt/updates/neon`  
+- Stable: `https://download.eclipse.org/embed-cdt/updates/neon-v6`  
    This is the official release; it is also referred by the Eclipse
    Marketplace and the same content is packed as **Eclipse IDE for Embedded C/C++ Developers**.
-- Pre-release versions: `https://download.eclipse.org/embed-cdt/updates/neon-test`  
+- Pre-release versions: `https://download.eclipse.org/embed-cdt/updates/neon-v6-test`  
    Usually this site should be safe, but use it with caution.
 - Development versions: `https://download.eclipse.org/embed-cdt/builds/develop/p2`
    Sometimes you can use this site to test features that are not
