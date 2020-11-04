@@ -16,7 +16,7 @@ git clone --recurse-submodule https://github.com/eclipse-embed-cdt/eclipse-plugi
 ## Prerequisites
 
 Production builds are run via
-[Jenkins]([https://ci.eclipse.org/embed-cdt/](https://ci.eclipse.org/embed-cdt/))
+[Jenkins](https://ci.eclipse.org/embed-cdt/)
 on the Eclipse Foundation infrastructure (CBI); for local builds, use the
 [Adopt OpenJDK 11](https://adoptopenjdk.net) and maven 3.6.
 
