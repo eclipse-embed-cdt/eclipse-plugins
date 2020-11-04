@@ -1,7 +1,7 @@
 # Enable all debug options
 org.eclipse.embedcdt.codered/debug=true
 
-ilg.gnumcueclipse.core/debug=true
+org.eclipse.embedcdt.core/debug=true
 
 org.eclipse.embedcdt.debug.core/debug=true
 org.eclipse.embedcdt.debug.gdbjtag/debug=true
