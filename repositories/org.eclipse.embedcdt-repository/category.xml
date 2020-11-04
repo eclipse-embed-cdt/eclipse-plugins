@@ -15,6 +15,9 @@
 
 <site>
    <category-def name="org.eclipse.embedcdt.category" label="Embedded C/C++ Cross Development Tools (incubation)"/>
+   <feature id="org.eclipse.embedcdt">
+      <category name="org.eclipse.embedcdt.category"/>
+   </feature>
    <feature id="org.eclipse.embedcdt.managedbuild.cross.arm">
       <category name="org.eclipse.embedcdt.category"/>
    </feature>
