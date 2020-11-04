@@ -13,7 +13,8 @@ pipeline {
             steps {
 
                 sh "mvn \
-                        --batch-mode --show-version \
+                        --batch-mode \
+                        --show-version \
                         clean verify \
                         -P production \
                         -Dmaven.repo.local=/home/jenkins/.m2/repository \

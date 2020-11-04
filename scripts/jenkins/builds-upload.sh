@@ -16,9 +16,9 @@ DOWNLOAD_ROOT="/home/data/httpd/download.eclipse.org/embed-cdt"
 UPDATES_DEST="${DOWNLOAD_ROOT}/builds/${BRANCH_NAME}"
 
 VERSION=$(ls repositories/org.eclipse.embedcdt-repository/target/org.eclipse.embedcdt.repository-*.zip | sed -e 's/.*repository-\([0-9]*[.][0-9]*[.][0-9]*\)-\(.*\)[.]zip/\1/')
-NUMDATE=$(ls repositories/org.eclipse.embedcdt-repository/target/repository/plugins/ilg.gnumcueclipse.core_*.jar | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
+NUMDATE=$(ls repositories/org.eclipse.embedcdt-repository/target/repository/plugins/org.eclipse.embedcdt.core_*.jar | sed -e 's/.*core_\([0-9]*[.][0-9]*[.][0-9]*\)[.]\([0-9]*\)[.]jar/\2/')
 
-ARCHIVE_NAME="org.eclipse.embedcdt.repository-${VERSION}-${NUMDATE}"
+ARCHIVE_NAME="org.eclipse.embedcdt.repository-${VERSION}-${NUMDATE:-"SNAPSHOT"}"
 
 ls -lA repositories/org.eclipse.embedcdt-repository/target
 ls repositories/org.eclipse.embedcdt-repository/target/repository/features
