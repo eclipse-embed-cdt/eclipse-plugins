@@ -30,58 +30,6 @@
       %license
    </license>
 
-   <includes
-         id="org.eclipse.embedcdt.codered"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.debug.gdbjtag.jlink"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.debug.gdbjtag.openocd"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.debug.gdbjtag.pyocd"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.debug.gdbjtag.qemu"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.managedbuild.cross.arm"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.managedbuild.cross.riscv"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.packs"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.templates.ad"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.templates.cortexm"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.templates.freescale"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.templates.sifive"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.embedcdt.templates.stm"
-         version="0.0.0"/>
-
    <plugin
          id="org.eclipse.embedcdt.core"
          download-size="0"
