@@ -16,4 +16,4 @@ Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.osgi;bundle-version="3.11.3",
  org.eclipse.ui;bundle-version="3.108.1"
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.restart.Activator
+Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.restart.Activator

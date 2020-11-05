@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag.jlink;singleton:=true
 Bundle-Version: 4.4.2.qualifier
-Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator
+Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.jlink.Activator
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.debug.core,
  org.eclipse.embedcdt.debug.gdbjtag,
@@ -29,7 +29,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: ilg.gnumcueclipse.debug.gdbjtag.jlink,
- ilg.gnumcueclipse.debug.gdbjtag.jlink.dsf,
- ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences,
- ilg.gnumcueclipse.debug.gdbjtag.jlink.ui
+Export-Package: org.eclipse.embedcdt.debug.gdbjtag.jlink,
+ org.eclipse.embedcdt.debug.gdbjtag.jlink.dsf,
+ org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences,
+ org.eclipse.embedcdt.debug.gdbjtag.jlink.ui

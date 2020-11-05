@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag.qemu;singleton:=true
 Bundle-Version: 3.4.2.qualifier
-Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator
+Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.debug.core,
  org.eclipse.embedcdt.debug.gdbjtag,
@@ -27,7 +27,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: ilg.gnumcueclipse.debug.gdbjtag.qemu,
- ilg.gnumcueclipse.debug.gdbjtag.qemu.dsf,
- ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences,
- ilg.gnumcueclipse.debug.gdbjtag.qemu.ui
+Export-Package: org.eclipse.embedcdt.debug.gdbjtag.qemu,
+ org.eclipse.embedcdt.debug.gdbjtag.qemu.dsf,
+ org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences,
+ org.eclipse.embedcdt.debug.gdbjtag.qemu.ui

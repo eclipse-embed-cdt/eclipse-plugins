@@ -26,7 +26,7 @@
 	<!-- LaunchConfigurationDelegate.java is where fun starts -->
 	<extension point="org.eclipse.debug.core.launchDelegates">
 		<launchDelegate
-			delegate="ilg.gnumcueclipse.debug.gdbjtag.jlink.dsf.LaunchConfigurationDelegate"
+			delegate="org.eclipse.embedcdt.debug.gdbjtag.jlink.dsf.LaunchConfigurationDelegate"
 			delegateDescription="%launchDelegate.jtagDsf.description"
 			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.core.dsfLaunchDelegate"
 			modes="debug,run"
@@ -46,14 +46,14 @@
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup
-			class="ilg.gnumcueclipse.debug.gdbjtag.jlink.ui.TabGroupLaunchConfiguration"
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.TabGroupLaunchConfiguration"
 			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
 			type="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationType" />
 	</extension>
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="ilg.gnumcueclipse.debug.gdbjtag.jlink.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.JTagDevice"
 			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.core.jtagdevice"
 			name="%JTagDevice.generic.name">
 		</device>
@@ -61,7 +61,7 @@
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="ilg.gnumcueclipse.debug.gdbjtag.jlink.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.JTagDevice"
 			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.core.jtagdevice"
 			name="%JTagDevice.deprecated.name">
 		</device>
@@ -70,7 +70,7 @@
 	<!-- legacy from early versions -->
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="ilg.gnumcueclipse.debug.gdbjtag.jlink.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.JTagDevice"
 			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.core.jtagdevice.compat"
 			name="J-Link">
 		</device>
@@ -78,20 +78,20 @@
 
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences.DefaultPreferenceInitializer">
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 	
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
-			class="ilg.gnumcueclipse.debug.gdbjtag.jlink.ui.preferences.WorkspaceMcuPage"
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.preferences.WorkspaceMcuPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.workspacePreferencePage"
 			name="%preferences.workspaceMcu">
 		</page>
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
-			class="ilg.gnumcueclipse.debug.gdbjtag.jlink.ui.preferences.GlobalMcuPage"
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.preferences.GlobalMcuPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.globalPreferencePage"
 			name="%preferences.globalMcu">
 		</page>
@@ -100,7 +100,7 @@
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			category="ilg.gnumcueclipse.core.ui.properties.mcu"
-			class="ilg.gnumcueclipse.debug.gdbjtag.jlink.ui.properties.ProjectMcuPage"
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.properties.ProjectMcuPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.projectPropertiesPage"
 			name="%properties.mcu">
 			<filter

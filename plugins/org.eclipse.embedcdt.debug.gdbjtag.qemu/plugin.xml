@@ -25,7 +25,7 @@
 
 	<extension point="org.eclipse.debug.core.launchDelegates">
 		<launchDelegate
-			delegate="ilg.gnumcueclipse.debug.gdbjtag.qemu.dsf.LaunchConfigurationDelegate"
+			delegate="org.eclipse.embedcdt.debug.gdbjtag.qemu.dsf.LaunchConfigurationDelegate"
 			delegateDescription="%launchDelegate.jtagDsf.description"
 			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.core.dsfLaunchDelegate"
 			modes="debug,run"
@@ -45,14 +45,14 @@
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup
-			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.TabGroupLaunchConfiguration"
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.TabGroupLaunchConfiguration"
 			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationTabGroup"
 			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType" />
 	</extension>
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.JTagDevice"
 			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.core.jtagdevice"
 			name="%JTagDevice.generic.name">
 		</device>
@@ -60,7 +60,7 @@
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.JTagDevice"
 			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.core.jtagdevice"
 			name="%JTagDevice.deprecated.name">
 		</device>
@@ -68,20 +68,20 @@
 
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences.DefaultPreferenceInitializer">
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
-			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.preferences.WorkspaceMcuPage"
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.preferences.WorkspaceMcuPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.workspacePreferencePage"
 			name="%preferences.workspaceMcu">
 		</page>
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
-			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.preferences.GlobalMcuPage"
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.preferences.GlobalMcuPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.globalPreferencePage"
 			name="%preferences.globalMcu">
 		</page>
@@ -89,7 +89,7 @@
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			category="ilg.gnumcueclipse.core.ui.properties.mcu"
-			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.properties.ProjectMcuPage"
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.properties.ProjectMcuPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.projectPropertiesPage"
 			name="%properties.mcu">
 			<filter

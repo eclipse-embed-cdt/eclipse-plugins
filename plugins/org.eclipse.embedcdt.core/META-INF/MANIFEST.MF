@@ -3,17 +3,17 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.core;singleton:=true
 Bundle-Version: 6.0.0.qualifier
-Bundle-Activator: ilg.gnumcueclipse.core.Activator
+Bundle-Activator: org.eclipse.embedcdt.core.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: com.github.zafarkhaja.semver,
  com.github.zafarkhaja.semver.expr,
- ilg.gnumcueclipse.core,
- ilg.gnumcueclipse.core.preferences,
- ilg.gnumcueclipse.core.ui,
  liqp,
+ org.eclipse.embedcdt.core,
+ org.eclipse.embedcdt.core.preferences,
+ org.eclipse.embedcdt.core.ui,
  org.json.simple,
  org.json.simple.parser
 Require-Bundle: org.eclipse.cdt;bundle-version="9.2.1",

@@ -17,7 +17,7 @@
 	<extension point="org.eclipse.cdt.ui.cPropertyTab">
 
 		<tab
-			class="ilg.gnumcueclipse.managedbuild.packs.ui.TabDevices"
+			class="org.eclipse.embedcdt.managedbuild.packs.ui.TabDevices"
 			helpId="cdt_u_prop_build_setting_tool"
 			icon="icons/hardware_chip.png"
 			name="%tab.deviceSettings"
@@ -51,7 +51,7 @@
 		<view
 			allowMultiple="false"
 			category="ilg.gnumcueclipse.packs"
-			class="ilg.gnumcueclipse.managedbuild.packs.ui.views.DocsView"
+			class="org.eclipse.embedcdt.managedbuild.packs.ui.views.DocsView"
 			icon="icons/pdficon_small.png"
 			id="ilg.gnumcueclipse.managedbuild.packs.ui.views.DocsView"
 			name="%views.packs.docs">

@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":ilg.gnumcueclipse.debug.core.data.ICProjectExtraDataManagerFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.embedcdt.debug.core.data.ICProjectExtraDataManagerFactory"/>
                </appinfo>
             </annotation>
          </attribute>

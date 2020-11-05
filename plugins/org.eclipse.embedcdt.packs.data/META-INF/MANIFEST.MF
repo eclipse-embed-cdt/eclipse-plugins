@@ -3,14 +3,14 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.packs.data;singleton:=true
 Bundle-Version: 2.4.2.qualifier
-Bundle-Activator: ilg.gnumcueclipse.packs.data.Activator
+Bundle-Activator: org.eclipse.embedcdt.packs.data.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: ilg.gnumcueclipse.packs.cmsis,
- ilg.gnumcueclipse.packs.data,
- ilg.gnumcueclipse.packs.xcdl
+Export-Package: org.eclipse.embedcdt.packs.data,
+ org.eclipse.embedcdt.packs.data.cmsis,
+ org.eclipse.embedcdt.packs.data.xcdl
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.packs.core,
  org.eclipse.core.jobs;bundle-version="3.8.0",

@@ -25,7 +25,7 @@
 
 	<extension point="org.eclipse.debug.core.launchDelegates">
 		<launchDelegate
-			delegate="ilg.gnumcueclipse.debug.gdbjtag.openocd.dsf.LaunchConfigurationDelegate"
+			delegate="org.eclipse.embedcdt.debug.gdbjtag.openocd.dsf.LaunchConfigurationDelegate"
 			delegateDescription="%launchDelegate.jtagDsf.description"
 			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.core.dsfLaunchDelegate"
 			modes="debug,run"
@@ -45,14 +45,14 @@
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup
-			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.TabGroupLaunchConfiguration"
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.TabGroupLaunchConfiguration"
 			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.launchConfigurationTabGroup"
 			type="ilg.gnumcueclipse.debug.gdbjtag.openocd.launchConfigurationType" />
 	</extension>
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.JTagDevice"
 			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.core.jtagdevice"
 			name="%JTagDevice.generic.name">
 		</device>
@@ -60,7 +60,7 @@
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.JTagDevice"
 			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.core.jtagdevice"
 			name="%JTagDevice.deprecated.name">
 		</device>
@@ -69,13 +69,13 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
-			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.preferences.WorkspaceMcuPage"
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.preferences.WorkspaceMcuPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.workspacePreferencePage"
 			name="%preferences.workspaceMcu">
 		</page>
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
-			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.preferences.GlobalMcuPage"
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.preferences.GlobalMcuPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.globalPreferencePage"
 			name="%preferences.globalMcu">
 		</page>
@@ -83,7 +83,7 @@
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			category="ilg.gnumcueclipse.core.ui.properties.mcu"
-			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.properties.ProjectMcuPage"
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.properties.ProjectMcuPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.projectPropertiesPage"
 			name="%properties.mcu">
 			<filter
@@ -103,7 +103,7 @@
 	
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.DefaultPreferenceInitializer">
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 

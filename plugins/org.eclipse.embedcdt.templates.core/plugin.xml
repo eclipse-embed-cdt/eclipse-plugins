@@ -17,7 +17,7 @@
 	<extension point="org.eclipse.cdt.core.templateProcessTypes">
 		<processType
 			name="SetMBSStringOptionValue"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.SetMBSStringOptionValue">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.SetMBSStringOptionValue">
 			<simple name="projectName" />
 			<complexArray name="resourcePaths">
 				<baseType>
@@ -30,7 +30,7 @@
 		</processType>
 		<processType
 			name="SetMBSStringListOptionValues"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.SetMBSStringListOptionValues">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.SetMBSStringListOptionValues">
 			<simple name="projectName" />
 			<complexArray name="resourcePaths">
 				<baseType>
@@ -43,7 +43,7 @@
 		</processType>
 		<processType
 			name="SetMBSBooleanOptionValue"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.SetMBSBooleanOptionValue">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.SetMBSBooleanOptionValue">
 			<simple name="projectName" />
 			<complexArray name="resourcePaths">
 				<baseType>
@@ -56,7 +56,7 @@
 		</processType>
 		<processType
 			name="AppendToMBSStringOptionValue"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.AppendToMBSStringOptionValue">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.AppendToMBSStringOptionValue">
 			<simple name="projectName" />
 			<complexArray name="resourcePaths">
 				<baseType>
@@ -69,7 +69,7 @@
 		</processType>
 		<processType
 			name="AppendToMBSStringListOptionValues"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.AppendToMBSStringListOptionValues">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.AppendToMBSStringListOptionValues">
 			<simple name="projectName" />
 			<complexArray name="resourcePaths">
 				<baseType>
@@ -84,7 +84,7 @@
 		</processType>
 		<processType
 			name="ConditionalSetMBSStringOptionValue"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.ConditionalSetMBSStringOptionValue">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalSetMBSStringOptionValue">
 			<simple name="projectName">
 			</simple>
 			<simple
@@ -106,7 +106,7 @@
 		</processType>
 		<processType
 			name="ConditionalAppendToMBSStringOptionValue"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.ConditionalAppendToMBSStringOptionValue">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAppendToMBSStringOptionValue">
 			<simple name="projectName">
 			</simple>
 			<simple
@@ -130,7 +130,7 @@
 		</processType>
 		<processType
 			name="ConditionalAppendToMBSStringListOptionValues"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.ConditionalAppendToMBSStringListOptionValues">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAppendToMBSStringListOptionValues">
 			<simple name="projectName">
 			</simple>
 			<simple
@@ -154,7 +154,7 @@
 		</processType>
 		<processType
 			name="ConditionalSetMBSBooleanOptionValue"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.ConditionalSetMBSBooleanOptionValue">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalSetMBSBooleanOptionValue">
 			<simple name="projectName">
 			</simple>
 			<simple
@@ -177,7 +177,7 @@
 
 		<processType
 			name="ConditionalAddFiles"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.ConditionalAddFiles">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAddFiles">
 			<simple name="projectName" />
 			<simple
 				name="condition"
@@ -194,7 +194,7 @@
 
 		<processType
 			name="ConditionalAppendCreate"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.ConditionalAppendCreate">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAppendCreate">
 			<simple name="projectName" />
 			<simple
 				name="condition"
@@ -211,7 +211,7 @@
 
 		<processType
 			name="SetPropertyIfHasNature"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.SetPropertyIfHasNature">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.SetPropertyIfHasNature">
 			<simple name="projectName" />
 			<simple name="natureString" />
 			<simple name="propertyName" />
@@ -220,7 +220,7 @@
 
 		<processType
 			name="ConditionalSetProperty"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.ConditionalSetProperty">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalSetProperty">
 			<simple name="projectName" />
 			<simple
 				name="condition"
@@ -232,7 +232,7 @@
 
 		<processType
 			name="SetPropertyToPluginResource"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.SetPropertyToPluginResource">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.SetPropertyToPluginResource">
 			<simple name="pluginId" />
 			<simple name="relativePath" />
 			<simple name="propertyName" />
@@ -240,7 +240,7 @@
 
 		<processType
 			name="AddAbsolutePathFiles"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.AddAbsolutePathFiles">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.AddAbsolutePathFiles">
 			<simple name="projectName" />
 			<complexArray name="files">
 				<baseType>
@@ -253,7 +253,7 @@
 
 		<processType
 			name="ConditionalCopyFolders"
-			processRunner="ilg.gnumcueclipse.templates.core.processes.ConditionalCopyFolders">
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalCopyFolders">
 			<simple name="projectName" />
 			<simple
 				name="condition"
@@ -270,7 +270,7 @@
 		</processType>
   <processType
         name="ConditionalAddLiquidFiles"
-        processRunner="ilg.gnumcueclipse.templates.core.processes.ConditionalAddLiquidFiles">
+        processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAddLiquidFiles">
      <simple
            name="projectName">
      </simple>

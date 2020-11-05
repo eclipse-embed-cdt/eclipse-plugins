@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":ilg.gnumcueclipse.packs.core.data.IPacksDataManagerFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.embedcdt.packs.core.data.IPacksDataManagerFactory"/>
                </appinfo>
             </annotation>
          </attribute>

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.templates.stm;singleton:=true
 Bundle-Version: 2.7.2.qualifier
-Bundle-Activator: ilg.gnumcueclipse.templates.stm.Activator
+Bundle-Activator: org.eclipse.embedcdt.templates.stm.Activator
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.templates.core,
  org.eclipse.core.runtime;bundle-version="3.12.0",

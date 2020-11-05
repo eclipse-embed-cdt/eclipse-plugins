@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.codered;singleton:=true
 Bundle-Version: 1.1.2.qualifier
-Bundle-Activator: ilg.gnumcueclipse.codered.Activator
+Bundle-Activator: org.eclipse.embedcdt.codered.Activator
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.cdt.ui;bundle-version="6.1.0",
  org.eclipse.core.filesystem;bundle-version="1.6.1",
@@ -19,4 +19,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: ilg.gnumcueclipse.codered
+Export-Package: org.eclipse.embedcdt.codered

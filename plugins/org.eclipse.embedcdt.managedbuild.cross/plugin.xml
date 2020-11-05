@@ -388,7 +388,7 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.createflash"
 				isAbstract="true"
 				name="%option.toolchain.flash"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -409,7 +409,7 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.createlisting"
 				isAbstract="true"
 				name="%option.toolchain.listing"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -430,7 +430,7 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.printsize"
 				isAbstract="true"
 				name="%option.toolchain.size"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -560,7 +560,7 @@
 			</option>
 			<option
 				browseType="file"
-				commandGenerator="ilg.gnumcueclipse.managedbuild.cross.LinkerScriptCommandGenerator"
+				commandGenerator="org.eclipse.embedcdt.managedbuild.cross.LinkerScriptCommandGenerator"
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.scriptfile"
 				isAbstract="true"
 				name="%option.linker.scriptfile"
@@ -888,7 +888,7 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.useglobalpath"
 				isAbstract="true"
 				name="%option.toolchain.useglobalpath"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement type="UI_VISIBILITY">
 					<false> false body text
@@ -1351,13 +1351,13 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
-			class="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.BuildToolsWorkspacePathsPreferencesPage"
+			class="org.eclipse.embedcdt.managedbuild.cross.ui.preferences.BuildToolsWorkspacePathsPreferencesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.ui.preferencePage.workspaceToolsPaths"
 			name="%preferences.workspaceBuildToolsPaths">
 		</page>
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
-			class="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.BuildToolsGlobalPathsPreferencesPage"
+			class="org.eclipse.embedcdt.managedbuild.cross.ui.preferences.BuildToolsGlobalPathsPreferencesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.ui.preferencePage.globalToolsPaths"
 			name="%preferences.globalBuildToolsPaths">
 		</page>
@@ -1365,7 +1365,7 @@
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			category="ilg.gnumcueclipse.core.ui.properties.mcu"
-			class="ilg.gnumcueclipse.managedbuild.cross.ui.properties.BuildToolsProjectPathPropertiesPage"
+			class="org.eclipse.embedcdt.managedbuild.cross.ui.properties.BuildToolsProjectPathPropertiesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.ui.properties.toolsPage"
 			name="%properties.projectBuildToolsPaths">
 			<filter
@@ -1385,13 +1385,13 @@
 
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="ilg.gnumcueclipse.managedbuild.cross.DefaultPreferenceInitializer">
+			class="org.eclipse.embedcdt.managedbuild.cross.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 
 	<extension point="org.eclipse.core.expressions.propertyTesters">
 		<propertyTester
-			class="ilg.gnumcueclipse.managedbuild.cross.GnuMcuPropertyTester"
+			class="org.eclipse.embedcdt.managedbuild.cross.GnuMcuPropertyTester"
 			id="ilg.gnumcueclipse.managedbuild.cross.propertyTester"
 			namespace="ilg.gnumcueclipse.managedbuild.cross"
 			properties="isGnuMcu"

@@ -23,7 +23,7 @@
 		</category>
 		<command
 			categoryId="ilg.gnumcueclipse.debug.gdbjtag.restart.category"
-			defaultHandler="ilg.gnumcueclipse.debug.gdbjtag.restart.RestartCommandHandler"
+			defaultHandler="org.eclipse.embedcdt.debug.gdbjtag.restart.RestartCommandHandler"
 			description="%ActionDefinition.restart.description"
 			id="ilg.gnumcueclipse.debug.gdbjtag.restart.commands.Restart"
 			name="%ActionDefinition.restart.name">
@@ -36,7 +36,7 @@
 			label="%ActionDefinition.restart.name"
 			visible="true">
 			<action
-				class="ilg.gnumcueclipse.debug.gdbjtag.restart.action.RestartCommandActionDelegate"
+				class="org.eclipse.embedcdt.debug.gdbjtag.restart.action.RestartCommandActionDelegate"
 				definitionId="ilg.gnumcueclipse.debug.gdbjtag.restart.commands.Restart"
 				disabledIcon="icons/dlcl16/restart_co.gif"
 				icon="icons/elcl16/restart_co.gif"
@@ -49,7 +49,7 @@
 	</extension>
 
 	<extension point="org.eclipse.ui.startup">
-		<startup class="ilg.gnumcueclipse.debug.gdbjtag.restart.Startup">
+		<startup class="org.eclipse.embedcdt.debug.gdbjtag.restart.Startup">
 		</startup>
 	</extension>
 </plugin>

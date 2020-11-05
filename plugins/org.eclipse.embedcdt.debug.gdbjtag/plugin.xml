@@ -19,7 +19,7 @@
 		<view
 			allowMultiple="false"
 			category="org.eclipse.debug.ui"
-			class="ilg.gnumcueclipse.debug.gdbjtag.render.peripherals.PeripheralsView"
+			class="org.eclipse.embedcdt.debug.gdbjtag.render.peripherals.PeripheralsView"
 			icon="icons/peripheral.png"
 			id="ilg.gnumcueclipse.debug.gdbjtag.ui.views.PeripheralsView"
 			name="%views.peripheral.name">
@@ -52,8 +52,8 @@
 
 	<extension point="org.eclipse.core.runtime.adapters">
 		<factory
-			adaptableType="ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuLaunch"
-			class="ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuAdapterFactory">
+			adaptableType="org.eclipse.embedcdt.debug.gdbjtag.dsf.GnuMcuLaunch"
+			class="org.eclipse.embedcdt.debug.gdbjtag.dsf.GnuMcuAdapterFactory">
 			<!-- this list needs to match the list of adapters that GnuMcuAdapterFactory's 
 				super class can adapt to, see org.eclipse.cdt.dsf.gdb.ui/plugin.xml for reference 
 				list -->
@@ -74,7 +74,7 @@
 
 	<extension point="org.eclipse.debug.ui.memoryRenderings">
 		<renderingType
-			class="ilg.gnumcueclipse.debug.gdbjtag.render.peripheral.PeripheralRenderingDelegate"
+			class="org.eclipse.embedcdt.debug.gdbjtag.render.peripheral.PeripheralRenderingDelegate"
 			id="ilg.gnumcueclipse.debug.gdbjtag.memoryRendering"
 			name="Peripheral">
 		</renderingType>
@@ -87,7 +87,7 @@
 				<or>
 					<!-- Without this instanceof, adding memory renderings fail with NPE -->
 					<instanceof
-						value="ilg.gnumcueclipse.debug.gdbjtag.memory.PeripheralMemoryBlockExtension" />
+						value="org.eclipse.embedcdt.debug.gdbjtag.memory.PeripheralMemoryBlockExtension" />
 				</or>
 			</enablement>
 		</renderingBindings>
@@ -102,7 +102,7 @@
 		</themeElementCategory>
 		<colorDefinition
 			categoryId="ilg.gnumcueclipse.debug.gdbjtag.peripheral.colors"
-			colorFactory="ilg.gnumcueclipse.debug.gdbjtag.preferences.ColorReadOnlyFactory"
+			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.preferences.ColorReadOnlyFactory"
 			id="ilg.gnumcueclipse.debug.gdbjtag.peripherals.color.readonly"
 			isEditable="true"
 			label="Read only background">
@@ -112,7 +112,7 @@
 		</colorDefinition>
 		<colorDefinition
 			categoryId="ilg.gnumcueclipse.debug.gdbjtag.peripheral.colors"
-			colorFactory="ilg.gnumcueclipse.debug.gdbjtag.preferences.ColorWriteOnlyFactory"
+			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.preferences.ColorWriteOnlyFactory"
 			id="ilg.gnumcueclipse.debug.gdbjtag.peripherals.color.writeonly"
 			isEditable="true"
 			label="Write only background">
@@ -122,7 +122,7 @@
 		</colorDefinition>
 		<colorDefinition
 			categoryId="ilg.gnumcueclipse.debug.gdbjtag.peripheral.colors"
-			colorFactory="ilg.gnumcueclipse.debug.gdbjtag.preferences.ColorChangedFactory"
+			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.preferences.ColorChangedFactory"
 			id="ilg.gnumcueclipse.debug.gdbjtag.peripherals.color.changed"
 			isEditable="true"
 			label="Changed background">
@@ -132,7 +132,7 @@
 		</colorDefinition>
 		<colorDefinition
 			categoryId="ilg.gnumcueclipse.debug.gdbjtag.peripheral.colors"
-			colorFactory="ilg.gnumcueclipse.debug.gdbjtag.preferences.ColorChangedLightFactory"
+			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.preferences.ColorChangedLightFactory"
 			id="ilg.gnumcueclipse.debug.gdbjtag.peripherals.color.changed.light"
 			isEditable="true"
 			label="Changed background (light)">
@@ -143,7 +143,7 @@
 		</colorDefinition>
 		<colorDefinition
 			categoryId="ilg.gnumcueclipse.debug.gdbjtag.peripheral.colors"
-			colorFactory="ilg.gnumcueclipse.debug.gdbjtag.preferences.ColorChangedMediumFactory"
+			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.preferences.ColorChangedMediumFactory"
 			id="ilg.gnumcueclipse.debug.gdbjtag.peripherals.color.changed.medium"
 			isEditable="true"
 			label="Changed background (medium)">
@@ -156,7 +156,7 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="org.eclipse.debug.ui.DebugPreferencePage"
-			class="ilg.gnumcueclipse.debug.gdbjtag.preferences.PeripheralsPage"
+			class="org.eclipse.embedcdt.debug.gdbjtag.preferences.PeripheralsPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.preferencePage.peripherals"
 			name="%preferences.peripherals">
 		</page>

@@ -42,14 +42,14 @@ From [Bugzilla](https://dev.eclipse.org/ipzilla/show_bug.cgi?id=21415#c27)
 Already approved
 
 ```
-> ./plugins/ilg.gnumcueclipse.core/lib/json-simple-1.1.1.jar
+> ./plugins/org.eclipse.embedcdt.core/lib/json-simple-1.1.1.jar
 Already approved. CQ#9858
 ```
 
 Submitted as separate CQ
 
 ```
-> ./plugins/ilg.gnumcueclipse.core/lib/liqp-0.6.8.jar
+> ./plugins/org.eclipse.embedcdt.core/lib/liqp-0.6.8.jar
 
 Good contender for first submission. It appears to be MIT license and I don't
 think there is a CQ about it already.
@@ -59,11 +59,11 @@ https://github.com/bkiers/Liqp/releases/tag/liqp-0.6.8
 To be upgraded:
 
 ```
-> ./plugins/ilg.gnumcueclipse.core/lib/ST4-4.0.7.jar
+> ./plugins/org.eclipse.embedcdt.core/lib/ST4-4.0.7.jar
 Similar versions already approved - so if you can use one of them it will be a
 little easier. CQ#14504 is for 4.0.8
 
-> ./plugins/ilg.gnumcueclipse.core/lib/antlr-runtime-3.5.1.jar
+> ./plugins/org.eclipse.embedcdt.core/lib/antlr-runtime-3.5.1.jar
 Similar versions already approved - so if you can use one of them it will be a
 little easier. CQ#9433 is for 3.5.2 (https://dev.eclipse.org/ipzilla/show_bug.cgi?id=9433)
 
@@ -74,13 +74,13 @@ https://download.eclipse.org/tools/orbit/downloads/drops/R20200224183213/ has
 should be easy. Even easier is to use the version in Orbit as nothing else
 needs to be done.
 
-> ./plugins/ilg.gnumcueclipse.core/lib/jackson-databind-2.2.3.jar
+> ./plugins/org.eclipse.embedcdt.core/lib/jackson-databind-2.2.3.jar
 Jackson comment as per above.
 
-> ./plugins/ilg.gnumcueclipse.core/lib/jackson-core-2.2.3.jar
+> ./plugins/org.eclipse.embedcdt.core/lib/jackson-core-2.2.3.jar
 Jackson comment as per above.
 
-> ./plugins/ilg.gnumcueclipse.core/lib/jackson-annotations-2.2.3.jar
+> ./plugins/org.eclipse.embedcdt.core/lib/jackson-annotations-2.2.3.jar
 Jackson comment as per above.
 
 ```

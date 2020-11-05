@@ -47,7 +47,7 @@
 	<extension point="org.eclipse.cdt.core.templateProcessTypes">
 		<processType
 			name="RunProcessorExpertWizard"
-			processRunner="ilg.gnumcueclipse.templates.freescale.pe.processes.RunProcessorExpertWizard">
+			processRunner="org.eclipse.embedcdt.templates.freescale.pe.processes.RunProcessorExpertWizard">
 			<simple name="projectName">
 			</simple>
 		</processType>

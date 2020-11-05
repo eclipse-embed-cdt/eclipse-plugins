@@ -3,17 +3,17 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.packs.core;singleton:=true
 Bundle-Version: 2.4.3.qualifier
-Bundle-Activator: ilg.gnumcueclipse.packs.core.Activator
+Bundle-Activator: org.eclipse.embedcdt.packs.core.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: ilg.gnumcueclipse.packs.core,
- ilg.gnumcueclipse.packs.core.data,
- ilg.gnumcueclipse.packs.core.jstree,
- ilg.gnumcueclipse.packs.core.tree,
- ilg.gnumcueclipse.packs.core.ui,
- ilg.gnumcueclipse.packs.core.xml
+Export-Package: org.eclipse.embedcdt.packs.core,
+ org.eclipse.embedcdt.packs.core.data,
+ org.eclipse.embedcdt.packs.core.jstree,
+ org.eclipse.embedcdt.packs.core.tree,
+ org.eclipse.embedcdt.packs.core.ui,
+ org.eclipse.embedcdt.packs.core.xml
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.core.resources;bundle-version="3.11.1",
  org.eclipse.core.runtime;bundle-version="3.12.0",

@@ -18,23 +18,23 @@
 		<page
 			category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
 			id="ilg.gnumcueclipse.packs.ui.preferencePage.packages"
-			class="ilg.gnumcueclipse.packs.ui.preferences.FolderPage"
+			class="org.eclipse.embedcdt.packs.ui.preferences.FolderPage"
 			name="%preferences.packages">
 		</page>
 		<page
 			category="ilg.gnumcueclipse.packs.ui.preferencePage.packages"
-			class="ilg.gnumcueclipse.packs.ui.preferences.ReposPage"
+			class="org.eclipse.embedcdt.packs.ui.preferences.ReposPage"
 			id="ilg.gnumcueclipse.packs.ui.preferences.SitesPage"
 			name="%preferences.sites">
 		</page>
 	</extension>
 	<extension point="org.eclipse.core.runtime.preferences">
-		<initializer class="ilg.gnumcueclipse.packs.ui.preferences.SitesInitializer">
+		<initializer class="org.eclipse.embedcdt.packs.ui.preferences.SitesInitializer">
 		</initializer>
 	</extension>
 	<extension point="org.eclipse.ui.perspectives">
 		<perspective
-			class="ilg.gnumcueclipse.packs.ui.perspectives.PacksPerspective"
+			class="org.eclipse.embedcdt.packs.ui.perspectives.PacksPerspective"
 			icon="icons/packages.png"
 			id="ilg.gnumcueclipse.packs.ui.perspectives.PacksPerspective"
 			name="%perspectives.packs">
@@ -48,7 +48,7 @@
 		<view
 			allowMultiple="false"
 			category="ilg.gnumcueclipse.packs"
-			class="ilg.gnumcueclipse.packs.ui.views.DevicesView"
+			class="org.eclipse.embedcdt.packs.ui.views.DevicesView"
 			icon="icons/hardware_chip.png"
 			id="ilg.gnumcueclipse.packs.ui.views.DevicesView"
 			name="%views.packs.devices">
@@ -56,7 +56,7 @@
 		<view
 			allowMultiple="false"
 			category="ilg.gnumcueclipse.packs"
-			class="ilg.gnumcueclipse.packs.ui.views.BoardsView"
+			class="org.eclipse.embedcdt.packs.ui.views.BoardsView"
 			icon="icons/board.png"
 			id="ilg.gnumcueclipse.packs.ui.views.BoardsView"
 			name="%viwes.packs.boards">
@@ -64,7 +64,7 @@
 		<view
 			allowMultiple="false"
 			category="ilg.gnumcueclipse.packs"
-			class="ilg.gnumcueclipse.packs.ui.views.KeywordsView"
+			class="org.eclipse.embedcdt.packs.ui.views.KeywordsView"
 			icon="icons/info_obj.png"
 			id="ilg.gnumcueclipse.packs.ui.views.KeywordsView"
 			name="%viwes.packs.keywords">
@@ -72,7 +72,7 @@
 		<view
 			allowMultiple="false"
 			category="ilg.gnumcueclipse.packs"
-			class="ilg.gnumcueclipse.packs.ui.views.PacksView"
+			class="org.eclipse.embedcdt.packs.ui.views.PacksView"
 			icon="icons/packages.png"
 			id="ilg.gnumcueclipse.packs.ui.views.PackagesView"
 			name="%viwes.packs.packages">
@@ -80,7 +80,7 @@
 		<view
 			allowMultiple="false"
 			category="ilg.gnumcueclipse.packs"
-			class="ilg.gnumcueclipse.packs.ui.views.OutlineView"
+			class="org.eclipse.embedcdt.packs.ui.views.OutlineView"
 			icon="icons/outline_co.png"
 			id="ilg.gnumcueclipse.packs.ui.views.OutlineView"
 			name="%viwes.packs.outline"
@@ -128,11 +128,11 @@
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="ilg.gnumcueclipse.packs.ui.handlers.UpdatePacksHandler"
+			class="org.eclipse.embedcdt.packs.ui.handlers.UpdatePacksHandler"
 			commandId="ilg.gnumcueclipse.packs.commands.updateCommand">
 		</handler>
 		<handler
-			class="ilg.gnumcueclipse.packs.ui.handlers.ShowPerspectiveHandler"
+			class="org.eclipse.embedcdt.packs.ui.handlers.ShowPerspectiveHandler"
 			commandId="ilg.gnumcueclipse.packs.commands.showPerspectiveCommand">
 		</handler>
 	</extension>

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag;singleton:=true
 Bundle-Version: 4.2.1.qualifier
-Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.Activator
+Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.Activator
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.debug.core,
  org.eclipse.embedcdt.packs.core,
@@ -33,13 +33,13 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: ilg.gnumcueclipse.debug.gdbjtag,
- ilg.gnumcueclipse.debug.gdbjtag.data,
- ilg.gnumcueclipse.debug.gdbjtag.datamodel,
- ilg.gnumcueclipse.debug.gdbjtag.dsf,
- ilg.gnumcueclipse.debug.gdbjtag.memory,
- ilg.gnumcueclipse.debug.gdbjtag.preferences,
- ilg.gnumcueclipse.debug.gdbjtag.services,
- ilg.gnumcueclipse.debug.gdbjtag.ui,
- ilg.gnumcueclipse.debug.gdbjtag.viewmodel.peripheral
-Import-Package: ilg.gnumcueclipse.packs.xcdl
+Export-Package: org.eclipse.embedcdt.debug.gdbjtag,
+ org.eclipse.embedcdt.debug.gdbjtag.data,
+ org.eclipse.embedcdt.debug.gdbjtag.datamodel,
+ org.eclipse.embedcdt.debug.gdbjtag.dsf,
+ org.eclipse.embedcdt.debug.gdbjtag.memory,
+ org.eclipse.embedcdt.debug.gdbjtag.preferences,
+ org.eclipse.embedcdt.debug.gdbjtag.services,
+ org.eclipse.embedcdt.debug.gdbjtag.ui,
+ org.eclipse.embedcdt.debug.gdbjtag.viewmodel.peripheral
+Import-Package: org.eclipse.embedcdt.packs.data.xcdl

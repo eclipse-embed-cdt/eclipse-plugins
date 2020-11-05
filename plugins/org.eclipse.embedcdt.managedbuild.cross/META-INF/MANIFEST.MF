@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.managedbuild.cross;singleton:=true
 Bundle-Version: 1.3.3.qualifier
-Bundle-Activator: ilg.gnumcueclipse.managedbuild.cross.Activator
+Bundle-Activator: org.eclipse.embedcdt.managedbuild.cross.Activator
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.packs.core,
  org.eclipse.embedcdt.debug.core,
@@ -23,9 +23,9 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: ilg.gnumcueclipse.managedbuild.cross,
- ilg.gnumcueclipse.managedbuild.cross.preferences,
- ilg.gnumcueclipse.managedbuild.cross.ui,
- ilg.gnumcueclipse.managedbuild.cross.ui.preferences,
- ilg.gnumcueclipse.managedbuild.cross.ui.properties,
- ilg.gnumcueclipse.managedbuild.cross.xpi
+Export-Package: org.eclipse.embedcdt.managedbuild.cross,
+ org.eclipse.embedcdt.managedbuild.cross.preferences,
+ org.eclipse.embedcdt.managedbuild.cross.ui,
+ org.eclipse.embedcdt.managedbuild.cross.ui.preferences,
+ org.eclipse.embedcdt.managedbuild.cross.ui.properties,
+ org.eclipse.embedcdt.managedbuild.cross.xpi

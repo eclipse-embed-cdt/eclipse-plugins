@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag.openocd;singleton:=true
 Bundle-Version: 4.4.2.qualifier
-Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator
+Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.openocd.Activator
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.debug.core,
  org.eclipse.embedcdt.debug.gdbjtag,
@@ -28,7 +28,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: ilg.gnumcueclipse.debug.gdbjtag.openocd,
- ilg.gnumcueclipse.debug.gdbjtag.openocd.dsf,
- ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences,
- ilg.gnumcueclipse.debug.gdbjtag.openocd.ui
+Export-Package: org.eclipse.embedcdt.debug.gdbjtag.openocd,
+ org.eclipse.embedcdt.debug.gdbjtag.openocd.dsf,
+ org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences,
+ org.eclipse.embedcdt.debug.gdbjtag.openocd.ui

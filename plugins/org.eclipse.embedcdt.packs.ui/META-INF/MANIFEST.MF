@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.packs.ui;singleton:=true
 Bundle-Version: 1.4.2.qualifier
-Bundle-Activator: ilg.gnumcueclipse.packs.ui.Activator
+Bundle-Activator: org.eclipse.embedcdt.packs.ui.Activator
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.packs.core,
  org.eclipse.embedcdt.packs.data,
@@ -20,5 +20,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: ilg.gnumcueclipse.packs.ui,
- ilg.gnumcueclipse.packs.ui.preferences
+Export-Package: org.eclipse.embedcdt.packs.ui,
+ org.eclipse.embedcdt.packs.ui.preferences

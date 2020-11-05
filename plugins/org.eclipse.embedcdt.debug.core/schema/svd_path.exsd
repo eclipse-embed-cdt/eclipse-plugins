@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":ilg.gnumcueclipse.debug.core.data.ISVDPathManagerFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.embedcdt.debug.core.data.ISVDPathManagerFactory"/>
                </appinfo>
             </annotation>
          </attribute>

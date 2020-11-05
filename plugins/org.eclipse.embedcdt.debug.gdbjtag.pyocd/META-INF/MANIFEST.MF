@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag.pyocd;singleton:=true
 Bundle-Version: 1.4.2.qualifier
-Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator
+Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.pyocd.Activator
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.debug.core,
  org.eclipse.embedcdt.debug.gdbjtag,
@@ -27,7 +27,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: ilg.gnumcueclipse.debug.gdbjtag.pyocd,
- ilg.gnumcueclipse.debug.gdbjtag.pyocd.dsf,
- ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences,
- ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui
+Export-Package: org.eclipse.embedcdt.debug.gdbjtag.pyocd,
+ org.eclipse.embedcdt.debug.gdbjtag.pyocd.dsf,
+ org.eclipse.embedcdt.debug.gdbjtag.pyocd.preferences,
+ org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui

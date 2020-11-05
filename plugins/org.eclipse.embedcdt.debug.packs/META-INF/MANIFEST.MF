@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.packs;singleton:=true
 Bundle-Version: 1.1.2.qualifier
-Bundle-Activator: ilg.gnumcueclipse.debug.packs.Activator
+Bundle-Activator: org.eclipse.embedcdt.debug.packs.Activator
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.packs.core,
  org.eclipse.embedcdt.packs.data,

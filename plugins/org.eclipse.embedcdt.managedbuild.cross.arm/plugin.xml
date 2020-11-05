@@ -1114,7 +1114,7 @@
 				name="%option.target.arm.floatABI"
 				tip="Specifies which floating-point ABI to use. Specifying ‘soft’ causes GCC to generate output containing library calls for floating-point operations. ‘softfp’ allows the generation of code using hardware floating-point instructions, but still uses the soft-float calling conventions. ‘hard’ allows generation of floating-point instructions and uses FPU-specific calling conventions. The default depends on the specific target configuration. Note that the hard-float and soft-float ABIs are not link-compatible; you must compile your entire program with the same ABI, and link with a compatible set of libraries."
 				useByScannerDiscovery="true"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.arm.FloatABIManagedOptionHandleValue"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.arm.FloatABIManagedOptionHandleValue"
 				valueType="enumerated">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
@@ -1668,8 +1668,8 @@
 		</tool>
 		<toolChain
 			archList="all"
-			configurationEnvironmentSupplier="ilg.gnumcueclipse.managedbuild.cross.arm.EnvironmentVariableSupplier"
-			configurationMacroSupplier="ilg.gnumcueclipse.managedbuild.cross.arm.ConfigurationBuildMacroSupplier"
+			configurationEnvironmentSupplier="org.eclipse.embedcdt.managedbuild.cross.arm.EnvironmentVariableSupplier"
+			configurationMacroSupplier="org.eclipse.embedcdt.managedbuild.cross.arm.ConfigurationBuildMacroSupplier"
 			id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
 			isAbstract="false"
 			languageSettingsProviders="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser;ilg.gnuarmeclipse.managedbuild.cross.GCCBuiltinSpecsDetector"
@@ -1684,7 +1684,7 @@
 				osList="all">
 			</targetPlatform>
 			<builder
-				buildfileGenerator="ilg.gnumcueclipse.managedbuild.cross.GnuMcuMakefileGenerator"
+				buildfileGenerator="org.eclipse.embedcdt.managedbuild.cross.GnuMcuMakefileGenerator"
 				command="${cross_make}"
 				id="ilg.gnuarmeclipse.managedbuild.cross.builder"
 				superClass="cdt.managedbuild.target.gnu.builder">
@@ -1694,7 +1694,7 @@
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
 				isAbstract="false"
 				name="%option.toolchain.architecture"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.arm.ToolchainFamilyManagedOptionValueHandler"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.arm.ToolchainFamilyManagedOptionValueHandler"
 				valueType="enumerated">
 				<enumeratedOptionValue
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm"
@@ -2100,7 +2100,7 @@
 			</option>
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
+				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser"
 				id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler"
@@ -2221,7 +2221,7 @@
 			</tool>
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
+				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
 				id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler"
@@ -2419,7 +2419,7 @@
 			</tool>
 			<tool
 				command="${cross_prefix}${cross_cpp}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
+				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
 				id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler"
@@ -3192,7 +3192,7 @@
 				<outputType
 					buildVariable="SECONDARY_FLASH"
 					id="ilg.gnuarmeclipse.managedbuild.cross.createflash.output"
-					nameProvider="ilg.gnumcueclipse.managedbuild.cross.arm.FlashImageManagedOutputNameProvider"
+					nameProvider="org.eclipse.embedcdt.managedbuild.cross.arm.FlashImageManagedOutputNameProvider"
 					outputContentType="ilg.gnuarmeclipse.managedbuild.cross.content-type.hex"
 					outputs="hex"
 					primaryOutput="false">
@@ -3534,8 +3534,8 @@
 	<extension point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
 		<wizardPage
 			ID="ilg.gnuarmeclipse.managedbuild.cross.setCrossCommandWizardPage"
-			operationClass="ilg.gnumcueclipse.managedbuild.cross.arm.ui.SetCrossCommandWizardOperation"
-			pageClass="ilg.gnumcueclipse.managedbuild.cross.arm.ui.SetCrossCommandWizardPage">
+			operationClass="org.eclipse.embedcdt.managedbuild.cross.arm.ui.SetCrossCommandWizardOperation"
+			pageClass="org.eclipse.embedcdt.managedbuild.cross.arm.ui.SetCrossCommandWizardPage">
 			<toolchain toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug">
 			</toolchain>
 			<toolchain
@@ -3613,7 +3613,7 @@
 	</extension>
 	<extension point="org.eclipse.cdt.ui.cPropertyTab">
 		<tab
-			class="ilg.gnumcueclipse.managedbuild.cross.arm.ui.TabToolchains"
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.TabToolchains"
 			helpId="cdt_u_prop_build_setting_tool"
 			icon="icons/elcl16/config-tool.gif"
 			name="%tab.toolchainSettings"
@@ -3624,28 +3624,28 @@
 	</extension>
 	<extension point="ilg.gnumcueclipse.debug.core.cprojectExtra">
 		<factory
-			class="ilg.gnumcueclipse.managedbuild.cross.xpi.CProjectExtraDataManagerFactory">
+			class="org.eclipse.embedcdt.managedbuild.cross.xpi.CProjectExtraDataManagerFactory">
 		</factory>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
-			class="ilg.gnumcueclipse.managedbuild.cross.arm.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.arm.preferencePage.workspaceToolchainsPaths"
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
 			name="%preferences.toolsPaths">
 		</page>
 		<page
 			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
-			class="ilg.gnumcueclipse.managedbuild.cross.arm.ui.preferences.GlobalToolchainsPathsPreferencesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.arm.preferencePage.globalToolchainsPaths"
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences.GlobalToolchainsPathsPreferencesPage"
 			name="%preferences.globalToolsPaths">
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			category="ilg.gnumcueclipse.core.ui.properties.mcu"
-			class="ilg.gnumcueclipse.managedbuild.cross.arm.ui.properties.ProjectToolchainsPathPropertiesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.arm.properties.toolchainsPage"
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.properties.ProjectToolchainsPathPropertiesPage"
 			name="%properties.projectToolsPaths">
          <filter
                name="projectNature"
@@ -3663,12 +3663,12 @@
 	</extension>
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="ilg.gnumcueclipse.managedbuild.cross.arm.preferences.DefaultPreferenceInitializer">
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 	<extension point="org.eclipse.core.expressions.propertyTesters">
 		<propertyTester
-			class="ilg.gnumcueclipse.managedbuild.cross.arm.ui.GnuArmPropertyTester"
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.GnuArmPropertyTester"
 			id="ilg.gnuarmeclipse.managedbuild.cross.propertyTester"
 			namespace="ilg.gnuarmeclipse.managedbuild.cross"
 			properties="isGnuArm"
