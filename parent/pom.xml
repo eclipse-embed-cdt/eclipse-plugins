@@ -235,7 +235,7 @@
 						<!-- https://wiki.eclipse.org/Equinox_p2_download_stats -->
 						<extraArtifactRepositoryProperties>
 							<p2.statsURI>https://download.eclipse.org/stats/embed-cdt/releases/${semverVersion}/</p2.statsURI>
-							<p2.mirrorsURL>https://www.eclipse.org/downloads/download.php?file=/embed-cdt/updates/neon-v6&amp;format=xml</p2.mirrorsURL>
+							<p2.mirrorsURL>https://www.eclipse.org/downloads/download.php?file=/embed-cdt/updates/v6/&amp;format=xml</p2.mirrorsURL>
 						</extraArtifactRepositoryProperties>
 						<!-- Nope, it brings all 3rd party plug-ins.
 						<includeAllDependencies>true</includeAllDependencies>

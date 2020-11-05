@@ -32,11 +32,11 @@ Development builds are published as p2 sub-folders like:
 
 When the content is stable, it is promoted as a pre-release and published as:
 
-- https://download.eclipse.org/embed-cdt/updates/neon-v6-test/
+- https://download.eclipse.org/embed-cdt/updates/v6-test/
 
 The final release is published in the main update site:
 
-- https://download.eclipse.org/embed-cdt/updates/neon-v6/
+- https://download.eclipse.org/embed-cdt/updates/v6/
 
 For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
@@ -136,7 +136,7 @@ Add a tag like `v6.0.0` (with `v`).
 - go to https://ci.eclipse.org/embed-cdt/
 - login (otherwise the next link is not visible!)
 - use the [make-pre-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-pre-release-from-master/)
-Jenkins job to copy the files from `builds/master` to `updates/neon-v6-test`,
+Jenkins job to copy the files from `builds/master` to `updates/v6-test/`,
 which is the public location for the pre-release
 - click the **Build Now** link
 
@@ -146,7 +146,7 @@ pass a link to the release page.
 
 Beta testers can install the pre-release from:
 
-- https://download.eclipse.org/embed-cdt/updates/neon-v6-test/
+- https://download.eclipse.org/embed-cdt/updates/v6-test/
 
 ### Create a pre-release record
 
@@ -169,7 +169,7 @@ Start with _Pre-release_ (Header 3).
 <p>For those who want to beta test, the pre-release is available via <strong>Install New Software</strong> from:</p>
 
 <ul>
-	<li>https://download.eclipse.org/embed-cdt/updates/neon-v6-test/</li>
+	<li>https://download.eclipse.org/embed-cdt/updates/v6-test/</li>
 </ul>
 
 <h3>Changes</h3>
@@ -236,7 +236,7 @@ When the plug-ins are considered stable:
 - go to https://ci.eclipse.org/embed-cdt/
 - login (otherwise the next link is not visible!)
 - use the [make-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-from-master/)
-Jenkins job to copy from `builds/master` to `updates/neon-v6` and
+Jenkins job to copy from `builds/master` to `updates/v6/` and
 `releases/<version>`
 - click the **Build with Parameters** link
 - enter _yes_
@@ -245,14 +245,14 @@ Jenkins job to copy from `builds/master` to `updates/neon-v6` and
 The `releases` folder includes both the release archives and the expanded
 p2 repository.
 
-The `updates/neon-v6` includes only the expanded p2 repository, for the archives
+The `updates/v6/` includes only the expanded p2 repository, for the archives
 see the `releases` folder.
 
 Both can be used in Eclipse to **Install New Software**.
 
 The public update URLs are:
 
-- https://download.eclipse.org/embed-cdt/updates/neon-v6/
+- https://download.eclipse.org/embed-cdt/updates/v6/
 - https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/
 
 ### Update the Eclipse Marketplace records
@@ -280,7 +280,7 @@ The public update URLs are:
 <p>For those who prefer to do it manually, the latest version is available via <strong>Install New Software</strong> from:</p>
 
 <ul>
-	<li><a href="https://download.eclipse.org/embed-cdt/updates/neon-v6/">https://download.eclipse.org/embed-cdt/updates/neon-v6/</a></li>
+	<li><a href="https://download.eclipse.org/embed-cdt/updates/v6/">https://download.eclipse.org/embed-cdt/updates/v6/</a></li>
 </ul>
 
 <p>To get exactly this version, <strong>Install New Software</strong> from:</p>
