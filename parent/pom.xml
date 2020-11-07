@@ -67,8 +67,8 @@
 			<layout>p2</layout>
 			<!-- Explicit reference to 2020-09 with CDT 10.0.0 -->
 			<!-- (Do a run without version and retain the most recent one) -->
-			<url>https://download.eclipse.org/releases/neon/201705151400/</url>
-			<!-- <url>https://download.eclipse.org/releases/2020-09/202009161000/</url> -->
+			<!-- <url>https://download.eclipse.org/releases/neon/201705151400/</url> -->
+			<url>https://download.eclipse.org/releases/2020-09/202009161000/</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
@@ -120,17 +120,12 @@
 						<environment>
 							<os>linux</os>
 							<ws>gtk</ws>
-							<arch>x86</arch>
+							<arch>x86_64</arch>
 						</environment>
 						<environment>
 							<os>linux</os>
 							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
+							<arch>aarch64</arch>
 						</environment>
 						<environment>
 							<os>win32</os>
