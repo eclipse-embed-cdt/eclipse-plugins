@@ -1459,7 +1459,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			// legacy definition; although the jtag device class is not used,
 			// it must be there, to avoid NPEs
-			configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE, ConfigurationAttributes.JTAG_DEVICE);
+			configuration.setAttribute(ConfigurationAttributes.ATTR_JTAG_DEVICE, ConfigurationAttributes.JTAG_DEVICE);
 		}
 
 		boolean booleanValue;
@@ -1620,7 +1620,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
-		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE, ConfigurationAttributes.JTAG_DEVICE);
+		configuration.setAttribute(ConfigurationAttributes.ATTR_JTAG_DEVICE, ConfigurationAttributes.JTAG_DEVICE);
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.TabDebugger.setDefaults() " + configuration.getName());

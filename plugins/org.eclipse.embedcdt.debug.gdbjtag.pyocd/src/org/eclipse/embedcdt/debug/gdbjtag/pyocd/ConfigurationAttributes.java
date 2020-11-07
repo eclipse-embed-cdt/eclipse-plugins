@@ -16,7 +16,7 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag.pyocd;
 
-public interface ConfigurationAttributes {
+public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbjtag.ConfigurationAttributes {
 
 	// ------------------------------------------------------------------------
 

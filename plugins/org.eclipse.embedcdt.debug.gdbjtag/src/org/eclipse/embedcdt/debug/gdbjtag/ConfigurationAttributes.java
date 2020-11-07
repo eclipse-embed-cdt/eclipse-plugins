@@ -24,8 +24,12 @@ public interface ConfigurationAttributes {
 	// ------------------------------------------------------------------------
 
 	// TabSvd
-
 	public static final String SVD_PATH = PREFIX + ".svdPath"; //$NON-NLS-1$
 
+	// ------------------------------------------------------------------------
+
+	// TabSvd
+	public static final String ATTR_JTAG_DEVICE = "org.eclipse.cdt.debug.gdbjtag.core.jtagDevice"; //$NON-NLS-1$
+	
 	// ------------------------------------------------------------------------
 }

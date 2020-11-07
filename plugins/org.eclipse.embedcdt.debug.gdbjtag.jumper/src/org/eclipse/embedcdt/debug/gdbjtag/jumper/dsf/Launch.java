@@ -113,8 +113,8 @@ public class Launch extends GnuMcuLaunch {
 			config.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, "localhost");
 		}
 
-		if (!config.hasAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE)) {
-			config.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE, ConfigurationAttributes.JTAG_DEVICE);
+		if (!config.hasAttribute(ConfigurationAttributes.ATTR_JTAG_DEVICE)) {
+			config.setAttribute(ConfigurationAttributes.ATTR_JTAG_DEVICE, ConfigurationAttributes.JTAG_DEVICE);
 		}
 
 		if (!config.hasAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER)) {

@@ -14,7 +14,7 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag.openocd;
 
-public interface ConfigurationAttributes {
+public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbjtag.ConfigurationAttributes {
 
 	// ------------------------------------------------------------------------
 
