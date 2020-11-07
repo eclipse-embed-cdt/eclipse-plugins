@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<prerequisites>
-		<maven>3.0.5</maven>
+		<maven>3.6.3</maven>
 	</prerequisites>
 
 	<!-- https://maven.apache.org/pom.html groupId:artifactId:version are all 
@@ -63,11 +63,12 @@
 
 	<repositories>
 		<repository>
-			<id>eclipse-neon</id>
+			<id>eclipse</id>
 			<layout>p2</layout>
-			<!-- Explicit reference to Neon.3 with CDT 9.2.1 -->
+			<!-- Explicit reference to 2020-09 with CDT 10.0.0 -->
 			<!-- (Do a run without version and retain the most recent one) -->
-			<url>https://download.eclipse.org/releases/neon/201705151400</url>
+			<url>https://download.eclipse.org/releases/neon/201705151400/</url>
+			<!-- <url>https://download.eclipse.org/releases/2020-09/202009161000/</url> -->
 		</repository>
 	</repositories>
 	<pluginRepositories>
