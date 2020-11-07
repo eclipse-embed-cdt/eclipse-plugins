@@ -15,7 +15,7 @@
 <feature
       id="org.eclipse.embedcdt.doc.user"
       label="%featureName"
-      version="1.1.2.qualifier"
+      version="6.0.0.qualifier"
       provider-name="%providerName">
 
    <description>
