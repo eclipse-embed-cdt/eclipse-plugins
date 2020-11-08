@@ -28,10 +28,6 @@
       %copyright
    </copyright>
 
-   <license url="%licenseURL">
-      %license
-   </license>
-
    <plugin
          id="org.eclipse.embedcdt.core"
          download-size="0"

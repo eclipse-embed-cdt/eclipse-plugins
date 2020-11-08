@@ -29,10 +29,6 @@
       %copyright
    </copyright>
 
-   <license url="%licenseURL">
-      %license
-   </license>
-
    <plugin
          id="org.eclipse.embedcdt.managedbuild.cross.arm"
          download-size="0"

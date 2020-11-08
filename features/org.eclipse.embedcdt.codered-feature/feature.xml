@@ -29,10 +29,6 @@
       %copyright
    </copyright>
 
-   <license url="%licenseURL">
-      %license
-   </license>
-
    <plugin
          id="org.eclipse.embedcdt.codered"
          download-size="0"
