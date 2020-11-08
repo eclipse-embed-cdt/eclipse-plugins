@@ -17,7 +17,9 @@
       label="%featureName"
       version="6.0.0.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.embedcdt.templates.cortexm">
+      plugin="org.eclipse.embedcdt.templates.cortexm"
+      license-feature="org.eclipse.license"
+      license-feature-version="0.0.0">
 
    <description>
       %description
