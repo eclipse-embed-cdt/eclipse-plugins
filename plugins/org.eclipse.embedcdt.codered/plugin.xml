@@ -64,7 +64,7 @@
 			<viewShortcut id="org.eclipse.cdt.dsf.debug.ui.disassembly.view" />
 
 			<viewShortcut
-				id="ilg.gnumcueclipse.debug.gdbjtag.ui.views.PeripheralsView" />
+				id="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView" />
 
 			<showInPart id="org.eclipse.cdt.ui.includeBrowser" />
 			<showInPart id="org.eclipse.cdt.ui.CView" />

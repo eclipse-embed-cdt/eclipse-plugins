@@ -21,7 +21,7 @@
 			category="org.eclipse.debug.ui"
 			class="org.eclipse.embedcdt.debug.gdbjtag.render.peripherals.PeripheralsView"
 			icon="icons/peripheral.png"
-			id="ilg.gnumcueclipse.debug.gdbjtag.ui.views.PeripheralsView"
+			id="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView"
 			name="%views.peripheral.name">
 		</view>
 	</extension>
@@ -29,14 +29,14 @@
 	<extension point="org.eclipse.ui.perspectiveExtensions">
 		<perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
 			<view
-				id="ilg.gnumcueclipse.debug.gdbjtag.ui.views.PeripheralsView"
+				id="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView"
 				minimized="false"
 				relationship="stack"
 				relative="org.eclipse.debug.ui.VariableView"
 				visible="true">
 			</view>
 			<viewShortcut
-				id="ilg.gnumcueclipse.debug.gdbjtag.ui.views.PeripheralsView">
+				id="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView">
 			</viewShortcut>
 		</perspectiveExtension>
 	</extension>
@@ -44,7 +44,7 @@
 	<extension point="org.eclipse.debug.ui.contextViewBindings">
 		<contextViewBinding
 			contextId="org.eclipse.cdt.debug.ui.debugging"
-			viewId="ilg.gnumcueclipse.debug.gdbjtag.ui.views.PeripheralsView"
+			viewId="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView"
 			autoOpen="true"
 			autoClose="true">
 		</contextViewBinding>

@@ -94,7 +94,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		topLeftLayout.addView(IDebugUIConstants.ID_REGISTER_VIEW);
 		bundle = Platform.getBundle("org.eclipse.embedcdt.debug.gdbjtag");
 		if (bundle != null) {
-			topLeftLayout.addView("ilg.gnumcueclipse.debug.gdbjtag.ui.views.PeripheralsView");
+			topLeftLayout.addView("org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView");
 		}
 
 		IFolderLayout bottomLeftLayout = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.5F, "topLeft");
