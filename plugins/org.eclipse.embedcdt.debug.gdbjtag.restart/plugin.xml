@@ -19,28 +19,28 @@
 		<category
 			name="%runCategory.name"
 			description="%runCategory.description"
-			id="ilg.gnumcueclipse.debug.gdbjtag.restart.category">
+			id="org.eclipse.embedcdt.debug.gdbjtag.restart.category">
 		</category>
 		<command
-			categoryId="ilg.gnumcueclipse.debug.gdbjtag.restart.category"
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.restart.category"
 			defaultHandler="org.eclipse.embedcdt.debug.gdbjtag.restart.RestartCommandHandler"
 			description="%ActionDefinition.restart.description"
-			id="ilg.gnumcueclipse.debug.gdbjtag.restart.commands.Restart"
+			id="org.eclipse.embedcdt.debug.gdbjtag.restart.commands.Restart"
 			name="%ActionDefinition.restart.name">
 		</command>
 	</extension>
 
 	<extension point="org.eclipse.ui.actionSets">
 		<actionSet
-			id="ilg.gnumcueclipse.debug.gdbjtag.restart.actionset"
+			id="org.eclipse.embedcdt.debug.gdbjtag.restart.actionset"
 			label="%ActionDefinition.restart.name"
 			visible="true">
 			<action
 				class="org.eclipse.embedcdt.debug.gdbjtag.restart.action.RestartCommandActionDelegate"
-				definitionId="ilg.gnumcueclipse.debug.gdbjtag.restart.commands.Restart"
+				definitionId="org.eclipse.embedcdt.debug.gdbjtag.restart.commands.Restart"
 				disabledIcon="icons/dlcl16/restart_co.gif"
 				icon="icons/elcl16/restart_co.gif"
-				id="ilg.gnumcueclipse.debug.gdbjtag.restart.action"
+				id="org.eclipse.embedcdt.debug.gdbjtag.restart.action"
 				label="%ActionDefinition.restart.name"
 				toolbarPath="org.eclipse.debug.ui.main.toolbar/additions"
 				tooltip="%ActionDefinition.restart.description">
