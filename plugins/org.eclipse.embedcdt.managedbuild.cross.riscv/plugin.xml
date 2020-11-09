@@ -2430,7 +2430,7 @@
 	</extension>
 	<extension point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
 		<wizardPage
-			ID="ilg.gnumcueclipse.managedbuild.cross.riscv.setCrossCommandWizardPage"
+			ID="org.eclipse.embedcdt.managedbuild.cross.riscv.setCrossCommandWizardPage"
 			operationClass="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.SetCrossCommandWizardOperation"
 			pageClass="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.SetCrossCommandWizardPage">
 			<toolchain

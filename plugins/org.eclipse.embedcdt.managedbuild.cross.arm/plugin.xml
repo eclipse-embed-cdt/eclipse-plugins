@@ -3533,7 +3533,7 @@
 	</extension>
 	<extension point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
 		<wizardPage
-			ID="ilg.gnuarmeclipse.managedbuild.cross.setCrossCommandWizardPage"
+			ID="org.eclipse.embedcdt.managedbuild.cross.setCrossCommandWizardPage"
 			operationClass="org.eclipse.embedcdt.managedbuild.cross.arm.ui.SetCrossCommandWizardOperation"
 			pageClass="org.eclipse.embedcdt.managedbuild.cross.arm.ui.SetCrossCommandWizardPage">
 			<toolchain toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug">

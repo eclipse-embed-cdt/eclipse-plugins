@@ -62,7 +62,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	// ------------------------------------------------------------------------
 
 	// must match the plugin.xml <wizardPage ID="">
-	public static final String PAGE_ID = IDs.getIdPrefix() + ".setCrossCommandWizardPage"; //$NON-NLS-1$
+	public static final String PAGE_ID = "org.eclipse.embedcdt.managedbuild.cross.riscv.setCrossCommandWizardPage"; //$NON-NLS-1$
 
 	public static final String CROSS_WIZARD = "wizard"; //$NON-NLS-1$
 	public static final String CROSS_PROJECT_NAME = "projectName"; //$NON-NLS-1$
