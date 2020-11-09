@@ -141,9 +141,9 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 
 	public IStatus addGnuMcuSelectRemoteCommands(List<String> commandsList) {
 
-		String remoteTcpHost = CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IP_ADDRESS,
+		String remoteTcpHost = DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IP_ADDRESS,
 				IGDBJtagConstants.DEFAULT_IP_ADDRESS);
-		Integer remoteTcpPort = CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_PORT_NUMBER,
+		Integer remoteTcpPort = DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_PORT_NUMBER,
 				IGDBJtagConstants.DEFAULT_PORT_NUMBER);
 
 		commandsList.add("-target-select remote " + remoteTcpHost + ":" + remoteTcpPort + "");
@@ -175,7 +175,7 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 
 		IPath programPath = fGdbBackend.getProgramPath();
 
-		if (!CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
+		if (!DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
 				IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS)) {
 
 			// Not required.
@@ -187,13 +187,13 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 		// New setting in Helios. Default is true. Check for existence
 		// in order to support older launch configs
 		if (fAttributes.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)
-				&& CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+				&& DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
 						IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS)) {
 			if (programPath != null) {
 				symbolsFileName = programPath.toOSString();
 			}
 		} else {
-			symbolsFileName = CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
+			symbolsFileName = DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
 					IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
 			if (!symbolsFileName.isEmpty()) {
 				symbolsFileName = DebugUtils.resolveAll(symbolsFileName, fAttributes);
@@ -215,7 +215,7 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 
 		String file = escapeSpaces(symbolsFileName);
 
-		String symbolsOffset = CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
+		String symbolsOffset = DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
 				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 		if (!symbolsOffset.isEmpty()) {
 			symbolsOffset = "0x" + symbolsOffset;
@@ -242,13 +242,13 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 		String imageFileName = null;
 
 		if (fAttributes.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)
-				&& CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+				&& DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
 						IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE)) {
 			if (programPath != null) {
 				imageFileName = programPath.toOSString();
 			}
 		} else {
-			imageFileName = CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
+			imageFileName = DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
 					IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
 			if (!imageFileName.isEmpty()) {
 				imageFileName = DebugUtils.resolveAll(imageFileName, fAttributes);
@@ -275,7 +275,7 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 				.trim();
 		if (!imageOffset.isEmpty()) {
 			imageOffset = (imageFileName.endsWith(".elf")) ? ""
-					: "0x" + CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+					: "0x" + DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IMAGE_OFFSET,
 							IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); // $NON-NLS-2$
 		}
 
@@ -288,10 +288,10 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 
 	public IStatus addSetPcCommands(List<String> commandsList) {
 
-		if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SET_PC_REGISTER,
+		if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SET_PC_REGISTER,
 				IGDBJtagConstants.DEFAULT_SET_PC_REGISTER)) {
 			String pcRegister = CDebugUtils
-					.getAttribute(fAttributes, IGDBJtagConstants.ATTR_PC_REGISTER, CDebugUtils.getAttribute(fAttributes,
+					.getAttribute(fAttributes, IGDBJtagConstants.ATTR_PC_REGISTER, DebugUtils.getAttribute(fAttributes,
 							IGDBJtagConstants.ATTR_IMAGE_OFFSET, IGDBJtagConstants.DEFAULT_PC_REGISTER))
 					.trim();
 			if (!pcRegister.isEmpty()) {
@@ -307,7 +307,7 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 		// This code is also used to start run configurations.
 		// Set the breakpoint only for debug.
 		if (fMode.equals(ILaunchManager.DEBUG_MODE)) {
-			if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SET_STOP_AT,
+			if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SET_STOP_AT,
 					IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
 				String stopAt = CDebugUtils
 						.getAttribute(fAttributes, IGDBJtagConstants.ATTR_STOP_AT, IGDBJtagConstants.DEFAULT_STOP_AT)

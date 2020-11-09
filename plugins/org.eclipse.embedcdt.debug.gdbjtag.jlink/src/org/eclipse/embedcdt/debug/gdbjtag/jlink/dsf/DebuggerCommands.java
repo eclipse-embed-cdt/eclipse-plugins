@@ -57,7 +57,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 	@Override
 	public IStatus addGdbInitCommandsCommands(List<String> commandsList) {
 
-		String otherInits = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
+		String otherInits = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
 				fDefaultPreferences.getGdbClientCommands()).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
@@ -82,13 +82,13 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			return status;
 		}
 
-		boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
+		boolean doConnectToRunning = DebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_CONNECT_TO_RUNNING, DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
 
 		if (!doConnectToRunning) {
-			if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
+			if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
 					IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
-					&& !CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
+					&& !DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
 							fDefaultPreferences.getJLinkDebugInRam())) {
 
 				status = addLoadImageCommands(commandsList);
@@ -104,7 +104,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 	@Override
 	public IStatus addGnuMcuStartCommands(List<String> commandsList) {
 
-		boolean doReset = !CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+		boolean doReset = !DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 				DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
 
 		IStatus status = addStartRestartCommands(doReset, commandsList);
@@ -130,10 +130,10 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 		String attr;
 
 		try {
-			attr = String.valueOf(CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.FIRST_RESET_SPEED,
+			attr = String.valueOf(DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.FIRST_RESET_SPEED,
 					fDefaultPreferences.getJLinkInitialResetSpeed()));
 		} catch (Exception e) {
-			attr = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.FIRST_RESET_SPEED,
+			attr = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.FIRST_RESET_SPEED,
 					String.valueOf(fDefaultPreferences.getJLinkInitialResetSpeed()));
 		}
 		if (!attr.isEmpty()) {
@@ -141,10 +141,10 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 		}
 
 		String commandStr;
-		boolean noReset = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+		boolean noReset = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 				DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
 		if (!noReset) {
-			if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_FIRST_RESET,
+			if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_FIRST_RESET,
 					fDefaultPreferences.getJLinkDoInitialReset())) {
 
 				// Since reset does not clear breakpoints, we do it explicitly
@@ -152,7 +152,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 				commandsList.add(commandStr);
 
 				commandStr = DefaultPreferences.DO_FIRST_RESET_COMMAND;
-				String resetType = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.FIRST_RESET_TYPE,
+				String resetType = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.FIRST_RESET_TYPE,
 						fDefaultPreferences.getJLinkInitialResetType());
 				commandsList.add(commandStr + resetType);
 
@@ -172,7 +172,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			}
 		}
 
-		attr = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.INTERFACE_SPEED,
+		attr = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.INTERFACE_SPEED,
 				DefaultPreferences.INTERFACE_SPEED_AUTO);
 		if (DefaultPreferences.INTERFACE_SPEED_AUTO.equals(attr)) {
 			commandsList.add(DefaultPreferences.INTERFACE_SPEED_AUTO_COMMAND);
@@ -183,24 +183,24 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 		}
 
 		commandStr = DefaultPreferences.ENABLE_FLASH_BREAKPOINTS_COMMAND;
-		if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
+		if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
 				fDefaultPreferences.getJLinkEnableFlashBreakpoints()))
 			commandStr += "1";
 		else
 			commandStr += "0";
 		commandsList.add(commandStr);
 
-		if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_SEMIHOSTING,
+		if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_SEMIHOSTING,
 				fDefaultPreferences.getJLinkEnableSemihosting())) {
 			commandStr = DefaultPreferences.ENABLE_SEMIHOSTING_COMMAND;
 			commandsList.add(commandStr);
 
 			int ioclientMask = 0;
-			if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
+			if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
 					fDefaultPreferences.getJLinkSemihostingTelnet())) {
 				ioclientMask |= DefaultPreferences.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_MASK;
 			}
-			if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
+			if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
 					fDefaultPreferences.getJLinkSemihostingClient())) {
 				ioclientMask |= DefaultPreferences.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_MASK;
 			}
@@ -209,23 +209,23 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			commandsList.add(commandStr);
 		}
 
-		attr = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
+		attr = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
 				DefaultPreferences.INTERFACE_SWD);
 		if (DefaultPreferences.INTERFACE_SWD.equals(attr)) {
 
-			if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_SWO,
+			if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_SWO,
 					fDefaultPreferences.getJLinkEnableSwo())) {
 
 				commandsList.add(DefaultPreferences.DISABLE_SWO_COMMAND);
 
 				commandStr = DefaultPreferences.ENABLE_SWO_COMMAND;
-				commandStr += CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
+				commandStr += DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
 						fDefaultPreferences.getJLinkSwoEnableTargetCpuFreq());
 				commandStr += " ";
-				commandStr += CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
+				commandStr += DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
 						fDefaultPreferences.getJLinkSwoEnableTargetSwoFreq());
 				commandStr += " ";
-				commandStr += CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
+				commandStr += DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
 						fDefaultPreferences.getJLinkSwoEnableTargetPortMask());
 				commandStr += " 0";
 
@@ -233,7 +233,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			}
 		}
 
-		String otherInits = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_INIT_COMMANDS,
+		String otherInits = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_INIT_COMMANDS,
 				fDefaultPreferences.getJLinkInitOther()).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
@@ -251,7 +251,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 		String commandStr;
 
 		if (doReset) {
-			if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_SECOND_RESET,
+			if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_SECOND_RESET,
 					fDefaultPreferences.getJLinkDoPreRunReset())) {
 
 				// Since reset does not clear breakpoints, we do it
@@ -260,7 +260,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 				commandsList.add(commandStr);
 
 				commandStr = DefaultPreferences.DO_SECOND_RESET_COMMAND;
-				String resetType = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.SECOND_RESET_TYPE,
+				String resetType = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.SECOND_RESET_TYPE,
 						fDefaultPreferences.getJLinkPreRunResetType()).trim();
 				commandsList.add(commandStr + resetType);
 
@@ -271,9 +271,9 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			}
 		}
 
-		if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
+		if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
-				&& CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
+				&& DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
 						fDefaultPreferences.getJLinkDebugInRam())) {
 
 			IStatus status = addLoadImageCommands(commandsList);
@@ -283,7 +283,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			}
 		}
 
-		String userCmd = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_RUN_COMMANDS,
+		String userCmd = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_RUN_COMMANDS,
 				fDefaultPreferences.getJLinkPreRunOther()).trim();
 
 		userCmd = DebugUtils.resolveAll(userCmd, fAttributes);
@@ -307,7 +307,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 		commandStr = DefaultPreferences.FLUSH_REGISTERS_COMMAND;
 		commandsList.add(commandStr);
 
-		if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONTINUE,
+		if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONTINUE,
 				DefaultPreferences.DO_CONTINUE_DEFAULT)) {
 			commandsList.add(DefaultPreferences.DO_CONTINUE_COMMAND);
 		}

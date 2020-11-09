@@ -321,7 +321,7 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	// public IGDBJtagDevice getGDBJtagDevice() {
 	//
 	// IGDBJtagDevice gdbJtagDevice = null;
-	// String jtagDeviceName = CDebugUtils.getAttribute(fAttributes,
+	// String jtagDeviceName = DebugUtils.getAttribute(fAttributes,
 	// ConfigurationAttributes.ATTR_JTAG_DEVICE,
 	// IGDBJtagConstants.DEFAULT_JTAG_DEVICE);
 	// GDBJtagDeviceContribution[] availableDevices =

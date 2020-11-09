@@ -57,7 +57,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 	@Override
 	public IStatus addGdbInitCommandsCommands(List<String> commandsList) {
 
-		String otherInits = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
+		String otherInits = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
 				fDefaultPreferences.getGdbClientCommands()).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
@@ -82,9 +82,9 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			return status;
 		}
 
-		if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
+		if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
-				&& !CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
+				&& !DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
 						fDefaultPreferences.getQemuDebugInRam())) {
 
 			status = addLoadImageCommands(commandsList);
@@ -114,7 +114,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 	@Override
 	public IStatus addFirstResetCommands(List<String> commandsList) {
 
-		if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_FIRST_RESET,
+		if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_FIRST_RESET,
 				fDefaultPreferences.getQemuDoInitialReset())) {
 
 			String commandStr = DefaultPreferences.DO_INITIAL_RESET_COMMAND;
@@ -126,7 +126,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			commandsList.add(commandStr);
 		}
 
-		String otherInits = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_INIT_COMMANDS,
+		String otherInits = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_INIT_COMMANDS,
 				fDefaultPreferences.getQemuInitOther()).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
@@ -142,7 +142,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 	public IStatus addStartRestartCommands(boolean doReset, List<String> commandsList) {
 
 		if (doReset) {
-			if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_SECOND_RESET,
+			if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_SECOND_RESET,
 					fDefaultPreferences.getQemuDoPreRunReset())) {
 				String commandStr = DefaultPreferences.DO_PRERUN_RESET_COMMAND;
 				commandsList.add(commandStr);
@@ -154,9 +154,9 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			}
 		}
 
-		if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
+		if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
-				&& CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
+				&& DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
 						fDefaultPreferences.getQemuDebugInRam())) {
 
 			IStatus status = addLoadImageCommands(commandsList);
@@ -166,7 +166,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			}
 		}
 
-		String userCmd = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_RUN_COMMANDS,
+		String userCmd = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_RUN_COMMANDS,
 				fDefaultPreferences.getQemuPreRunOther()).trim();
 
 		userCmd = DebugUtils.resolveAll(userCmd, fAttributes);
@@ -183,7 +183,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 
 		// commandsList.add("monitor reg");
 
-		if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONTINUE,
+		if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONTINUE,
 				DefaultPreferences.DO_CONTINUE_DEFAULT)) {
 			commandsList.add(DefaultPreferences.DO_CONTINUE_COMMAND);
 		}
