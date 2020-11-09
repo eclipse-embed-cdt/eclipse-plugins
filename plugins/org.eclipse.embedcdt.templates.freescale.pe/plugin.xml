@@ -35,8 +35,8 @@
          point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
       <wizardPage
             ID="org.eclipse.embedcdt.templates.freescale.pe.wizardPage"
-            operationClass="ilg.gnumcueclipse.templates.freescale.pe.ui.WizardPageOperation"
-            pageClass="ilg.gnumcueclipse.templates.freescale.pe.ui.WizardPage">
+            operationClass="org.eclipse.embedcdt.templates.freescale.pe.ui.WizardPageOperation"
+            pageClass="org.eclipse.embedcdt.templates.freescale.pe.ui.WizardPage">
          <nature
                natureID="com.freescale.processorexpert.core.expertprojectnature">
          </nature>
@@ -61,7 +61,7 @@
             id="ilg.pewc">
       </category>
       <wizard
-            class="ilg.gnumcueclipse.templates.freescale.pe.ui.PEW"
+            class="org.eclipse.embedcdt.templates.freescale.pe.ui.PEW"
             id="ilg.peww"
             name="My wizard">
          <description>
