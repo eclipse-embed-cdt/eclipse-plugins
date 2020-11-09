@@ -706,4 +706,25 @@ public class DebugUtils {
 	}
 
 	// ------------------------------------------------------------------------
+
+	/**
+	 * An enhanced version of CDebugUtils.getAttribute() that also
+	 * checks the compatibility key.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <V> V getAttribute(Map<String, ?> attributes, String key, V defaultValue) {
+
+		Object value = attributes.get(key);
+		if (defaultValue.getClass().isInstance(value)) {
+			return (V) value;
+		}
+		String compatKey = key.replace("org.eclipse.embedcdt.", "ilg.gnumcueclipse.");
+		value = attributes.get(compatKey);
+		if (defaultValue.getClass().isInstance(value)) {
+			return (V) value;
+		}
+		return defaultValue;
+	}
+
+	// ------------------------------------------------------------------------
 }
