@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.embedcdt.managedbuild.cross.arm" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.embedcdt.managedbuild.cross.arm" id="ilg.gnumcueclipse.managedbuild.cross.arm.toolchains" name="Toolchains Definitions"/>
+         <meta.schema plugin="org.eclipse.embedcdt.managedbuild.cross.arm" id="org.eclipse.embedcdt.managedbuild.cross.arm.toolchains" name="Toolchains Definitions"/>
       </appinfo>
       <documentation>
          This extension point provides the ability to add custom GNU MCU toolchains.
@@ -109,7 +109,7 @@
       </appinfo>
       <documentation>
          &lt;extension
-      point=&quot;ilg.gnumcueclipse.managedbuild.cross.arm.toolchains&quot;&gt;
+      point=&quot;org.eclipse.embedcdt.managedbuild.cross.arm.toolchains&quot;&gt;
       &lt;toolchain name=&quot;Custom&quot; prefix=&quot;arm-none-eabi-&quot; /&gt;
    &lt;/extension&gt;
       </documentation>

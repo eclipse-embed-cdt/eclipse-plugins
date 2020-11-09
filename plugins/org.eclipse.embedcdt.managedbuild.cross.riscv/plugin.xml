@@ -17,7 +17,7 @@
 -->
 <plugin>
 	<extension-point
-		id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchains"
+		id="org.eclipse.embedcdt.managedbuild.cross.riscv.toolchains"
 		name="Extra toolchains"
 		schema="schema/toolchains.exsd" />
 	<extension point="org.eclipse.cdt.managedbuilder.core.buildDefinitions">
@@ -2586,7 +2586,7 @@
 		<test property="org.eclipse.core.resources.projectNature" value="org.eclipse.cdt.managedbuilder.core.managedBuildNature"/> 
 		</adapt> <test property="org.eclipse.cdt.ui.checkPreference" value="org.eclipse.cdt.ui:properties.toolchain.modification.disable=false"/> 
 		</and> </enabledWhen> </page> </extension> -->
-	<extension point="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchains">
+	<extension point="org.eclipse.embedcdt.managedbuild.cross.riscv.toolchains">
 	   <!-- id 2029746065 -->
 		<toolchain
 			name="Custom"

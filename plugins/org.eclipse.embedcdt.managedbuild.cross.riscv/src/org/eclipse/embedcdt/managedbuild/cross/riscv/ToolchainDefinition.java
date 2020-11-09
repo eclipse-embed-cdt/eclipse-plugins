@@ -176,7 +176,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 	// ------------------------------------------------------------------------
 
-	private static final String CUSTOM_TOOLCHAINS_EXT_POINT_ID = "ilg.gnumcueclipse.managedbuild.cross.riscv" + ".toolchains";
+	private static final String CUSTOM_TOOLCHAINS_EXTENSION_POINT_ID = "org.eclipse.embedcdt.managedbuild.cross.riscv.toolchains";
 
 	// Initialise the list of known toolchains
 	static {
@@ -190,7 +190,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 		addToolchain(new ToolchainDefinition(RISC_V_GCC_RTEMS, "riscv64-unknown-rtems-"));
 
 		// Enumerate extension points and add custom toolchains.
-		addExtensionsToolchains(CUSTOM_TOOLCHAINS_EXT_POINT_ID);
+		addExtensionsToolchains(CUSTOM_TOOLCHAINS_EXTENSION_POINT_ID);
 	}
 
 	// ------------------------------------------------------------------------

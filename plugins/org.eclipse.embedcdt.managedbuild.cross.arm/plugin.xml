@@ -16,7 +16,7 @@
 -->
 <plugin>
 	<extension-point
-		id="ilg.gnumcueclipse.managedbuild.cross.arm.toolchains"
+		id="org.eclipse.embedcdt.managedbuild.cross.arm.toolchains"
 		name="Extra toolchains"
 		schema="schema/toolchains.exsd" />
 	<extension point="org.eclipse.cdt.managedbuilder.core.buildDefinitions">
@@ -3675,7 +3675,7 @@
 			type="java.lang.Object">
 		</propertyTester>
 	</extension>
-	<extension point="ilg.gnumcueclipse.managedbuild.cross.arm.toolchains">
+	<extension point="org.eclipse.embedcdt.managedbuild.cross.arm.toolchains">
 		<toolchain
 			name="Custom"
 			prefix="arm-none-eabi-" />

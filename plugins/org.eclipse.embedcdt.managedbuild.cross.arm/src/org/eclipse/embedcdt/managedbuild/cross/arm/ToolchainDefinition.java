@@ -172,7 +172,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 	// ------------------------------------------------------------------------
 
-	private static final String CUSTOM_TOOLCHAINS_EXT_POINT_ID = "ilg.gnumcueclipse.managedbuild.cross.arm" + ".toolchains";
+	private static final String CUSTOM_TOOLCHAINS_EXTENSION_POINT_ID = "org.eclipse.embedcdt.managedbuild.cross.arm.toolchains";
 
 	// Initialise the list of known toolchains
 	static {
@@ -219,7 +219,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 		// fgList.add(new ToolchainDefinition("Custom", "arm-none-eabi-"));
 
 		// Enumerate extension points and add custom toolchains.
-		addExtensionsToolchains(CUSTOM_TOOLCHAINS_EXT_POINT_ID);
+		addExtensionsToolchains(CUSTOM_TOOLCHAINS_EXTENSION_POINT_ID);
 	}
 
 	// ------------------------------------------------------------------------
