@@ -111,7 +111,7 @@
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">
 					</instanceof>
-					<test forcePluginActivation="true" property="ilg.gnumcueclipse.managedbuild.cross.isGnuMcu">
+					<test forcePluginActivation="true" property="org.eclipse.embedcdt.managedbuild.cross.isGnuMcu">
 					</test>
 				</and>
 			</enabledWhen>
