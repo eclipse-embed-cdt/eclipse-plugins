@@ -21,7 +21,7 @@
 		schema="schema/cproject_extra_data.exsd" />
 
 	<extension-point
-		id="ilg.gnumcueclipse.debug.core.svdPath"
+		id="org.eclipse.embedcdt.debug.core.svdPath"
 		name="SVD Path Manager"
 		schema="schema/svd_path.exsd" />
 
