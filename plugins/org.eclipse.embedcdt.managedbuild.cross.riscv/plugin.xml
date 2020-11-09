@@ -2532,23 +2532,23 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
 			class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
-			id="ilg.gnumcueclipse.managedbuild.cross.riscv.preferencePage.workspaceToolchainsPaths"
+			id="org.eclipse.embedcdt.managedbuild.cross.riscv.preferencePage.workspaceToolchainsPaths"
 			name="%preferences.workspaceToolchainsPaths">
 		</page>
 		<page
-			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
 			class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.preferences.GlobalToolchainsPathsPreferencesPage"
-			id="ilg.gnumcueclipse.managedbuild.cross.riscv.preferencePage.globalToolchainsPaths"
+			id="org.eclipse.embedcdt.managedbuild.cross.riscv.preferencePage.globalToolchainsPaths"
 			name="%preferences.globalToolchainsPaths">
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="ilg.gnumcueclipse.core.ui.properties.mcu"
+			category="org.eclipse.embedcdt.core.ui.properties.mcu"
 			class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.properties.ProjectToolchainsPathPropertiesPage"
-			id="ilg.gnumcueclipse.managedbuild.cross.riscv.properties.toolchainsPage"
+			id="org.eclipse.embedcdt.managedbuild.cross.riscv.properties.toolchainsPage"
 			name="%properties.projectToolchainsPaths">
          <filter
                name="projectNature"

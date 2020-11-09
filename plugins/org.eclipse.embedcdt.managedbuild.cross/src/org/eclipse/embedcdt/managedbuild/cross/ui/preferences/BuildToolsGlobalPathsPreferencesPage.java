@@ -42,7 +42,7 @@ public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferenceP
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.managedbuild.cross.ui.preferencePage.globalToolsPaths";
+	public static final String ID = "org.eclipse.embedcdt.managedbuild.cross.ui.preferencePage.globalToolsPaths";
 
 	// ------------------------------------------------------------------------
 

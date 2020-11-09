@@ -17,14 +17,14 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
-			id="ilg.gnumcueclipse.packs.ui.preferencePage.packages"
+			id="org.eclipse.embedcdt.packs.ui.preferencePage.packages"
 			class="org.eclipse.embedcdt.packs.ui.preferences.FolderPage"
 			name="%preferences.packages">
 		</page>
 		<page
-			category="ilg.gnumcueclipse.packs.ui.preferencePage.packages"
+			category="org.eclipse.embedcdt.packs.ui.preferencePage.packages"
 			class="org.eclipse.embedcdt.packs.ui.preferences.ReposPage"
-			id="ilg.gnumcueclipse.packs.ui.preferences.SitesPage"
+			id="org.eclipse.embedcdt.packs.ui.preferences.SitesPage"
 			name="%preferences.sites">
 		</page>
 	</extension>

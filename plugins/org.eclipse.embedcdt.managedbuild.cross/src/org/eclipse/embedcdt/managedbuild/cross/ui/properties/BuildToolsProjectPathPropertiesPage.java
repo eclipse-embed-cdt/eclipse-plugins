@@ -30,7 +30,7 @@ public class BuildToolsProjectPathPropertiesPage extends FieldEditorPropertyPage
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.managedbuild.cross.ui.properties.toolsPage";
+	public static final String ID = "org.eclipse.embedcdt.managedbuild.cross.ui.properties.toolsPage";
 
 	// ------------------------------------------------------------------------
 

@@ -54,7 +54,7 @@ public class GlobalToolchainsPathsPreferencesPage extends FieldEditorPreferenceP
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.managedbuild.cross.riscv.preferencePage.globalToolchainsPaths";
+	public static final String ID = "org.eclipse.embedcdt.managedbuild.cross.riscv.preferencePage.globalToolchainsPaths";
 
 	// ------------------------------------------------------------------------
 

@@ -31,7 +31,7 @@ public class ProjectMcuPage extends FieldEditorPropertyPage {
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.debug.gdbjtag.openocd.projectPropertiesPage";
+	public static final String ID = "org.eclipse.embedcdt.debug.gdbjtag.openocd.projectPropertiesPage";
 
 	// ------------------------------------------------------------------------
 

@@ -84,24 +84,24 @@
 	
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
 			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.preferences.WorkspaceMcuPage"
-			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.workspacePreferencePage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.workspacePreferencePage"
 			name="%preferences.workspaceMcu">
 		</page>
 		<page
-			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
 			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.preferences.GlobalMcuPage"
-			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.globalPreferencePage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.globalPreferencePage"
 			name="%preferences.globalMcu">
 		</page>
 	</extension>
 
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="ilg.gnumcueclipse.core.ui.properties.mcu"
+			category="org.eclipse.embedcdt.core.ui.properties.mcu"
 			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.properties.ProjectMcuPage"
-			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.projectPropertiesPage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.projectPropertiesPage"
 			name="%properties.mcu">
 			<filter
 				name="projectNature"

@@ -53,7 +53,7 @@ public class WorkspaceToolchainsPathsPreferencesPage extends FieldEditorPreferen
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.managedbuild.cross.riscv.preferencePage.workspaceToolchainsPaths";
+	public static final String ID = "org.eclipse.embedcdt.managedbuild.cross.riscv.preferencePage.workspaceToolchainsPaths";
 
 	// ------------------------------------------------------------------------
 

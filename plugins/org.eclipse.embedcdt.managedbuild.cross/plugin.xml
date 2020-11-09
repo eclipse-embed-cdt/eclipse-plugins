@@ -1350,23 +1350,23 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
 			class="org.eclipse.embedcdt.managedbuild.cross.ui.preferences.BuildToolsWorkspacePathsPreferencesPage"
-			id="ilg.gnumcueclipse.managedbuild.cross.ui.preferencePage.workspaceToolsPaths"
+			id="org.eclipse.embedcdt.managedbuild.cross.ui.preferencePage.workspaceToolsPaths"
 			name="%preferences.workspaceBuildToolsPaths">
 		</page>
 		<page
-			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
 			class="org.eclipse.embedcdt.managedbuild.cross.ui.preferences.BuildToolsGlobalPathsPreferencesPage"
-			id="ilg.gnumcueclipse.managedbuild.cross.ui.preferencePage.globalToolsPaths"
+			id="org.eclipse.embedcdt.managedbuild.cross.ui.preferencePage.globalToolsPaths"
 			name="%preferences.globalBuildToolsPaths">
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="ilg.gnumcueclipse.core.ui.properties.mcu"
+			category="org.eclipse.embedcdt.core.ui.properties.mcu"
 			class="org.eclipse.embedcdt.managedbuild.cross.ui.properties.BuildToolsProjectPathPropertiesPage"
-			id="ilg.gnumcueclipse.managedbuild.cross.ui.properties.toolsPage"
+			id="org.eclipse.embedcdt.managedbuild.cross.ui.properties.toolsPage"
 			name="%properties.projectBuildToolsPaths">
 			<filter
 				name="projectNature"

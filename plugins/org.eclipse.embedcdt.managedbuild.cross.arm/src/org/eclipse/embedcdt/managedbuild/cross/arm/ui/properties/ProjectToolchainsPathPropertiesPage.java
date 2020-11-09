@@ -40,7 +40,7 @@ public class ProjectToolchainsPathPropertiesPage extends FieldEditorPropertyPage
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.managedbuild.cross.arm.properties.toolchainsPage";
+	public static final String ID = "org.eclipse.embedcdt.managedbuild.cross.arm.properties.toolchainsPage";
 
 	// ------------------------------------------------------------------------
 
