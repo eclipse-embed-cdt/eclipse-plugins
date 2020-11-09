@@ -16,7 +16,7 @@
 <plugin>
 
 	<extension-point
-		id="ilg.gnumcueclipse.debug.core.cprojectExtra"
+		id="org.eclipse.embedcdt.debug.core.cprojectExtra"
 		name="C Project Extra Data Manager"
 		schema="schema/cproject_extra_data.exsd" />
 
