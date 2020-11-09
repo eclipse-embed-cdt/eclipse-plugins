@@ -28,7 +28,7 @@
 		<launchDelegate
 			delegate="org.eclipse.embedcdt.debug.gdbjtag.jlink.dsf.LaunchConfigurationDelegate"
 			delegateDescription="%launchDelegate.jtagDsf.description"
-			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.core.dsfLaunchDelegate"
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.dsfLaunchDelegate"
 			modes="debug,run"
 			name="%launchDelegate.jtagDsf.name"
 			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
@@ -41,20 +41,20 @@
 		<launchConfigurationTypeImage
 			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationType"
 			icon="icons/obj16/c_app.gif"
-			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationTypeImage" />
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.launchConfigurationTypeImage" />
 	</extension>
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup
 			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.TabGroupLaunchConfiguration"
-			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.launchConfigurationTabGroup"
 			type="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationType" />
 	</extension>
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
 			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.JTagDevice"
-			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.core.jtagdevice"
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.jtagdevice"
 			name="%JTagDevice.generic.name">
 		</device>
 	</extension>
@@ -62,7 +62,7 @@
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
 			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.JTagDevice"
-			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.core.jtagdevice"
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.jtagdevice"
 			name="%JTagDevice.deprecated.name">
 		</device>
 	</extension>
@@ -71,7 +71,7 @@
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
 			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.JTagDevice"
-			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.core.jtagdevice.compat"
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.jtagdevice.compat"
 			name="J-Link">
 		</device>
 	</extension>

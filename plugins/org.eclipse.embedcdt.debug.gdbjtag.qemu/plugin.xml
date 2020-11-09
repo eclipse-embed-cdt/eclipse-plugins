@@ -27,7 +27,7 @@
 		<launchDelegate
 			delegate="org.eclipse.embedcdt.debug.gdbjtag.qemu.dsf.LaunchConfigurationDelegate"
 			delegateDescription="%launchDelegate.jtagDsf.description"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.core.dsfLaunchDelegate"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsfLaunchDelegate"
 			modes="debug,run"
 			name="%launchDelegate.jtagDsf.name"
 			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
@@ -40,7 +40,7 @@
 		<launchConfigurationTypeImage
 			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType"
 			icon="icons/obj16/c_app.gif"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationTypeImage" />
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.launchConfigurationTypeImage" />
 	</extension>
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -53,7 +53,7 @@
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
 			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.JTagDevice"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.core.jtagdevice"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.jtagdevice"
 			name="%JTagDevice.generic.name">
 		</device>
 	</extension>
@@ -61,7 +61,7 @@
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
 			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.JTagDevice"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.core.jtagdevice"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.jtagdevice"
 			name="%JTagDevice.deprecated.name">
 		</device>
 	</extension>
