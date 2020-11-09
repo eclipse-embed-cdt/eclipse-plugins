@@ -31,29 +31,29 @@
 	<extension point="org.eclipse.ui.perspectiveExtensions">
 		<perspectiveExtension targetID="org.eclipse.cdt.ui.CPerspective">
 			<view
-				id="ilg.gnumcueclipse.managedbuild.packs.ui.views.DocsView"
+				id="org.eclipse.embedcdt.managedbuild.packs.ui.views.DocsView"
 				minimized="false"
 				relationship="stack"
 				relative="org.eclipse.ui.views.ContentOutline"
 				visible="true">
 			</view>
 			<viewShortcut
-				id="ilg.gnumcueclipse.managedbuild.packs.ui.views.DocsView">
+				id="org.eclipse.embedcdt.managedbuild.packs.ui.views.DocsView">
 			</viewShortcut>
 		</perspectiveExtension>
 	</extension>
 
 	<extension point="org.eclipse.ui.views">
 		<category
-			id="ilg.gnumcueclipse.packs"
+			id="org.eclipse.embedcdt.packs"
 			name="%views.packs.category">
 		</category>
 		<view
 			allowMultiple="false"
-			category="ilg.gnumcueclipse.packs"
+			category="org.eclipse.embedcdt.packs"
 			class="org.eclipse.embedcdt.managedbuild.packs.ui.views.DocsView"
 			icon="icons/pdficon_small.png"
-			id="ilg.gnumcueclipse.managedbuild.packs.ui.views.DocsView"
+			id="org.eclipse.embedcdt.managedbuild.packs.ui.views.DocsView"
 			name="%views.packs.docs">
 		</view>
 	</extension>

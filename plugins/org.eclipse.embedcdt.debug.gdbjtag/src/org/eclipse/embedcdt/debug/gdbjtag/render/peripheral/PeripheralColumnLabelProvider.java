@@ -41,7 +41,7 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider implement
 
 	// ------------------------------------------------------------------------
 
-	private static final String COLOR_PREFIX = "ilg.gnumcueclipse.debug.gdbjtag.peripherals.color.";
+	private static final String COLOR_PREFIX = "org.eclipse.embedcdt.debug.gdbjtag.peripherals.color.";
 
 	public static final String COLOR_READONLY = COLOR_PREFIX + "readonly";
 	public static final String COLOR_WRITEONLY = COLOR_PREFIX + "writeonly";

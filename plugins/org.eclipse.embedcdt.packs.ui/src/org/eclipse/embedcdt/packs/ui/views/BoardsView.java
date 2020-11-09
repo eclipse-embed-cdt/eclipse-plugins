@@ -58,7 +58,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "ilg.gnumcueclipse.packs.ui.views.BoardsView";
+	public static final String ID = "org.eclipse.embedcdt.packs.ui.views.BoardsView";
 
 	// ------------------------------------------------------------------------
 

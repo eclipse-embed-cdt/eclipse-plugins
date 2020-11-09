@@ -88,7 +88,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "ilg.gnumcueclipse.managedbuild.packs.ui.views.DocsView";
+	public static final String ID = "org.eclipse.embedcdt.managedbuild.packs.ui.views.DocsView";
 
 	public static final int AUTOEXPAND_LEVEL = 2;
 
