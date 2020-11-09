@@ -2504,7 +2504,7 @@
 	<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 		<provider
 			class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector"
-			id="ilg.gnumcueclipse.managedbuild.cross.riscv.GCCBuiltinSpecsDetector"
+			id="org.eclipse.embedcdt.managedbuild.cross.riscv.GCCBuiltinSpecsDetector"
 			name="%GCCBuiltinSpecsDetector.name"
 			parameter="${COMMAND} ${FLAGS} ${cross_toolchain_flags} -E -P -v -dD &quot;${INPUTS}&quot;"
 			prefer-non-shared="true">
