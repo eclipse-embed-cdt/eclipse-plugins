@@ -18,14 +18,9 @@ public class IDs {
 
 	// ------------------------------------------------------------------------
 
-	public static String getIdPrefix() {
-
-		// keep it explicitly defined, since it must not be changed, even if the
-		// plug-in id is changed
-		return "ilg.gnumcueclipse.managedbuild.cross.riscv";
-	}
-
-	public static final String TOOLCHAIN_ID = getIdPrefix() + ".toolchain";
+	// keep it explicitly defined, since it must not be changed, even if the
+	// plug-in id is changed
+	public static final String TOOLCHAIN_ID = "ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain";
 
 	// ------------------------------------------------------------------------
 

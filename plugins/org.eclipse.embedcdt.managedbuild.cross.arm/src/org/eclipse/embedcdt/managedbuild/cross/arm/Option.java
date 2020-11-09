@@ -22,7 +22,7 @@ public class Option {
 
 	// ------------------------------------------------------------------------
 
-	public static final String OPTION_PREFIX = IDs.getIdPrefix() + ".option";
+	public static final String OPTION_PREFIX = "ilg.gnuarmeclipse.managedbuild.cross.option";
 
 	public static final String OPTION_ARCHITECTURE = OPTION_PREFIX + ".architecture";
 
