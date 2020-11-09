@@ -38,8 +38,7 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory, I
 	private static final String CLASS_ATTRIBUTE = "class";
 
 	public static final String EXTENSION_POINT_NAME = "data";
-	public static final String EXTENSION_POINT_ID = "ilg.gnumcueclipse.packs.core."
-			+ EXTENSION_POINT_NAME;
+	public static final String EXTENSION_POINT_ID = "org.eclipse.embedcdt.packs.core.data";
 
 	// ------------------------------------------------------------------------
 
