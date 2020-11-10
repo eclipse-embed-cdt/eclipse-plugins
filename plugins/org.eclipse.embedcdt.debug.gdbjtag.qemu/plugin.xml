@@ -17,10 +17,20 @@
 
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 		<launchConfigurationType
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.launchConfigurationType"
 			modes="debug, run"
 			name="%launchConfig.name"
 			public="true" />
+  <launchConfigurationType
+        delegate="org.eclipse.embedcdt.debug.gdbjtag.qemu.dsf.LaunchConfigurationDelegate"
+        id="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType"
+        migrationDelegate="org.eclipse.embedcdt.debug.gdbjtag.qemu.dsf.LaunchConfigurationMigrationDelegate"
+        modes="debug,run"
+        name="%launchConfig.compatibilityName"
+        public="false"
+        sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+        sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
+  </launchConfigurationType>
 	</extension>
 
 	<extension point="org.eclipse.debug.core.launchDelegates">
@@ -32,13 +42,13 @@
 			name="%launchDelegate.jtagDsf.name"
 			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
 			sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
-			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType">
+			type="org.eclipse.embedcdt.debug.gdbjtag.qemu.launchConfigurationType">
 		</launchDelegate>
 	</extension>
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 		<launchConfigurationTypeImage
-			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType"
+			configTypeID="org.eclipse.embedcdt.debug.gdbjtag.qemu.launchConfigurationType"
 			icon="icons/obj16/c_app.gif"
 			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.launchConfigurationTypeImage" />
 	</extension>
@@ -46,8 +56,8 @@
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup
 			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.TabGroupLaunchConfiguration"
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationTabGroup"
-			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType" />
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.launchConfigurationTabGroup"
+			type="org.eclipse.embedcdt.debug.gdbjtag.qemu.launchConfigurationType" />
 	</extension>
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
