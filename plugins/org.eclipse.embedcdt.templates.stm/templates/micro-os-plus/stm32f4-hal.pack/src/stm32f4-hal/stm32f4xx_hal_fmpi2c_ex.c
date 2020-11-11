@@ -2,65 +2,44 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_fmpi2c_ex.c
   * @author  MCD Application Team
-  * @version V1.5.0
-  * @date    06-May-2016
   * @brief   FMPI2C Extended HAL module driver.
-  *          This file provides firmware functions to manage the following 
+  *          This file provides firmware functions to manage the following
   *          functionalities of FMPI2C Extended peripheral:
   *           + Extended features functions
-  *         
+  *
   @verbatim
   ==============================================================================
                ##### FMPI2C peripheral Extended features  #####
   ==============================================================================
-           
+
   [..] Comparing to other previous devices, the FMPI2C interface for STM32F4xx
        devices contains the following additional features
-       
+
        (+) Possibility to disable or enable Analog Noise Filter
        (+) Use of a configured Digital Noise Filter
-       (+) Disable or enable wakeup from Stop mode
-   
+       (+) Disable or enable Fast Mode Plus
+
                      ##### How to use this driver #####
   ==============================================================================
-  [..] This driver provides functions to configure Noise Filter and Wake Up Feature
+  [..] This driver provides functions to:
     (#) Configure FMPI2C Analog noise filter using the function HAL_FMPI2CEx_ConfigAnalogFilter()
     (#) Configure FMPI2C Digital noise filter using the function HAL_FMPI2CEx_ConfigDigitalFilter()
-    (#) Configure the enable or disable of FMPI2C Wake Up Mode using the functions :
-          (++) HAL_FMPI2CEx_EnableWakeUp()
-          (++) HAL_FMPI2CEx_DisableWakeUp()
     (#) Configure the enable or disable of fast mode plus driving capability using the functions :
           (++) HAL_FMPI2CEx_EnableFastModePlus()
-          (++) HAL_FMPI2CEx_DisbleFastModePlus()
+          (++) HAL_FMPI2CEx_DisableFastModePlus()
   @endverbatim
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  * <h2><center>&copy; Copyright (c) 2016 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
@@ -76,9 +55,7 @@
   */
 
 #ifdef HAL_FMPI2C_MODULE_ENABLED
-
-#if defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F446xx) || defined(STM32F412Zx) || defined(STM32F412Vx) || \
-    defined(STM32F412Rx) || defined(STM32F412Cx) 
+#if defined(FMPI2C_CR1_PE)
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -93,21 +70,21 @@
 
 /** @defgroup FMPI2CEx_Exported_Functions_Group1 Extended features functions
   * @brief    Extended features functions
-  *
-@verbatim   
+ *
+@verbatim
  ===============================================================================
                       ##### Extended features functions #####
- ===============================================================================  
+ ===============================================================================
     [..] This section provides functions allowing to:
-      (+) Configure Noise Filters 
-      (+) Configure Wake Up Feature
+      (+) Configure Noise Filters
+      (+) Configure Fast Mode Plus
 
 @endverbatim
   * @{
   */
-  
+
 /**
-  * @brief  Configure FMPI2C Analog noise filter. 
+  * @brief  Configure FMPI2C Analog noise filter.
   * @param  hfmpi2c Pointer to a FMPI2C_HandleTypeDef structure that contains
   *                the configuration information for the specified FMPI2Cx peripheral.
   * @param  AnalogFilter New state of the Analog filter.
@@ -119,8 +96,8 @@ HAL_StatusTypeDef HAL_FMPI2CEx_ConfigAnalogFilter(FMPI2C_HandleTypeDef *hfmpi2c,
   assert_param(IS_FMPI2C_ALL_INSTANCE(hfmpi2c->Instance));
   assert_param(IS_FMPI2C_ANALOG_FILTER(AnalogFilter));
 
-  if(hfmpi2c->State == HAL_FMPI2C_STATE_READY)
-  { 
+  if (hfmpi2c->State == HAL_FMPI2C_STATE_READY)
+  {
     /* Process Locked */
     __HAL_LOCK(hfmpi2c);
 
@@ -142,7 +119,7 @@ HAL_StatusTypeDef HAL_FMPI2CEx_ConfigAnalogFilter(FMPI2C_HandleTypeDef *hfmpi2c,
     /* Process Unlocked */
     __HAL_UNLOCK(hfmpi2c);
 
-    return HAL_OK; 
+    return HAL_OK;
   }
   else
   {
@@ -151,21 +128,21 @@ HAL_StatusTypeDef HAL_FMPI2CEx_ConfigAnalogFilter(FMPI2C_HandleTypeDef *hfmpi2c,
 }
 
 /**
-  * @brief  Configure FMPI2C Digital noise filter. 
+  * @brief  Configure FMPI2C Digital noise filter.
   * @param  hfmpi2c Pointer to a FMPI2C_HandleTypeDef structure that contains
   *                the configuration information for the specified FMPI2Cx peripheral.
-  * @param  DigitalFilter Coefficient of digital noise filter between 0x00 and 0x0F.
+  * @param  DigitalFilter Coefficient of digital noise filter between Min_Data=0x00 and Max_Data=0x0F.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_FMPI2CEx_ConfigDigitalFilter(FMPI2C_HandleTypeDef *hfmpi2c, uint32_t DigitalFilter)
 {
-  uint32_t tmpreg = 0U;
+  uint32_t tmpreg;
 
   /* Check the parameters */
   assert_param(IS_FMPI2C_ALL_INSTANCE(hfmpi2c->Instance));
   assert_param(IS_FMPI2C_DIGITAL_FILTER(DigitalFilter));
 
-  if(hfmpi2c->State == HAL_FMPI2C_STATE_READY)
+  if (hfmpi2c->State == HAL_FMPI2C_STATE_READY)
   {
     /* Process Locked */
     __HAL_LOCK(hfmpi2c);
@@ -179,7 +156,7 @@ HAL_StatusTypeDef HAL_FMPI2CEx_ConfigDigitalFilter(FMPI2C_HandleTypeDef *hfmpi2c
     tmpreg = hfmpi2c->Instance->CR1;
 
     /* Reset FMPI2Cx DNF bits [11:8] */
-    tmpreg &= ~(FMPI2C_CR1_DFN);
+    tmpreg &= ~(FMPI2C_CR1_DNF);
 
     /* Set FMPI2Cx DNF coefficient */
     tmpreg |= DigitalFilter << 8U;
@@ -206,6 +183,11 @@ HAL_StatusTypeDef HAL_FMPI2CEx_ConfigDigitalFilter(FMPI2C_HandleTypeDef *hfmpi2c
   * @brief Enable the FMPI2C fast mode plus driving capability.
   * @param ConfigFastModePlus Selects the pin.
   *   This parameter can be one of the @ref FMPI2CEx_FastModePlus values
+  * @note  For FMPI2C1, fast mode plus driving capability can be enabled on all selected
+  *        FMPI2C1 pins using FMPI2C_FASTMODEPLUS_FMPI2C1 parameter or independently
+  *        on each one of the following pins PB6, PB7, PB8 and PB9.
+  * @note  For remaining FMPI2C1 pins (PA14, PA15...) fast mode plus driving capability
+  *        can be enabled only by using FMPI2C_FASTMODEPLUS_FMPI2C1 parameter.
   * @retval None
   */
 void HAL_FMPI2CEx_EnableFastModePlus(uint32_t ConfigFastModePlus)
@@ -224,6 +206,11 @@ void HAL_FMPI2CEx_EnableFastModePlus(uint32_t ConfigFastModePlus)
   * @brief Disable the FMPI2C fast mode plus driving capability.
   * @param ConfigFastModePlus Selects the pin.
   *   This parameter can be one of the @ref FMPI2CEx_FastModePlus values
+  * @note  For FMPI2C1, fast mode plus driving capability can be disabled on all selected
+  *        FMPI2C1 pins using FMPI2C_FASTMODEPLUS_FMPI2C1 parameter or independently
+  *        on each one of the following pins PB6, PB7, PB8 and PB9.
+  * @note  For remaining FMPI2C1 pins (PA14, PA15...) fast mode plus driving capability
+  *        can be disabled only by using FMPI2C_FASTMODEPLUS_FMPI2C1 parameter.
   * @retval None
   */
 void HAL_FMPI2CEx_DisableFastModePlus(uint32_t ConfigFastModePlus)
@@ -245,7 +232,8 @@ void HAL_FMPI2CEx_DisableFastModePlus(uint32_t ConfigFastModePlus)
 /**
   * @}
   */
-#endif /* STM32F410xx || STM32F446xx || STM32F412Zx || STM32F412Vx || STM32F412Rx || STM32F412Cx */
+
+#endif /* FMPI2C_CR1_PE */
 #endif /* HAL_FMPI2C_MODULE_ENABLED */
 /**
   * @}

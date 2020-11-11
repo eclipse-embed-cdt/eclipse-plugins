@@ -1102,6 +1102,27 @@
 				<element>
 					<simple
 						name="source"
+						value="$(commonDir)/include/stm32_assert.h" />
+					<simple
+						name="target"
+						value="$(includeDir)/stm32_assert.h" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
 						value="src/_initialize_hardware.c" />
 					<simple
 						name="target"
@@ -2148,7 +2169,7 @@
 				name="configIdPattern"
 				value=".*" />
 			<simple-array name="filePatterns">
-				<element value=".*/$(CMSIS_name)_hal_msp_template[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_.*_template[.]c" />
 			</simple-array>
 			<simple
 				name="invertConfigMatching"
@@ -2169,49 +2190,49 @@
 				value=".*" />
 			<simple-array name="filePatterns">
 				<element value=".*/$(CMSIS_name)_hal_adc.*[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_can[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_cec[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_crc[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_can.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_cec.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_crc.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_cryp.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_dac.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_dcmi.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_dma.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_dfsdm.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_dsi.*[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_eth[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_eth.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_exti.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_fmpi2c.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_fmpsmbus.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_hash.*[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_hcd[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_hcd.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_i2c.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_i2s.*[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_irda[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_i2s.*[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_irda[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_lptim[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_irda.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_lptim.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_ltdc.*[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_nand[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_nor[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_pccard[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_mmc.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_nand.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_nor.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_pccard.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_pcd.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_pwr_.*[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_qspi[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_qspi.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_rcc_.*[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_rng[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_rng.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_rtc.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_sai.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_sd[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_sdram[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_smartcard[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_spi[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_spdifrx[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_sdram.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_smartcard.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_smbus.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_spi.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_spdifrx.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_sram.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_tim.*[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_uart[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_usart[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_wwdg[.]c" />
-				<element value=".*/$(CMSIS_name)_ll_fmc[.]c" />
-				<element value=".*/$(CMSIS_name)_ll_fsmc[.]c" />
-				<element value=".*/$(CMSIS_name)_ll_sdmmc[.]c" />
-				<element value=".*/$(CMSIS_name)_ll_usb[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_uart.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_usart.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_wwdg.*[.]c" />
+				<element value=".*/$(CMSIS_name)_ll_.*[.]c" />
 			</simple-array>
 			<simple
 				name="invertConfigMatching"

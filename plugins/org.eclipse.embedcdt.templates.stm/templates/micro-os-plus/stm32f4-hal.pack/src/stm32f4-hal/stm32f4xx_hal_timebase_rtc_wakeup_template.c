@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_timebase_rtc_wakeup_template.c 
   * @author  MCD Application Team
-  * @version V1.5.0
-  * @date    06-May-2016
   * @brief   HAL time base based on the hardware RTC_WAKEUP Template.
   *    
   *          This file overrides the native HAL time base functions (defined as weak)
@@ -35,29 +33,13 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -114,7 +96,7 @@ void RTC_WKUP_IRQHandler(void);
                         = 1 ms
   * @note   This function is called  automatically at the beginning of program after
   *         reset by HAL_Init() or at any time when clock is configured, by HAL_RCC_ClockConfig(). 
-  * @param  TickPriority: Tick interrupt priority.
+  * @param  TickPriority Tick interrupt priority.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_InitTick (uint32_t TickPriority)
@@ -200,7 +182,7 @@ HAL_StatusTypeDef HAL_InitTick (uint32_t TickPriority)
       __HAL_RTC_WAKEUPTIMER_CLEAR_FLAG(&hRTC_Handle, RTC_FLAG_WUTF);
 
       /* Configure the Wake-up Timer counter */
-      hRTC_Handle.Instance->WUTR = (uint32_t)0U;
+      hRTC_Handle.Instance->WUTR = 0U;
 
       /* Clear the Wake-up Timer clock source bits in CR register */
       hRTC_Handle.Instance->CR &= (uint32_t)~RTC_CR_WUCKSEL;
@@ -233,7 +215,6 @@ HAL_StatusTypeDef HAL_InitTick (uint32_t TickPriority)
 /**
   * @brief  Suspend Tick increment.
   * @note   Disable the tick increment by disabling RTC_WKUP interrupt.
-  * @param  None
   * @retval None
   */
 void HAL_SuspendTick(void)
@@ -249,7 +230,6 @@ void HAL_SuspendTick(void)
 /**
   * @brief  Resume Tick increment.
   * @note   Enable the tick increment by Enabling RTC_WKUP interrupt.
-  * @param  None
   * @retval None
   */
 void HAL_ResumeTick(void)
@@ -267,7 +247,7 @@ void HAL_ResumeTick(void)
   * @note   This function is called  when RTC_WKUP interrupt took place, inside
   * RTC_WKUP_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
-  * @param  hrtc : RTC handle
+  * @param  hrtc  RTC handle
   * @retval None
   */
 void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc)
@@ -277,7 +257,6 @@ void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc)
 
 /**
   * @brief  This function handles  WAKE UP TIMER  interrupt request.
-  * @param  None
   * @retval None
   */
 void RTC_WKUP_IRQHandler(void)

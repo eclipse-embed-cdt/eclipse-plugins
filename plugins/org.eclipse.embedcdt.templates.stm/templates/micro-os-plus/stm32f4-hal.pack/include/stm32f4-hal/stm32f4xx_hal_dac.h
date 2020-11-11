@@ -2,35 +2,17 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dac.h
   * @author  MCD Application Team
-  * @version V1.5.0
-  * @date    06-May-2016
   * @brief   Header file of DAC HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -46,7 +28,7 @@
 #if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
     defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
     defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F446xx) ||\
-    defined(STM32F469xx) || defined(STM32F479xx)
+    defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F413xx) || defined(STM32F423xx)
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
@@ -79,7 +61,11 @@ typedef enum
 /** 
   * @brief DAC handle Structure definition
   */
+#if (USE_HAL_DAC_REGISTER_CALLBACKS == 1)
+typedef struct __DAC_HandleTypeDef
+#else
 typedef struct
+#endif
 {
   DAC_TypeDef                 *Instance;     /*!< Register base address             */
 
@@ -92,6 +78,20 @@ typedef struct
   DMA_HandleTypeDef           *DMA_Handle2;  /*!< Pointer DMA handler for channel 2 */
 
   __IO uint32_t               ErrorCode;     /*!< DAC Error code                    */
+
+#if (USE_HAL_DAC_REGISTER_CALLBACKS == 1)
+  void (* ConvCpltCallbackCh1)            (struct __DAC_HandleTypeDef *hdac);
+  void (* ConvHalfCpltCallbackCh1)        (struct __DAC_HandleTypeDef *hdac);
+  void (* ErrorCallbackCh1)               (struct __DAC_HandleTypeDef *hdac);
+  void (* DMAUnderrunCallbackCh1)         (struct __DAC_HandleTypeDef *hdac);
+  void (* ConvCpltCallbackCh2)            (struct __DAC_HandleTypeDef* hdac);
+  void (* ConvHalfCpltCallbackCh2)        (struct __DAC_HandleTypeDef* hdac);
+  void (* ErrorCallbackCh2)               (struct __DAC_HandleTypeDef* hdac);
+  void (* DMAUnderrunCallbackCh2)         (struct __DAC_HandleTypeDef* hdac);
+
+  void (* MspInitCallback)                (struct __DAC_HandleTypeDef *hdac);
+  void (* MspDeInitCallback )             (struct __DAC_HandleTypeDef *hdac);
+#endif /* USE_HAL_DAC_REGISTER_CALLBACKS */
 
 }DAC_HandleTypeDef;
 
@@ -106,6 +106,31 @@ typedef struct
   uint32_t DAC_OutputBuffer;  /*!< Specifies whether the DAC channel output buffer is enabled or disabled.
                                    This parameter can be a value of @ref DAC_output_buffer */
 }DAC_ChannelConfTypeDef;
+
+#if (USE_HAL_DAC_REGISTER_CALLBACKS == 1)
+/**
+  * @brief  HAL DAC Callback ID enumeration definition
+  */
+typedef enum
+{
+  HAL_DAC_CH1_COMPLETE_CB_ID                 = 0x00U,  /*!< DAC CH1 Complete Callback ID      */
+  HAL_DAC_CH1_HALF_COMPLETE_CB_ID            = 0x01U,  /*!< DAC CH1 half Complete Callback ID */
+  HAL_DAC_CH1_ERROR_ID                       = 0x02U,  /*!< DAC CH1 error Callback ID         */
+  HAL_DAC_CH1_UNDERRUN_CB_ID                 = 0x03U,  /*!< DAC CH1 underrun Callback ID      */
+  HAL_DAC_CH2_COMPLETE_CB_ID                 = 0x04U,  /*!< DAC CH2 Complete Callback ID      */
+  HAL_DAC_CH2_HALF_COMPLETE_CB_ID            = 0x05U,  /*!< DAC CH2 half Complete Callback ID */
+  HAL_DAC_CH2_ERROR_ID                       = 0x06U,  /*!< DAC CH2 error Callback ID         */
+  HAL_DAC_CH2_UNDERRUN_CB_ID                 = 0x07U,  /*!< DAC CH2 underrun Callback ID      */
+  HAL_DAC_MSP_INIT_CB_ID                     = 0x08U,  /*!< DAC MspInit Callback ID           */
+  HAL_DAC_MSP_DEINIT_CB_ID                   = 0x09U,  /*!< DAC MspDeInit Callback ID         */
+  HAL_DAC_ALL_CB_ID                          = 0x0AU   /*!< DAC All ID                        */
+}HAL_DAC_CallbackIDTypeDef;
+
+/**
+  * @brief  HAL DAC Callback pointer definition
+  */
+typedef void (*pDAC_CallbackTypeDef)(DAC_HandleTypeDef *hdac);
+#endif /* USE_HAL_DAC_REGISTER_CALLBACKS */
 /**
   * @}
   */
@@ -122,6 +147,9 @@ typedef struct
 #define  HAL_DAC_ERROR_DMAUNDERRUNCH1    0x01U    /*!< DAC channel1 DAM underrun error   */
 #define  HAL_DAC_ERROR_DMAUNDERRUNCH2    0x02U    /*!< DAC channel2 DAM underrun error   */
 #define  HAL_DAC_ERROR_DMA               0x04U    /*!< DMA error                         */
+#if (USE_HAL_DAC_REGISTER_CALLBACKS == 1)
+#define HAL_DAC_ERROR_INVALID_CALLBACK   0x10U    /*!< Invalid callback error            */
+#endif /* USE_HAL_DAC_REGISTER_CALLBACKS */
 /**
   * @}
   */
@@ -130,8 +158,8 @@ typedef struct
   * @{
   */
 
-#define DAC_TRIGGER_NONE                   ((uint32_t)0x00000000U) /*!< Conversion is automatic once the DAC1_DHRxxxx register 
-                                                                       has been loaded, and not by external trigger */
+#define DAC_TRIGGER_NONE                   0x00000000U /*!< Conversion is automatic once the DAC1_DHRxxxx register 
+                                                            has been loaded, and not by external trigger */
 #define DAC_TRIGGER_T2_TRGO                ((uint32_t)(DAC_CR_TSEL1_2 | DAC_CR_TEN1)) /*!< TIM2 TRGO selected as external conversion trigger for DAC channel */
 #define DAC_TRIGGER_T4_TRGO                ((uint32_t)(DAC_CR_TSEL1_2 | DAC_CR_TSEL1_0 | DAC_CR_TEN1)) /*!< TIM4 TRGO selected as external conversion trigger for DAC channel */
 #define DAC_TRIGGER_T5_TRGO                ((uint32_t)(DAC_CR_TSEL1_1 | DAC_CR_TSEL1_0 | DAC_CR_TEN1)) /*!< TIM5 TRGO selected as external conversion trigger for DAC channel */
@@ -148,7 +176,7 @@ typedef struct
 /** @defgroup DAC_output_buffer  DAC Output Buffer
   * @{
   */
-#define DAC_OUTPUTBUFFER_ENABLE            ((uint32_t)0x00000000U)
+#define DAC_OUTPUTBUFFER_ENABLE            0x00000000U
 #define DAC_OUTPUTBUFFER_DISABLE           ((uint32_t)DAC_CR_BOFF1)
 /**
   * @}
@@ -157,8 +185,8 @@ typedef struct
 /** @defgroup DAC_Channel_selection DAC Channel Selection
   * @{
   */
-#define DAC_CHANNEL_1                      ((uint32_t)0x00000000U)
-#define DAC_CHANNEL_2                      ((uint32_t)0x00000010U)
+#define DAC_CHANNEL_1                      0x00000000U
+#define DAC_CHANNEL_2                      0x00000010U
 /**
   * @}
   */
@@ -166,9 +194,9 @@ typedef struct
 /** @defgroup DAC_data_alignment DAC Data Alignment
   * @{
   */
-#define DAC_ALIGN_12B_R                    ((uint32_t)0x00000000U)
-#define DAC_ALIGN_12B_L                    ((uint32_t)0x00000004U)
-#define DAC_ALIGN_8B_R                     ((uint32_t)0x00000008U)
+#define DAC_ALIGN_12B_R                    0x00000000U
+#define DAC_ALIGN_12B_L                    0x00000004U
+#define DAC_ALIGN_8B_R                     0x00000008U
 /**
   * @}
   */
@@ -201,42 +229,50 @@ typedef struct
   */
 
 /** @brief Reset DAC handle state
-  * @param  __HANDLE__: specifies the DAC handle.
+  * @param  __HANDLE__ specifies the DAC handle.
   * @retval None
   */
+#if (USE_HAL_DAC_REGISTER_CALLBACKS == 1)
+#define __HAL_DAC_RESET_HANDLE_STATE(__HANDLE__)           do {                                              \
+                                                                 (__HANDLE__)->State = HAL_DAC_STATE_RESET; \
+                                                                 (__HANDLE__)->MspInitCallback = NULL;       \
+                                                                 (__HANDLE__)->MspDeInitCallback = NULL;     \
+                                                               } while(0)
+#else
 #define __HAL_DAC_RESET_HANDLE_STATE(__HANDLE__) ((__HANDLE__)->State = HAL_DAC_STATE_RESET)
+#endif /* USE_HAL_DAC_REGISTER_CALLBACKS */
 
 /** @brief Enable the DAC channel
-  * @param  __HANDLE__: specifies the DAC handle.
-  * @param  __DAC_Channel__: specifies the DAC channel
+  * @param  __HANDLE__ specifies the DAC handle.
+  * @param  __DAC_Channel__ specifies the DAC channel
   * @retval None
   */
 #define __HAL_DAC_ENABLE(__HANDLE__, __DAC_Channel__) ((__HANDLE__)->Instance->CR |=  (DAC_CR_EN1 << (__DAC_Channel__)))
 
 /** @brief Disable the DAC channel
-  * @param  __HANDLE__: specifies the DAC handle
-  * @param  __DAC_Channel__: specifies the DAC channel.
+  * @param  __HANDLE__ specifies the DAC handle
+  * @param  __DAC_Channel__ specifies the DAC channel.
   * @retval None
   */
 #define __HAL_DAC_DISABLE(__HANDLE__, __DAC_Channel__) ((__HANDLE__)->Instance->CR &=  ~(DAC_CR_EN1 << (__DAC_Channel__)))
 
 /** @brief Enable the DAC interrupt
-  * @param  __HANDLE__: specifies the DAC handle
-  * @param  __INTERRUPT__: specifies the DAC interrupt.
+  * @param  __HANDLE__ specifies the DAC handle
+  * @param  __INTERRUPT__ specifies the DAC interrupt.
   * @retval None
   */
 #define __HAL_DAC_ENABLE_IT(__HANDLE__, __INTERRUPT__) (((__HANDLE__)->Instance->CR) |= (__INTERRUPT__))
 
 /** @brief Disable the DAC interrupt
-  * @param  __HANDLE__: specifies the DAC handle
-  * @param  __INTERRUPT__: specifies the DAC interrupt.
+  * @param  __HANDLE__ specifies the DAC handle
+  * @param  __INTERRUPT__ specifies the DAC interrupt.
   * @retval None
   */
 #define __HAL_DAC_DISABLE_IT(__HANDLE__, __INTERRUPT__) (((__HANDLE__)->Instance->CR) &= ~(__INTERRUPT__))
 
 /** @brief  Checks if the specified DAC interrupt source is enabled or disabled.
-  * @param __HANDLE__: DAC handle
-  * @param __INTERRUPT__: DAC interrupt source to check
+  * @param __HANDLE__ DAC handle
+  * @param __INTERRUPT__ DAC interrupt source to check
   *          This parameter can be any combination of the following values:
   *            @arg DAC_IT_DMAUDR1: DAC channel 1 DMA underrun interrupt
   *            @arg DAC_IT_DMAUDR2: DAC channel 2 DMA underrun interrupt
@@ -245,8 +281,8 @@ typedef struct
 #define __HAL_DAC_GET_IT_SOURCE(__HANDLE__, __INTERRUPT__) (((__HANDLE__)->Instance->CR & (__INTERRUPT__)) == (__INTERRUPT__))
 
 /** @brief  Get the selected DAC's flag status.
-  * @param  __HANDLE__: specifies the DAC handle.
-  * @param  __FLAG__: specifies the flag to clear.
+  * @param  __HANDLE__ specifies the DAC handle.
+  * @param  __FLAG__ specifies the flag to clear.
   *         This parameter can be any combination of the following values:
   *            @arg DAC_FLAG_DMAUDR1: DMA underrun 1 flag
   *            @arg DAC_FLAG_DMAUDR2: DMA underrun 2 flag
@@ -255,8 +291,8 @@ typedef struct
 #define __HAL_DAC_GET_FLAG(__HANDLE__, __FLAG__) ((((__HANDLE__)->Instance->SR) & (__FLAG__)) == (__FLAG__))
 
 /** @brief  Clear the DAC's flag.
-  * @param  __HANDLE__: specifies the DAC handle.
-  * @param  __FLAG__: specifies the flag to clear.
+  * @param  __HANDLE__ specifies the DAC handle.
+  * @param  __FLAG__ specifies the flag to clear.
   *         This parameter can be any combination of the following values:
   *            @arg DAC_FLAG_DMAUDR1: DMA underrun 1 flag
   *            @arg DAC_FLAG_DMAUDR2: DMA underrun 2 flag
@@ -322,6 +358,12 @@ void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef* hdac);
 void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef* hdac);
 void HAL_DAC_ErrorCallbackCh1(DAC_HandleTypeDef *hdac);
 void HAL_DAC_DMAUnderrunCallbackCh1(DAC_HandleTypeDef *hdac);
+
+#if (USE_HAL_DAC_REGISTER_CALLBACKS == 1)
+/* DAC callback registering/unregistering */
+HAL_StatusTypeDef     HAL_DAC_RegisterCallback (DAC_HandleTypeDef *hdac, HAL_DAC_CallbackIDTypeDef CallbackID, pDAC_CallbackTypeDef pCallback);
+HAL_StatusTypeDef     HAL_DAC_UnRegisterCallback (DAC_HandleTypeDef *hdac, HAL_DAC_CallbackIDTypeDef CallbackID);
+#endif /* USE_HAL_DAC_REGISTER_CALLBACKS */
 /**
   * @}
   */
@@ -364,22 +406,22 @@ void HAL_DAC_DMAUnderrunCallbackCh1(DAC_HandleTypeDef *hdac);
                                  ((TRIGGER) == DAC_TRIGGER_SOFTWARE))
 
 /** @brief Set DHR12R1 alignment
-  * @param  __ALIGNMENT__: specifies the DAC alignment
+  * @param  __ALIGNMENT__ specifies the DAC alignment
   * @retval None
   */
-#define DAC_DHR12R1_ALIGNMENT(__ALIGNMENT__) (((uint32_t)0x00000008U) + (__ALIGNMENT__))
+#define DAC_DHR12R1_ALIGNMENT(__ALIGNMENT__) (0x00000008U + (__ALIGNMENT__))
 
 /** @brief  Set DHR12R2 alignment
-  * @param  __ALIGNMENT__: specifies the DAC alignment
+  * @param  __ALIGNMENT__ specifies the DAC alignment
   * @retval None
   */
 #define DAC_DHR12R2_ALIGNMENT(__ALIGNMENT__) (((uint32_t)0x00000014U) + (__ALIGNMENT__))
 
 /** @brief  Set DHR12RD alignment
-  * @param  __ALIGNMENT__: specifies the DAC alignment
+  * @param  __ALIGNMENT__ specifies the DAC alignment
   * @retval None
   */
-#define DAC_DHR12RD_ALIGNMENT(__ALIGNMENT__) (((uint32_t)0x00000020U) + (__ALIGNMENT__))
+#define DAC_DHR12RD_ALIGNMENT(__ALIGNMENT__) (0x00000020U + (__ALIGNMENT__))
 
 /**
   * @}
@@ -394,7 +436,8 @@ void HAL_DAC_DMAUnderrunCallbackCh1(DAC_HandleTypeDef *hdac);
   */
 #endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx ||\
           STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx ||\
-          STM32F410xx || STM32F446xx || STM32F469xx || STM32F479xx */
+          STM32F410xx || STM32F446xx || STM32F469xx || STM32F479xx ||\
+		  STM32F413xx || STM32F423xx */
 
 /**
   * @}
