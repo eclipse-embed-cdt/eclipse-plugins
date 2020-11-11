@@ -2,35 +2,17 @@
   ******************************************************************************
   * @file    stm32f7xx_hal_nand.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    22-April-2016
   * @brief   Header file of NAND HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -94,7 +76,7 @@ typedef struct
 {
   uint16_t Page;   /*!< NAND memory Page address  */
 
-  uint16_t Zone;   /*!< NAND memory Zone address  */
+  uint16_t Plane;   /*!< NAND memory Zone address  */
 
   uint16_t Block;  /*!< NAND memory Block address */
 
@@ -105,32 +87,71 @@ typedef struct
   */ 
 typedef struct
 {
-  uint32_t PageSize;       /*!< NAND memory page (without spare area) size measured in K. bytes */
+  uint32_t        PageSize;              /*!< NAND memory page (without spare area) size measured in bytes 
+                                              for 8 bits adressing or words for 16 bits addressing             */
 
-  uint32_t SpareAreaSize;  /*!< NAND memory spare area size measured in K. bytes                */
+  uint32_t        SpareAreaSize;         /*!< NAND memory spare area size measured in bytes 
+                                              for 8 bits adressing or words for 16 bits addressing             */
+  
+  uint32_t        BlockSize;             /*!< NAND memory block size measured in number of pages               */
 
-  uint32_t BlockSize;      /*!< NAND memory block size number of pages                          */
+  uint32_t        BlockNbr;              /*!< NAND memory number of total blocks                               */
+     
+  uint32_t        PlaneNbr;              /*!< NAND memory number of planes                                     */
 
-  uint32_t BlockNbr;       /*!< NAND memory number of blocks                                    */
+  uint32_t        PlaneSize;             /*!< NAND memory zone size measured in number of blocks               */
 
-  uint32_t ZoneSize;       /*!< NAND memory zone size measured in number of blocks              */
-}NAND_InfoTypeDef;
+  FunctionalState ExtraCommandEnable;    /*!< NAND extra command needed for Page reading mode. This 
+                                              parameter is mandatory for some NAND parts after the read 
+                                              command (NAND_CMD_AREA_TRUE1) and before DATA reading sequence. 
+                                              Example: Toshiba THTH58BYG3S0HBAI6.
+                                              This parameter could be ENABLE or DISABLE
+                                              Please check the Read Mode sequnece in the NAND device datasheet */
+}NAND_DeviceConfigTypeDef; 
 
 /** 
   * @brief  NAND handle Structure definition
-  */   
+  */
+#if (USE_HAL_NAND_REGISTER_CALLBACKS == 1)
+typedef struct __NAND_HandleTypeDef
+#else
 typedef struct
+#endif /* USE_HAL_NAND_REGISTER_CALLBACKS  */
 {
-  FMC_NAND_TypeDef             *Instance;  /*!< Register base address                        */
+  FMC_NAND_TypeDef               *Instance;  /*!< Register base address                                 */
   
-  FMC_NAND_InitTypeDef         Init;       /*!< NAND device control configuration parameters */
+  FMC_NAND_InitTypeDef           Init;       /*!< NAND device control configuration parameters          */
 
-  HAL_LockTypeDef              Lock;       /*!< NAND locking object                          */
+  HAL_LockTypeDef                Lock;       /*!< NAND locking object                                   */
 
-  __IO HAL_NAND_StateTypeDef   State;      /*!< NAND device access state                     */
+  __IO HAL_NAND_StateTypeDef     State;      /*!< NAND device access state                              */
 
-  NAND_InfoTypeDef             Info;       /*!< NAND characteristic information structure    */
-}NAND_HandleTypeDef;
+  NAND_DeviceConfigTypeDef       Config;     /*!< NAND phusical characteristic information structure    */
+
+#if (USE_HAL_NAND_REGISTER_CALLBACKS == 1)
+  void  (* MspInitCallback)        ( struct __NAND_HandleTypeDef * hnand);    /*!< NAND Msp Init callback              */
+  void  (* MspDeInitCallback)      ( struct __NAND_HandleTypeDef * hnand);    /*!< NAND Msp DeInit callback            */
+  void  (* ItCallback)             ( struct __NAND_HandleTypeDef * hnand);    /*!< NAND IT callback                    */
+#endif
+} NAND_HandleTypeDef;
+
+#if (USE_HAL_NAND_REGISTER_CALLBACKS == 1)
+/**
+  * @brief  HAL NAND Callback ID enumeration definition
+  */
+typedef enum
+{
+  HAL_NAND_MSP_INIT_CB_ID       = 0x00U,  /*!< NAND MspInit Callback ID          */
+  HAL_NAND_MSP_DEINIT_CB_ID     = 0x01U,  /*!< NAND MspDeInit Callback ID        */
+  HAL_NAND_IT_CB_ID             = 0x02U   /*!< NAND IT Callback ID               */
+}HAL_NAND_CallbackIDTypeDef;
+
+/**
+  * @brief  HAL NAND Callback pointer definition
+  */
+typedef void (*pNAND_CallbackTypeDef)(NAND_HandleTypeDef *hnand);
+#endif
+
 /**
   * @}
   */
@@ -142,10 +163,18 @@ typedef struct
  */ 
 
 /** @brief Reset NAND handle state
-  * @param  __HANDLE__: specifies the NAND handle.
+  * @param  __HANDLE__ specifies the NAND handle.
   * @retval None
   */
+#if (USE_HAL_NAND_REGISTER_CALLBACKS == 1)
+#define __HAL_NAND_RESET_HANDLE_STATE(__HANDLE__)         do {                                             \
+                                                               (__HANDLE__)->State = HAL_NAND_STATE_RESET; \
+                                                               (__HANDLE__)->MspInitCallback = NULL;       \
+                                                               (__HANDLE__)->MspDeInitCallback = NULL;     \
+                                                             } while(0)
+#else
 #define __HAL_NAND_RESET_HANDLE_STATE(__HANDLE__) ((__HANDLE__)->State = HAL_NAND_STATE_RESET)
+#endif
 
 /**
   * @}
@@ -163,6 +192,11 @@ typedef struct
 /* Initialization/de-initialization functions  ********************************/
 HAL_StatusTypeDef  HAL_NAND_Init(NAND_HandleTypeDef *hnand, FMC_NAND_PCC_TimingTypeDef *ComSpace_Timing, FMC_NAND_PCC_TimingTypeDef *AttSpace_Timing);
 HAL_StatusTypeDef  HAL_NAND_DeInit(NAND_HandleTypeDef *hnand);
+
+HAL_StatusTypeDef  HAL_NAND_ConfigDevice(NAND_HandleTypeDef *hnand, NAND_DeviceConfigTypeDef *pDeviceConfig);
+
+HAL_StatusTypeDef  HAL_NAND_Read_ID(NAND_HandleTypeDef *hnand, NAND_IDTypeDef *pNAND_ID);
+
 void               HAL_NAND_MspInit(NAND_HandleTypeDef *hnand);
 void               HAL_NAND_MspDeInit(NAND_HandleTypeDef *hnand);
 void               HAL_NAND_IRQHandler(NAND_HandleTypeDef *hnand);
@@ -177,20 +211,28 @@ void               HAL_NAND_ITCallback(NAND_HandleTypeDef *hnand);
   */
 
 /* IO operation functions  ****************************************************/
-HAL_StatusTypeDef  HAL_NAND_Read_ID(NAND_HandleTypeDef *hnand, NAND_IDTypeDef *pNAND_ID);
+
 HAL_StatusTypeDef  HAL_NAND_Reset(NAND_HandleTypeDef *hnand);
 
 HAL_StatusTypeDef  HAL_NAND_Read_Page_8b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint8_t *pBuffer, uint32_t NumPageToRead);
-HAL_StatusTypeDef  HAL_NAND_Read_Page_16b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint16_t *pBuffer, uint32_t NumPageToRead);
 HAL_StatusTypeDef  HAL_NAND_Write_Page_8b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint8_t *pBuffer, uint32_t NumPageToWrite);
-HAL_StatusTypeDef  HAL_NAND_Write_Page_16b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint16_t *pBuffer, uint32_t NumPageToWrite);
 HAL_StatusTypeDef  HAL_NAND_Read_SpareArea_8b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint8_t *pBuffer, uint32_t NumSpareAreaToRead);
-HAL_StatusTypeDef  HAL_NAND_Read_SpareArea_16b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint16_t *pBuffer, uint32_t NumSpareAreaToRead);
 HAL_StatusTypeDef  HAL_NAND_Write_SpareArea_8b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint8_t *pBuffer, uint32_t NumSpareAreaTowrite);
+
+HAL_StatusTypeDef  HAL_NAND_Read_Page_16b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint16_t *pBuffer, uint32_t NumPageToRead);
+HAL_StatusTypeDef  HAL_NAND_Write_Page_16b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint16_t *pBuffer, uint32_t NumPageToWrite);
+HAL_StatusTypeDef  HAL_NAND_Read_SpareArea_16b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint16_t *pBuffer, uint32_t NumSpareAreaToRead);
 HAL_StatusTypeDef  HAL_NAND_Write_SpareArea_16b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint16_t *pBuffer, uint32_t NumSpareAreaTowrite);
+
 HAL_StatusTypeDef  HAL_NAND_Erase_Block(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress);
-uint32_t           HAL_NAND_Read_Status(NAND_HandleTypeDef *hnand);
+
 uint32_t           HAL_NAND_Address_Inc(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress);
+
+#if (USE_HAL_NAND_REGISTER_CALLBACKS == 1)
+/* NAND callback registering/unregistering */
+HAL_StatusTypeDef  HAL_NAND_RegisterCallback(NAND_HandleTypeDef *hnand, HAL_NAND_CallbackIDTypeDef CallbackId, pNAND_CallbackTypeDef pCallback);
+HAL_StatusTypeDef  HAL_NAND_UnRegisterCallback(NAND_HandleTypeDef *hnand, HAL_NAND_CallbackIDTypeDef CallbackId);
+#endif
 
 /**
   * @}
@@ -266,22 +308,33 @@ uint32_t              HAL_NAND_Read_Status(NAND_HandleTypeDef *hnand);
 
 /**
   * @brief  NAND memory address computation.
-  * @param  __ADDRESS__: NAND memory address.
-  * @param  __HANDLE__ : NAND handle.
+  * @param  __ADDRESS__ NAND memory address.
+  * @param  __HANDLE__  NAND handle.
   * @retval NAND Raw address value
   */
 #define ARRAY_ADDRESS(__ADDRESS__ , __HANDLE__) ((__ADDRESS__)->Page + \
-                         (((__ADDRESS__)->Block + (((__ADDRESS__)->Zone) * ((__HANDLE__)->Info.ZoneSize)))* ((__HANDLE__)->Info.BlockSize)))
+                         (((__ADDRESS__)->Block + (((__ADDRESS__)->Plane) * ((__HANDLE__)->Config.PlaneSize)))* ((__HANDLE__)->Config.BlockSize)))
+
+#define COLUMN_ADDRESS( __HANDLE__) ((__HANDLE__)->Config.PageSize)
 
 /**
   * @brief  NAND memory address cycling.
-  * @param  __ADDRESS__: NAND memory address.
+  * @param  __ADDRESS__ NAND memory address.
   * @retval NAND address cycling value.
   */
 #define ADDR_1ST_CYCLE(__ADDRESS__)       (uint8_t)(__ADDRESS__)              /* 1st addressing cycle */
 #define ADDR_2ND_CYCLE(__ADDRESS__)       (uint8_t)((__ADDRESS__) >> 8)       /* 2nd addressing cycle */
 #define ADDR_3RD_CYCLE(__ADDRESS__)       (uint8_t)((__ADDRESS__) >> 16)      /* 3rd addressing cycle */
 #define ADDR_4TH_CYCLE(__ADDRESS__)       (uint8_t)((__ADDRESS__) >> 24)      /* 4th addressing cycle */
+
+/**
+  * @brief  NAND memory Columns cycling.
+  * @param  __ADDRESS__ NAND memory address.
+  * @retval NAND Column address cycling value.
+  */
+#define COLUMN_1ST_CYCLE(__ADDRESS__)       (uint8_t)(__ADDRESS__)              /* 1st Column addressing cycle */
+#define COLUMN_2ND_CYCLE(__ADDRESS__)       (uint8_t)((__ADDRESS__) >> 8)       /* 2nd Column addressing cycle */
+
 /**
   * @}
   */

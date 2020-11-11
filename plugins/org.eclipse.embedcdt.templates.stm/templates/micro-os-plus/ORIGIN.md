@@ -23,12 +23,14 @@
 
 ### stm32f7
 
-- STM32F7xx CMSIS V1.1.0 / 22-April-2016
-- extracted from: `Keil.STM32F7xx_DFP.2.7.0.pack`
-- published in CubeMX v1.4.0
+- STM32F7xx CMSIS V1.2.5 / 13-February-2020
+- extracted from: `stm32cube_fw_f7_v1160.zip`
+  - STM32Cube_FW_F7_V1.16.0/Drivers/CMSIS/Device/ST/STM32F7xx/Include
 
 ### stm32f7-hal
 
-- STM32F7xx HAL Drivers V1.1.0 / 22-April-2016
-- extracted from: `en.stm32cubef7_v1.4.0.zip`
+- STM32F7xx HAL Drivers V1.2.8/ 13-February-2020
+- extracted from: `stm32cube_fw_f7_v1160.zip`
+  - STM32Cube_FW_F7_V1.16.0/Drivers/STM32F7xx_HAL_Driver/Inc
+  - STM32Cube_FW_F7_V1.16.0/Drivers/STM32F7xx_HAL_Driver/Src
 
