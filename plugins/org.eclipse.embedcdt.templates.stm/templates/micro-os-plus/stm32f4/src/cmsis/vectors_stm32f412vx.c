@@ -28,7 +28,7 @@
 
 // ----------------------------------------------------------------------------
 
-#include "cortexm/ExceptionHandlers.h"
+#include "cortexm/exception-handlers.h"
 
 // ----------------------------------------------------------------------------
 
@@ -119,6 +119,8 @@ USART1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 USART2_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
+USART3_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
 EXTI15_10_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 RTC_Alarm_IRQHandler(void);
@@ -188,6 +190,8 @@ void __attribute__ ((weak, alias ("Default_Handler")))
 SPI4_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SPI5_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+QUADSPI_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 FMPI2C1_EV_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -280,7 +284,7 @@ pHandler __isr_vectors[] =
     SPI2_IRQHandler,                   // SPI2
     USART1_IRQHandler,                 // USART1
     USART2_IRQHandler,                 // USART2
-    0,                                 // Reserved
+    USART3_IRQHandler,                 // USART3
     EXTI15_10_IRQHandler,              // External Line[15:10]s
     RTC_Alarm_IRQHandler,              // RTC Alarm (A and B) through EXTI Line
     OTG_FS_WKUP_IRQHandler,            // USB OTG FS Wakeup through EXTI line
@@ -333,7 +337,7 @@ pHandler __isr_vectors[] =
     0,                                 // Reserved
     0,                                 // Reserved
     0,                                 // Reserved
-    0,                                 // Reserved
+    QUADSPI_IRQHandler,                // QuadSPI
     0,                                 // Reserved
     0,                                 // Reserved
     FMPI2C1_EV_IRQHandler,             // FMPI2C1 Event

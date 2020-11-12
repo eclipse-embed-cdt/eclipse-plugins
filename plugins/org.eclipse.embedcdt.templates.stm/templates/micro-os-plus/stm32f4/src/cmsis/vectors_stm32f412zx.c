@@ -28,7 +28,7 @@
 
 // ----------------------------------------------------------------------------
 
-#include "cortexm/ExceptionHandlers.h"
+#include "cortexm/exception-handlers.h"
 
 // ----------------------------------------------------------------------------
 
@@ -137,19 +137,13 @@ TIM8_CC_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA1_Stream7_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-FMC_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
 SDIO_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 TIM5_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SPI3_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-UART4_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-UART5_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-TIM6_DAC_IRQHandler(void);
+TIM6_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 TIM7_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -163,9 +157,9 @@ DMA2_Stream3_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA2_Stream4_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-ETH_IRQHandler(void);
+DFSDM1_FLT0_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-ETH_WKUP_IRQHandler(void);
+DFSDM1_FLT1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 CAN2_TX_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -189,41 +183,19 @@ I2C3_EV_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 I2C3_ER_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-OTG_HS_EP1_OUT_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-OTG_HS_EP1_IN_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-OTG_HS_WKUP_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-OTG_HS_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-DCMI_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-HASH_RNG_IRQHandler(void);
+RNG_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 FPU_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-UART7_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-UART8_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SPI4_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SPI5_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-SPI6_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-SAI1_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-LTDC_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-LTDC_ER_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-DMA2D_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
 QUADSPI_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-DSI_IRQHandler(void);
+FMPI2C1_EV_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+FMPI2C1_ER_IRQHandler(void);
 
 // ----------------------------------------------------------------------------
 
@@ -321,21 +293,21 @@ pHandler __isr_vectors[] =
     TIM8_TRG_COM_TIM14_IRQHandler,     // TIM8 Trigger and Commutation and TIM14
     TIM8_CC_IRQHandler,                // TIM8 Capture Compare
     DMA1_Stream7_IRQHandler,           // DMA1 Stream7
-    FMC_IRQHandler,                    // FMC
+    0,                                 // Reserved
     SDIO_IRQHandler,                   // SDIO
     TIM5_IRQHandler,                   // TIM5
     SPI3_IRQHandler,                   // SPI3
-    UART4_IRQHandler,                  // UART4
-    UART5_IRQHandler,                  // UART5
-    TIM6_DAC_IRQHandler,               // TIM6 and DAC1&2 underrun errors
+    0,                                 // Reserved
+    0,                                 // Reserved
+    TIM6_IRQHandler,                   // TIM6
     TIM7_IRQHandler,                   // TIM7
     DMA2_Stream0_IRQHandler,           // DMA2 Stream 0
     DMA2_Stream1_IRQHandler,           // DMA2 Stream 1
     DMA2_Stream2_IRQHandler,           // DMA2 Stream 2
     DMA2_Stream3_IRQHandler,           // DMA2 Stream 3
     DMA2_Stream4_IRQHandler,           // DMA2 Stream 4
-    ETH_IRQHandler,                    // Ethernet
-    ETH_WKUP_IRQHandler,               // Ethernet Wakeup through EXTI line
+    DFSDM1_FLT0_IRQHandler,            // DFSDM1 Filter 0 global interrupt
+    DFSDM1_FLT1_IRQHandler,            // DFSDM1 Filter 1 global interrupt
     CAN2_TX_IRQHandler,                // CAN2 TX
     CAN2_RX0_IRQHandler,               // CAN2 RX0
     CAN2_RX1_IRQHandler,               // CAN2 RX1
@@ -347,25 +319,29 @@ pHandler __isr_vectors[] =
     USART6_IRQHandler,                 // USART6
     I2C3_EV_IRQHandler,                // I2C3 event
     I2C3_ER_IRQHandler,                // I2C3 error
-    OTG_HS_EP1_OUT_IRQHandler,         // USB OTG HS End Point 1 Out
-    OTG_HS_EP1_IN_IRQHandler,          // USB OTG HS End Point 1 In
-    OTG_HS_WKUP_IRQHandler,            // USB OTG HS Wakeup through EXTI
-    OTG_HS_IRQHandler,                 // USB OTG HS
-    DCMI_IRQHandler,                   // DCMI
     0,                                 // Reserved
-    HASH_RNG_IRQHandler,               // Hash and Rng
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    RNG_IRQHandler,                    // RNG
     FPU_IRQHandler,                    // FPU
-    UART7_IRQHandler,                  // UART7
-    UART8_IRQHandler,                  // UART8
+    0,                                 // Reserved
+    0,                                 // Reserved
     SPI4_IRQHandler,                   // SPI4
     SPI5_IRQHandler,                   // SPI5
-    SPI6_IRQHandler,                   // SPI6
-    SAI1_IRQHandler,                   // SAI1
-    LTDC_IRQHandler,                   // LTDC
-    LTDC_ER_IRQHandler,                // LTDC error
-    DMA2D_IRQHandler,                  // DMA2D
-    QUADSPI_IRQHandler,                // QUADSPI
-    DSI_IRQHandler,                    // DSI
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    QUADSPI_IRQHandler,                // QuadSPI
+    0,                                 // Reserved
+    0,                                 // Reserved
+    FMPI2C1_EV_IRQHandler,             // FMPI2C1 Event
+    FMPI2C1_ER_IRQHandler,             // FMPI2C1 Error
 };
 
 // ----------------------------------------------------------------------------

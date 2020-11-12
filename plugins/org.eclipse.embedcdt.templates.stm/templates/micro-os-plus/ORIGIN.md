@@ -15,12 +15,14 @@
   - STM32Cube_FW_F0_V1.11.1/Drivers/STM32F0xx_HAL_Driver/Src
 
 ### stm32f4
+## stm32f4
 
 - STMSTM32F4xx CMSIS V2.6.5 / 10-February-2020
 - extracted from: `stm32cube_fw_f4_v1252.zip`
   - STM32Cube_FW_F4_V1.25.2/Drivers/CMSIS/Device/ST/STM32F4xx/Include
+  - STM32Cube_FW_F4_V1.25.2/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates
 
-### stm32f4-hal
+## stm32f4-hal
 
 - STM32F4xx HAL Drivers V1.7.10 / 22-October-2020
 - extracted from: `stm32cube_fw_f4_v1252.zip`

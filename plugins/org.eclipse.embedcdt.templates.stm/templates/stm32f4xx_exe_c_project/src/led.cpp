@@ -25,94 +25,51 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "BlinkLed.h"
-
-#include "$(CMSIS_name).h"
-#include "$(CMSIS_name)_hal.h"
-
-#define BLINK_GPIOx(_N)       ((GPIO_TypeDef *)(GPIOA_BASE + (GPIOB_BASE-GPIOA_BASE)*(_N)))
-#define BLINK_PIN_MASK(_N)    (1 << (_N))
-#define BLINK_RCC_MASKx(_N)   (RCC_AHB1ENR_GPIOAEN << (_N))
+#include "led.h"
 
 // ----------------------------------------------------------------------------
 
-BlinkLed::BlinkLed (unsigned int port, unsigned int bit, bool activeLow)
-{
-  fPortNumber = port;
-  fBitNumber = bit;
-  fIsActiveLow = activeLow;
-  fBitMask = BLINK_PIN_MASK(fBitNumber);
-}
-
 void
-BlinkLed::powerUp ()
+led::power_up()
 {
   // Enable GPIO Peripheral clock
-  RCC->AHB1ENR |= BLINK_RCC_MASKx(fPortNumber);
+  RCC->AHB1ENR |= BLINK_RCC_MASKx(BLINK_PORT_NUMBER);
 
   GPIO_InitTypeDef GPIO_InitStructure;
 
   // Configure pin in output push/pull mode
-  GPIO_InitStructure.Pin = fBitMask;
+  GPIO_InitStructure.Pin = BLINK_PIN_MASK(BLINK_PIN_NUMBER);
   GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStructure.Speed = GPIO_SPEED_FAST;
   GPIO_InitStructure.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init (BLINK_GPIOx(fPortNumber), &GPIO_InitStructure);
+  HAL_GPIO_Init(BLINK_GPIOx(BLINK_PORT_NUMBER), &GPIO_InitStructure);
 
   // Start with led turned off
-  turnOff ();
+  turn_off();
 }
 
 void
-BlinkLed::turnOn ()
+led::turn_on()
 {
-  if (fIsActiveLow)
-    {
-      BLINK_GPIOx(fPortNumber)->BSRR = BLINK_PIN_MASK(fBitNumber + 16);
-    }
-  else
-    {
-      BLINK_GPIOx(fPortNumber)->BSRR = fBitMask;
-    }
+#if (BLINK_ACTIVE_LOW)
+  HAL_GPIO_WritePin(BLINK_GPIOx(BLINK_PORT_NUMBER),
+      BLINK_PIN_MASK(BLINK_PIN_NUMBER), GPIO_PIN_RESET);
+#else
+  HAL_GPIO_WritePin(BLINK_GPIOx(BLINK_PORT_NUMBER),
+      BLINK_PIN_MASK(BLINK_PIN_NUMBER), GPIO_PIN_SET);
+#endif
 }
 
 void
-BlinkLed::turnOff ()
+led::turn_off()
 {
-  if (fIsActiveLow)
-    {
-      BLINK_GPIOx(fPortNumber)->BSRR = fBitMask;
-    }
-  else
-    {
-      BLINK_GPIOx(fPortNumber)->BSRR = BLINK_PIN_MASK(fBitNumber + 16);
-    }
-}
-
-void
-BlinkLed::toggle ()
-{
-  if (BLINK_GPIOx(fPortNumber)->IDR & fBitMask)
-    {
-      BLINK_GPIOx(fPortNumber)->ODR &= ~fBitMask;
-    }
-  else
-    {
-      BLINK_GPIOx(fPortNumber)->ODR |= fBitMask;
-    }
-}
-
-bool
-BlinkLed::isOn ()
-{
-  if (fIsActiveLow)
-    {
-      return (BLINK_GPIOx(fPortNumber)->IDR & fBitMask) == 0;
-    }
-  else
-    {
-      return (BLINK_GPIOx(fPortNumber)->IDR & fBitMask) != 0;
-    }
+#if (BLINK_ACTIVE_LOW)
+  HAL_GPIO_WritePin(BLINK_GPIOx(BLINK_PORT_NUMBER),
+      BLINK_PIN_MASK(BLINK_PIN_NUMBER), GPIO_PIN_SET);
+#else
+  HAL_GPIO_WritePin(BLINK_GPIOx(BLINK_PORT_NUMBER),
+      BLINK_PIN_MASK(BLINK_PIN_NUMBER), GPIO_PIN_RESET);
+#endif
 }
 
 // ----------------------------------------------------------------------------

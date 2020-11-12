@@ -10,7 +10,7 @@
 #define BLINK_PIN_NUMBER          (5)
 #define BLINK_ACTIVE_LOW          (false)
 
-BlinkLed blinkLeds[1] =
+led blinkLeds[1] =
   {
     { BLINK_PORT_NUMBER, BLINK_PIN_NUMBER, BLINK_ACTIVE_LOW },
   };
@@ -26,7 +26,7 @@ BlinkLed blinkLeds[1] =
 #define BLINK_PIN_NUMBER_BLUE     (15)
 #define BLINK_ACTIVE_LOW          (false)
 
-BlinkLed blinkLeds[4] =
+led blinkLeds[4] =
   {
     { BLINK_PORT_NUMBER, BLINK_PIN_NUMBER_GREEN, BLINK_ACTIVE_LOW },
     { BLINK_PORT_NUMBER, BLINK_PIN_NUMBER_ORANGE, BLINK_ACTIVE_LOW },
@@ -42,7 +42,7 @@ BlinkLed blinkLeds[4] =
 #define BLINK_PIN_NUMBER          (5)
 #define BLINK_ACTIVE_LOW          (false)
 
-BlinkLed blinkLeds[1] =
+led blinkLeds[1] =
   {
     { BLINK_PORT_NUMBER, BLINK_PIN_NUMBER, BLINK_ACTIVE_LOW },
   };
@@ -56,7 +56,7 @@ BlinkLed blinkLeds[1] =
 #define BLINK_PIN_NUMBER_RED      (14)
 #define BLINK_ACTIVE_LOW          (false)
 
-BlinkLed blinkLeds[2] =
+led blinkLeds[2] =
   {
     { BLINK_PORT_NUMBER, BLINK_PIN_NUMBER_GREEN, BLINK_ACTIVE_LOW },
     { BLINK_PORT_NUMBER, BLINK_PIN_NUMBER_RED, BLINK_ACTIVE_LOW },
@@ -70,7 +70,7 @@ BlinkLed blinkLeds[2] =
 #define BLINK_PIN_NUMBER          (5)
 #define BLINK_ACTIVE_LOW          (false)
 
-BlinkLed blinkLeds[1] =
+led blinkLeds[1] =
   {
     { BLINK_PORT_NUMBER, BLINK_PIN_NUMBER, BLINK_ACTIVE_LOW },
   };

@@ -28,7 +28,7 @@
 
 // ----------------------------------------------------------------------------
 
-#include "cortexm/ExceptionHandlers.h"
+#include "cortexm/exception-handlers.h"
 
 // ----------------------------------------------------------------------------
 
@@ -99,8 +99,6 @@ I2C2_ER_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SPI1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-SPI2_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
 USART1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 USART2_IRQHandler(void);
@@ -131,13 +129,9 @@ DMA2_Stream6_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA2_Stream7_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-USART6_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
 RNG_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 FPU_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-SPI5_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 FMPI2C1_EV_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -229,7 +223,7 @@ pHandler __isr_vectors[] =
     I2C2_EV_IRQHandler,                // I2C2 Event
     I2C2_ER_IRQHandler,                // I2C2 Error
     SPI1_IRQHandler,                   // SPI1
-    SPI2_IRQHandler,                   // SPI2
+    0,                                 // Reserved
     USART1_IRQHandler,                 // USART1
     USART2_IRQHandler,                 // USART2
     0,                                 // Reserved
@@ -264,7 +258,7 @@ pHandler __isr_vectors[] =
     DMA2_Stream5_IRQHandler,           // DMA2 Stream 5
     DMA2_Stream6_IRQHandler,           // DMA2 Stream 6
     DMA2_Stream7_IRQHandler,           // DMA2 Stream 7
-    USART6_IRQHandler,                 // USART6
+    0,                                 // Reserved
     0,                                 // Reserved
     0,                                 // Reserved
     0,                                 // Reserved
@@ -278,7 +272,7 @@ pHandler __isr_vectors[] =
     0,                                 // Reserved
     0,                                 // Reserved
     0,                                 // Reserved
-    SPI5_IRQHandler,                   // SPI5
+    0,                                 // Reserved
     0,                                 // Reserved
     0,                                 // Reserved
     0,                                 // Reserved
