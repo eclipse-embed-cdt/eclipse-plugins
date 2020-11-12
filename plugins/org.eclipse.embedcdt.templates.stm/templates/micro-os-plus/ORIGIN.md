@@ -1,14 +1,18 @@
-## Origin of packs
+# Origin of soruces
 
-### stm32f0
+## stm32f0
 
-- V1.5.0 / 05-December-2014
-- from old µOS++ pack (STM32F0xx_StdPeriph_Lib_V1.5.0.zip)
+- STMSTM32F0xx CMSIS V2.3.4 / 12-September-2019
+- extracted from: `stm32cube_fw_f0_v1111.zip`
+  - STM32Cube_FW_F0_V1.11.1/Drivers/CMSIS/Device/ST/STM32F0xx/Include
+  - STM32Cube_FW_F0_V1.11.1/Drivers/CMSIS/Device/ST/STM32F0xx/Source/Templates
 
-### stm32f0-stdperiph
+## stm32f0-hal
 
-- STM32F0xx Standard Peripherals Drivers V1.5.0 / 05-December-2015
-- from old µOS++ pack (STM32F0xx_StdPeriph_Lib_V1.5.0.zip)
+- STM32F0xx HAL Drivers V1.7.4 / 24-July-2020
+- extracted from: `stm32cube_fw_f0_v1111.zip`
+  - STM32Cube_FW_F0_V1.11.1/Drivers/STM32F0xx_HAL_Driver/Inc
+  - STM32Cube_FW_F0_V1.11.1/Drivers/STM32F0xx_HAL_Driver/Src
 
 ### stm32f4
 

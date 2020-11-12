@@ -1,2 +1,2 @@
-The BlinkLed-NN-*.h files are pieces combined by the template engine to 
-create the BlinkLed.h file.
+The led-NN-*.h files are pieces combined by the template engine to 
+create the led.h file.

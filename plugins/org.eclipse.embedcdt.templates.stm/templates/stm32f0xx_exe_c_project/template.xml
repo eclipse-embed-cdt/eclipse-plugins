@@ -18,28 +18,40 @@
 		type="PAGES-ONLY"
 		help="help.html">
 		<property
-			id="STM32F0chipFamily2"
+			id="STM32F0chipFamily3"
 			label="%STM32F0xx.chipFamily.label"
 			description="%STM32F0xx.chipFamily.description"
 			type="select"
-			default="STM32F051"
+			default="STM32F051x8"
 			hidden="false"
 			persist="true">
 			<item
-				value="STM32F030"
-				label="STM32F030" />
+				value="STM32F030x6"
+				label="STM32F030x6" />
+			<item
+				value="STM32F030x8"
+				label="STM32F030x8" />
 			<item
 				value="STM32F030xC"
 				label="STM32F030xC" />
 			<item
-				value="STM32F031"
-				label="STM32F031" />
+				value="STM32F031x6"
+				label="STM32F031x6" />
 			<item
-				value="STM32F042"
-				label="STM32F042" />
+				value="STM32F038xx"
+				label="STM32F038xx" />
 			<item
-				value="STM32F051"
-				label="STM32F051" />
+				value="STM32F042x6"
+				label="STM32F042x6" />
+			<item
+				value="STM32F048xx"
+				label="STM32F048xx" />
+			<item
+				value="STM32F051x8"
+				label="STM32F051x8" />
+			<item
+				value="STM32F058xx"
+				label="STM32F058xx" />
 			<item
 				value="STM32F070x6"
 				label="STM32F070x6" />
@@ -47,11 +59,20 @@
 				value="STM32F070xB"
 				label="STM32F070xB" />
 			<item
-				value="STM32F072"
-				label="STM32F072" />
+				value="STM32F071xB"
+				label="STM32F071xB" />
 			<item
-				value="STM32F091"
-				label="STM32F091" />
+				value="STM32F072xB"
+				label="STM32F072xB" />
+			<item
+				value="STM32F078xx"
+				label="STM32F078xx" />
+			<item
+				value="STM32F091xC"
+				label="STM32F091xC" />
+			<item
+				value="STM32F098xx"
+				label="STM32F098xx" />
 		</property>
 		<property
 			id="STM32F0flashSize"
@@ -275,9 +296,9 @@
 			persist="false" />
 
 		<property
-			id="chipFamily"
-			label="Chip family"
-			description="Will be set to family"
+			id="cmsisFamilySymbol"
+			label="CMSIS chip family"
+			description="Will be set to uppercase $(STM32F0chipFamily3)"
 			mandatory="true"
 			hidden="true"
 			default="undefined"
@@ -329,7 +350,15 @@
 
 		<property
 			id="device"
-			label="Device periperal folder name"
+			label="Device folder/file name; will be set to lowercase $(STM32F0chipFamily3)"
+			mandatory="true"
+			hidden="true"
+			default="undefined"
+			persist="false" />
+
+		<property
+			id="deviceFamily"
+			label="Device family folder/file name"
 			mandatory="true"
 			hidden="true"
 			default="stm32f0"
@@ -337,10 +366,10 @@
 
 		<property
 			id="devicePeriph"
-			label="Device periperal folder name"
+			label="Device peripheral folder/file name"
 			mandatory="true"
 			hidden="true"
-			default="stm32f0-stdperiph"
+			default="stm32f0-hal"
 			persist="false" />
 
 		<property
@@ -355,6 +384,20 @@
 
 	<!-- Note: the redundant 'condition="1==1"' is a workaround to control the 
 		evaluation order. Without it, processes are evaluated after all ifs. -->
+
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
+			<simple
+				name="name"
+				value="$(projectName)" />
+			<simple
+				name="artifactExtension"
+				value="elf" />
+			<simple
+				name="isCProject"
+				value="true" />
+		</process>
+	</if>
 
 	<if condition="1==1">
 		<process type="org.eclipse.embedcdt.templates.core.SetPropertyIfHasNature">
@@ -403,10 +446,25 @@
 				value="" />
 			<simple
 				name="propertyName"
-				value="chipFamily" />
+				value="cmsisFamilySymbol" />
 			<simple
 				name="propertyValue"
-				value="$(STM32F0chipFamily2)" />
+				value="$(STM32F0chipFamily3)" />
+		</process>
+
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetLowerCaseProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="device" />
+			<simple
+				name="propertyValue"
+				value="$(STM32F0chipFamily3)" />
 		</process>
 
 		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
@@ -767,10 +825,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/src/Timer.$(fileExtension)" />
+						value="$(commonDir)/src/timer.$(fileExtension)" />
 					<simple
 						name="target"
-						value="$(sourceDir)/Timer.$(fileExtension)" />
+						value="$(sourceDir)/timer.$(fileExtension)" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -778,32 +836,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/include/Timer-$(fileExtension).h" />
+						value="$(commonDir)/include/timer-$(fileExtension).h" />
 					<simple
 						name="target"
-						value="$(includeDir)/Timer.h" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="src/BlinkLed.$(fileExtension)" />
-					<simple
-						name="target"
-						value="$(sourceDir)/BlinkLed.$(fileExtension)" />
+						value="$(includeDir)/timer.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -822,10 +858,32 @@
 				<element>
 					<simple
 						name="source"
-						value="../common/src/BlinkLed-10-begin.h" />
+						value="src/led.$(fileExtension)" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(sourceDir)/led.$(fileExtension)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="../common/src/led-10-begin.h" />
+					<simple
+						name="target"
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -843,10 +901,10 @@
 				<element>
 					<simple
 						name="source"
-						value="src/BlinkLed-20-headers.h" />
+						value="src/led-20-headers.h" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -854,10 +912,10 @@
 				<element>
 					<simple
 						name="source"
-						value="../common/src/BlinkLed-30-defs.h" />
+						value="../common/src/led-30-defs.h" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -865,10 +923,10 @@
 				<element>
 					<simple
 						name="source"
-						value="src/BlinkLed-40-defs.h" />
+						value="src/led-40-defs.h" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -876,10 +934,10 @@
 				<element>
 					<simple
 						name="source"
-						value="src/BlinkLed-50-$(fileExtension).h" />
+						value="src/led-50-$(fileExtension).h" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -887,10 +945,10 @@
 				<element>
 					<simple
 						name="source"
-						value="../common/src/BlinkLed-60-end.h" />
+						value="../common/src/led-60-end.h" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1013,10 +1071,52 @@
 				<element>
 					<simple
 						name="source"
-						value="src/$(CMSIS_name)_conf.h" />
+						value="$(osDir)/$(devicePeriph)/include/$(devicePeriph)/$(CMSIS_name)_hal_conf_template.h" />
 					<simple
 						name="target"
-						value="$(includeDir)/$(CMSIS_name)_conf.h" />
+						value="$(includeDir)/$(CMSIS_name)_hal_conf.h" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="$(commonDir)/include/stm32_assert.h" />
+					<simple
+						name="target"
+						value="$(includeDir)/stm32_assert.h" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="src/initialize-hardware.c" />
+					<simple
+						name="target"
+						value="$(sourceDir)/initialize-hardware.c" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1060,24 +1160,21 @@
 	<!-- Vendor CMSIS files -->
 	<if condition="1==1">
 		<!-- Copy all vendor CMSIS files -->
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
 			<simple
 				name="condition"
 				value="" />
-			<complex-array name="folders">
+			<complex-array name="files">
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis" />
+						value="$(osDir)/$(deviceFamily)/include/cmsis/cmsis_device.h" />
 					<simple
 						name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
-					<simple
-						name="pattern"
-						value=".*[.](h|txt|md)" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/cmsis_device.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1085,13 +1182,65 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(device).pack/src/cmsis" />
+						value="$(osDir)/$(deviceFamily)/include/cmsis/$(CMSIS_name).h" />
 					<simple
 						name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(CMSIS_name).h" />
 					<simple
-						name="pattern"
-						value=".*[.](c|txt|md)" />
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="$(osDir)/$(deviceFamily)/include/cmsis/system_$(CMSIS_name).h" />
+					<simple
+						name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/system_$(CMSIS_name).h" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="$(osDir)/$(deviceFamily)/src/cmsis/system_$(CMSIS_name).c" />
+					<simple
+						name="target"
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="$(osDir)/$(deviceFamily)/include/cmsis/$(device).h" />
+					<simple
+						name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(device).h" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="$(osDir)/$(deviceFamily)/src/cmsis/vectors_$(device).c" />
+					<simple
+						name="target"
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_$(device).c" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1133,10 +1282,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/system/include/cortexm/ExceptionHandlers.h" />
+						value="$(commonDir)/system/include/cortexm/exception-handlers.h" />
 					<simple
 						name="target"
-						value="$(sysDir)/$(includeDir)/cortexm/ExceptionHandlers.h" />
+						value="$(sysDir)/$(includeDir)/cortexm/exception-handlers.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1154,10 +1303,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/system/include/diag/Trace.h" />
+						value="$(commonDir)/system/include/diag/trace.h" />
 					<simple
 						name="target"
-						value="$(sysDir)/$(includeDir)/diag/Trace.h" />
+						value="$(sysDir)/$(includeDir)/diag/trace.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1223,10 +1372,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/system/src/_write.c" />
+						value="$(commonDir)/system/src/write.c" />
 					<simple
 						name="target"
-						value="$(sourceDir)/_write.c" />
+						value="$(sourceDir)/write.c" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1275,7 +1424,7 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)" />
+						value="$(osDir)/$(devicePeriph)/include/$(devicePeriph)" />
 					<simple
 						name="target"
 						value="$(sysDir)/$(includeDir)/$(devicePeriph)" />
@@ -1289,7 +1438,7 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)" />
+						value="$(osDir)/$(devicePeriph)/src/$(devicePeriph)" />
 					<simple
 						name="target"
 						value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
@@ -1302,6 +1451,72 @@
 				</element>
 			</complex-array>
 		</process>
+		
+		<!-- Copy legacy files in peripheral library -->
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalCopyFolders">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="folders">
+				<element>
+					<simple
+						name="source"
+						value="$(osDir)/$(devicePeriph)/include/$(devicePeriph)/Legacy" />
+					<simple
+						name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/Legacy" />
+					<simple
+						name="pattern"
+						value="" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<!-- Copy $(CMSIS_name)_hal_msp_template.c to src -->
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="$(osDir)/$(devicePeriph)/src/$(devicePeriph)/$(CMSIS_name)_hal_msp_template.c" />
+					<simple
+						name="target"
+						value="$(sourceDir)/$(CMSIS_name)_hal_msp.c" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<!-- Exclude template from build in hal folder -->
+		<process type="org.eclipse.cdt.managedbuilder.core.ExcludeResources">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="configIdPattern"
+				value=".*" />
+			<simple-array name="filePatterns">
+				<element value=".*/$(CMSIS_name)_hal_.*_template[.]c" />
+			</simple-array>
+			<simple
+				name="invertConfigMatching"
+				value="false" />
+		</process>
+
 	</if>
 
 	<!-- ================================================================== -->
@@ -1316,28 +1531,50 @@
 				name="configIdPattern"
 				value=".*" />
 			<simple-array name="filePatterns">
-				<element value=".*/$(CMSIS_name)_adc[.]c" />
-				<element value=".*/$(CMSIS_name)_can[.]c" />
-				<element value=".*/$(CMSIS_name)_cec[.]c" />
-				<element value=".*/$(CMSIS_name)_comp[.]c" />
-				<element value=".*/$(CMSIS_name)_crc[.]c" />
-				<element value=".*/$(CMSIS_name)_crs[.]c" />
-				<element value=".*/$(CMSIS_name)_dac[.]c" />
-				<element value=".*/$(CMSIS_name)_dbgmcu[.]c" />
-				<element value=".*/$(CMSIS_name)_dma[.]c" />
-				<element value=".*/$(CMSIS_name)_exti[.]c" />
-				<element value=".*/$(CMSIS_name)_flash[.]c" />
-				<element value=".*/$(CMSIS_name)_i2c[.]c" />
-				<element value=".*/$(CMSIS_name)_iwdg[.]c" />
-				<element value=".*/$(CMSIS_name)_misc[.]c" />
-				<element value=".*/$(CMSIS_name)_opamp[.]c" />
-				<element value=".*/$(CMSIS_name)_pwr[.]c" />
-				<element value=".*/$(CMSIS_name)_rtc[.]c" />
-				<element value=".*/$(CMSIS_name)_spi[.]c" />
-				<element value=".*/$(CMSIS_name)_syscfg[.]c" />
-				<element value=".*/$(CMSIS_name)_tim[.]c" />
-				<element value=".*/$(CMSIS_name)_usart[.]c" />
-				<element value=".*/$(CMSIS_name)_wwdg[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_adc.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_can.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_cec.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_crc.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_cryp.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_dac.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_dcmi.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_dma.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_dfsdm.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_dsi.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_eth.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_exti.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_fmpi2c.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_fmpsmbus.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_hash.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_hcd.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_i2c.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_i2s.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_irda.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_lptim.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_ltdc.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_mmc.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_nand.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_nor.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_pccard.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_pcd.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_pwr_.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_qspi.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_rcc_.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_rng.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_rtc.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_sai.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_sd[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_sdram.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_smartcard.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_smbus.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_spi.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_spdifrx.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_sram.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_tim.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_uart.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_usart.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_wwdg.*[.]c" />
+				<element value=".*/$(CMSIS_name)_ll_.*[.]c" />
 			</simple-array>
 			<simple
 				name="invertConfigMatching"
@@ -1535,20 +1772,6 @@
 					<simple
 						name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.pointerarith" />
-					<simple
-						name="value"
-						value="true" />
-					<simple
-						name="path"
-						value="" />
-					<simple
-						name="buildType"
-						value="" />
-				</element>
-				<element>
-					<simple
-						name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.padded" />
 					<simple
 						name="value"
 						value="true" />
@@ -1879,6 +2102,61 @@
 					<simple
 						name="path"
 						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		
+		<!-- Disable warnings for HAL sources. -->
+		<process
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple
+						name="value"
+						value=" -Wno-padded" />
+					<simple
+						name="path"
+						value="$(sysDir)/$(sourceDir)/cmsis/system_$(CMSIS_name).c" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple
+						name="value"
+						value=" -Wno-unused-parameter -Wno-conversion -Wno-sign-conversion" />
+					<simple
+						name="path"
+						value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+					<element>
+					<simple
+						name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple
+						name="value"
+						value=" -Wno-padded -Wno-missing-declarations -Wno-missing-prototypes" />
+					<simple
+						name="path"
+						value="$(sourceDir)/$(CMSIS_name)_hal_msp.c" />
 					<simple
 						name="buildType"
 						value="" />
@@ -2402,7 +2680,7 @@
 						name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 					<simple-array name="values">
-						<element value="$(chipFamily)" />
+						<element value="$(cmsisFamilySymbol)" />
 					</simple-array>
 					<simple
 						name="path"
@@ -2422,7 +2700,7 @@
 						name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 					<simple-array name="values">
-						<element value="USE_STDPERIPH_DRIVER" />
+						<element value="USE_HAL_DRIVER" />
 					</simple-array>
 					<simple
 						name="path"
