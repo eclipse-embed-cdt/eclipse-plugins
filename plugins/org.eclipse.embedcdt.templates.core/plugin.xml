@@ -231,6 +231,18 @@
 		</processType>
 
 		<processType
+			name="ConditionalSetLowerCaseProperty"
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalSetLowerCaseProperty">
+			<simple name="projectName" />
+			<simple
+				name="condition"
+				nullable="true">
+			</simple>
+			<simple name="propertyName" />
+			<simple name="propertyValue" />
+		</processType>
+
+		<processType
 			name="SetPropertyToPluginResource"
 			processRunner="org.eclipse.embedcdt.templates.core.processes.SetPropertyToPluginResource">
 			<simple name="pluginId" />

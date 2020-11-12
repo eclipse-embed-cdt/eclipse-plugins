@@ -177,17 +177,17 @@ blink_led_off (void)
 
 // ----------------------------------------------------------------------------
 
-class BlinkLed
+class led
 {
 public:
-  BlinkLed () = default;
+  led () = default;
 
   void
-  powerUp ();
+  power_up ();
 
   inline void
   __attribute__((always_inline))
-  turnOn ()
+  turn_on ()
   {
 //@XCDL @if F4
 #if (BLINK_ACTIVE_LOW)
@@ -210,7 +210,7 @@ public:
 
   inline void
   __attribute__((always_inline))
-  turnOff ()
+  turn_off ()
   {
 //@XCDL @if F4
 #if (BLINK_ACTIVE_LOW)

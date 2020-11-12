@@ -25,12 +25,12 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "BlinkLed.h"
+#include "led.h"
 
 // ----------------------------------------------------------------------------
 
 void
-BlinkLed::powerUp ()
+led::power_up ()
 {
 //@XCDL @if F4
   // Enable GPIO Peripheral clock
@@ -97,7 +97,7 @@ BlinkLed::powerUp ()
 //@XCDL @endif
 
   // Start with led turned off
-  turnOff ();
+  turn_off ();
 }
 
 // ----------------------------------------------------------------------------

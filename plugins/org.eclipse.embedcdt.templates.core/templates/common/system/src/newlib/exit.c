@@ -25,62 +25,57 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "Timer.h"
-#include "cortexm/ExceptionHandlers.h"
+// ----------------------------------------------------------------------------
+
+#include <stdlib.h>
+#include "diag/trace.h"
 
 // ----------------------------------------------------------------------------
 
-#if defined(USE_HAL_DRIVER)
-void HAL_IncTick(void);
+#if !defined(DEBUG)
+extern void
+__attribute__((noreturn))
+__reset_hardware(void);
 #endif
 
-// Forward declarations.
+// ----------------------------------------------------------------------------
+
+// Forward declaration
 
 void
-timer_tick (void);
+_exit(int code);
 
 // ----------------------------------------------------------------------------
 
-volatile timer_ticks_t timer_delayCount;
-
-// ----------------------------------------------------------------------------
-
-void
-timer_start (void)
-{
-  // Use SysTick as reference for the delay loops.
-  SysTick_Config (SystemCoreClock / TIMER_FREQUENCY_HZ);
-}
+// On Release, call the hardware reset procedure.
+// On Debug we just enter an infinite loop, to be used as landmark when halting
+// the debugger.
+//
+// It can be redefined in the application, if more functionality
+// is required.
 
 void
-timer_sleep (timer_ticks_t ticks)
+__attribute__((weak))
+_exit(int code __attribute__((unused)))
 {
-  timer_delayCount = ticks;
+#if !defined(DEBUG)
+  __reset_hardware();
+#endif
 
-  // Busy wait until the SysTick decrements the counter to zero.
-  while (timer_delayCount != 0u)
+  // TODO: write on trace
+  while (1)
     ;
 }
 
-void
-timer_tick (void)
-{
-  // Decrement to zero the counter used by the delay routine.
-  if (timer_delayCount != 0u)
-    {
-      --timer_delayCount;
-    }
-}
-
-// ----- SysTick_Handler() ----------------------------------------------------
+// ----------------------------------------------------------------------------
 
 void
-SysTick_Handler (void)
+__attribute__((weak,noreturn))
+abort(void)
 {
-#if defined(USE_HAL_DRIVER)
-  HAL_IncTick();
-#endif
-  timer_tick ();
+  trace_puts("abort(), exiting...");
+
+  _exit(1);
 }
 
 // ----------------------------------------------------------------------------

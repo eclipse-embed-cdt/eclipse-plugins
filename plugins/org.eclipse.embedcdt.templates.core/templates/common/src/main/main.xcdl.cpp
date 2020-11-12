@@ -29,15 +29,15 @@
 // ----------------------------------------------------------------------------
 
 #include <stdio.h>
-#include "diag/Trace.h"
+#include "diag/trace.h"
 //@XCDL @if "$(content)"=="blinky"
 
 //@XCDL @if "$(fileExtension)"=="c"
-#include "Timer.h"
-#include "BlinkLed.h"
+#include "timer.h"
+#include "led.h"
 //@XCDL @elif "$(fileExtension)"=="cpp"
-#include "Timer.h"
-#include "BlinkLed.h"
+#include "timer.h"
+#include "led.h"
 //@XCDL @endif // fileExtension
 //@XCDL @endif // content
 
@@ -92,7 +92,7 @@
 // Trace support is enabled by adding the TRACE macro definition.
 //@XCDL @line "// By default the trace messages are forwarded to the $(trace) output,"
 // but can be rerouted to any device or completely suppressed, by
-// changing the definitions required in system/src/diag/trace_impl.c
+// changing the definitions required in system/src/diag/trace-impl.c
 // (currently OS_USE_TRACE_ITM, OS_USE_TRACE_SEMIHOSTING_DEBUG/_STDOUT).
 //
 //@XCDL @if "$(content)"=="blinky"
@@ -121,9 +121,9 @@
 	// ----- Timing definitions -----------------------------------------------
 
 	// Keep the LED on for 2/3 of a second.
-	constexpr Timer::ticks_t BLINK_1S_TICKS = Timer::FREQUENCY_HZ;
-	constexpr Timer::ticks_t BLINK_ON_TICKS = Timer::FREQUENCY_HZ * 2 / 3;
-	constexpr Timer::ticks_t BLINK_OFF_TICKS = Timer::FREQUENCY_HZ - BLINK_ON_TICKS;
+	constexpr timer::ticks_t BLINK_1S_TICKS = timer::FREQUENCY_HZ;
+	constexpr timer::ticks_t BLINK_ON_TICKS = timer::FREQUENCY_HZ * 2 / 3;
+	constexpr timer::ticks_t BLINK_OFF_TICKS = timer::FREQUENCY_HZ - BLINK_ON_TICKS;
 }
 //@XCDL @endif // fileExtension
 //@XCDL @endif // content
@@ -195,22 +195,22 @@ int main(int argc, char* argv[]) {
 		trace_printf("Second %u\n", seconds);
 	}
 //@XCDL @elif "$(fileExtension)"=="cpp"
-	Timer timer;
+	timer timer;
 	timer.start();
 
-	BlinkLed blinkLed;
+	led blink_led;
 
 	// Perform all necessary initialisations for the LED.
-	blinkLed.powerUp();
+	blink_led.power_up();
 
 	uint32_t seconds = 0;
 
 	// Infinite loop
 	for (int i = 0;; i++) {
-		blinkLed.turnOn();
+		blink_led.turn_on();
 		timer_sleep(i == 0 ? BLINK_1S_TICKS : BLINK_ON_TICKS);
 
-		blinkLed.turnOff();
+		blink_led.turn_off();
 		timer.sleep(BLINK_OFF_TICKS);
 
 		++seconds;

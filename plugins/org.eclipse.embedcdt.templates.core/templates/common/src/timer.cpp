@@ -25,48 +25,58 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Do not include on semihosting and when freestanding
-#if !defined(OS_USE_SEMIHOSTING) && !(__STDC_HOSTED__ == 0)
+#include "timer.h"
+#include "cortexm/exception-handlers.h"
 
 // ----------------------------------------------------------------------------
 
-#include <errno.h>
-#include "diag/Trace.h"
+#if defined(USE_HAL_DRIVER)
+extern "C" void HAL_IncTick(void);
+#endif
 
 // ----------------------------------------------------------------------------
 
-// When using retargetted configurations, the standard write() system call,
-// after a long way inside newlib, finally calls this implementation function.
+volatile timer::ticks_t timer::ms_delayCount;
 
-// Based on the file descriptor, it can send arrays of characters to
-// different physical devices.
+// ----------------------------------------------------------------------------
 
-// Currently only the output and error file descriptors are tested,
-// and the characters are forwarded to the trace device, mainly
-// for demonstration purposes. Adjust it for your specific needs.
-
-// For freestanding applications this file is not used and can be safely
-// ignored.
-
-ssize_t
-_write (int fd, const char* buf, size_t nbyte);
-
-ssize_t
-_write (int fd __attribute__((unused)), const char* buf __attribute__((unused)),
-	size_t nbyte __attribute__((unused)))
+void
+timer::start(void)
 {
-#if defined(TRACE)
-  // STDOUT and STDERR are routed to the trace device
-  if (fd == 1 || fd == 2)
-    {
-      return trace_write (buf, nbyte);
-    }
-#endif // TRACE
+  // Use SysTick as reference for the delay loops.
+  SysTick_Config(SystemCoreClock / FREQUENCY_HZ);
+}
 
-  errno = ENOSYS;
-  return -1;
+
+void
+timer::sleep(ticks_t ticks)
+{
+  ms_delayCount = ticks;
+
+  // Busy wait until the SysTick decrements the counter to zero.
+  while (ms_delayCount != 0u)
+    ;
+}
+
+void
+timer::tick(void)
+{
+  // Decrement to zero the counter used by the delay routine.
+  if (ms_delayCount != 0u)
+    {
+      --ms_delayCount;
+    }
+}
+
+// ----- SysTick_Handler() ----------------------------------------------------
+
+extern "C" void
+SysTick_Handler(void)
+{
+#if defined(USE_HAL_DRIVER)
+  HAL_IncTick();
+#endif
+  timer::tick();
 }
 
 // ----------------------------------------------------------------------------
-
-#endif // !defined(OS_USE_SEMIHOSTING) && !(__STDC_HOSTED__ == 0)

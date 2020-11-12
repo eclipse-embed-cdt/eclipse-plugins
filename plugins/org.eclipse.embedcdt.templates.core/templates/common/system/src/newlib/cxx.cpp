@@ -34,7 +34,7 @@
 
 #include <cstdlib>
 #include <sys/types.h>
-#include "diag/Trace.h"
+#include "diag/trace.h"
 
 // ----------------------------------------------------------------------------
 

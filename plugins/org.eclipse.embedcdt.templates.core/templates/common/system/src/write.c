@@ -25,57 +25,48 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// ----------------------------------------------------------------------------
-
-#include <stdlib.h>
-#include "diag/Trace.h"
+// Do not include on semihosting and when freestanding
+#if !defined(OS_USE_SEMIHOSTING) && !(__STDC_HOSTED__ == 0)
 
 // ----------------------------------------------------------------------------
 
-#if !defined(DEBUG)
-extern void
-__attribute__((noreturn))
-__reset_hardware(void);
-#endif
+#include <errno.h>
+#include "diag/trace.h"
 
 // ----------------------------------------------------------------------------
 
-// Forward declaration
+// When using retargetted configurations, the standard write() system call,
+// after a long way inside newlib, finally calls this implementation function.
 
-void
-_exit(int code);
+// Based on the file descriptor, it can send arrays of characters to
+// different physical devices.
 
-// ----------------------------------------------------------------------------
+// Currently only the output and error file descriptors are tested,
+// and the characters are forwarded to the trace device, mainly
+// for demonstration purposes. Adjust it for your specific needs.
 
-// On Release, call the hardware reset procedure.
-// On Debug we just enter an infinite loop, to be used as landmark when halting
-// the debugger.
-//
-// It can be redefined in the application, if more functionality
-// is required.
+// For freestanding applications this file is not used and can be safely
+// ignored.
 
-void
-__attribute__((weak))
-_exit(int code __attribute__((unused)))
+ssize_t
+_write (int fd, const char* buf, size_t nbyte);
+
+ssize_t
+_write (int fd __attribute__((unused)), const char* buf __attribute__((unused)),
+	size_t nbyte __attribute__((unused)))
 {
-#if !defined(DEBUG)
-  __reset_hardware();
-#endif
+#if defined(TRACE)
+  // STDOUT and STDERR are routed to the trace device
+  if (fd == 1 || fd == 2)
+    {
+      return trace_write (buf, nbyte);
+    }
+#endif // TRACE
 
-  // TODO: write on trace
-  while (1)
-    ;
+  errno = ENOSYS;
+  return -1;
 }
 
 // ----------------------------------------------------------------------------
 
-void
-__attribute__((weak,noreturn))
-abort(void)
-{
-  trace_puts("abort(), exiting...");
-
-  _exit(1);
-}
-
-// ----------------------------------------------------------------------------
+#endif // !defined(OS_USE_SEMIHOSTING) && !(__STDC_HOSTED__ == 0)

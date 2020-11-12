@@ -25,40 +25,62 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "Timer.h"
-#include "cortexm/ExceptionHandlers.h"
+#include "timer.h"
+#include "cortexm/exception-handlers.h"
 
 // ----------------------------------------------------------------------------
 
 #if defined(USE_HAL_DRIVER)
-extern "C" void HAL_IncTick(void);
+void HAL_IncTick(void);
 #endif
+
+// Forward declarations.
+
+void
+timer_tick (void);
 
 // ----------------------------------------------------------------------------
 
-volatile Timer::ticks_t Timer::ms_delayCount;
+volatile timer_ticks_t timer_delayCount;
 
 // ----------------------------------------------------------------------------
 
 void
-Timer::sleep(ticks_t ticks)
+timer_start (void)
 {
-  ms_delayCount = ticks;
+  // Use SysTick as reference for the delay loops.
+  SysTick_Config (SystemCoreClock / TIMER_FREQUENCY_HZ);
+}
+
+void
+timer_sleep (timer_ticks_t ticks)
+{
+  timer_delayCount = ticks;
 
   // Busy wait until the SysTick decrements the counter to zero.
-  while (ms_delayCount != 0u)
+  while (timer_delayCount != 0u)
     ;
+}
+
+void
+timer_tick (void)
+{
+  // Decrement to zero the counter used by the delay routine.
+  if (timer_delayCount != 0u)
+    {
+      --timer_delayCount;
+    }
 }
 
 // ----- SysTick_Handler() ----------------------------------------------------
 
-extern "C" void
-SysTick_Handler(void)
+void
+SysTick_Handler (void)
 {
 #if defined(USE_HAL_DRIVER)
   HAL_IncTick();
 #endif
-  Timer::tick();
+  timer_tick ();
 }
 
 // ----------------------------------------------------------------------------

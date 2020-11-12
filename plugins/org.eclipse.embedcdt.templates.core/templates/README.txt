@@ -32,5 +32,5 @@ A sample process to copy files is:
 The main-NNN-*.{c|cpp} files are pieces combined by the template engine to 
 create the main.{c|cpp} files.
 
-Similarly the BlinkLed-NN-*.h files are pieces combined by the template engine to 
-create the BlinkLed.h file.
+Similarly the led-NN-*.h files are pieces combined by the template engine to 
+create the led.h file.

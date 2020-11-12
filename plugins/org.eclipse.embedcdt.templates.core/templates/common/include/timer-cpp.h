@@ -32,7 +32,7 @@
 
 // ----------------------------------------------------------------------------
 
-class Timer
+class timer
 {
 public:
   typedef uint32_t ticks_t;
@@ -43,27 +43,16 @@ private:
 
 public:
   // Default constructor
-  Timer() = default;
+  timer() = default;
 
-  inline void
-  start(void)
-  {
-    // Use SysTick as reference for the delay loops.
-    SysTick_Config(SystemCoreClock / FREQUENCY_HZ);
-  }
+  void
+  start(void);
 
   static void
   sleep(ticks_t ticks);
 
-  inline static void
-  tick(void)
-  {
-    // Decrement to zero the counter used by the delay routine.
-    if (ms_delayCount != 0u)
-      {
-        --ms_delayCount;
-      }
-  }
+  static void
+  tick(void);
 };
 
 // ----------------------------------------------------------------------------

@@ -1,0 +1,6 @@
+//@XCDL @include "../common/src/led-10-begin.h"
+//@XCDL @include "src/led-20-headers.h"
+//@XCDL @include "../common/src/led-30-defs.h"
+//@XCDL @include "src/led-40-defs.h"
+//@XCDL @include "src/led-50-$(fileExtension).h"
+//@XCDL @include "../common/src/led-60-end.h"
