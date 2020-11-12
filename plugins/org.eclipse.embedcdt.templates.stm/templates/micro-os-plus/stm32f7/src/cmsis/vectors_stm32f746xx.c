@@ -28,7 +28,7 @@
 
 // ----------------------------------------------------------------------------
 
-#include "cortexm/ExceptionHandlers.h"
+#include "cortexm/exception-handlers.h"
 
 // ----------------------------------------------------------------------------
 
@@ -215,6 +215,10 @@ SPI6_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SAI1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
+LTDC_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+LTDC_ER_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
 DMA2D_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SAI2_IRQHandler(void);
@@ -230,26 +234,6 @@ void __attribute__ ((weak, alias ("Default_Handler")))
 I2C4_ER_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SPDIF_RX_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-DFSDM1_FLT0_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-DFSDM1_FLT1_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-DFSDM1_FLT2_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-DFSDM1_FLT3_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-SDMMC2_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-CAN3_TX_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-CAN3_RX0_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-CAN3_RX1_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-CAN3_SCE_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-MDIOS_IRQHandler(void);
 
 // ----------------------------------------------------------------------------
 
@@ -348,7 +332,7 @@ pHandler __isr_vectors[] =
     TIM8_CC_IRQHandler,                // TIM8 Capture Compare
     DMA1_Stream7_IRQHandler,           // DMA1 Stream7
     FMC_IRQHandler,                    // FMC
-    SDMMC1_IRQHandler,                 // SDMMC1
+    SDMMC1_IRQHandler,                  // SDMMC1
     TIM5_IRQHandler,                   // TIM5
     SPI3_IRQHandler,                   // SPI3
     UART4_IRQHandler,                  // UART4
@@ -387,8 +371,8 @@ pHandler __isr_vectors[] =
     SPI5_IRQHandler,                   // SPI5
     SPI6_IRQHandler,                   // SPI6
     SAI1_IRQHandler,                   // SAI1
-    0,                                 // Reserved
-    0,                                 // Reserved
+    LTDC_IRQHandler,                   // LTDC
+    LTDC_ER_IRQHandler,                // LTDC error
     DMA2D_IRQHandler,                  // DMA2D
     SAI2_IRQHandler,                   // SAI2
     QUADSPI_IRQHandler,                // QUADSPI
@@ -397,18 +381,6 @@ pHandler __isr_vectors[] =
     I2C4_EV_IRQHandler,                // I2C4 Event
     I2C4_ER_IRQHandler,                // I2C4 Error
     SPDIF_RX_IRQHandler,               // SPDIF_RX
-    0,                                 // Reserved
-    DFSDM1_FLT0_IRQHandler,            // DFSDM1 Filter 0 global Interrupt
-    DFSDM1_FLT1_IRQHandler,            // DFSDM1 Filter 1 global Interrupt
-    DFSDM1_FLT2_IRQHandler,            // DFSDM1 Filter 2 global Interrupt
-    DFSDM1_FLT3_IRQHandler,            // DFSDM1 Filter 3 global Interrupt
-    SDMMC2_IRQHandler,                 // SDMMC2
-    CAN3_TX_IRQHandler,                // CAN3 TX
-    CAN3_RX0_IRQHandler,               // CAN3 RX0
-    CAN3_RX1_IRQHandler,               // CAN3 RX1
-    CAN3_SCE_IRQHandler,               // CAN3 SCE
-    0,                                 // Reserved
-    MDIOS_IRQHandler,                  // MDIOS
 };
 
 // ----------------------------------------------------------------------------

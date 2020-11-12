@@ -266,7 +266,7 @@
 			persist="false" />
 
 		<property
-			id="chipFamily"
+			id="cmsisFamilySymbol"
 			label="Chip family"
 			description="Will be set to family"
 			mandatory="true"
@@ -320,6 +320,14 @@
 
 		<property
 			id="device"
+			label="Device folder/file name; will be set to lowercase $(STM32F7chipFamilyCube)"
+			mandatory="true"
+			hidden="true"
+			default="undefined"
+			persist="false" />
+
+		<property
+			id="deviceFamily"
 			label="Device folder name"
 			mandatory="true"
 			hidden="true"
@@ -328,7 +336,7 @@
 
 		<property
 			id="devicePeriph"
-			label="Device periperal folder name"
+			label="Device peripheral folder/file name"
 			mandatory="true"
 			hidden="true"
 			default="stm32f7-hal"
@@ -410,7 +418,22 @@
 				value="" />
 			<simple
 				name="propertyName"
-				value="chipFamily" />
+				value="cmsisFamilySymbol" />
+			<simple
+				name="propertyValue"
+				value="$(STM32F7chipFamilyCube)" />
+		</process>
+
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetLowerCaseProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="device" />
 			<simple
 				name="propertyValue"
 				value="$(STM32F7chipFamilyCube)" />
@@ -752,10 +775,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/src/Timer.$(fileExtension)" />
+						value="$(commonDir)/src/timer.$(fileExtension)" />
 					<simple
 						name="target"
-						value="$(sourceDir)/Timer.$(fileExtension)" />
+						value="$(sourceDir)/timer.$(fileExtension)" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -763,54 +786,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/include/Timer-$(fileExtension).h" />
+						value="$(commonDir)/include/timer-$(fileExtension).h" />
 					<simple
 						name="target"
-						value="$(includeDir)/Timer.h" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="$(fileExtension) == cpp" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="src/BlinkLed2.cpp" />
-					<simple
-						name="target"
-						value="$(sourceDir)/BlinkLed.cpp" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="$(fileExtension) == c" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="src/BlinkLed.c" />
-					<simple
-						name="target"
-						value="$(sourceDir)/BlinkLed.c" />
+						value="$(includeDir)/timer.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -829,10 +808,10 @@
 				<element>
 					<simple
 						name="source"
-						value="src/BlinkLed2-cpp.h" />
+						value="src/led2.cpp" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(sourceDir)/led.cpp" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -851,10 +830,54 @@
 				<element>
 					<simple
 						name="source"
-						value="../common/src/BlinkLed-10-begin.h" />
+						value="src/led.c" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(sourceDir)/led.c" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="$(fileExtension) == cpp" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="src/led2-cpp.h" />
+					<simple
+						name="target"
+						value="$(includeDir)/led.h" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="$(fileExtension) == c" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="../common/src/led-10-begin.h" />
+					<simple
+						name="target"
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -872,10 +895,10 @@
 				<element>
 					<simple
 						name="source"
-						value="src/BlinkLed-20-headers.h" />
+						value="src/led-20-headers.h" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -883,10 +906,10 @@
 				<element>
 					<simple
 						name="source"
-						value="../common/src/BlinkLed-30-defs.h" />
+						value="../common/src/led-30-defs.h" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -894,10 +917,10 @@
 				<element>
 					<simple
 						name="source"
-						value="src/BlinkLed-40-defs.h" />
+						value="src/led-40-defs.h" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -905,10 +928,10 @@
 				<element>
 					<simple
 						name="source"
-						value="src/BlinkLed-50-$(fileExtension).h" />
+						value="src/led-50-$(fileExtension).h" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -916,10 +939,10 @@
 				<element>
 					<simple
 						name="source"
-						value="../common/src/BlinkLed-60-end.h" />
+						value="../common/src/led-60-end.h" />
 					<simple
 						name="target"
-						value="$(includeDir)/BlinkLed.h" />
+						value="$(includeDir)/led.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1042,7 +1065,7 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/$(CMSIS_name)_hal_conf_template.h" />
+						value="$(osDir)/$(devicePeriph)/include/$(devicePeriph)/$(CMSIS_name)_hal_conf_template.h" />
 					<simple
 						name="target"
 						value="$(includeDir)/$(CMSIS_name)_hal_conf.h" />
@@ -1084,10 +1107,10 @@
 				<element>
 					<simple
 						name="source"
-						value="src/_initialize_hardware.c" />
+						value="src/initialize-hardware.c" />
 					<simple
 						name="target"
-						value="$(sourceDir)/_initialize_hardware.c" />
+						value="$(sourceDir)/initialize-hardware.c" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1142,7 +1165,7 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/cmsis_device.h" />
+						value="$(osDir)/$(deviceFamily)/include/cmsis/cmsis_device.h" />
 					<simple
 						name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/cmsis_device.h" />
@@ -1153,7 +1176,7 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/$(CMSIS_name).h" />
+						value="$(osDir)/$(deviceFamily)/include/cmsis/$(CMSIS_name).h" />
 					<simple
 						name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(CMSIS_name).h" />
@@ -1164,7 +1187,7 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/system_$(CMSIS_name).h" />
+						value="$(osDir)/$(deviceFamily)/include/cmsis/system_$(CMSIS_name).h" />
 					<simple
 						name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/system_$(CMSIS_name).h" />
@@ -1172,8 +1195,20 @@
 						name="replaceable"
 						value="true" />
 				</element>
+				<element>
+					<simple
+						name="source"
+						value="$(osDir)/$(deviceFamily)/src/cmsis/system_$(CMSIS_name).c" />
+					<simple
+						name="target"
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
 			</complex-array>
 		</process>
+		
 		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
@@ -1185,31 +1220,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/system_$(CMSIS_name).c" />
+						value="$(osDir)/$(deviceFamily)/include/cmsis/$(device).h" />
 					<simple
 						name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="$(STM32F7chipFamilyCube) == STM32F745xx" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f745xx.h" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f745xx.h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(device).h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1217,234 +1231,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f745xx.c" />
+						value="$(osDir)/$(deviceFamily)/src/cmsis/vectors_$(device).c" />
 					<simple
 						name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f745xx.c" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="$(STM32F7chipFamilyCube) == STM32F746xx" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f746xx.h" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f746xx.h" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f746xx.c" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f746xx.c" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="$(STM32F7chipFamilyCube) == STM32F756xx" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f756xx.h" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f756xx.h" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f756xx.c" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f756xx.c" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="$(STM32F7chipFamilyCube) == STM32F765xx" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f765xx.h" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f765xx.h" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f765xx.c" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f765xx.c" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="$(STM32F7chipFamilyCube) == STM32F767xx" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f767xx.h" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f767xx.h" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f767xx.c" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f767xx.c" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="$(STM32F7chipFamilyCube) == STM32F769xx" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f769xx.h" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f769xx.h" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f769xx.c" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f769xx.c" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="$(STM32F7chipFamilyCube) == STM32F777xx" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f777xx.h" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f777xx.h" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f777xx.c" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f777xx.c" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="$(STM32F7chipFamilyCube) == STM32F779xx" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f779xx.h" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f779xx.h" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f779xx.c" />
-					<simple
-						name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f779xx.c" />
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_$(device).c" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1486,10 +1276,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/system/include/cortexm/ExceptionHandlers.h" />
+						value="$(commonDir)/system/include/cortexm/exception-handlers.h" />
 					<simple
 						name="target"
-						value="$(sysDir)/$(includeDir)/cortexm/ExceptionHandlers.h" />
+						value="$(sysDir)/$(includeDir)/cortexm/exception-handlers.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1507,10 +1297,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/system/include/diag/Trace.h" />
+						value="$(commonDir)/system/include/diag/trace.h" />
 					<simple
 						name="target"
-						value="$(sysDir)/$(includeDir)/diag/Trace.h" />
+						value="$(sysDir)/$(includeDir)/diag/trace.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1576,10 +1366,10 @@
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/system/src/_write.c" />
+						value="$(commonDir)/system/src/write.c" />
 					<simple
 						name="target"
-						value="$(sourceDir)/_write.c" />
+						value="$(sourceDir)/write.c" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1628,7 +1418,7 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)" />
+						value="$(osDir)/$(devicePeriph)/include/$(devicePeriph)" />
 					<simple
 						name="target"
 						value="$(sysDir)/$(includeDir)/$(devicePeriph)" />
@@ -1642,7 +1432,7 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)" />
+						value="$(osDir)/$(devicePeriph)/src/$(devicePeriph)" />
 					<simple
 						name="target"
 						value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
@@ -1668,7 +1458,7 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/Legacy" />
+						value="$(osDir)/$(devicePeriph)/include/$(devicePeriph)/Legacy" />
 					<simple
 						name="target"
 						value="$(sysDir)/$(includeDir)/$(devicePeriph)/Legacy" />
@@ -1694,7 +1484,7 @@
 				<element>
 					<simple
 						name="source"
-						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/$(CMSIS_name)_hal_msp_template.c" />
+						value="$(osDir)/$(devicePeriph)/src/$(devicePeriph)/$(CMSIS_name)_hal_msp_template.c" />
 					<simple
 						name="target"
 						value="$(sourceDir)/$(CMSIS_name)_hal_msp.c" />
@@ -2141,20 +1931,6 @@
 				<element>
 					<simple
 						name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.padded" />
-					<simple
-						name="value"
-						value="true" />
-					<simple
-						name="path"
-						value="" />
-					<simple
-						name="buildType"
-						value="" />
-				</element>
-				<element>
-					<simple
-						name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.shadow" />
 					<simple
 						name="value"
@@ -2495,7 +2271,21 @@
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
 					<simple
 						name="value"
-						value=" -Wno-bad-function-cast -Wno-conversion -Wno-sign-conversion -Wno-unused-parameter -Wno-sign-compare -Wno-missing-prototypes -Wno-missing-declarations" />
+						value=" -Wno-padded" />
+					<simple
+						name="path"
+						value="$(sysDir)/$(sourceDir)/cmsis/system_$(CMSIS_name).c" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple
+						name="value"
+						value=" -Wno-unused-parameter -Wno-conversion -Wno-sign-conversion -Wno-bad-function-cast -Wno-unused-variable -Wno-implicit-function-declaration" />
 					<simple
 						name="path"
 						value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
@@ -2503,24 +2293,13 @@
 						name="buildType"
 						value="" />
 				</element>
-			</complex-array>
-		</process>
-		<process
-			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringOptionValue">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="" />
-			<complex-array name="resourcePaths">
 				<element>
 					<simple
 						name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
 					<simple
 						name="value"
-						value=" -Wno-missing-prototypes -Wno-missing-declarations" />
+						value=" -Wno-padded -Wno-missing-prototypes -Wno-missing-declarations" />
 					<simple
 						name="path"
 						value="$(sourceDir)/$(CMSIS_name)_hal_msp.c" />
@@ -3047,7 +2826,7 @@
 						name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 					<simple-array name="values">
-						<element value="$(chipFamily)" />
+						<element value="$(cmsisFamilySymbol)" />
 					</simple-array>
 					<simple
 						name="path"

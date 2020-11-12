@@ -28,7 +28,7 @@
 
 // ----------------------------------------------------------------------------
 
-#include "cortexm/ExceptionHandlers.h"
+#include "cortexm/exception-handlers.h"
 
 // ----------------------------------------------------------------------------
 
@@ -199,7 +199,9 @@ OTG_HS_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DCMI_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-RNG_IRQHandler(void);
+CRYP_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+HASH_RNG_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 FPU_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -362,8 +364,8 @@ pHandler __isr_vectors[] =
     OTG_HS_WKUP_IRQHandler,            // USB OTG HS Wakeup through EXTI
     OTG_HS_IRQHandler,                 // USB OTG HS
     DCMI_IRQHandler,                   // DCMI
-    0,                                 // Reserved
-    RNG_IRQHandler,                    // Rng
+    CRYP_IRQHandler,                   // CRYP crypto
+    HASH_RNG_IRQHandler,               // Hash and Rng
     FPU_IRQHandler,                    // FPU
     UART7_IRQHandler,                  // UART7
     UART8_IRQHandler,                  // UART8

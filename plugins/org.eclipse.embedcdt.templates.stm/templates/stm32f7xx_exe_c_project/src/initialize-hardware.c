@@ -31,7 +31,7 @@
 #include "stm32f7xx_hal.h"
 #include "stm32f7xx_hal_cortex.h"
 
-#include "diag/Trace.h"
+#include "diag/trace.h"
 
 // ----------------------------------------------------------------------------
 

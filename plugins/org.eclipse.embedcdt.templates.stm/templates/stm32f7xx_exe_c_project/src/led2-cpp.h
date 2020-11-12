@@ -33,19 +33,19 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpadded"
 
-class BlinkLed
+class led
 {
 public:
-  BlinkLed (unsigned int port, unsigned int bit, bool active_low);
+  led (unsigned int port, unsigned int bit, bool active_low);
 
   void
-  powerUp ();
+  power_up ();
 
   void
-  turnOn ();
+  turn_on ();
 
   void
-  turnOff ();
+  turn_off ();
 
   void
   toggle ();

@@ -28,7 +28,7 @@
 
 // ----------------------------------------------------------------------------
 
-#include "cortexm/ExceptionHandlers.h"
+#include "cortexm/exception-handlers.h"
 
 // ----------------------------------------------------------------------------
 
@@ -235,6 +235,8 @@ I2C4_ER_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SPDIF_RX_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
+DSI_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
 DFSDM1_FLT0_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DFSDM1_FLT1_IRQHandler(void);
@@ -354,7 +356,7 @@ pHandler __isr_vectors[] =
     TIM8_CC_IRQHandler,                // TIM8 Capture Compare
     DMA1_Stream7_IRQHandler,           // DMA1 Stream7
     FMC_IRQHandler,                    // FMC
-    SDMMC1_IRQHandler,                 // SDMMC1
+    SDMMC1_IRQHandler,                  // SDMMC1
     TIM5_IRQHandler,                   // TIM5
     SPI3_IRQHandler,                   // SPI3
     UART4_IRQHandler,                  // UART4
@@ -403,7 +405,7 @@ pHandler __isr_vectors[] =
     I2C4_EV_IRQHandler,                // I2C4 Event
     I2C4_ER_IRQHandler,                // I2C4 Error
     SPDIF_RX_IRQHandler,               // SPDIF_RX
-    0,                                 // Reserved
+    DSI_IRQHandler,                    // DSI
     DFSDM1_FLT0_IRQHandler,            // DFSDM1 Filter 0 global Interrupt
     DFSDM1_FLT1_IRQHandler,            // DFSDM1 Filter 1 global Interrupt
     DFSDM1_FLT2_IRQHandler,            // DFSDM1 Filter 2 global Interrupt

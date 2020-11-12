@@ -29,16 +29,16 @@
   - STM32Cube_FW_F4_V1.25.2/Drivers/STM32F4xx_HAL_Driver/Inc
   - STM32Cube_FW_F4_V1.25.2/Drivers/STM32F4xx_HAL_Driver/Src
 
-### stm32f7
+## stm32f7
 
 - STM32F7xx CMSIS V1.2.5 / 13-February-2020
 - extracted from: `stm32cube_fw_f7_v1160.zip`
   - STM32Cube_FW_F7_V1.16.0/Drivers/CMSIS/Device/ST/STM32F7xx/Include
+  - STM32Cube_FW_F7_V1.16.0/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates
 
-### stm32f7-hal
+## stm32f7-hal
 
 - STM32F7xx HAL Drivers V1.2.8/ 13-February-2020
 - extracted from: `stm32cube_fw_f7_v1160.zip`
   - STM32Cube_FW_F7_V1.16.0/Drivers/STM32F7xx_HAL_Driver/Inc
   - STM32Cube_FW_F7_V1.16.0/Drivers/STM32F7xx_HAL_Driver/Src
-
