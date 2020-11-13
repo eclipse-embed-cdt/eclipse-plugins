@@ -23,8 +23,8 @@
 		</template>
 		<template
 			filterPattern=".*g[c\+][c\+]"
-			id="org.eclipse.embedcdt.templates.stm.stm32f10x.exe.c.project"
-			location="$nl$/templates/stm32f10x_exe_c_project/template.xml"
+			id="org.eclipse.embedcdt.templates.stm.stm32f1xx.exe.c.project"
+			location="$nl$/templates/stm32f1xx_exe_c_project/template.xml"
 			projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
 		</template>
 		<template
@@ -58,7 +58,7 @@
 			<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
 			</toolChain>
 		</template>
-		<template id="org.eclipse.embedcdt.templates.stm.stm32f10x.exe.c.project">
+		<template id="org.eclipse.embedcdt.templates.stm.stm32f1xx.exe.c.project">
 			<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
 			</toolChain>
 		</template>

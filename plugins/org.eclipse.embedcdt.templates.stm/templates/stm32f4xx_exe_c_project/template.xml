@@ -59,6 +59,9 @@
 				value="STM32F412Vx"
 				label="STM32F412Vx" />
 			<item
+				value="STM32F413xx"
+				label="STM32F413xx" />
+			<item
 				value="STM32F412Zx"
 				label="STM32F412Zx" />
 			<item
@@ -67,6 +70,9 @@
 			<item
 				value="STM32F417xx"
 				label="STM32F417xx" />
+			<item
+				value="STM32F423xx"
+				label="STM32F423xx" />
 			<item
 				value="STM32F427xx"
 				label="STM32F427xx" />
@@ -1591,6 +1597,7 @@
 				<element value=".*/$(CMSIS_name)_hal_pcd.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_pwr_.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_qspi.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_ramfunc_.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_rcc_.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_rng.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_rtc.*[.]c" />
@@ -3172,7 +3179,7 @@
 					</simple-array>
 					<simple
 						name="path"
-						value="$(sysDir)/$(sourceDir)/$(newlibDir)/_startup.c" />
+						value="$(sysDir)/$(sourceDir)/$(newlibDir)/startup.c" />
 				</element>
 			</complex-array>
 		</process>

@@ -18,7 +18,7 @@
 		type="PAGES-ONLY"
 		help="help.html">
 		<property
-			id="STM32F0chipFamily3"
+			id="STM32F0chipFamilyCube"
 			label="%STM32F0xx.chipFamily.label"
 			description="%STM32F0xx.chipFamily.description"
 			type="select"
@@ -298,7 +298,7 @@
 		<property
 			id="cmsisFamilySymbol"
 			label="CMSIS chip family"
-			description="Will be set to uppercase $(STM32F0chipFamily3)"
+			description="Will be set to uppercase $(STM32F0chipFamilyCube)"
 			mandatory="true"
 			hidden="true"
 			default="undefined"
@@ -350,7 +350,7 @@
 
 		<property
 			id="device"
-			label="Device folder/file name; will be set to lowercase $(STM32F0chipFamily3)"
+			label="Device folder/file name; will be set to lowercase $(STM32F0chipFamilyCube)"
 			mandatory="true"
 			hidden="true"
 			default="undefined"
@@ -449,7 +449,7 @@
 				value="cmsisFamilySymbol" />
 			<simple
 				name="propertyValue"
-				value="$(STM32F0chipFamily3)" />
+				value="$(STM32F0chipFamilyCube)" />
 		</process>
 
 		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetLowerCaseProperty">
@@ -464,7 +464,7 @@
 				value="device" />
 			<simple
 				name="propertyValue"
-				value="$(STM32F0chipFamily3)" />
+				value="$(STM32F0chipFamilyCube)" />
 		</process>
 
 		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
@@ -1534,6 +1534,7 @@
 				<element value=".*/$(CMSIS_name)_hal_adc.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_can.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_cec.*[.]c" />
+				<element value=".*/$(CMSIS_name)_hal_comp.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_crc.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_cryp.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_dac.*[.]c" />

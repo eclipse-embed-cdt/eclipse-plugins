@@ -26,11 +26,29 @@
 			hidden="false"
 			persist="true">
 			<item
+				value="STM32F722xx"
+				label="STM32F722xx" />
+			<item
+				value="STM32F723xx"
+				label="STM32F723xx" />
+			<item
+				value="STM32F730xx"
+				label="STM32F730xx" />
+			<item
+				value="STM32F732xx"
+				label="STM32F732xx" />
+			<item
+				value="STM32F733xx"
+				label="STM32F733xx" />
+			<item
 				value="STM32F745xx"
 				label="STM32F745xx" />
 			<item
 				value="STM32F746xx"
 				label="STM32F746xx" />
+			<item
+				value="STM32F750xx"
+				label="STM32F750xx" />
 			<item
 				value="STM32F756xx"
 				label="STM32F756xx" />
@@ -2872,7 +2890,7 @@
 					</simple-array>
 					<simple
 						name="path"
-						value="$(sysDir)/$(sourceDir)/$(newlibDir)/_startup.c" />
+						value="$(sysDir)/$(sourceDir)/$(newlibDir)/startup.c" />
 				</element>
 			</complex-array>
 		</process>
