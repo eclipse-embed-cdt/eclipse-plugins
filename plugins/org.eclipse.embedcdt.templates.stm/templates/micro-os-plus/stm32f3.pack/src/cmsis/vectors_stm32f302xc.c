@@ -1,7 +1,6 @@
 /*
- * This file is part of the µOS++ distribution.
- *   (https://github.com/micro-os-plus)
- * Copyright (c) 2014 Liviu Ionescu.
+ * This file was automatically generated from the Arm assembly file.
+ * Copyright (c) 2020 Liviu Ionescu.
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -25,9 +24,11 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// The list of external handlers is from the Arm assembly startup files.
+
 // ----------------------------------------------------------------------------
 
-#include "cortexm/ExceptionHandlers.h"
+#include <cortexm/exception-handlers.h>
 
 // ----------------------------------------------------------------------------
 
@@ -44,7 +45,7 @@ WWDG_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 PVD_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-TAMPER_STAMP_IRQHandler(void);
+TAMP_STAMP_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 RTC_WKUP_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -56,7 +57,7 @@ EXTI0_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 EXTI1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-EXTI2_TS_IRQHandler(void);
+EXTI2_TSC_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 EXTI3_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -78,13 +79,13 @@ DMA1_Channel7_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 ADC1_2_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-USB_HP_CAN1_TX_IRQHandler(void);
+USB_HP_CAN_TX_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-USB_LP_CAN1_RX0_IRQHandler(void);
+USB_LP_CAN_RX0_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-CAN1_RX1_IRQHandler(void);
+CAN_RX1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-CAN1_SCE_IRQHandler(void);
+CAN_SCE_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 EXTI9_5_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -126,16 +127,6 @@ RTC_Alarm_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 USBWakeUp_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-TIM8_BRK_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-TIM8_UP_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-TIM8_TRG_COM_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-TIM8_CC_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-ADC3_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
 SPI3_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 UART4_IRQHandler(void);
@@ -143,8 +134,6 @@ void __attribute__ ((weak, alias ("Default_Handler")))
 UART5_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 TIM6_DAC_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-TIM7_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA2_Channel1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -156,13 +145,9 @@ DMA2_Channel4_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA2_Channel5_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-ADC4_IRQHandler(void);
+COMP1_2_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-COMP1_2_3_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-COMP4_5_6_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-COMP7_IRQHandler(void);
+COMP4_6_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 USB_HP_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -181,139 +166,146 @@ typedef void
 
 // ----------------------------------------------------------------------------
 
-// The vector table.
-// This relies on the linker script to place at correct location in memory.
+// The table of interrupt handlers. It has an explicit section name
+// and relies on the linker script to place it at the correct location
+// in memory.
 
 __attribute__ ((section(".isr_vector"),used))
 pHandler __isr_vectors[] =
   {
-  // Core Level - CM4
-      (pHandler) &_estack, // The initial stack pointer
-      Reset_Handler, // The reset handler
+    // Cortex-M Core Handlers
+    (pHandler) &_estack,               // The initial stack pointer
+    Reset_Handler,                     // The reset handler
 
-      NMI_Handler, // The NMI handler
-      HardFault_Handler, // The hard fault handler
-#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
-      MemManage_Handler,                        // The MPU fault handler
-      BusFault_Handler,                        // The bus fault handler
-      UsageFault_Handler,                        // The usage fault handler
-#else
-      0, 0, 0,                                  // Reserved
-#endif
-      0,                                        // Reserved
-      0,                                        // Reserved
-      0,                                        // Reserved
-      0,                                        // Reserved
-      SVC_Handler,                              // SVCall handler
-#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
-      DebugMon_Handler,                         // Debug monitor handler
-#else
-      0,                                        // Reserved
-#endif
-      0, // Reserved
-      PendSV_Handler, // The PendSV handler
-      SysTick_Handler, // The SysTick handler
+    NMI_Handler,                       // The NMI handler
+    HardFault_Handler,                 // The hard fault handler
 
-      // ----------------------------------------------------------------------
-      // Chip Level - STM32F30x
-      WWDG_IRQHandler, //
-      PVD_IRQHandler, //
-      TAMPER_STAMP_IRQHandler, //
-      RTC_WKUP_IRQHandler, //
-      FLASH_IRQHandler, //
-      RCC_IRQHandler, //
-      EXTI0_IRQHandler, //
-      EXTI1_IRQHandler, //
-      EXTI2_TS_IRQHandler, //
-      EXTI3_IRQHandler, //
-      EXTI4_IRQHandler, //
-      DMA1_Channel1_IRQHandler, //
-      DMA1_Channel2_IRQHandler, //
-      DMA1_Channel3_IRQHandler, //
-      DMA1_Channel4_IRQHandler, //
-      DMA1_Channel5_IRQHandler, //
-      DMA1_Channel6_IRQHandler, //
-      DMA1_Channel7_IRQHandler, //
-      ADC1_2_IRQHandler, //
-      USB_HP_CAN1_TX_IRQHandler, //
-      USB_LP_CAN1_RX0_IRQHandler, //
-      CAN1_RX1_IRQHandler, //
-      CAN1_SCE_IRQHandler, //
-      EXTI9_5_IRQHandler, //
-      TIM1_BRK_TIM15_IRQHandler, //
-      TIM1_UP_TIM16_IRQHandler, //
-      TIM1_TRG_COM_TIM17_IRQHandler, //
-      TIM1_CC_IRQHandler, //
-      TIM2_IRQHandler, //
-      TIM3_IRQHandler, //
-      TIM4_IRQHandler, //
-      I2C1_EV_IRQHandler, //
-      I2C1_ER_IRQHandler, //
-      I2C2_EV_IRQHandler, //
-      I2C2_ER_IRQHandler, //
-      SPI1_IRQHandler, //
-      SPI2_IRQHandler, //
-      USART1_IRQHandler, //
-      USART2_IRQHandler, //
-      USART3_IRQHandler, //
-      EXTI15_10_IRQHandler, //
-      RTC_Alarm_IRQHandler, //
-      USBWakeUp_IRQHandler, //
-      TIM8_BRK_IRQHandler, //
-      TIM8_UP_IRQHandler, //
-      TIM8_TRG_COM_IRQHandler, //
-      TIM8_CC_IRQHandler, //
-      ADC3_IRQHandler, //
-      0, //
-      0, //
-      0, //
-      SPI3_IRQHandler, //
-      UART4_IRQHandler, //
-      UART5_IRQHandler, //
-      TIM6_DAC_IRQHandler, //
-      TIM7_IRQHandler, //
-      DMA2_Channel1_IRQHandler, //
-      DMA2_Channel2_IRQHandler, //
-      DMA2_Channel3_IRQHandler, //
-      DMA2_Channel4_IRQHandler, //
-      DMA2_Channel5_IRQHandler, //
-      ADC4_IRQHandler, //
-      0, //
-      0, //
-      COMP1_2_3_IRQHandler, //
-      COMP4_5_6_IRQHandler, //
-      COMP7_IRQHandler, //
-      0, //
-      0, //
-      0, //
-      0, //
-      0, //
-      0, //
-      0, //
-      USB_HP_IRQHandler, //
-      USB_LP_IRQHandler, //
-      USBWakeUp_RMP_IRQHandler, //
-      0, //
-      0, //
-      0, //
-      0, //
-      FPU_IRQHandler //
-    };
+#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
+    MemManage_Handler,                 // The MPU fault handler
+    BusFault_Handler,                  // The bus fault handler
+    UsageFault_Handler,                // The usage fault handler
+#else
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+#endif
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    SVC_Handler,                       // SVCall handler
+#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
+    DebugMon_Handler,                  // Debug monitor handler
+#else
+    0,                                 // Reserved
+#endif
+    0,                                 // Reserved
+    PendSV_Handler,                    // The PendSV handler
+    SysTick_Handler,                   // The SysTick handler
+
+    // ----------------------------------------------------------------------
+    // External Interrupts
+    WWDG_IRQHandler,                   // Window WatchDog
+    PVD_IRQHandler,                    // PVD through EXTI Line detection
+    TAMP_STAMP_IRQHandler,             // Tamper and TimeStamps through the EXTI line
+    RTC_WKUP_IRQHandler,               // RTC Wakeup through the EXTI line
+    FLASH_IRQHandler,                  // FLASH
+    RCC_IRQHandler,                    // RCC
+    EXTI0_IRQHandler,                  // EXTI Line0
+    EXTI1_IRQHandler,                  // EXTI Line1
+    EXTI2_TSC_IRQHandler,              // EXTI Line2 and Touch Sense controller
+    EXTI3_IRQHandler,                  // EXTI Line3
+    EXTI4_IRQHandler,                  // EXTI Line4
+    DMA1_Channel1_IRQHandler,          // DMA1 Channel 1
+    DMA1_Channel2_IRQHandler,          // DMA1 Channel 2
+    DMA1_Channel3_IRQHandler,          // DMA1 Channel 3
+    DMA1_Channel4_IRQHandler,          // DMA1 Channel 4
+    DMA1_Channel5_IRQHandler,          // DMA1 Channel 5
+    DMA1_Channel6_IRQHandler,          // DMA1 Channel 6
+    DMA1_Channel7_IRQHandler,          // DMA1 Channel 7
+    ADC1_2_IRQHandler,                 // ADC1 and ADC2
+    USB_HP_CAN_TX_IRQHandler,          // USB Device High Priority or CAN TX
+    USB_LP_CAN_RX0_IRQHandler,         // USB Device Low Priority or CAN RX0
+    CAN_RX1_IRQHandler,                // CAN RX1
+    CAN_SCE_IRQHandler,                // CAN SCE
+    EXTI9_5_IRQHandler,                // External Line[9:5]s
+    TIM1_BRK_TIM15_IRQHandler,         // TIM1 Break and TIM15
+    TIM1_UP_TIM16_IRQHandler,          // TIM1 Update and TIM16
+    TIM1_TRG_COM_TIM17_IRQHandler,     // TIM1 Trigger and Commutation and TIM17
+    TIM1_CC_IRQHandler,                // TIM1 Capture Compare
+    TIM2_IRQHandler,                   // TIM2
+    TIM3_IRQHandler,                   // TIM3
+    TIM4_IRQHandler,                   // TIM4
+    I2C1_EV_IRQHandler,                // I2C1 Event
+    I2C1_ER_IRQHandler,                // I2C1 Error
+    I2C2_EV_IRQHandler,                // I2C2 Event
+    I2C2_ER_IRQHandler,                // I2C2 Error
+    SPI1_IRQHandler,                   // SPI1
+    SPI2_IRQHandler,                   // SPI2
+    USART1_IRQHandler,                 // USART1
+    USART2_IRQHandler,                 // USART2
+    USART3_IRQHandler,                 // USART3
+    EXTI15_10_IRQHandler,              // External Line[15:10]s
+    RTC_Alarm_IRQHandler,              // RTC Alarm (A and B) through EXTI Line
+    USBWakeUp_IRQHandler,              // USB Wakeup through EXTI line
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    SPI3_IRQHandler,                   // SPI3
+    UART4_IRQHandler,                  // UART4
+    UART5_IRQHandler,                  // UART5
+    TIM6_DAC_IRQHandler,               // TIM6 and DAC1&2 underrun errors
+    0,                                 // Reserved
+    DMA2_Channel1_IRQHandler,          // DMA2 Channel 1
+    DMA2_Channel2_IRQHandler,          // DMA2 Channel 2
+    DMA2_Channel3_IRQHandler,          // DMA2 Channel 3
+    DMA2_Channel4_IRQHandler,          // DMA2 Channel 4
+    DMA2_Channel5_IRQHandler,          // DMA2 Channel 5
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    COMP1_2_IRQHandler,                // COMP1 and COMP2
+    COMP4_6_IRQHandler,                // COMP4 and COMP6
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    USB_HP_IRQHandler,                 // USB High Priority remap
+    USB_LP_IRQHandler,                 // USB Low Priority remap
+    USBWakeUp_RMP_IRQHandler,          // USB Wakeup remap through EXTI
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    0,                                 // Reserved
+    FPU_IRQHandler,                    // FPU
+};
 
 // ----------------------------------------------------------------------------
 
-// Processor ends up here if an unexpected interrupt occurs or a specific
-// handler is not present in the application code.
+// Processor ends up here if an unexpected interrupt occurs or a
+// specific handler is not present in the application code.
+// When in DEBUG, trigger a debug exception to clearly notify
+// the user of the exception and help identify the cause.
 
 void __attribute__ ((section(".after_vectors")))
 Default_Handler(void)
 {
 #if defined(DEBUG)
-  __DEBUG_BKPT();
+__DEBUG_BKPT();
 #endif
-  while (1)
-    {
-    }
+while (1)
+  {
+    ;
+  }
 }
 
 // ----------------------------------------------------------------------------

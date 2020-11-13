@@ -24,7 +24,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// The list of external handlers is from the ARM assembly startup files.
+// The list of external handlers is from the Arm assembly startup files.
 
 // ----------------------------------------------------------------------------
 
@@ -40,6 +40,50 @@ Default_Handler(void);
 // defines a handler (with the same name), this will automatically take
 // precedence over these weak definitions
 
+void __attribute__ ((weak, alias ("Default_Handler")))
+WWDG_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+RTC_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+FLASH_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+RCC_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+EXTI0_1_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+EXTI2_3_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+EXTI4_15_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA1_Channel1_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA1_Channel2_3_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA1_Channel4_5_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+ADC1_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+TIM1_BRK_UP_TRG_COM_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+TIM1_CC_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+TIM3_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+TIM14_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+TIM16_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+TIM17_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+I2C1_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+SPI1_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+USART1_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+USART2_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+USB_IRQHandler(void);
 
 // ----------------------------------------------------------------------------
 
@@ -88,6 +132,39 @@ pHandler __isr_vectors[] =
     SysTick_Handler,                   // The SysTick handler
 
     // ----------------------------------------------------------------------
+    // External Interrupts
+    WWDG_IRQHandler,                // Window Watchdog
+    0,                              // Reserved
+    RTC_IRQHandler,                 // RTC through EXTI Line
+    FLASH_IRQHandler,               // FLASH
+    RCC_IRQHandler,                 // RCC
+    EXTI0_1_IRQHandler,             // EXTI Line 0 and 1
+    EXTI2_3_IRQHandler,             // EXTI Line 2 and 3
+    EXTI4_15_IRQHandler,            // EXTI Line 4 to 15
+    0,                              // Reserved
+    DMA1_Channel1_IRQHandler,       // DMA1 Channel 1
+    DMA1_Channel2_3_IRQHandler,     // DMA1 Channel 2 and Channel 3
+    DMA1_Channel4_5_IRQHandler,     // DMA1 Channel 4 and Channel 5
+    ADC1_IRQHandler,                // ADC1
+    TIM1_BRK_UP_TRG_COM_IRQHandler, // TIM1 Break, Update, Trigger and Commutation
+    TIM1_CC_IRQHandler,             // TIM1 Capture Compare
+    0,                              // Reserved
+    TIM3_IRQHandler,                // TIM3
+    0,                              // Reserved
+    0,                              // Reserved
+    TIM14_IRQHandler,               // TIM14
+    0,                              // Reserved
+    TIM16_IRQHandler,               // TIM16
+    TIM17_IRQHandler,               // TIM17
+    I2C1_IRQHandler,                // I2C1
+    0,                              // Reserved
+    SPI1_IRQHandler,                // SPI1
+    0,                              // Reserved
+    USART1_IRQHandler,              // USART1
+    USART2_IRQHandler,              // USART2
+    0,                              // Reserved
+    0,                              // Reserved
+    USB_IRQHandler,                 // USB
 };
 
 // ----------------------------------------------------------------------------
