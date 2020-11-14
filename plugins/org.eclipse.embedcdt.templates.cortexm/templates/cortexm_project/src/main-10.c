@@ -30,8 +30,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "diag/Trace.h"
-#include "Timer.h"
+#include "diag/trace.h"
+#include "timer.h"
 
 // ----------------------------------------------------------------------------
 //
