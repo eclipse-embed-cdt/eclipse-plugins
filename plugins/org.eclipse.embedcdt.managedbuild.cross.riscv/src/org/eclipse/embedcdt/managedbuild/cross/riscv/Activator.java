@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,18 +10,19 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - extract UI part.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.riscv;
 
-import org.eclipse.embedcdt.core.AbstractUIActivator;
+import org.eclipse.embedcdt.core.AbstractActivator;
 import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIActivator {
+public class Activator extends AbstractActivator {
 
 	// ------------------------------------------------------------------------
 
