@@ -65,6 +65,8 @@ GP_Tmr0_Int_Handler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 GP_Tmr1_Int_Handler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
+ADC0_Int_Handler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
 ADC1_Int_Handler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SINC2_Int_Handler(void);
@@ -101,9 +103,23 @@ DMA_I2C0_MRX_Int_Handler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA_DAC_Out_Int_Handler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
+DMA_ADC0_Int_Handler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
 DMA_ADC1_Int_Handler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA_SINC2_Int_Handler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA_SPI0_TX_Int_Handler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA_SPI0_RX_Int_Handler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA_UART1_TX_Int_Handler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA_UART1_RX_Int_Handler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA_UART2_TX_Int_Handler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA_UART2_RX_Int_Handler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 PWMTRIP_Int_Handler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -112,6 +128,10 @@ void __attribute__ ((weak, alias ("Default_Handler")))
 PWM1_Int_Handler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 PWM2_Int_Handler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+UART1_Int_Handler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+UART2_Int_Handler(void);
 
 // ----------------------------------------------------------------------------
 
@@ -174,11 +194,11 @@ pHandler __isr_vectors[] =
     0,                         //                            [10]
     GP_Tmr0_Int_Handler,       // General purpose timer 0    [11]
     GP_Tmr1_Int_Handler,       // General purpose timer 1    [12]
-    0,                         //                            [13]
+    ADC0_Int_Handler,          // ADC0 Interrupt             [13]
     ADC1_Int_Handler,          // ADC1 Interrupt             [14]
     SINC2_Int_Handler,         // SINC2 Interrupt            [15]
     Flsh_Int_Handler,          // Flash Interrupt            [16]
-    UART_Int_Handler,          // UART0                      [17]
+    UART_Int_Handler,          // UART                       [17]
     SPI0_Int_Handler,          // SPI 0                      [18]
     SPI1_Int_Handler,          // SPI 1                      [19]
     I2C0_Slave_Int_Handler,    // I2C0 Slave                 [20]
@@ -193,14 +213,24 @@ pHandler __isr_vectors[] =
     DMA_I2C0_MTX_Int_Handler,  // DMA I2C0 Master TX         [29]
     DMA_I2C0_MRX_Int_Handler,  // DMA I2C0 Master RX         [30]
     DMA_DAC_Out_Int_Handler,   // DMA DAC out                [31]
-    0,                         //                            [32]
+    DMA_ADC0_Int_Handler,      // DMA ADC0                   [32]
     DMA_ADC1_Int_Handler,      // DMA ADC1                   [33]
     DMA_SINC2_Int_Handler,     // SINC2                      [34]
-    PWMTRIP_Int_Handler,       // PWMTRIP                    [35]
-    PWM0_Int_Handler,          // PWM0                       [36]
-    PWM1_Int_Handler,          // PWM1                       [37]
-    PWM2_Int_Handler,          // PWM2                       [38]
-    0,                         //                            [39]
+    DMA_SPI0_TX_Int_Handler,   // DMA SPI0 TX                [35]
+    DMA_SPI0_RX_Int_Handler,   // DMA SPI0 RX                [36]
+    DMA_UART1_TX_Int_Handler,  // DMA UART1 TX               [37]
+    DMA_UART1_RX_Int_Handler,  // DMA UART1 RX               [38]
+    DMA_UART2_TX_Int_Handler,  // DMA UART2 TX               [39]
+    DMA_UART2_RX_Int_Handler,  // DMA UART2 RX               [40]
+    PWMTRIP_Int_Handler,       // PWMTRIP                    [41]
+    PWM0_Int_Handler,          // PWM0                       [42]
+    PWM1_Int_Handler,          // PWM1                       [43]
+    PWM2_Int_Handler,          // PWM2                       [44]
+    0,                         //                            [45]
+    0,                         //                            [46]
+    UART1_Int_Handler,         // UART1                      [47]
+    UART2_Int_Handler,         // UART2                      [48]
+    0,                         //                            [49]
 };
 
 // ----------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 /**************************************************************************//**
- * @file     system_ADuCM361.c
+ * @file     system_ADuCM363.c
  * @brief    CMSIS Cortex-M3 Device Peripheral Access Layer Source File for
- *           Device ADuCM361
+ *           Device ADuCM363
  * @version  V3.10
  * @date     23. November 2012
  *
@@ -34,12 +34,12 @@
    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
    POSSIBILITY OF SUCH DAMAGE.
 
-   Portions Copyright (c) 2017 Analog Devices, Inc.
+   Portions Copyright (c) 2017-2018 Analog Devices, Inc.
    ---------------------------------------------------------------------------*/
 
 #include <stdint.h>
 
-#include "ADuCM361.h"
+#include "ADuCM363.h"
 
 /*----------------------------------------------------------------------------
   DEFINES
@@ -81,7 +81,7 @@ void SystemCoreClockUpdate (void)            /* Get Core Clock Frequency      */
 
    switch (pADI_CLKCTL->CLKCON0 & CLKCON0_CLKMUX_MSK ) {
    case CLKCON0_CLKMUX_HFOSC:
-      uClk = __HFOSC >> (pADI_CLKCTL->CLKSYSDIV & CLKSYSDIV_DIV2EN_MSK);
+      uClk = __HFOSC >> (pADI_CLKCTL->CLKSYSDIV & CLKSYSDIV_UCLKCD_MSK);
       break;
 
    case CLKCON0_CLKMUX_LFOSC:

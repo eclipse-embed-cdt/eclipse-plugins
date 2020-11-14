@@ -1,7 +1,7 @@
 /**************************************************************************//**
- * @file     ADUCM361.h
+ * @file     ADUCM362.h
  * @brief    CMSIS Cortex-M3 Core Peripheral Access Layer Header File for
- *           Device ADUCM361
+ *           Device ADUCM362
  * @version  V3.10
  * @date     23. November 2012
  *
@@ -34,19 +34,19 @@
    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
    POSSIBILITY OF SUCH DAMAGE.
 
-   Portions Copyright (c) 2017-2018 Analog Devices, Inc.
+   Portions Copyright (c) 2017-2019 Analog Devices, Inc.
    ---------------------------------------------------------------------------*/
 
 /** @addtogroup CMSIS
   * @{
   */
 
-/** @addtogroup ADUCM361
+/** @addtogroup ADUCM362
   * @{
   */
 
-#ifndef __ADUCM361_H__
-#define __ADUCM361_H__
+#ifndef __ADUCM362_H__
+#define __ADUCM362_H__
 
 #ifndef __NO_MMR_STRUCTS__
 // The new style CMSIS structure definitions for MMRs clash with
@@ -94,7 +94,7 @@ typedef enum {
   DebugMonitor_IRQn                 = -4,   /*!<  12  Debug Monitor                    */
   PendSV_IRQn                       = -2,   /*!<  14  Pendable request for system service */
   SysTick_IRQn                      = -1,   /*!<  15  System Tick Timer                */
-// --------------------------  ADUCM361 Specific Interrupt Numbers  ------------------------------
+// --------------------------  ADUCM362 Specific Interrupt Numbers  ------------------------------
   WUT_IRQn                          = 0,    /*!<   0  WUT                              */
   EINT0_IRQn                        = 1,    /*!<   1  EINT0                            */
   EINT1_IRQn                        = 2,    /*!<   2  EINT1                            */
@@ -107,6 +107,7 @@ typedef enum {
   WDT_IRQn                          = 9,    /*!<   9  WDT                              */
   TIMER0_IRQn                       = 11,   /*!<  11  TIMER0                           */
   TIMER1_IRQn                       = 12,   /*!<  12  TIMER1                           */
+  ADC0_IRQn                         = 13,   /*!<  13  ADC0                             */
   ADC1_IRQn                         = 14,   /*!<  14  ADC1                             */
   SINC2_IRQn                        = 15,   /*!<  15  SINC2                            */
   FLASH_IRQn                        = 16,   /*!<  16  FLASH                            */
@@ -125,12 +126,21 @@ typedef enum {
   DMA_I2CM_TX_IRQn                  = 29,   /*!<  29  DMA_I2CM_TX                      */
   DMA_I2CM_RX_IRQn                  = 30,   /*!<  30  DMA_I2CM_RX                      */
   DMA_DAC_IRQn                      = 31,   /*!<  31  DMA_DAC                          */
+  DMA_ADC0_IRQn                     = 32,   /*!<  32  DMA_ADC0                         */
   DMA_ADC1_IRQn                     = 33,   /*!<  33  DMA_ADC1                         */
   DMA_SINC2_IRQn                    = 34,   /*!<  34  DMA_SINC2                        */
-  PWM_TRIP_IRQn                     = 35,   /*!<  35  PWM_TRIP                         */
-  PWM_PAIR0_IRQn                    = 36,   /*!<  36  PWM_PAIR0                        */
-  PWM_PAIR1_IRQn                    = 37,   /*!<  37  PWM_PAIR1                        */
-  PWM_PAIR2_IRQn                    = 38,   /*!<  38  PWM_PAIR2                        */
+  DMA_SPI0_TX_IRQn                  = 35,   /*!<  35  DMA_SPI0_TX                      */
+  DMA_SPI0_RX_IRQn                  = 36,   /*!<  36  DMA_SPI0_RX                      */
+  DMA_UART1_TX_IRQn                 = 37,   /*!<  37  DMA_UART1_TX                      */
+  DMA_UART1_RX_IRQn                 = 38,   /*!<  38  DMA_UART1_RX                      */
+  DMA_UART2_TX_IRQn                 = 39,   /*!<  39  DMA_UART2_TX                      */
+  DMA_UART2_RX_IRQn                 = 40,   /*!<  40  DMA_UART2_RX                      */
+  PWM_TRIP_IRQn                     = 41,   /*!<  35  PWM_TRIP                         */
+  PWM_PAIR0_IRQn                    = 42,   /*!<  36  PWM_PAIR0                        */
+  PWM_PAIR1_IRQn                    = 43,   /*!<  37  PWM_PAIR1                        */
+  PWM_PAIR2_IRQn                    = 44,   /*!<  38  PWM_PAIR2                        */
+  UART1_IRQn                        = 47,   /*!<  47  UART1                             */
+  UART2_IRQn                        = 48,   /*!<  48  UART2                             */
 } IRQn_Type;
 
 
@@ -140,14 +150,14 @@ typedef enum {
 
 /* Processor and Core Peripheral Section */ /* Configuration of the Cortex-M3 Processor and Core Peripherals */
 
-#define __CM3_REV              0x0200       /*!< Cortex-M3 Core Revision r2p0          */
+#define __CM3_REV              0x0201       /*!< Cortex-M3 Core Revision r2p0          */
 #define __MPU_PRESENT             0         /*!< MPU present or not                    */
 #define __NVIC_PRIO_BITS          3         /*!< Number of Bits used for Priority Levels */
 #define __Vendor_SysTickConfig    0         /*!< Set to 1 if different SysTick Config is used */
 /** @} */ /* End of group Configuration_of_CMSIS */
 
 #include <core_cm3.h>                       /*!< Cortex-M3 processor and core peripherals */
-#include "system_ADuCM361.h"               /*!< ADUCM361 System                      */
+#include "system_ADuCM362.h"               /*!< ADUCM362 System                      */
 
 /** @addtogroup Device_Peripheral_Registers
   * @{
@@ -818,6 +828,12 @@ typedef enum {
 #define SPISTA_CSERR_CLR               (0x0   << 12 ) /* CLR                      */
 #define SPISTA_CSERR_SET               (0x1   << 12 ) /* SET                      */
 
+/* SPISTA[CSRSG] - Detected an abrupt CS deassertion */
+#define SPISTA_CSRSG_MSK               (0x1   << 14 )
+#define SPISTA_CSRSG                   (0x1   << 14 )
+#define SPISTA_CSRSG_CLR               (0x0   << 14 ) /* CLR                      */
+#define SPISTA_CSRSG_SET               (0x1   << 14 ) /* SET                      */
+
 /* SPISTA[RXS] - Set when there are more bytes in the RX FIFO than the TIM bit says */
 #define SPISTA_RXS_MSK                 (0x1   << 11 )
 #define SPISTA_RXS                     (0x1   << 11 )
@@ -945,6 +961,7 @@ typedef struct {                            /*!< pADI_TM0 Structure             
 #define T0CON_EVENT_EXT7               (0x8   << 8  ) /* EXT7 - External interrupt 7 */
 #define T0CON_EVENT_T3                 (0x9   << 8  ) /* T3 - Watchdog timer      */
 #define T0CON_EVENT_T1                 (0xA   << 8  ) /* T1 - Timer1              */
+#define T0CON_EVENT_ADC0               (0xB   << 8  ) /* ADC0 - ADC0              */
 #define T0CON_EVENT_ADC1               (0xC   << 8  ) /* ADC1 - ADC1              */
 #define T0CON_EVENT_STEP               (0xD   << 8  ) /* STEP - STEP              */
 #define T0CON_EVENT_DMADONE            (0xE   << 8  ) /* DMADONE                  */
@@ -1092,6 +1109,7 @@ typedef struct {                            /*!< pADI_TM0 Structure             
 #define T1CON_EVENT_PWM0               (0xC   << 8  ) /* PWM0                     */
 #define T1CON_EVENT_PWM1               (0xD   << 8  ) /* PWM1                     */
 #define T1CON_EVENT_PWM2               (0xE   << 8  ) /* PWM2                     */
+#define T1CON_EVENT_ADC0               (0xF   << 8  ) /* ADC0                     */
 
 /* T1CON[RLD] - Timer reload on write to clear register */
 #define T1CON_RLD_BBA                  (*(volatile unsigned long *) 0x4200811C)
@@ -2187,15 +2205,18 @@ typedef struct {                            /*!< pADI_CLKCTL Structure          
   __IO uint16_t  CLKCON1;                   /*!< System Clocks Control Register 1      */
   __I  uint16_t  RESERVED1[19];
   __IO uint16_t  CLKDIS;                    /*!< System Clocks Control Register 1      */
-  __I  uint16_t  RESERVED2[497];
+  __I  uint16_t  RESERVED2[7];
+  __IO uint16_t  CLKCON2;                   /*!< System Clocks Control Register 2      */
+  __I  uint16_t  RESERVED3[489];
   __IO uint8_t   XOSCCON;                   /*!< Crystal Oscillator control            */
-  __I  uint8_t   RESERVED3[51];
+  __I  uint8_t   RESERVED4[51];
   __IO uint16_t  CLKSYSDIV;                 /*!< Sys Clock div2 Register               */
 } ADI_CLKCTL_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          CLKCON0                                    (*(volatile unsigned short int *) 0x40002000)
 #define          CLKCON1                                    (*(volatile unsigned short int *) 0x40002004)
 #define          CLKDIS                                     (*(volatile unsigned short int *) 0x4000202C)
+#define          CLKCON2                                    (*(volatile unsigned short int *) 0x4000203C)
 #define          XOSCCON                                    (*(volatile unsigned char      *) 0x40002410)
 #define          CLKSYSDIV                                  (*(volatile unsigned short int *) 0x40002444)
 #endif // (__NO_MMR_STRUCTS__==0)
@@ -2361,6 +2382,49 @@ typedef struct {                            /*!< pADI_CLKCTL Structure          
 #define CLKDIS_DISSPI0CLK_DIS          (0x0   << 0  ) /* DIS                      */
 #define CLKDIS_DISSPI0CLK_EN           (0x1   << 0  ) /* EN                       */
 
+/* CLKCON2[DISUART1CLK] - Disable UART1 system clock */
+#define CLKCON2_DISUART1CLK_BBA        (*(volatile unsigned long *) 0x42040780)
+#define CLKCON2_DISUART1CLK_MSK        (0x1   << 0  )
+#define CLKCON2_DISUART1CLK            (0x1   << 0  )
+#define CLKCON2_DISUART1CLK_DIS        (0x0   << 0  ) /* DIS                      */
+#define CLKCON2_DISUART1CLK_EN         (0x1   << 0  ) /* EN                       */
+
+/* CLKCON2[DISUART2CLK] - Disable UART2 system clock */
+#define CLKCON2_DISUART2CLK_BBA        (*(volatile unsigned long *) 0x42040784)
+#define CLKCON2_DISUART2CLK_MSK        (0x1   << 1  )
+#define CLKCON2_DISUART2CLK            (0x1   << 1  )
+#define CLKCON2_DISUART2CLK_DIS        (0x0   << 1  ) /* DIS                      */
+#define CLKCON2_DISUART2CLK_EN         (0x1   << 1  ) /* EN                       */
+
+/* CLKCON2[UART1CD] - Clock divide bits for UART1 system clock */
+#define CLKCON2_UART1CD_MSK            (0x7   << 8  )
+#define CLKCON2_UART1CD_DIV1           (0x0   << 8  ) /* DIV1                     */
+#define CLKCON2_UART1CD_DIV2           (0x1   << 8  ) /* DIV2                     */
+#define CLKCON2_UART1CD_DIV4           (0x2   << 8  ) /* DIV4                     */
+#define CLKCON2_UART1CD_DIV8           (0x3   << 8  ) /* DIV8                     */
+#define CLKCON2_UART1CD_DIV16          (0x4   << 8  ) /* DIV16                    */
+#define CLKCON2_UART1CD_DIV32          (0x5   << 8  ) /* DIV32                    */
+#define CLKCON2_UART1CD_DIV64          (0x6   << 8  ) /* DIV64                    */
+#define CLKCON2_UART1CD_DIV128         (0x7   << 8  ) /* DIV128                   */
+
+/* CLKCON2[UART2CD] - Clock divide bits for UART2 system clock */
+#define CLKCON2_UART2CD_MSK            (0x7   << 11 )
+#define CLKCON2_UART2CD_DIV1           (0x0   << 11 ) /* DIV1                     */
+#define CLKCON2_UART2CD_DIV2           (0x1   << 11 ) /* DIV2                     */
+#define CLKCON2_UART2CD_DIV4           (0x2   << 11 ) /* DIV4                     */
+#define CLKCON2_UART2CD_DIV8           (0x3   << 11 ) /* DIV8                     */
+#define CLKCON2_UART2CD_DIV16          (0x4   << 11 ) /* DIV16                    */
+#define CLKCON2_UART2CD_DIV32          (0x5   << 11 ) /* DIV32                    */
+#define CLKCON2_UART2CD_DIV64          (0x6   << 11 ) /* DIV64                    */
+#define CLKCON2_UART2CD_DIV128         (0x7   << 11 ) /* DIV128                   */
+
+/* CLKCON2[DACCD] - Clock divide bit for DAC system clock */
+#define CLKCON2_DACCD_BBA              (*(volatile unsigned long *) 0x420407B8)
+#define CLKCON2_DACCD_MSK              (0x1   << 14 )
+#define CLKCON2_DACCD                  (0x1   << 14 )
+#define CLKCON2_DACCD_DIV8             (0x0   << 14 ) /* DIV8                     */
+#define CLKCON2_DACCD_DIV16            (0x1   << 14 ) /* DIV16                    */
+
 /* Reset Value for XOSCCON*/
 #define XOSCCON_RVAL                   0x0 
 
@@ -2379,14 +2443,14 @@ typedef struct {                            /*!< pADI_CLKCTL Structure          
 #define XOSCCON_ENABLE_EN              (0x1   << 0  ) /* EN                       */
 
 /* Reset Value for CLKSYSDIV*/
-#define CLKSYSDIV_RVAL                 0x0 
+//#define CLKSYSDIV_RVAL                 0x0 
 
-/* CLKSYSDIV[DIV2EN] - bits */
-#define CLKSYSDIV_DIV2EN_BBA           (*(volatile unsigned long *) 0x42048880)
-#define CLKSYSDIV_DIV2EN_MSK           (0x1   << 0  )
-#define CLKSYSDIV_DIV2EN               (0x1   << 0  )
-#define CLKSYSDIV_DIV2EN_DIS           (0x0   << 0  ) /* DIS                      */
-#define CLKSYSDIV_DIV2EN_EN            (0x1   << 0  ) /* EN                       */
+/* CLKSYSDIV[UCLKCD] - bits */
+#define CLKSYSDIV_UCLKCD_MSK           (0x3   << 0  )
+#define CLKSYSDIV_UCLKCD_DIV1          (0x0   << 0  )
+#define CLKSYSDIV_UCLKCD_DIV2          (0x1   << 0  )
+#define CLKSYSDIV_UCLKCD_DIV4          (0x2   << 0  )
+#define CLKSYSDIV_UCLKCD_DIV8          (0x3   << 0  )
 // ------------------------------------------------------------------------------------------------
 // -----                                        FEE                                        -----
 // ------------------------------------------------------------------------------------------------
@@ -2629,6 +2693,13 @@ typedef struct {                            /*!< pADI_FEE Structure             
 #define FEEAEN0_ADC1                   (0x1   << 14 )
 #define FEEAEN0_ADC1_DIS               (0x0   << 14 ) /* DIS                      */
 #define FEEAEN0_ADC1_EN                (0x1   << 14 ) /* EN                       */
+
+/* FEEAEN0[ADC0] -  */
+#define FEEAEN0_ADC0_BBA               (*(volatile unsigned long *) 0x42050F34)
+#define FEEAEN0_ADC0_MSK               (0x1   << 13 )
+#define FEEAEN0_ADC0                   (0x1   << 13 )
+#define FEEAEN0_ADC0_DIS               (0x0   << 13 ) /* DIS                      */
+#define FEEAEN0_ADC0_EN                (0x1   << 13 ) /* EN                       */
 
 /* FEEAEN0[T1] -  */
 #define FEEAEN0_T1_BBA                 (*(volatile unsigned long *) 0x42050F30)
@@ -2873,6 +2944,13 @@ typedef struct {                            /*!< pADI_FEE Structure             
 #define FEEAEN2_DMAADC1                (0x1   << 1  )
 #define FEEAEN2_DMAADC1_DIS            (0x0   << 1  ) /* DIS                      */
 #define FEEAEN2_DMAADC1_EN             (0x1   << 1  ) /* EN                       */
+
+/* FEEAEN2[DMAADC0] -  */
+#define FEEAEN2_DMAADC0_BBA            (*(volatile unsigned long *) 0x42051000)
+#define FEEAEN2_DMAADC0_MSK            (0x1   << 0  )
+#define FEEAEN2_DMAADC0                (0x1   << 0  )
+#define FEEAEN2_DMAADC0_DIS            (0x0   << 0  ) /* DIS                      */
+#define FEEAEN2_DMAADC0_EN             (0x1   << 0  ) /* EN                       */
 // ------------------------------------------------------------------------------------------------
 // -----                                        I2C                                        -----
 // ------------------------------------------------------------------------------------------------
@@ -2921,6 +2999,10 @@ typedef struct {                            /*!< pADI_I2C Structure             
   __IO uint16_t  I2CID3;                    /*!< 4th Slave Address Device ID           */
   __I  uint16_t  RESERVED17;
   __IO uint16_t  I2CFSTA;                   /*!< Master and Slave Rx/Tx FIFO Status Register */
+  __I  uint16_t  RESERVED18;
+  __IO uint16_t  I2CSHCON;                  /*!< Shared control register               */
+  __I  uint16_t  RESERVED19[3];
+  __IO uint16_t  I2CASSCL;                  /*!< Automatic Stretch control register    */
 } ADI_I2C_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          I2CMCON                                    (*(volatile unsigned short int *) 0x40003000)
@@ -2942,6 +3024,8 @@ typedef struct {                            /*!< pADI_I2C Structure             
 #define          I2CID2                                     (*(volatile unsigned short int *) 0x40003044)
 #define          I2CID3                                     (*(volatile unsigned short int *) 0x40003048)
 #define          I2CFSTA                                    (*(volatile unsigned short int *) 0x4000304C)
+#define          I2CSHCON                                   (*(volatile unsigned short int *) 0x40003050)
+#define          I2CASSCL                                   (*(volatile unsigned short int *) 0x40003058)
 #endif // (__NO_MMR_STRUCTS__==0)
 
 /* Reset Value for I2CMCON*/
@@ -3434,6 +3518,31 @@ typedef struct {                            /*!< pADI_I2C Structure             
 #define I2CFSTA_STXFSTA_EMPTY          (0x0   << 0  ) /* EMPTY                    */
 #define I2CFSTA_STXFSTA_ONEBYTE        (0x1   << 0  ) /* ONEBYTE                  */
 #define I2CFSTA_STXFSTA_TWOBYTES       (0x2   << 0  ) /* TWOBYTES                 */
+
+/* I2CSHCON[RESET] - Reset START STOP detect circuit */
+#define I2CSHCON_RESET_MSK             (0x1   << 0  )
+#define I2CSHCON_RESET                 (0x1   << 0  )
+#define I2CSHCON_RESET_DIS             (0x0   << 0  )
+#define I2CSHCON_RESET_EN              (0x1   << 0  )
+
+/* I2CASSCL[SSRTSTA] - stretch timeout for slave */
+#define I2CASSCL_SSRTSTA_MSK           (0x1   << 9  )
+#define I2CASSCL_SSRTSTA               (0x1   << 9  )
+#define I2CASSCL_SSRTSTA_DIS           (0x0   << 9  )
+#define I2CASSCL_SSRTSTA_EN            (0x1   << 9  )
+
+/* I2CASSCL[MSRTSTA] - stretch timeout for master */
+#define I2CASSCL_MSRTSTA_MSK           (0x1   << 8  )
+#define I2CASSCL_MSRTSTA               (0x1   << 8  )
+#define I2CASSCL_MSRTSTA_DIS           (0x0   << 8  )
+#define I2CASSCL_MSRTSTA_EN            (0x1   << 8  )
+
+/* I2CASSCL[SSTRCON] - automatic stretch mode for slave */
+#define I2CASSCL_SSTRCON_MSK           (0xF   << 4  )
+
+/* I2CASSCL[MSTRCON] - automatic stretch mode for master */
+#define I2CASSCL_MSTRCON_MSK           (0xF   << 0  )
+
 // ------------------------------------------------------------------------------------------------
 // -----                                        SPI0                                        -----
 // ------------------------------------------------------------------------------------------------
@@ -3443,7 +3552,6 @@ typedef struct {                            /*!< pADI_I2C Structure             
   * @brief Serial Peripheral Interface (pADI_SPI0)
   */
 
-#if (__NO_MMR_STRUCTS__==0)
 typedef struct {                            /*!< pADI_SPI0 Structure                    */
   __IO uint16_t  SPISTA;                    /*!< Status Register                       */
   __I  uint16_t  RESERVED0;
@@ -3459,7 +3567,7 @@ typedef struct {                            /*!< pADI_SPI0 Structure            
   __I  uint16_t  RESERVED5;
   __IO uint16_t  SPICNT;                    /*!< 8-bit received byte count register    */
 } ADI_SPI_TypeDef;
-#else // (__NO_MMR_STRUCTS__==0)
+
 #define          SPI0STA                                    (*(volatile unsigned short int *) 0x40004000)
 #define          SPI0RX                                     (*(volatile unsigned char      *) 0x40004004)
 #define          SPI0TX                                     (*(volatile unsigned char      *) 0x40004008)
@@ -3467,10 +3575,23 @@ typedef struct {                            /*!< pADI_SPI0 Structure            
 #define          SPI0CON                                    (*(volatile unsigned short int *) 0x40004010)
 #define          SPI0DMA                                    (*(volatile unsigned short int *) 0x40004014)
 #define          SPI0CNT                                    (*(volatile unsigned short int *) 0x40004018)
-#endif // (__NO_MMR_STRUCTS__==0)
 
 /* Reset Value for SPI0STA*/
 #define SPI0STA_RVAL                   0x0 
+
+/* SPI0STA[CSRSG] - Detected a rising edge on CS, in CONT mode */
+#define SPI0STA_CSRSG_BBA              (*(volatile unsigned long *) 0x42080038)
+#define SPI0STA_CSRSG_MSK              (0x1   << 14 )
+#define SPI0STA_CSRSG                  (0x1   << 14 )
+#define SPI0STA_CSRSG_CLR              (0x0   << 14 ) /* Cleared to 0 when the Status register is read. */
+#define SPI0STA_CSRSG_SET              (0x1   << 14 ) /* Set to 1 when there was a rising edge in CS line, when the device was in master mode, continuous transfer, High Frequency mode and CSIRQ_EN was asserted. */
+
+/* SPI0STA[CSFLG] - Detected a falling edge on CS, in CONT mode */
+#define SPI0STA_CSFLG_BBA              (*(volatile unsigned long *) 0x42080034)
+#define SPI0STA_CSFLG_MSK              (0x1   << 13 )
+#define SPI0STA_CSFLG                  (0x1   << 13 )
+#define SPI0STA_CSFLG_CLR              (0x0   << 13 ) /* Cleared to 0 when the Status register is read. */
+#define SPI0STA_CSFLG_SET              (0x1   << 13 ) /* Set to 1 when there was a falling edge in CS line, when the device was in master mode, continuous transfer, High Frequency mode and CSIRQ_EN was asserted */
 
 /* SPI0STA[CSERR] - Detected an abrupt CS deassertion */
 #define SPI0STA_CSERR_BBA              (*(volatile unsigned long *) 0x42080030)
@@ -3552,12 +3673,26 @@ typedef struct {                            /*!< pADI_SPI0 Structure            
 /* Reset Value for SPI0DIV*/
 #define SPI0DIV_RVAL                   0x0 
 
+/* SPI0DIV[CSIRQ_EN] - Enable interrupt on every CS edge in CONT mode */
+#define SPI0DIV_CSIRQ_EN_BBA           (*(volatile unsigned long *) 0x420801A0)
+#define SPI0DIV_CSIRQ_EN_MSK           (0x1   << 8  )
+#define SPI0DIV_CSIRQ_EN               (0x1   << 8  )
+#define SPI0DIV_CSIRQ_EN_DIS           (0x0   << 8  )
+#define SPI0DIV_CSIRQ_EN_EN            (0x1   << 8  )
+
 /* SPI0DIV[BCRST] - Bit counter reset */
 #define SPI0DIV_BCRST_BBA              (*(volatile unsigned long *) 0x4208019C)
 #define SPI0DIV_BCRST_MSK              (0x1   << 7  )
 #define SPI0DIV_BCRST                  (0x1   << 7  )
 #define SPI0DIV_BCRST_DIS              (0x0   << 7  ) /* DIS                      */
 #define SPI0DIV_BCRST_EN               (0x1   << 7  ) /* EN                       */
+
+/* SPI0DIV[HFM] - High Frequency Mode */
+#define SPI0DIV_HFM_BBA                (*(volatile unsigned long *) 0x42080198)
+#define SPI0DIV_HFM_MSK                (0x1   << 6  )
+#define SPI0DIV_HFM                    (0x1   << 6  )
+#define SPI0DIV_HFM_DIS                (0x0   << 6  )
+#define SPI0DIV_HFM_EN                 (0x1   << 6  )
 
 /* SPI0DIV[DIV] - Factor used to divide UCLK to generate the serial clock */
 #define SPI0DIV_DIV_MSK                (0x3F  << 0  )
@@ -3699,7 +3834,6 @@ typedef struct {                            /*!< pADI_SPI0 Structure            
 
 /* SPI0CNT[VALUE] - Count */
 #define SPI0CNT_VALUE_MSK              (0xFF  << 0  )
-#if (__NO_MMR_STRUCTS__==1)
 
 #define          SPI1STA                                    (*(volatile unsigned short int *) 0x40004400)
 #define          SPI1RX                                     (*(volatile unsigned char      *) 0x40004404)
@@ -3708,10 +3842,23 @@ typedef struct {                            /*!< pADI_SPI0 Structure            
 #define          SPI1CON                                    (*(volatile unsigned short int *) 0x40004410)
 #define          SPI1DMA                                    (*(volatile unsigned short int *) 0x40004414)
 #define          SPI1CNT                                    (*(volatile unsigned short int *) 0x40004418)
-#endif // (__NO_MMR_STRUCTS__==1)
 
 /* Reset Value for SPI1STA*/
 #define SPI1STA_RVAL                   0x0 
+
+/* SPI1STA[CSRSG] - Detected a rising edge on CS, in CONT mode */
+#define SPI1STA_CSRSG_BBA              (*(volatile unsigned long *) 0x42000038)
+#define SPI1STA_CSRSG_MSK              (0x1   << 14 )
+#define SPI1STA_CSRSG                  (0x1   << 14 )
+#define SPI1STA_CSRSG_CLR              (0x0   << 14 ) /* Cleared to 0 when the Status register is read */
+#define SPI1STA_CSRSG_SET              (0x1   << 14 ) /* Set to 1 when there was a rising edge in CS line, when the device was in master mode, continuous transfer, High Frequency mode and CSIRQ_EN was asserted. */
+
+/* SPI1STA[CSFLG] - Detected a falling edge on CS, in CONT mode */
+#define SPI1STA_CSFLG_BBA              (*(volatile unsigned long *) 0x42000034)
+#define SPI1STA_CSFLG_MSK              (0x1   << 13 )
+#define SPI1STA_CSFLG                  (0x1   << 13 )
+#define SPI1STA_CSFLG_CLR              (0x0   << 13 ) /* Cleared to 0 when the Status register is read. */
+#define SPI1STA_CSFLG_SET              (0x1   << 13 ) /* Set to 1 when there was a falling edge in CS line, when the device was in master mode, continuous transfer, High Frequency mode and CSIRQ_EN was asserted. */
 
 /* SPI1STA[CSERR] - Detected an abrupt CS deassertion */
 #define SPI1STA_CSERR_BBA              (*(volatile unsigned long *) 0x42088030)
@@ -3793,12 +3940,26 @@ typedef struct {                            /*!< pADI_SPI0 Structure            
 /* Reset Value for SPI1DIV*/
 #define SPI1DIV_RVAL                   0x0 
 
+/* SPI1DIV[CSIRQ_EN] - Enable interrupt on every CS edge in CONT mode */
+#define SPI1DIV_CSIRQ_EN_BBA           (*(volatile unsigned long *) 0x420001A0)
+#define SPI1DIV_CSIRQ_EN_MSK           (0x1   << 8  )
+#define SPI1DIV_CSIRQ_EN               (0x1   << 8  )
+#define SPI1DIV_CSIRQ_EN_DIS           (0x0   << 8  )
+#define SPI1DIV_CSIRQ_EN_EN            (0x1   << 8  )
+
 /* SPI1DIV[BCRST] - Bit counter reset */
 #define SPI1DIV_BCRST_BBA              (*(volatile unsigned long *) 0x4208819C)
 #define SPI1DIV_BCRST_MSK              (0x1   << 7  )
 #define SPI1DIV_BCRST                  (0x1   << 7  )
 #define SPI1DIV_BCRST_DIS              (0x0   << 7  ) /* DIS                      */
 #define SPI1DIV_BCRST_EN               (0x1   << 7  ) /* EN                       */
+
+/* SPI1DIV[HFM] - High Frequency Mode */
+#define SPI1DIV_HFM_BBA                (*(volatile unsigned long *) 0x42000198)
+#define SPI1DIV_HFM_MSK                (0x1   << 6  )
+#define SPI1DIV_HFM                    (0x1   << 6  )
+#define SPI1DIV_HFM_DIS                (0x0   << 6  )
+#define SPI1DIV_HFM_EN                 (0x1   << 6  )
 
 /* SPI1DIV[DIV] - Factor used to divide UCLK to generate the serial clock */
 #define SPI1DIV_DIV_MSK                (0x3F  << 0  )
@@ -3976,17 +4137,40 @@ typedef struct {                            /*!< pADI_UART Structure            
   __IO uint8_t   COMCON;                    /*!< UART control register                 */
 } ADI_UART_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
-#define          COMTX                                      (*(volatile unsigned char      *) 0x40005000)
-#define          COMRX                                      (*(volatile unsigned char      *) 0x40005000)
-#define          COMIEN                                     (*(volatile unsigned char      *) 0x40005004)
-#define          COMIIR                                     (*(volatile unsigned char      *) 0x40005008)
-#define          COMLCR                                     (*(volatile unsigned char      *) 0x4000500C)
-#define          COMMCR                                     (*(volatile unsigned char      *) 0x40005010)
-#define          COMLSR                                     (*(volatile unsigned char      *) 0x40005014)
-#define          COMMSR                                     (*(volatile unsigned char      *) 0x40005018)
-#define          COMFBR                                     (*(volatile unsigned short int *) 0x40005024)
-#define          COMDIV                                     (*(volatile unsigned short int *) 0x40005028)
-#define          COMCON                                     (*(volatile unsigned char      *) 0x40005030)
+#define          COM0TX                                      (*(volatile unsigned char      *) 0x40005000)
+#define          COM0RX                                      (*(volatile unsigned char      *) 0x40005000)
+#define          COM0IEN                                     (*(volatile unsigned char      *) 0x40005004)
+#define          COM0IIR                                     (*(volatile unsigned char      *) 0x40005008)
+#define          COM0LCR                                     (*(volatile unsigned char      *) 0x4000500C)
+#define          COM0MCR                                     (*(volatile unsigned char      *) 0x40005010)
+#define          COM0LSR                                     (*(volatile unsigned char      *) 0x40005014)
+#define          COM0MSR                                     (*(volatile unsigned char      *) 0x40005018)
+#define          COM0FBR                                     (*(volatile unsigned short int *) 0x40005024)
+#define          COM0DIV                                     (*(volatile unsigned short int *) 0x40005028)
+#define          COM0CON                                     (*(volatile unsigned char      *) 0x40005030)
+#define          COM1TX                                      (*(volatile unsigned char      *) 0x40005400)
+#define          COM1RX                                      (*(volatile unsigned char      *) 0x40005400)
+#define          COM1IEN                                     (*(volatile unsigned char      *) 0x40005404)
+#define          COM1IIR                                     (*(volatile unsigned char      *) 0x40005408)
+#define          COM1LCR                                     (*(volatile unsigned char      *) 0x4000540C)
+#define          COM1MCR                                     (*(volatile unsigned char      *) 0x40005410)
+#define          COM1LSR                                     (*(volatile unsigned char      *) 0x40005414)
+#define          COM1MSR                                     (*(volatile unsigned char      *) 0x40005418)
+#define          COM1FBR                                     (*(volatile unsigned short int *) 0x40005424)
+#define          COM1DIV                                     (*(volatile unsigned short int *) 0x40005428)
+#define          COM1CON                                     (*(volatile unsigned char      *) 0x40005430)
+#define          COM2TX                                      (*(volatile unsigned char      *) 0x40005800)
+#define          COM2RX                                      (*(volatile unsigned char      *) 0x40005800)
+#define          COM2IEN                                     (*(volatile unsigned char      *) 0x40005804)
+#define          COM2IIR                                     (*(volatile unsigned char      *) 0x40005808)
+#define          COM2LCR                                     (*(volatile unsigned char      *) 0x4000580C)
+#define          COM2MCR                                     (*(volatile unsigned char      *) 0x40005810)
+#define          COM2LSR                                     (*(volatile unsigned char      *) 0x40005814)
+#define          COM2MSR                                     (*(volatile unsigned char      *) 0x40005818)
+#define          COM2FBR                                     (*(volatile unsigned short int *) 0x40005824)
+#define          COM2DIV                                     (*(volatile unsigned short int *) 0x40005828)
+#define          COM2CON                                     (*(volatile unsigned char      *) 0x40005830)
+
 #endif // (__NO_MMR_STRUCTS__==0)
 
 /* Reset Value for COMTX*/
@@ -5939,24 +6123,12 @@ typedef struct {                            /*!< pADI_DMA Structure             
   __IO uint32_t  DMAPRICLR;                 /*!< Channel Priority Clear                */
   __I  uint32_t  RESERVED2[3];
   __IO uint32_t  DMAERRCLR;                 /*!< Bus Error Clear                       */
-  __I  uint32_t  RESERVED3[992];
-  __IO uint8_t   DMAPERID4;                 /*!< Peripheral identification 4           */
-  __I  uint8_t   RESERVED4[15];
-  __IO uint8_t   DMAPERID0;                 /*!< Peripheral identification 0           */
-  __I  uint8_t   RESERVED5[3];
-  __IO uint8_t   DMAPERID1;                 /*!< Peripheral identification 1           */
-  __I  uint8_t   RESERVED6[3];
-  __IO uint8_t   DMAPERID2;                 /*!< Peripheral identification 2           */
-  __I  uint8_t   RESERVED7[3];
-  __IO uint8_t   DMAPERID3;                 /*!< Peripheral identification 3           */
-  __I  uint8_t   RESERVED8[3];
-  __IO uint8_t   DMAPCELLID0;               /*!< PrimeCell identification 0            */
-  __I  uint8_t   RESERVED9[3];
-  __IO uint8_t   DMAPCELLID1;               /*!< PrimeCell identification 1            */
-  __I  uint8_t   RESERVED10[3];
-  __IO uint8_t   DMAPCELLID2;               /*!< PrimeCell identification 2            */
-  __I  uint8_t   RESERVED11[3];
-  __IO uint8_t   DMAPCELLID3;               /*!< PrimeCell identification 3            */
+  __I  uint32_t  RESERVED3[492];
+  __IO uint32_t  DMABSSET;                  /*!< DMA channel bytes swap enable set     */
+  __IO uint32_t  DMABSCLR;                  /*!< DMA channel bytes swap enable clear   */
+  __I  uint32_t  RESERVED4[66];
+  __IO uint32_t  DMAGETNMINUS1;             /*!< Request n_minus_1 register update   */
+  __IO uint32_t  DMANMINUS1;                /*!< Current n_minus_1 value   */
 } ADI_DMA_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          DMASTA                                     (*(volatile unsigned long      *) 0x40010000)
@@ -5973,15 +6145,10 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define          DMAPRISET                                  (*(volatile unsigned long      *) 0x40010038)
 #define          DMAPRICLR                                  (*(volatile unsigned long      *) 0x4001003C)
 #define          DMAERRCLR                                  (*(volatile unsigned long      *) 0x4001004C)
-#define          DMAPERID4                                  (*(volatile unsigned char      *) 0x40010FD0)
-#define          DMAPERID0                                  (*(volatile unsigned char      *) 0x40010FE0)
-#define          DMAPERID1                                  (*(volatile unsigned char      *) 0x40010FE4)
-#define          DMAPERID2                                  (*(volatile unsigned char      *) 0x40010FE8)
-#define          DMAPERID3                                  (*(volatile unsigned char      *) 0x40010FEC)
-#define          DMAPCELLID0                                (*(volatile unsigned char      *) 0x40010FF0)
-#define          DMAPCELLID1                                (*(volatile unsigned char      *) 0x40010FF4)
-#define          DMAPCELLID2                                (*(volatile unsigned char      *) 0x40010FF8)
-#define          DMAPCELLID3                                (*(volatile unsigned char      *) 0x40010FFC)
+#define          DMABSSET                                   (*(volatile unsigned long      *) 0x40010800)
+#define          DMABSCLR                                   (*(volatile unsigned long      *) 0x40010804)
+#define          DMAGETNMINUS1                              (*(volatile unsigned long      *) 0x40010910)
+#define          DMANMINUS1                                 (*(volatile unsigned long      *) 0x40010914)
 #endif // (__NO_MMR_STRUCTS__==0)
 
 /* Reset Value for DMASTA*/
@@ -6037,7 +6204,30 @@ typedef struct {                            /*!< pADI_DMA Structure             
 
 /* Reset Value for DMASWREQ*/
 #define DMASWREQ_RVAL                  0x0 
-
+/* DMASWREQ[UART1RX] - DMA UART1 RX */
+#define DMASWREQ_UART1RX_BBA             (*(volatile unsigned long *) 0x422002BC)
+#define DMASWREQ_UART1RX_MSK             (0x1   << 15 )
+#define DMASWREQ_UART1RX                 (0x1   << 15 )
+#define DMASWREQ_UART1RX_DIS             (0x0   << 15 ) /* DIS                      */
+#define DMASWREQ_UART1RX_EN              (0x1   << 15 ) /* EN                       */
+/* DMASWREQ[UART1TX] - DMA UART1 TX */
+#define DMASWREQ_UART1TX_BBA             (*(volatile unsigned long *) 0x422002B8)
+#define DMASWREQ_UART1TX_MSK             (0x1   << 14 )
+#define DMASWREQ_UART1TX                 (0x1   << 14 )
+#define DMASWREQ_UART1TX_DIS             (0x0   << 14 ) /* DIS                      */
+#define DMASWREQ_UART1TX_EN              (0x1   << 14 ) /* EN                       */
+/* DMASWREQ[SPI0RX] - DMA SPI 0 RX */
+#define DMASWREQ_SPI0RX_BBA             (*(volatile unsigned long *) 0x422002B4)
+#define DMASWREQ_SPI0RX_MSK             (0x1   << 13 )
+#define DMASWREQ_SPI0RX                 (0x1   << 13 )
+#define DMASWREQ_SPI0RX_DIS             (0x0   << 13 ) /* DIS                      */
+#define DMASWREQ_SPI0RX_EN              (0x1   << 13 ) /* EN                       */
+/* DMASWREQ[SPI0TX] - DMA SPI 0 TX */
+#define DMASWREQ_SPI0TX_BBA             (*(volatile unsigned long *) 0x422002B0)
+#define DMASWREQ_SPI0TX_MSK             (0x1   << 12 )
+#define DMASWREQ_SPI0TX                 (0x1   << 12 )
+#define DMASWREQ_SPI0TX_DIS             (0x0   << 12 ) /* DIS                      */
+#define DMASWREQ_SPI0TX_EN              (0x1   << 12 ) /* EN                       */
 /* DMASWREQ[SINC2] - SINC2 Output Step detection */
 #define DMASWREQ_SINC2_BBA             (*(volatile unsigned long *) 0x422002AC)
 #define DMASWREQ_SINC2_MSK             (0x1   << 11 )
@@ -6051,6 +6241,13 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define DMASWREQ_ADC1                  (0x1   << 10 )
 #define DMASWREQ_ADC1_DIS              (0x0   << 10 ) /* DIS                      */
 #define DMASWREQ_ADC1_EN               (0x1   << 10 ) /* EN                       */
+
+/* DMASWREQ[ADC0] - ADC0 */
+#define DMASWREQ_ADC0_BBA              (*(volatile unsigned long *) 0x422002A4)
+#define DMASWREQ_ADC0_MSK              (0x1   << 9  )
+#define DMASWREQ_ADC0                  (0x1   << 9  )
+#define DMASWREQ_ADC0_DIS              (0x0   << 9  ) /* DIS                      */
+#define DMASWREQ_ADC0_EN               (0x1   << 9  ) /* EN                       */
 
 /* DMASWREQ[DAC] - DAC DMA Output */
 #define DMASWREQ_DAC_BBA               (*(volatile unsigned long *) 0x422002A0)
@@ -6117,6 +6314,30 @@ typedef struct {                            /*!< pADI_DMA Structure             
 
 /* Reset Value for DMARMSKSET*/
 #define DMARMSKSET_RVAL                0x0 
+/* DMARMSKSET[UART1RX] - DMA UART1 RX */
+#define DMARMSKSET_UART1RX_BBA             (*(volatile unsigned long *) 0x4220043C)
+#define DMARMSKSET_UART1RX_MSK             (0x1   << 15 )
+#define DMARMSKSET_UART1RX                 (0x1   << 15 )
+#define DMARMSKSET_UART1RX_DIS             (0x0   << 15 ) /* DIS                      */
+#define DMARMSKSET_UART1RX_EN              (0x1   << 15 ) /* EN                       */
+/* DMARMSKSET[UART1TX] - DMA UART1 TX */
+#define DMARMSKSET_UART1TX_BBA             (*(volatile unsigned long *) 0x42200438)
+#define DMARMSKSET_UART1TX_MSK             (0x1   << 14 )
+#define DMARMSKSET_UART1TX                 (0x1   << 14 )
+#define DMARMSKSET_UART1TX_DIS             (0x0   << 14 ) /* DIS                      */
+#define DMARMSKSET_UART1TX_EN              (0x1   << 14 ) /* EN                       */
+/* DMARMSKSET[SPI0RX] - DMA SPI 0 RX */
+#define DMARMSKSET_SPI0RX_BBA             (*(volatile unsigned long *) 0x42200434)
+#define DMARMSKSET_SPI0RX_MSK             (0x1   << 13 )
+#define DMARMSKSET_SPI0RX                 (0x1   << 13 )
+#define DMARMSKSET_SPI0RX_DIS             (0x0   << 13 ) /* DIS                      */
+#define DMARMSKSET_SPI0RX_EN              (0x1   << 13 ) /* EN                       */
+/* DMARMSKSET[SPI0TX] - DMA SPI 0 TX */
+#define DMARMSKSET_SPI0TX_BBA             (*(volatile unsigned long *) 0x42200430)
+#define DMARMSKSET_SPI0TX_MSK             (0x1   << 12 )
+#define DMARMSKSET_SPI0TX                 (0x1   << 12 )
+#define DMARMSKSET_SPI0TX_DIS             (0x0   << 12 ) /* DIS                      */
+#define DMARMSKSET_SPI0TX_EN              (0x1   << 12 ) /* EN                       */
 
 /* DMARMSKSET[SINC2] - SINC2 Output Step detection */
 #define DMARMSKSET_SINC2_BBA           (*(volatile unsigned long *) 0x4220042C)
@@ -6131,6 +6352,13 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define DMARMSKSET_ADC1                (0x1   << 10 )
 #define DMARMSKSET_ADC1_DIS            (0x0   << 10 ) /* DIS                      */
 #define DMARMSKSET_ADC1_EN             (0x1   << 10 ) /* EN                       */
+
+/* DMARMSKSET[ADC0] - ADC0 */
+#define DMARMSKSET_ADC0_BBA            (*(volatile unsigned long *) 0x42200424)
+#define DMARMSKSET_ADC0_MSK            (0x1   << 9  )
+#define DMARMSKSET_ADC0                (0x1   << 9  )
+#define DMARMSKSET_ADC0_DIS            (0x0   << 9  ) /* DIS                      */
+#define DMARMSKSET_ADC0_EN             (0x1   << 9  ) /* EN                       */
 
 /* DMARMSKSET[DAC] - DAC DMA Output */
 #define DMARMSKSET_DAC_BBA             (*(volatile unsigned long *) 0x42200420)
@@ -6198,6 +6426,30 @@ typedef struct {                            /*!< pADI_DMA Structure             
 /* Reset Value for DMARMSKCLR*/
 #define DMARMSKCLR_RVAL                0x0 
 
+/* DMARMSKCLR[UART1RX] - DMA UART1 RX */
+#define DMARMSKCLR_UART1RX_BBA             (*(volatile unsigned long *) 0x422004BC)
+#define DMARMSKCLR_UART1RX_MSK             (0x1   << 15 )
+#define DMARMSKCLR_UART1RX                 (0x1   << 15 )
+#define DMARMSKCLR_UART1RX_DIS             (0x0   << 15 ) /* DIS                      */
+#define DMARMSKCLR_UART1RX_EN              (0x1   << 15 ) /* EN                       */
+/* DMARMSKCLR[UART1TX] - DMA UART1 TX */
+#define DMARMSKCLR_UART1TX_BBA             (*(volatile unsigned long *) 0x422004B8)
+#define DMARMSKCLR_UART1TX_MSK             (0x1   << 14 )
+#define DMARMSKCLR_UART1TX                 (0x1   << 14 )
+#define DMARMSKCLR_UART1TX_DIS             (0x0   << 14 ) /* DIS                      */
+#define DMARMSKCLR_UART1TX_EN              (0x1   << 14 ) /* EN                       */
+/* DMARMSKCLR[SPI0RX] - DMA SPI 0 RX */
+#define DMARMSKCLR_SPI0RX_BBA             (*(volatile unsigned long *) 0x422004B4)
+#define DMARMSKCLR_SPI0RX_MSK             (0x1   << 13 )
+#define DMARMSKCLR_SPI0RX                 (0x1   << 13 )
+#define DMARMSKCLR_SPI0RX_DIS             (0x0   << 13 ) /* DIS                      */
+#define DMARMSKCLR_SPI0RX_EN              (0x1   << 13 ) /* EN                       */
+/* DMARMSKCLR[SPI0TX] - DMA SPI 0 TX */
+#define DMARMSKCLR_SPI0TX_BBA             (*(volatile unsigned long *) 0x422004B0)
+#define DMARMSKCLR_SPI0TX_MSK             (0x1   << 12 )
+#define DMARMSKCLR_SPI0TX                 (0x1   << 12 )
+#define DMARMSKCLR_SPI0TX_DIS             (0x0   << 12 ) /* DIS                      */
+#define DMARMSKCLR_SPI0TX_EN              (0x1   << 12 ) /* EN                       */
 /* DMARMSKCLR[SINC2] - SINC2 Output Step detection */
 #define DMARMSKCLR_SINC2_BBA           (*(volatile unsigned long *) 0x422004AC)
 #define DMARMSKCLR_SINC2_MSK           (0x1   << 11 )
@@ -6211,6 +6463,13 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define DMARMSKCLR_ADC1                (0x1   << 10 )
 #define DMARMSKCLR_ADC1_DIS            (0x0   << 10 ) /* DIS                      */
 #define DMARMSKCLR_ADC1_EN             (0x1   << 10 ) /* EN                       */
+
+/* DMARMSKCLR[ADC0] - ADC0 */
+#define DMARMSKCLR_ADC0_BBA            (*(volatile unsigned long *) 0x422004A4)
+#define DMARMSKCLR_ADC0_MSK            (0x1   << 9  )
+#define DMARMSKCLR_ADC0                (0x1   << 9  )
+#define DMARMSKCLR_ADC0_DIS            (0x0   << 9  ) /* DIS                      */
+#define DMARMSKCLR_ADC0_EN             (0x1   << 9  ) /* EN                       */
 
 /* DMARMSKCLR[DAC] - DAC DMA Output */
 #define DMARMSKCLR_DAC_BBA             (*(volatile unsigned long *) 0x422004A0)
@@ -6278,6 +6537,32 @@ typedef struct {                            /*!< pADI_DMA Structure             
 /* Reset Value for DMAENSET*/
 #define DMAENSET_RVAL                  0x0 
 
+
+/* DMAENSET[UART1RX] - DMA UART1 RX */
+#define DMAENSET_UART1RX_BBA             (*(volatile unsigned long *) 0x4220053C)
+#define DMAENSET_UART1RX_MSK             (0x1   << 15 )
+#define DMAENSET_UART1RX                 (0x1   << 15 )
+#define DMAENSET_UART1RX_DIS             (0x0   << 15 ) /* DIS                      */
+#define DMAENSET_UART1RX_EN              (0x1   << 15 ) /* EN                       */
+/* DMAENSET[UART1TX] - DMA UART1 TX */
+#define DMAENSET_UART1TX_BBA             (*(volatile unsigned long *) 0x42200538)
+#define DMAENSET_UART1TX_MSK             (0x1   << 14 )
+#define DMAENSET_UART1TX                 (0x1   << 14 )
+#define DMAENSET_UART1TX_DIS             (0x0   << 14 ) /* DIS                      */
+#define DMAENSET_UART1TX_EN              (0x1   << 14 ) /* EN                       */
+/* DMAENSET[SPI0RX] - DMA SPI 0 RX */
+#define DMAENSET_SPI0RX_BBA             (*(volatile unsigned long *) 0x42200534)
+#define DMAENSET_SPI0RX_MSK             (0x1   << 13 )
+#define DMAENSET_SPI0RX                 (0x1   << 13 )
+#define DMAENSET_SPI0RX_DIS             (0x0   << 13 ) /* DIS                      */
+#define DMAENSET_SPI0RX_EN              (0x1   << 13 ) /* EN                       */
+/* DMAENSET[SPI0TX] - DMA SPI 0 TX */
+#define DMAENSET_SPI0TX_BBA             (*(volatile unsigned long *) 0x42200530)
+#define DMAENSET_SPI0TX_MSK             (0x1   << 12 )
+#define DMAENSET_SPI0TX                 (0x1   << 12 )
+#define DMAENSET_SPI0TX_DIS             (0x0   << 12 ) /* DIS                      */
+#define DMAENSET_SPI0TX_EN              (0x1   << 12 ) /* EN                       */
+
 /* DMAENSET[SINC2] - SINC2 Output Step detection */
 #define DMAENSET_SINC2_BBA             (*(volatile unsigned long *) 0x4220052C)
 #define DMAENSET_SINC2_MSK             (0x1   << 11 )
@@ -6291,6 +6576,13 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define DMAENSET_ADC1                  (0x1   << 10 )
 #define DMAENSET_ADC1_DIS              (0x0   << 10 ) /* DIS                      */
 #define DMAENSET_ADC1_EN               (0x1   << 10 ) /* EN                       */
+
+/* DMAENSET[ADC0] - ADC0 */
+#define DMAENSET_ADC0_BBA              (*(volatile unsigned long *) 0x42200524)
+#define DMAENSET_ADC0_MSK              (0x1   << 9  )
+#define DMAENSET_ADC0                  (0x1   << 9  )
+#define DMAENSET_ADC0_DIS              (0x0   << 9  ) /* DIS                      */
+#define DMAENSET_ADC0_EN               (0x1   << 9  ) /* EN                       */
 
 /* DMAENSET[DAC] - DAC DMA Output */
 #define DMAENSET_DAC_BBA               (*(volatile unsigned long *) 0x42200520)
@@ -6358,6 +6650,32 @@ typedef struct {                            /*!< pADI_DMA Structure             
 /* Reset Value for DMAENCLR*/
 #define DMAENCLR_RVAL                  0x0 
 
+/* DMAENCLR[UART1RX] - DMA UART1 RX */
+#define DMAENCLR_UART1RX_BBA             (*(volatile unsigned long *) 0x422005BC)
+#define DMAENCLR_UART1RX_MSK             (0x1   << 15 )
+#define DMAENCLR_UART1RX                 (0x1   << 15 )
+#define DMAENCLR_UART1RX_DIS             (0x0   << 15 ) /* DIS                      */
+#define DMAENCLR_UART1RX_EN              (0x1   << 15 ) /* EN                       */
+/* DMAENCLR[UART1TX] - DMA UART1 TX */
+#define DMAENCLR_UART1TX_BBA             (*(volatile unsigned long *) 0x422005B8)
+#define DMAENCLR_UART1TX_MSK             (0x1   << 14 )
+#define DMAENCLR_UART1TX                 (0x1   << 14 )
+#define DMAENCLR_UART1TX_DIS             (0x0   << 14 ) /* DIS                      */
+#define DMAENCLR_UART1TX_EN              (0x1   << 14 ) /* EN                       */
+/* DMAENCLR[SPI0RX] - DMA SPI 0 RX */
+#define DMAENCLR_SPI0RX_BBA             (*(volatile unsigned long *) 0x422005B4)
+#define DMAENCLR_SPI0RX_MSK             (0x1   << 13 )
+#define DMAENCLR_SPI0RX                 (0x1   << 13 )
+#define DMAENCLR_SPI0RX_DIS             (0x0   << 13 ) /* DIS                      */
+#define DMAENCLR_SPI0RX_EN              (0x1   << 13 ) /* EN                       */
+/* DMAENCLR[SPI0TX] - DMA SPI 0 TX */
+#define DMAENCLR_SPI0TX_BBA             (*(volatile unsigned long *) 0x422005B0)
+#define DMAENCLR_SPI0TX_MSK             (0x1   << 12 )
+#define DMAENCLR_SPI0TX                 (0x1   << 12 )
+#define DMAENCLR_SPI0TX_DIS             (0x0   << 12 ) /* DIS                      */
+#define DMAENCLR_SPI0TX_EN              (0x1   << 12 ) /* EN                       */
+
+
 /* DMAENCLR[SINC2] - SINC2 Output Step detection */
 #define DMAENCLR_SINC2_BBA             (*(volatile unsigned long *) 0x422005AC)
 #define DMAENCLR_SINC2_MSK             (0x1   << 11 )
@@ -6371,6 +6689,13 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define DMAENCLR_ADC1                  (0x1   << 10 )
 #define DMAENCLR_ADC1_DIS              (0x0   << 10 ) /* DIS                      */
 #define DMAENCLR_ADC1_EN               (0x1   << 10 ) /* EN                       */
+
+/* DMAENCLR[ADC0] - ADC0 */
+#define DMAENCLR_ADC0_BBA              (*(volatile unsigned long *) 0x422005A4)
+#define DMAENCLR_ADC0_MSK              (0x1   << 9  )
+#define DMAENCLR_ADC0                  (0x1   << 9  )
+#define DMAENCLR_ADC0_DIS              (0x0   << 9  ) /* DIS                      */
+#define DMAENCLR_ADC0_EN               (0x1   << 9  ) /* EN                       */
 
 /* DMAENCLR[DAC] - DAC DMA Output */
 #define DMAENCLR_DAC_BBA               (*(volatile unsigned long *) 0x422005A0)
@@ -6438,6 +6763,31 @@ typedef struct {                            /*!< pADI_DMA Structure             
 /* Reset Value for DMAALTSET*/
 #define DMAALTSET_RVAL                 0x0 
 
+/* DMAALTSET[UART1RX] - DMA UART1 RX */
+#define DMAALTSET_UART1RX_BBA             (*(volatile unsigned long *) 0x4220063C)
+#define DMAALTSET_UART1RX_MSK             (0x1   << 15 )
+#define DMAALTSET_UART1RX                 (0x1   << 15 )
+#define DMAALTSET_UART1RX_DIS             (0x0   << 15 ) /* DIS                      */
+#define DMAALTSET_UART1RX_EN              (0x1   << 15 ) /* EN                       */
+/* DMAALTSET[UART1TX] - DMA UART1 TX */
+#define DMAALTSET_UART1TX_BBA             (*(volatile unsigned long *) 0x42200638)
+#define DMAALTSET_UART1TX_MSK             (0x1   << 14 )
+#define DMAALTSET_UART1TX                 (0x1   << 14 )
+#define DMAALTSET_UART1TX_DIS             (0x0   << 14 ) /* DIS                      */
+#define DMAALTSET_UART1TX_EN              (0x1   << 14 ) /* EN                       */
+/* DMAALTSET[SPI0RX] - DMA SPI 0 RX */
+#define DMAALTSET_SPI0RX_BBA             (*(volatile unsigned long *) 0x42200634)
+#define DMAALTSET_SPI0RX_MSK             (0x1   << 13 )
+#define DMAALTSET_SPI0RX                 (0x1   << 13 )
+#define DMAALTSET_SPI0RX_DIS             (0x0   << 13 ) /* DIS                      */
+#define DMAALTSET_SPI0RX_EN              (0x1   << 13 ) /* EN                       */
+/* DMAALTSET[SPI0TX] - DMA SPI 0 TX */
+#define DMAALTSET_SPI0TX_BBA             (*(volatile unsigned long *) 0x42200630)
+#define DMAALTSET_SPI0TX_MSK             (0x1   << 12 )
+#define DMAALTSET_SPI0TX                 (0x1   << 12 )
+#define DMAALTSET_SPI0TX_DIS             (0x0   << 12 ) /* DIS                      */
+#define DMAALTSET_SPI0TX_EN              (0x1   << 12 ) /* EN                       */
+
 /* DMAALTSET[SINC2] - SINC2 Output Step detection */
 #define DMAALTSET_SINC2_BBA            (*(volatile unsigned long *) 0x4220062C)
 #define DMAALTSET_SINC2_MSK            (0x1   << 11 )
@@ -6451,6 +6801,13 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define DMAALTSET_ADC1                 (0x1   << 10 )
 #define DMAALTSET_ADC1_DIS             (0x0   << 10 ) /* DIS                      */
 #define DMAALTSET_ADC1_EN              (0x1   << 10 ) /* EN                       */
+
+/* DMAALTSET[ADC0] - ADC0 */
+#define DMAALTSET_ADC0_BBA             (*(volatile unsigned long *) 0x42200624)
+#define DMAALTSET_ADC0_MSK             (0x1   << 9  )
+#define DMAALTSET_ADC0                 (0x1   << 9  )
+#define DMAALTSET_ADC0_DIS             (0x0   << 9  ) /* DIS                      */
+#define DMAALTSET_ADC0_EN              (0x1   << 9  ) /* EN                       */
 
 /* DMAALTSET[DAC] - DAC DMA Output */
 #define DMAALTSET_DAC_BBA              (*(volatile unsigned long *) 0x42200620)
@@ -6518,6 +6875,32 @@ typedef struct {                            /*!< pADI_DMA Structure             
 /* Reset Value for DMAALTCLR*/
 #define DMAALTCLR_RVAL                 0x0 
 
+/* DMAALTCLR[UART1RX] - DMA UART1 RX */
+#define DMAALTCLR_UART1RX_BBA             (*(volatile unsigned long *) 0x422006BC)
+#define DMAALTCLR_UART1RX_MSK             (0x1   << 15 )
+#define DMAALTCLR_UART1RX                 (0x1   << 15 )
+#define DMAALTCLR_UART1RX_DIS             (0x0   << 15 ) /* DIS                      */
+#define DMAALTCLR_UART1RX_EN              (0x1   << 15 ) /* EN                       */
+/* DMAALTCLR[UART1TX] - DMA UART1 TX */
+#define DMAALTCLR_UART1TX_BBA             (*(volatile unsigned long *) 0x422006B8)
+#define DMAALTCLR_UART1TX_MSK             (0x1   << 14 )
+#define DMAALTCLR_UART1TX                 (0x1   << 14 )
+#define DMAALTCLR_UART1TX_DIS             (0x0   << 14 ) /* DIS                      */
+#define DMAALTCLR_UART1TX_EN              (0x1   << 14 ) /* EN                       */
+/* DMAALTCLR[SPI0RX] - DMA SPI 0 RX */
+#define DMAALTCLR_SPI0RX_BBA             (*(volatile unsigned long *) 0x422006B4)
+#define DMAALTCLR_SPI0RX_MSK             (0x1   << 13 )
+#define DMAALTCLR_SPI0RX                 (0x1   << 13 )
+#define DMAALTCLR_SPI0RX_DIS             (0x0   << 13 ) /* DIS                      */
+#define DMAALTCLR_SPI0RX_EN              (0x1   << 13 ) /* EN                       */
+/* DMAALTCLR[SPI0TX] - DMA SPI 0 TX */
+#define DMAALTCLR_SPI0TX_BBA             (*(volatile unsigned long *) 0x422006B0)
+#define DMAALTCLR_SPI0TX_MSK             (0x1   << 12 )
+#define DMAALTCLR_SPI0TX                 (0x1   << 12 )
+#define DMAALTCLR_SPI0TX_DIS             (0x0   << 12 ) /* DIS                      */
+#define DMAALTCLR_SPI0TX_EN              (0x1   << 12 ) /* EN                       */
+
+
 /* DMAALTCLR[SINC2] - SINC2 Output Step detection */
 #define DMAALTCLR_SINC2_BBA            (*(volatile unsigned long *) 0x422006AC)
 #define DMAALTCLR_SINC2_MSK            (0x1   << 11 )
@@ -6531,6 +6914,13 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define DMAALTCLR_ADC1                 (0x1   << 10 )
 #define DMAALTCLR_ADC1_DIS             (0x0   << 10 ) /* DIS                      */
 #define DMAALTCLR_ADC1_EN              (0x1   << 10 ) /* EN                       */
+
+/* DMAALTCLR[ADC0] - ADC0 */
+#define DMAALTCLR_ADC0_BBA             (*(volatile unsigned long *) 0x422006A4)
+#define DMAALTCLR_ADC0_MSK             (0x1   << 9  )
+#define DMAALTCLR_ADC0                 (0x1   << 9  )
+#define DMAALTCLR_ADC0_DIS             (0x0   << 9  ) /* DIS                      */
+#define DMAALTCLR_ADC0_EN              (0x1   << 9  ) /* EN                       */
 
 /* DMAALTCLR[DAC] - DAC DMA Output */
 #define DMAALTCLR_DAC_BBA              (*(volatile unsigned long *) 0x422006A0)
@@ -6597,6 +6987,31 @@ typedef struct {                            /*!< pADI_DMA Structure             
 
 /* Reset Value for DMAPRISET*/
 #define DMAPRISET_RVAL                 0x0 
+/*DMAPRISET[UART1RX] - DMA UART1 RX */
+#define DMAPRISET_UART1RX_BBA             (*(volatile unsigned long *) 0x4220073C)
+#define DMAPRISET_UART1RX_MSK             (0x1   << 15 )
+#define DMAPRISET_UART1RX                 (0x1   << 15 )
+#define DMAPRISET_UART1RX_DIS             (0x0   << 15 ) /* DIS                      */
+#define DMAPRISET_UART1RX_EN              (0x1   << 15 ) /* EN                       */
+/* DMAPRISET[UART1TX] - DMA UART1 TX */
+#define DMAPRISET_UART1TX_BBA             (*(volatile unsigned long *) 0x42200738)
+#define DMAPRISET_UART1TX_MSK             (0x1   << 14 )
+#define DMAPRISET_UART1TX                 (0x1   << 14 )
+#define DMAPRISET_UART1TX_DIS             (0x0   << 14 ) /* DIS                      */
+#define DMAPRISET_UART1TX_EN              (0x1   << 14 ) /* EN                       */
+/* DMAPRISET[SPI0RX] - DMA SPI 0 RX */
+#define DMAPRISET_SPI0RX_BBA             (*(volatile unsigned long *) 0x42200734)
+#define DMAPRISET_SPI0RX_MSK             (0x1   << 13 )
+#define DMAPRISET_SPI0RX                 (0x1   << 13 )
+#define DMAPRISET_SPI0RX_DIS             (0x0   << 13 ) /* DIS                      */
+#define DMAPRISET_SPI0RX_EN              (0x1   << 13 ) /* EN                       */
+/* DMAPRISET[SPI0TX] - DMA SPI 0 TX */
+#define DMAPRISET_SPI0TX_BBA             (*(volatile unsigned long *) 0x42200730)
+#define DMAPRISET_SPI0TX_MSK             (0x1   << 12 )
+#define DMAPRISET_SPI0TX                 (0x1   << 12 )
+#define DMAPRISET_SPI0TX_DIS             (0x0   << 12 ) /* DIS                      */
+#define DMAPRISET_SPI0TX_EN              (0x1   << 12 ) /* EN                       */
+
 
 /* DMAPRISET[SINC2] - SINC2 Output Step detection */
 #define DMAPRISET_SINC2_BBA            (*(volatile unsigned long *) 0x4220072C)
@@ -6611,6 +7026,13 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define DMAPRISET_ADC1                 (0x1   << 10 )
 #define DMAPRISET_ADC1_DIS             (0x0   << 10 ) /* DIS                      */
 #define DMAPRISET_ADC1_EN              (0x1   << 10 ) /* EN                       */
+
+/* DMAPRISET[ADC0] - ADC0 */
+#define DMAPRISET_ADC0_BBA             (*(volatile unsigned long *) 0x42200724)
+#define DMAPRISET_ADC0_MSK             (0x1   << 9  )
+#define DMAPRISET_ADC0                 (0x1   << 9  )
+#define DMAPRISET_ADC0_DIS             (0x0   << 9  ) /* DIS                      */
+#define DMAPRISET_ADC0_EN              (0x1   << 9  ) /* EN                       */
 
 /* DMAPRISET[DAC] - DAC DMA Output */
 #define DMAPRISET_DAC_BBA              (*(volatile unsigned long *) 0x42200720)
@@ -6678,6 +7100,31 @@ typedef struct {                            /*!< pADI_DMA Structure             
 /* Reset Value for DMAPRICLR*/
 #define DMAPRICLR_RVAL                 0x0 
 
+/*DMAPRICLR[UART1RX] - DMA UART1 RX */
+#define DMAPRICLR_UART1RX_BBA             (*(volatile unsigned long *) 0x422007BC)
+#define DMAPRICLR_UART1RX_MSK             (0x1   << 15 )
+#define DMAPRICLR_UART1RX                 (0x1   << 15 )
+#define DMAPRICLR_UART1RX_DIS             (0x0   << 15 ) /* DIS                      */
+#define DMAPRICLR_UART1RX_EN              (0x1   << 15 ) /* EN                       */
+/* DMAPRICLR[UART1TX] - DMA UART1 TX */
+#define DMAPRICLR_UART1TX_BBA             (*(volatile unsigned long *) 0x422007B8)
+#define DMAPRICLR_UART1TX_MSK             (0x1   << 14 )
+#define DMAPRICLR_UART1TX                 (0x1   << 14 )
+#define DMAPRICLR_UART1TX_DIS             (0x0   << 14 ) /* DIS                      */
+#define DMAPRICLR_UART1TX_EN              (0x1   << 14 ) /* EN                       */
+/* DMAPRICLR[SPI0RX] - DMA SPI 0 RX */
+#define DMAPRICLR_SPI0RX_BBA             (*(volatile unsigned long *) 0x422007B4)
+#define DMAPRICLR_SPI0RX_MSK             (0x1   << 13 )
+#define DMAPRICLR_SPI0RX                 (0x1   << 13 )
+#define DMAPRICLR_SPI0RX_DIS             (0x0   << 13 ) /* DIS                      */
+#define DMAPRICLR_SPI0RX_EN              (0x1   << 13 ) /* EN                       */
+/* DMAPRICLR[SPI0TX] - DMA SPI 0 TX */
+#define DMAPRICLR_SPI0TX_BBA             (*(volatile unsigned long *) 0x422007B0)
+#define DMAPRICLR_SPI0TX_MSK             (0x1   << 12 )
+#define DMAPRICLR_SPI0TX                 (0x1   << 12 )
+#define DMAPRICLR_SPI0TX_DIS             (0x0   << 12 ) /* DIS                      */
+#define DMAPRICLR_SPI0TX_EN              (0x1   << 12 ) /* EN                       */
+
 /* DMAPRICLR[SINC2] - SINC2 Output Step detection */
 #define DMAPRICLR_SINC2_BBA            (*(volatile unsigned long *) 0x422007AC)
 #define DMAPRICLR_SINC2_MSK            (0x1   << 11 )
@@ -6691,6 +7138,13 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define DMAPRICLR_ADC1                 (0x1   << 10 )
 #define DMAPRICLR_ADC1_DIS             (0x0   << 10 ) /* DIS                      */
 #define DMAPRICLR_ADC1_EN              (0x1   << 10 ) /* EN                       */
+
+/* DMAPRICLR[ADC0] - ADC0 */
+#define DMAPRICLR_ADC0_BBA             (*(volatile unsigned long *) 0x422007A4)
+#define DMAPRICLR_ADC0_MSK             (0x1   << 9  )
+#define DMAPRICLR_ADC0                 (0x1   << 9  )
+#define DMAPRICLR_ADC0_DIS             (0x0   << 9  ) /* DIS                      */
+#define DMAPRICLR_ADC0_EN              (0x1   << 9  ) /* EN                       */
 
 /* DMAPRICLR[DAC] - DAC DMA Output */
 #define DMAPRICLR_DAC_BBA              (*(volatile unsigned long *) 0x422007A0)
@@ -6765,75 +7219,17 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define DMAERRCLR_ERROR_DIS            (0x0   << 0  ) /* DIS                      */
 #define DMAERRCLR_ERROR_EN             (0x1   << 0  ) /* EN                       */
 
-/* Reset Value for DMAPERID4*/
-#define DMAPERID4_RVAL                 0x4 
+/* Reset Value for DMABSSET*/
+#define DMABSSET_RVAL                  0x0 
 
-/* DMAPERID4[BLOCKCOUNT] - The number of 4KB address blocks you require, to access the registers, expressed in powers of 2. */
-#define DMAPERID4_BLOCKCOUNT_MSK       (0xF   << 4  )
+/* DMABSSET[CHBSWAPSET] - Byte swap status */
+#define DMABSSET_CHBSWAPSET_MSK        (0x3FFF << 0  )
 
-/* DMAPERID4[JEP106CCODE] - The JEP106 continuation code value represents how many 0x7F continuation characters occur in the manufacturer?s identity code. */
-#define DMAPERID4_JEP106CCODE_MSK      (0xF   << 0  )
+/* Reset Value for DMABSCLR*/
+#define DMABSCLR_RVAL                  0x0 
 
-/* Reset Value for DMAPERID0*/
-#define DMAPERID0_RVAL                 0x30 
-
-/* DMAPERID0[PARTNO0] - Identifies the peripheral (part_number_0) */
-#define DMAPERID0_PARTNO0_MSK          (0xFF  << 0  )
-
-/* Reset Value for DMAPERID1*/
-#define DMAPERID1_RVAL                 0xB2 
-
-/* DMAPERID1[JEP106ID0] - JEP106 identity code [3:0] */
-#define DMAPERID1_JEP106ID0_MSK        (0xF   << 4  )
-
-/* DMAPERID1[PARTNO1] - Identifies the peripheral (part_number_1) */
-#define DMAPERID1_PARTNO1_MSK          (0xF   << 0  )
-
-/* Reset Value for DMAPERID2*/
-#define DMAPERID2_RVAL                 0xB 
-
-/* DMAPERID2[REVISION] - The revision status of the controller. */
-#define DMAPERID2_REVISION_MSK         (0xF   << 4  )
-
-/* DMAPERID2[JEDECUSED] - This indicates that the controller uses a manufacturer?s identity code that was allocated by JEDEC according to JEP106. */
-#define DMAPERID2_JEDECUSED_BBA        (*(volatile unsigned long *) 0x4221FD0C)
-#define DMAPERID2_JEDECUSED_MSK        (0x1   << 3  )
-#define DMAPERID2_JEDECUSED            (0x1   << 3  )
-#define DMAPERID2_JEDECUSED_DIS        (0x0   << 3  ) /* DIS                      */
-#define DMAPERID2_JEDECUSED_EN         (0x1   << 3  ) /* EN                       */
-
-/* DMAPERID2[JEP106ID1] - JEP106 identity code [6:4]. */
-#define DMAPERID2_JEP106ID1_MSK        (0x7   << 0  )
-
-/* Reset Value for DMAPERID3*/
-#define DMAPERID3_RVAL                 0x0 
-
-/* DMAPERID3[MODNUM] - The customer must update this field if they modify the RTL of the controller. */
-#define DMAPERID3_MODNUM_MSK           (0xF   << 0  )
-
-/* Reset Value for DMAPCELLID0*/
-#define DMAPCELLID0_RVAL               0xD 
-
-/* DMAPCELLID0[PCELLID0] - Primecell Identification */
-#define DMAPCELLID0_PCELLID0_MSK       (0xFF  << 0  )
-
-/* Reset Value for DMAPCELLID1*/
-#define DMAPCELLID1_RVAL               0xF0 
-
-/* DMAPCELLID1[PCELLID1] - Primecell Identification */
-#define DMAPCELLID1_PCELLID1_MSK       (0xFF  << 0  )
-
-/* Reset Value for DMAPCELLID2*/
-#define DMAPCELLID2_RVAL               0x5 
-
-/* DMAPCELLID2[PCELLID2] - Primecell Identification */
-#define DMAPCELLID2_PCELLID2_MSK       (0xFF  << 0  )
-
-/* Reset Value for DMAPCELLID3*/
-#define DMAPCELLID3_RVAL               0xB1 
-
-/* DMAPCELLID3[PCELLID3] - Primecell Identification */
-#define DMAPCELLID3_PCELLID3_MSK       (0xFF  << 0  )
+/* DMABSCLR[CHBSWAPCLR] - Disable byte swap */
+#define DMABSCLR_CHBSWAPCLR_MSK        (0x3FFF << 0  )
 // ------------------------------------------------------------------------------------------------
 // -----                                        NVIC                                        -----
 // ------------------------------------------------------------------------------------------------
@@ -7061,6 +7457,12 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define ISER0_ADC1_DIS                 (0x0   << 14 ) /* DIS                      */
 #define ISER0_ADC1_EN                  (0x1   << 14 ) /* EN                       */
 
+/* ISER0[ADC0] -  */
+#define ISER0_ADC0_MSK                 (0x1   << 13 )
+#define ISER0_ADC0                     (0x1   << 13 )
+#define ISER0_ADC0_DIS                 (0x0   << 13 ) /* DIS                      */
+#define ISER0_ADC0_EN                  (0x1   << 13 ) /* EN                       */
+
 /* ISER0[T1] -  */
 #define ISER0_T1_MSK                   (0x1   << 12 )
 #define ISER0_T1                       (0x1   << 12 )
@@ -7171,6 +7573,12 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define ISER1_DMAADC1                  (0x1   << 1  )
 #define ISER1_DMAADC1_DIS              (0x0   << 1  ) /* DIS                      */
 #define ISER1_DMAADC1_EN               (0x1   << 1  ) /* EN                       */
+
+/* ISER1[DMAADC0] -  */
+#define ISER1_DMAADC0_MSK              (0x1   << 0  )
+#define ISER1_DMAADC0                  (0x1   << 0  )
+#define ISER1_DMAADC0_DIS              (0x0   << 0  ) /* DIS                      */
+#define ISER1_DMAADC0_EN               (0x1   << 0  ) /* EN                       */
 
 /* Reset Value for ICER0*/
 #define ICER0_RVAL                     0x0 
@@ -7283,6 +7691,12 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define ICER0_ADC1_DIS                 (0x0   << 14 ) /* DIS                      */
 #define ICER0_ADC1_EN                  (0x1   << 14 ) /* EN                       */
 
+/* ICER0[ADC0] -  */
+#define ICER0_ADC0_MSK                 (0x1   << 13 )
+#define ICER0_ADC0                     (0x1   << 13 )
+#define ICER0_ADC0_DIS                 (0x0   << 13 ) /* DIS                      */
+#define ICER0_ADC0_EN                  (0x1   << 13 ) /* EN                       */
+
 /* ICER0[T1] -  */
 #define ICER0_T1_MSK                   (0x1   << 12 )
 #define ICER0_T1                       (0x1   << 12 )
@@ -7393,6 +7807,12 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define ICER1_DMAADC1                  (0x1   << 1  )
 #define ICER1_DMAADC1_DIS              (0x0   << 1  ) /* DIS                      */
 #define ICER1_DMAADC1_EN               (0x1   << 1  ) /* EN                       */
+
+/* ICER1[DMAADC0] -  */
+#define ICER1_DMAADC0_MSK              (0x1   << 0  )
+#define ICER1_DMAADC0                  (0x1   << 0  )
+#define ICER1_DMAADC0_DIS              (0x0   << 0  ) /* DIS                      */
+#define ICER1_DMAADC0_EN               (0x1   << 0  ) /* EN                       */
 
 /* Reset Value for ISPR0*/
 #define ISPR0_RVAL                     0x0 
@@ -7505,6 +7925,12 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define ISPR0_ADC1_DIS                 (0x0   << 14 ) /* DIS                      */
 #define ISPR0_ADC1_EN                  (0x1   << 14 ) /* EN                       */
 
+/* ISPR0[ADC0] -  */
+#define ISPR0_ADC0_MSK                 (0x1   << 13 )
+#define ISPR0_ADC0                     (0x1   << 13 )
+#define ISPR0_ADC0_DIS                 (0x0   << 13 ) /* DIS                      */
+#define ISPR0_ADC0_EN                  (0x1   << 13 ) /* EN                       */
+
 /* ISPR0[T1] -  */
 #define ISPR0_T1_MSK                   (0x1   << 12 )
 #define ISPR0_T1                       (0x1   << 12 )
@@ -7615,6 +8041,12 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define ISPR1_DMAADC1                  (0x1   << 1  )
 #define ISPR1_DMAADC1_DIS              (0x0   << 1  ) /* DIS                      */
 #define ISPR1_DMAADC1_EN               (0x1   << 1  ) /* EN                       */
+
+/* ISPR1[DMAADC0] -  */
+#define ISPR1_DMAADC0_MSK              (0x1   << 0  )
+#define ISPR1_DMAADC0                  (0x1   << 0  )
+#define ISPR1_DMAADC0_DIS              (0x0   << 0  ) /* DIS                      */
+#define ISPR1_DMAADC0_EN               (0x1   << 0  ) /* EN                       */
 
 /* Reset Value for ICPR0*/
 #define ICPR0_RVAL                     0x0 
@@ -7727,6 +8159,12 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define ICPR0_ADC1_DIS                 (0x0   << 14 ) /* DIS                      */
 #define ICPR0_ADC1_EN                  (0x1   << 14 ) /* EN                       */
 
+/* ICPR0[ADC0] -  */
+#define ICPR0_ADC0_MSK                 (0x1   << 13 )
+#define ICPR0_ADC0                     (0x1   << 13 )
+#define ICPR0_ADC0_DIS                 (0x0   << 13 ) /* DIS                      */
+#define ICPR0_ADC0_EN                  (0x1   << 13 ) /* EN                       */
+
 /* ICPR0[T1] -  */
 #define ICPR0_T1_MSK                   (0x1   << 12 )
 #define ICPR0_T1                       (0x1   << 12 )
@@ -7837,6 +8275,12 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define ICPR1_DMAADC1                  (0x1   << 1  )
 #define ICPR1_DMAADC1_DIS              (0x0   << 1  ) /* DIS                      */
 #define ICPR1_DMAADC1_EN               (0x1   << 1  ) /* EN                       */
+
+/* ICPR1[DMAADC0] -  */
+#define ICPR1_DMAADC0_MSK              (0x1   << 0  )
+#define ICPR1_DMAADC0                  (0x1   << 0  )
+#define ICPR1_DMAADC0_DIS              (0x0   << 0  ) /* DIS                      */
+#define ICPR1_DMAADC0_EN               (0x1   << 0  ) /* EN                       */
 
 /* Reset Value for IABR0*/
 #define IABR0_RVAL                     0x0 
@@ -7949,6 +8393,12 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define IABR0_ADC1_DIS                 (0x0   << 14 ) /* DIS                      */
 #define IABR0_ADC1_EN                  (0x1   << 14 ) /* EN                       */
 
+/* IABR0[ADC0] -  */
+#define IABR0_ADC0_MSK                 (0x1   << 13 )
+#define IABR0_ADC0                     (0x1   << 13 )
+#define IABR0_ADC0_DIS                 (0x0   << 13 ) /* DIS                      */
+#define IABR0_ADC0_EN                  (0x1   << 13 ) /* EN                       */
+
 /* IABR0[T1] -  */
 #define IABR0_T1_MSK                   (0x1   << 12 )
 #define IABR0_T1                       (0x1   << 12 )
@@ -8060,6 +8510,12 @@ typedef struct {                            /*!< pADI_DMA Structure             
 #define IABR1_DMAADC1_DIS              (0x0   << 1  ) /* DIS                      */
 #define IABR1_DMAADC1_EN               (0x1   << 1  ) /* EN                       */
 
+/* IABR1[DMAADC0] -  */
+#define IABR1_DMAADC0_MSK              (0x1   << 0  )
+#define IABR1_DMAADC0                  (0x1   << 0  )
+#define IABR1_DMAADC0_DIS              (0x0   << 0  ) /* DIS                      */
+#define IABR1_DMAADC0_EN               (0x1   << 0  ) /* EN                       */
+
 /* Reset Value for IPR0*/
 #define IPR0_RVAL                      0x0 
 
@@ -8110,6 +8566,9 @@ typedef struct {                            /*!< pADI_DMA Structure             
 
 /* IPR3[ADC1] -  */
 #define IPR3_ADC1_MSK                  (0xFF  << 16 )
+
+/* IPR3[ADC0] -  */
+#define IPR3_ADC0_MSK                  (0xFF  << 8  )
 
 /* IPR3[T1] -  */
 #define IPR3_T1_MSK                    (0xFF  << 0  )
@@ -8185,6 +8644,9 @@ typedef struct {                            /*!< pADI_DMA Structure             
 
 /* IPR8[DMAADC1] -  */
 #define IPR8_DMAADC1_MSK               (0xFF  << 8  )
+
+/* IPR8[DMAADC0] -  */
+#define IPR8_DMAADC0_MSK               (0xFF  << 0  )
 
 /* Reset Value for IPR9*/
 #define IPR9_RVAL                      0x0 
@@ -8651,16 +9113,16 @@ typedef struct {                            /*!< pADI_DMA Structure             
 /* STIR[INTID] - The value written in this field is the interrupt to be triggered. */
 #define STIR_INTID_MSK                 (0x3FF << 0  )
 // ------------------------------------------------------------------------------------------------
-// -----                                        ADC1                                        -----
+// -----                                        ADC0                                        -----
 // ------------------------------------------------------------------------------------------------
 
 
 /**
-  * @brief Analog to Digital Converter (pADI_ADC1)
+  * @brief Analog to Digital Converter (pADI_ADC0)
   */
 
 #if (__NO_MMR_STRUCTS__==0)
-typedef struct {                            /*!< pADI_ADC1 Structure                    */
+typedef struct {                            /*!< pADI_ADC0 Structure                    */
   __IO uint8_t   STA;                       /*!< ADC Status register                   */
   __I  uint8_t   RESERVED0[3];
   __IO uint8_t   MSKI;                      /*!< Interrupt control register            */
@@ -8680,23 +9142,433 @@ typedef struct {                            /*!< pADI_ADC1 Structure            
   __I  uint16_t  RESERVED7;
   __IO uint16_t  MDE;                       /*!< mode control register                 */
   __I  uint16_t  RESERVED8;
-  __IO uint16_t  RCR;                       /*!< Number of ADC conversions before an ADC interrupt is generated. */
+  __IO uint16_t  RCR;                       /*!< Number of ADC0 conversions before an ADC interrupt is generated. */
   __I  uint16_t  RESERVED9;
-  __IO uint16_t  RCV;                       /*!< "This 16-bit, read-only MMR holds the current number of ADC conversion results" */
+  __IO uint16_t  RCV;                       /*!< "This 16-bit, read-only MMR holds the current number of ADC0 conversion results" */
   __I  uint16_t  RESERVED10;
   __IO uint16_t  TH;                        /*!< Sets the threshold                    */
   __I  uint16_t  RESERVED11;
-  __IO uint8_t   THC;                       /*!< Determines how many cumulative ADC conversion result readings above ADC1TH must occur */
+  __IO uint8_t   THC;                       /*!< Determines how many cumulative ADC0 conversion result readings above ADC0TH must occur */
   __I  uint8_t   RESERVED12[3];
   __IO uint8_t   THV;                       /*!< 8-bit threshold exceeded counter register */
   __I  uint8_t   RESERVED13[3];
   __IO uint32_t  ACC;                       /*!< 32-bit accumulator register           */
   __IO uint32_t  ATH;                       /*!< Holds the threshold value for the accumulator comparator */
-  __IO uint8_t   PRO;                       /*!< Configuration register for Post processing of ADC results */
+  __IO uint8_t   PRO;                       /*!< Configuration register for Post processing of ADC0 results */
   __I  uint8_t   RESERVED14[3];
   __IO uint32_t  DAT;                       /*!< conversion result register            */
 } ADI_ADC_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
+#define          ADC0STA                                    (*(volatile unsigned char      *) 0x40030000)
+#define          ADC0MSKI                                   (*(volatile unsigned char      *) 0x40030004)
+#define          ADC0CON                                    (*(volatile unsigned long      *) 0x40030008)
+#define          ADC0OF                                     (*(volatile unsigned short int *) 0x4003000C)
+#define          ADC0INTGN                                  (*(volatile unsigned short int *) 0x40030010)
+#define          ADC0EXTGN                                  (*(volatile unsigned short int *) 0x40030014)
+#define          ADC0VDDGN                                  (*(volatile unsigned short int *) 0x40030018)
+#define          ADCCFG                                     (*(volatile unsigned short int *) 0x4003001C)
+#define          ADC0FLT                                    (*(volatile unsigned short int *) 0x40030020)
+#define          ADC0MDE                                    (*(volatile unsigned short int *) 0x40030024)
+#define          ADC0RCR                                    (*(volatile unsigned short int *) 0x40030028)
+#define          ADC0RCV                                    (*(volatile unsigned short int *) 0x4003002C)
+#define          ADC0TH                                     (*(volatile unsigned short int *) 0x40030030)
+#define          ADC0THC                                    (*(volatile unsigned char      *) 0x40030034)
+#define          ADC0THV                                    (*(volatile unsigned char      *) 0x40030038)
+#define          ADC0ACC                                    (*(volatile unsigned long      *) 0x4003003C)
+#define          ADC0ATH                                    (*(volatile unsigned long      *) 0x40030040)
+#define          ADC0PRO                                    (*(volatile unsigned char      *) 0x40030044)
+#define          ADC0DAT                                    (*(volatile unsigned long      *) 0x40030048)
+#endif // (__NO_MMR_STRUCTS__==0)
+
+/* Reset Value for ADC0STA*/
+#define ADC0STA_RVAL                   0x0 
+
+/* ADC0STA[CAL] - ADC Calibration status register */
+#define ADC0STA_CAL_BBA                (*(volatile unsigned long *) 0x42600014)
+#define ADC0STA_CAL_MSK                (0x1   << 5  )
+#define ADC0STA_CAL                    (0x1   << 5  )
+#define ADC0STA_CAL_DIS                (0x0   << 5  ) /* DIS                      */
+#define ADC0STA_CAL_EN                 (0x1   << 5  ) /* EN                       */
+
+/* ADC0STA[ERR] - ADC conversion error status bit. */
+#define ADC0STA_ERR_BBA                (*(volatile unsigned long *) 0x42600010)
+#define ADC0STA_ERR_MSK                (0x1   << 4  )
+#define ADC0STA_ERR                    (0x1   << 4  )
+#define ADC0STA_ERR_DIS                (0x0   << 4  ) /* DIS                      */
+#define ADC0STA_ERR_EN                 (0x1   << 4  ) /* EN                       */
+
+/* ADC0STA[ATHEX] - ADC Accumulator Comparator Threshold status bit. */
+#define ADC0STA_ATHEX_BBA              (*(volatile unsigned long *) 0x4260000C)
+#define ADC0STA_ATHEX_MSK              (0x1   << 3  )
+#define ADC0STA_ATHEX                  (0x1   << 3  )
+#define ADC0STA_ATHEX_DIS              (0x0   << 3  ) /* DIS                      */
+#define ADC0STA_ATHEX_EN               (0x1   << 3  ) /* EN                       */
+
+/* ADC0STA[THEX] - ADC comparator threshold. */
+#define ADC0STA_THEX_BBA               (*(volatile unsigned long *) 0x42600008)
+#define ADC0STA_THEX_MSK               (0x1   << 2  )
+#define ADC0STA_THEX                   (0x1   << 2  )
+#define ADC0STA_THEX_DIS               (0x0   << 2  ) /* DIS                      */
+#define ADC0STA_THEX_EN                (0x1   << 2  ) /* EN                       */
+
+/* ADC0STA[OVR] - ADC overrange bit. */
+#define ADC0STA_OVR_BBA                (*(volatile unsigned long *) 0x42600004)
+#define ADC0STA_OVR_MSK                (0x1   << 1  )
+#define ADC0STA_OVR                    (0x1   << 1  )
+#define ADC0STA_OVR_DIS                (0x0   << 1  ) /* DIS                      */
+#define ADC0STA_OVR_EN                 (0x1   << 1  ) /* EN                       */
+
+/* ADC0STA[RDY] - valid conversion result */
+#define ADC0STA_RDY_BBA                (*(volatile unsigned long *) 0x42600000)
+#define ADC0STA_RDY_MSK                (0x1   << 0  )
+#define ADC0STA_RDY                    (0x1   << 0  )
+#define ADC0STA_RDY_DIS                (0x0   << 0  ) /* DIS                      */
+#define ADC0STA_RDY_EN                 (0x1   << 0  ) /* EN                       */
+
+/* Reset Value for ADC0MSKI*/
+#define ADC0MSKI_RVAL                  0x0 
+
+/* ADC0MSKI[ATHEX] - ADC Accumulator Comparator Threshold status bit mask */
+#define ADC0MSKI_ATHEX_BBA             (*(volatile unsigned long *) 0x4260008C)
+#define ADC0MSKI_ATHEX_MSK             (0x1   << 3  )
+#define ADC0MSKI_ATHEX                 (0x1   << 3  )
+#define ADC0MSKI_ATHEX_DIS             (0x0   << 3  ) /* DIS                      */
+#define ADC0MSKI_ATHEX_EN              (0x1   << 3  ) /* EN                       */
+
+/* ADC0MSKI[THEX] - ADC comparator threshold mask */
+#define ADC0MSKI_THEX_BBA              (*(volatile unsigned long *) 0x42600088)
+#define ADC0MSKI_THEX_MSK              (0x1   << 2  )
+#define ADC0MSKI_THEX                  (0x1   << 2  )
+#define ADC0MSKI_THEX_DIS              (0x0   << 2  ) /* DIS                      */
+#define ADC0MSKI_THEX_EN               (0x1   << 2  ) /* EN                       */
+
+/* ADC0MSKI[OVR] - ADC overrange bit mask. */
+#define ADC0MSKI_OVR_BBA               (*(volatile unsigned long *) 0x42600084)
+#define ADC0MSKI_OVR_MSK               (0x1   << 1  )
+#define ADC0MSKI_OVR                   (0x1   << 1  )
+#define ADC0MSKI_OVR_DIS               (0x0   << 1  ) /* DIS                      */
+#define ADC0MSKI_OVR_EN                (0x1   << 1  ) /* EN                       */
+
+/* ADC0MSKI[RDY] - valid conversion result mask */
+#define ADC0MSKI_RDY_BBA               (*(volatile unsigned long *) 0x42600080)
+#define ADC0MSKI_RDY_MSK               (0x1   << 0  )
+#define ADC0MSKI_RDY                   (0x1   << 0  )
+#define ADC0MSKI_RDY_DIS               (0x0   << 0  ) /* DIS                      */
+#define ADC0MSKI_RDY_EN                (0x1   << 0  ) /* EN                       */
+
+/* Reset Value for ADC0CON*/
+#define ADC0CON_RVAL                   0x3038C 
+
+/* ADC0CON[ADCEN] - Enable Bit */
+#define ADC0CON_ADCEN_BBA              (*(volatile unsigned long *) 0x4260014C)
+#define ADC0CON_ADCEN_MSK              (0x1   << 19 )
+#define ADC0CON_ADCEN                  (0x1   << 19 )
+#define ADC0CON_ADCEN_DIS              (0x0   << 19 ) /* DIS                      */
+#define ADC0CON_ADCEN_EN               (0x1   << 19 ) /* EN                       */
+
+/* ADC0CON[ADCCODE] - ADC Output Coding bits */
+#define ADC0CON_ADCCODE_BBA            (*(volatile unsigned long *) 0x42600148)
+#define ADC0CON_ADCCODE_MSK            (0x1   << 18 )
+#define ADC0CON_ADCCODE                (0x1   << 18 )
+#define ADC0CON_ADCCODE_INT            (0x0   << 18 ) /* INT                      */
+#define ADC0CON_ADCCODE_UINT           (0x1   << 18 ) /* UINT                     */
+
+/* ADC0CON[BUFPOWN] - Negative buffer power down */
+#define ADC0CON_BUFPOWN_BBA            (*(volatile unsigned long *) 0x42600144)
+#define ADC0CON_BUFPOWN_MSK            (0x1   << 17 )
+#define ADC0CON_BUFPOWN                (0x1   << 17 )
+#define ADC0CON_BUFPOWN_DIS            (0x0   << 17 ) /* Disable powerdown - Negative buffer is enabled */
+#define ADC0CON_BUFPOWN_EN             (0x1   << 17 ) /* Enable powerdown - Negative buffer is disabled */
+
+/* ADC0CON[BUFPOWP] - Positive buffer power down */
+#define ADC0CON_BUFPOWP_BBA            (*(volatile unsigned long *) 0x42600140)
+#define ADC0CON_BUFPOWP_MSK            (0x1   << 16 )
+#define ADC0CON_BUFPOWP                (0x1   << 16 )
+#define ADC0CON_BUFPOWP_DIS            (0x0   << 16 ) /* Disable powerdown - Positive buffer is enabled */
+#define ADC0CON_BUFPOWP_EN             (0x1   << 16 ) /* Enable powerdown - Positive buffer is disabled */
+
+/* ADC0CON[BUFBYPP] - Positive buffer bypass */
+#define ADC0CON_BUFBYPP_BBA            (*(volatile unsigned long *) 0x4260013C)
+#define ADC0CON_BUFBYPP_MSK            (0x1   << 15 )
+#define ADC0CON_BUFBYPP                (0x1   << 15 )
+#define ADC0CON_BUFBYPP_DIS            (0x0   << 15 ) /* DIS                      */
+#define ADC0CON_BUFBYPP_EN             (0x1   << 15 ) /* EN                       */
+
+/* ADC0CON[BUFBYPN] - Negative buffer bypass */
+#define ADC0CON_BUFBYPN_BBA            (*(volatile unsigned long *) 0x42600138)
+#define ADC0CON_BUFBYPN_MSK            (0x1   << 14 )
+#define ADC0CON_BUFBYPN                (0x1   << 14 )
+#define ADC0CON_BUFBYPN_DIS            (0x0   << 14 ) /* DIS                      */
+#define ADC0CON_BUFBYPN_EN             (0x1   << 14 ) /* EN                       */
+
+/* ADC0CON[ADCREF] - Reference selection */
+#define ADC0CON_ADCREF_MSK             (0x3   << 12 )
+#define ADC0CON_ADCREF_INTREF          (0x0   << 12 ) /* INTREF                   */
+#define ADC0CON_ADCREF_EXTREF          (0x1   << 12 ) /* EXTREF                   */
+#define ADC0CON_ADCREF_EXTREF2         (0x2   << 12 ) /* EXTREF2                  */
+#define ADC0CON_ADCREF_AVDDREF         (0x3   << 12 ) /* AVDDREF                  */
+
+/* ADC0CON[ADCDIAG] - Diagnostic Current bits bits */
+#define ADC0CON_ADCDIAG_MSK            (0x3   << 10 )
+#define ADC0CON_ADCDIAG_DIAG_OFF       (0x0   << 10 ) /* DIAG_OFF                 */
+#define ADC0CON_ADCDIAG_DIAG_POS       (0x1   << 10 ) /* DIAG_POS                 */
+#define ADC0CON_ADCDIAG_DIAG_NEG       (0x2   << 10 ) /* DIAG_NEG                 */
+#define ADC0CON_ADCDIAG_DIAG_ALL       (0x3   << 10 ) /* DIAG_ALL                 */
+
+/* ADC0CON[ADCCP] - AIN+ bits */
+#define ADC0CON_ADCCP_MSK              (0x1F  << 5  )
+#define ADC0CON_ADCCP_AIN0             (0x0   << 5  ) /* AIN0                     */
+#define ADC0CON_ADCCP_AIN1             (0x1   << 5  ) /* AIN1                     */
+#define ADC0CON_ADCCP_AIN2             (0x2   << 5  ) /* AIN2                     */
+#define ADC0CON_ADCCP_AIN3             (0x3   << 5  ) /* AIN3                     */
+#define ADC0CON_ADCCP_AIN4             (0x4   << 5  ) /* AIN4                     */
+#define ADC0CON_ADCCP_AIN5             (0x5   << 5  ) /* AIN5                     */
+#define ADC0CON_ADCCP_AIN6             (0x6   << 5  ) /* AIN6                     */
+#define ADC0CON_ADCCP_AIN7             (0x7   << 5  ) /* AIN7                     */
+#define ADC0CON_ADCCP_AIN8             (0x8   << 5  ) /* AIN8                     */
+#define ADC0CON_ADCCP_AIN9             (0x9   << 5  ) /* AIN9                     */
+#define ADC0CON_ADCCP_AIN10            (0xA   << 5  ) /* AIN10                    */
+#define ADC0CON_ADCCP_AIN11            (0xB   << 5  ) /* AIN11                    */
+#define ADC0CON_ADCCP_DAC              (0xC   << 5  ) /* DAC                      */
+#define ADC0CON_ADCCP_AVDD4            (0xD   << 5  ) /* AVDD4                    */
+#define ADC0CON_ADCCP_IOVDD4           (0xE   << 5  ) /* IOVDD4                   */
+#define ADC0CON_ADCCP_AGND             (0xF   << 5  ) /* AGND                     */
+#define ADC0CON_ADCCP_TEMP             (0x10  << 5  ) /* TEMP                     */
+
+/* ADC0CON[ADCCN] - AIN- bits */
+#define ADC0CON_ADCCN_MSK              (0x1F  << 0  )
+#define ADC0CON_ADCCN_AIN0             (0x0   << 0  ) /* AIN0                     */
+#define ADC0CON_ADCCN_AIN1             (0x1   << 0  ) /* AIN1                     */
+#define ADC0CON_ADCCN_AIN2             (0x2   << 0  ) /* AIN2                     */
+#define ADC0CON_ADCCN_AIN3             (0x3   << 0  ) /* AIN3                     */
+#define ADC0CON_ADCCN_AIN4             (0x4   << 0  ) /* AIN4                     */
+#define ADC0CON_ADCCN_AIN5             (0x5   << 0  ) /* AIN5                     */
+#define ADC0CON_ADCCN_AIN6             (0x6   << 0  ) /* AIN6                     */
+#define ADC0CON_ADCCN_AIN7             (0x7   << 0  ) /* AIN7                     */
+#define ADC0CON_ADCCN_AIN8             (0x8   << 0  ) /* AIN8                     */
+#define ADC0CON_ADCCN_AIN9             (0x9   << 0  ) /* AIN9                     */
+#define ADC0CON_ADCCN_AIN10            (0xA   << 0  ) /* AIN10                    */
+#define ADC0CON_ADCCN_AIN11            (0xB   << 0  ) /* AIN11                    */
+#define ADC0CON_ADCCN_DAC              (0xC   << 0  ) /* DAC                      */
+#define ADC0CON_ADCCN_AGND             (0xF   << 0  ) /* AGND                     */
+#define ADC0CON_ADCCN_TEMP             (0x11  << 0  ) /* TEMP                     */
+
+/* Reset Value for ADC0OF*/
+#define ADC0OF_RVAL                    0x0 
+
+/* ADC0OF[VALUE] - Offset */
+#define ADC0OF_VALUE_MSK               (0xFFFF << 0  )
+
+/* Reset Value for ADC0INTGN*/
+#define ADC0INTGN_RVAL                 0x5555 
+
+/* ADC0INTGN[VALUE] - Gain with Int Ref */
+#define ADC0INTGN_VALUE_MSK            (0xFFFF << 0  )
+
+/* Reset Value for ADC0EXTGN*/
+#define ADC0EXTGN_RVAL                 0x5555 
+
+/* ADC0EXTGN[VALUE] - Gain with Ext Ref */
+#define ADC0EXTGN_VALUE_MSK            (0xFFFF << 0  )
+
+/* Reset Value for ADC0VDDGN*/
+#define ADC0VDDGN_RVAL                 0x5555 
+
+/* ADC0VDDGN[VALUE] - Gain with Avdd Ref */
+#define ADC0VDDGN_VALUE_MSK            (0xFFFF << 0  )
+
+/* Reset Value for ADCCFG*/
+#define ADCCFG_RVAL                    0xF 
+
+/* ADCCFG[SIMU] - Enable both ADCs */
+#define ADCCFG_SIMU_BBA                (*(volatile unsigned long *) 0x426003BC)
+#define ADCCFG_SIMU_MSK                (0x1   << 15 )
+#define ADCCFG_SIMU                    (0x1   << 15 )
+#define ADCCFG_SIMU_DIS                (0x0   << 15 ) /* DIS                      */
+#define ADCCFG_SIMU_EN                 (0x1   << 15 ) /* EN                       */
+
+/* ADCCFG[BOOST30] - Boost the Vbias current source ability by 30 times */
+#define ADCCFG_BOOST30_BBA             (*(volatile unsigned long *) 0x426003B4)
+#define ADCCFG_BOOST30_MSK             (0x1   << 13 )
+#define ADCCFG_BOOST30                 (0x1   << 13 )
+#define ADCCFG_BOOST30_DIS             (0x0   << 13 ) /* DIS                      */
+#define ADCCFG_BOOST30_EN              (0x1   << 13 ) /* EN                       */
+
+/* ADCCFG[PINSEL] - Enable vbias generator, send vbias to selected ain pin bits */
+#define ADCCFG_PINSEL_MSK              (0x7   << 8  )
+#define ADCCFG_PINSEL_DIS              (0x0   << 8  ) /* Disable VBIAS generator  */
+#define ADCCFG_PINSEL_AIN7             (0x4   << 8  ) /* AIN7                     */
+#define ADCCFG_PINSEL_AIN11            (0x6   << 8  ) /* AIN11                    */
+
+/* ADCCFG[GNDSWON] - GND_SW */
+#define ADCCFG_GNDSWON_BBA             (*(volatile unsigned long *) 0x4260039C)
+#define ADCCFG_GNDSWON_MSK             (0x1   << 7  )
+#define ADCCFG_GNDSWON                 (0x1   << 7  )
+#define ADCCFG_GNDSWON_DIS             (0x0   << 7  ) /* DIS                      */
+#define ADCCFG_GNDSWON_EN              (0x1   << 7  ) /* EN                       */
+
+/* ADCCFG[GNDSWRESEN] - 20k resistor in series with GND_SW */
+#define ADCCFG_GNDSWRESEN_BBA          (*(volatile unsigned long *) 0x42600398)
+#define ADCCFG_GNDSWRESEN_MSK          (0x1   << 6  )
+#define ADCCFG_GNDSWRESEN              (0x1   << 6  )
+#define ADCCFG_GNDSWRESEN_DIS          (0x0   << 6  ) /* DIS                      */
+#define ADCCFG_GNDSWRESEN_EN           (0x1   << 6  ) /* EN                       */
+
+/* ADCCFG[EXTBUF] - Control signals for ext_ref buffers bits */
+#define ADCCFG_EXTBUF_MSK              (0x3   << 0  )
+#define ADCCFG_EXTBUF_OFF              (0x0   << 0  ) /* OFF                      */
+#define ADCCFG_EXTBUF_VREFPN           (0x1   << 0  ) /* VREFPN                   */
+#define ADCCFG_EXTBUF_VREFP_VREF2P     (0x2   << 0  ) /* VREFP_VREF2P             */
+#define ADCCFG_EXTBUF_VREFP_ONLY       (0x3   << 0  ) /* VREFP_Only             */
+/* Reset Value for ADC0FLT*/
+#define ADC0FLT_RVAL                   0x7D 
+
+/* ADC0FLT[CHOP] - Enables System-Chopping bits */
+#define ADC0FLT_CHOP_BBA               (*(volatile unsigned long *) 0x4260043C)
+#define ADC0FLT_CHOP_MSK               (0x1   << 15 )
+#define ADC0FLT_CHOP                   (0x1   << 15 )
+#define ADC0FLT_CHOP_OFF               (0x0   << 15 ) /* OFF                      */
+#define ADC0FLT_CHOP_ON                (0x1   << 15 ) /* ON                       */
+
+/* ADC0FLT[RAVG2] - Enables a running Average-By-2 bits */
+#define ADC0FLT_RAVG2_BBA              (*(volatile unsigned long *) 0x42600438)
+#define ADC0FLT_RAVG2_MSK              (0x1   << 14 )
+#define ADC0FLT_RAVG2                  (0x1   << 14 )
+#define ADC0FLT_RAVG2_OFF              (0x0   << 14 ) /* OFF                      */
+#define ADC0FLT_RAVG2_ON               (0x1   << 14 ) /* ON                       */
+
+/* ADC0FLT[SINC4EN] - Enable the Sinc4 filter instead of Sinc3 filter. */
+#define ADC0FLT_SINC4EN_BBA            (*(volatile unsigned long *) 0x42600430)
+#define ADC0FLT_SINC4EN_MSK            (0x1   << 12 )
+#define ADC0FLT_SINC4EN                (0x1   << 12 )
+#define ADC0FLT_SINC4EN_DIS            (0x0   << 12 ) /* DIS                      */
+#define ADC0FLT_SINC4EN_EN             (0x1   << 12 ) /* EN                       */
+
+/* ADC0FLT[AF] - Averaging filter */
+#define ADC0FLT_AF_MSK                 (0xF   << 8  )
+
+/* ADC0FLT[NOTCH2] - Inserts a notch at FNOTCH2 */
+#define ADC0FLT_NOTCH2_BBA             (*(volatile unsigned long *) 0x4260041C)
+#define ADC0FLT_NOTCH2_MSK             (0x1   << 7  )
+#define ADC0FLT_NOTCH2                 (0x1   << 7  )
+#define ADC0FLT_NOTCH2_DIS             (0x0   << 7  ) /* DIS                      */
+#define ADC0FLT_NOTCH2_EN              (0x1   << 7  ) /* EN                       */
+
+/* ADC0FLT[SF] - SINC Filter value */
+#define ADC0FLT_SF_MSK                 (0x7F  << 0  )
+
+/* Reset Value for ADC0MDE*/
+#define ADC0MDE_RVAL                   0x0 
+
+/* ADC0MDE[PGA] - PGA Gain Select bit */
+#define ADC0MDE_PGA_MSK                (0xF   << 4  )
+#define ADC0MDE_PGA_G1                 (0x0   << 4  ) /* G1                       */
+#define ADC0MDE_PGA_G2                 (0x1   << 4  ) /* G2                       */
+#define ADC0MDE_PGA_G4                 (0x2   << 4  ) /* G4                       */
+#define ADC0MDE_PGA_G8                 (0x3   << 4  ) /* G8                       */
+#define ADC0MDE_PGA_G16                (0x4   << 4  ) /* G16                      */
+#define ADC0MDE_PGA_G32                (0x5   << 4  ) /* G32                      */
+#define ADC0MDE_PGA_G64                (0x6   << 4  ) /* G64                      */
+#define ADC0MDE_PGA_G128               (0x7   << 4  ) /* G128                     */
+
+/* ADC0MDE[ADCMOD2] - ADC modulator gain of 2 control bits */
+#define ADC0MDE_ADCMOD2_BBA            (*(volatile unsigned long *) 0x4260048C)
+#define ADC0MDE_ADCMOD2_MSK            (0x1   << 3  )
+#define ADC0MDE_ADCMOD2                (0x1   << 3  )
+#define ADC0MDE_ADCMOD2_MOD2OFF        (0x0   << 3  ) /* MOD2OFF                  */
+#define ADC0MDE_ADCMOD2_MOD2ON         (0x1   << 3  ) /* MOD2ON                   */
+
+/* ADC0MDE[ADCMD] - ADC Mode bits */
+#define ADC0MDE_ADCMD_MSK              (0x7   << 0  )
+#define ADC0MDE_ADCMD_OFF              (0x0   << 0  ) /* OFF                      */
+#define ADC0MDE_ADCMD_CONT             (0x1   << 0  ) /* CONT                     */
+#define ADC0MDE_ADCMD_SINGLE           (0x2   << 0  ) /* SINGLE                   */
+#define ADC0MDE_ADCMD_IDLE             (0x3   << 0  ) /* IDLE                     */
+#define ADC0MDE_ADCMD_INTOCAL          (0x4   << 0  ) /* INTOCAL                  */
+#define ADC0MDE_ADCMD_INTGCAL          (0x5   << 0  ) /* INTGCAL                  */
+#define ADC0MDE_ADCMD_SYSOCAL          (0x6   << 0  ) /* SYSOCAL                  */
+#define ADC0MDE_ADCMD_SYSGCAL          (0x7   << 0  ) /* SYSGCAL                  */
+
+/* Reset Value for ADC0RCR*/
+#define ADC0RCR_RVAL                   0x1 
+
+/* ADC0RCR[VALUE] -  */
+#define ADC0RCR_VALUE_MSK              (0xFFFF << 0  )
+
+/* Reset Value for ADC0RCV*/
+#define ADC0RCV_RVAL                   0x0 
+
+/* ADC0RCV[VALUE] -  */
+#define ADC0RCV_VALUE_MSK              (0xFFFF << 0  )
+
+/* Reset Value for ADC0TH*/
+#define ADC0TH_RVAL                    0x0 
+
+/* ADC0TH[VALUE] -  */
+#define ADC0TH_VALUE_MSK               (0xFFFF << 0  )
+
+/* Reset Value for ADC0THC*/
+#define ADC0THC_RVAL                   0x1 
+
+/* ADC0THC[VALUE] -  */
+#define ADC0THC_VALUE_MSK              (0xFF  << 0  )
+
+/* Reset Value for ADC0THV*/
+#define ADC0THV_RVAL                   0x0 
+
+/* ADC0THV[VALUE] -  */
+#define ADC0THV_VALUE_MSK              (0xFF  << 0  )
+
+/* Reset Value for ADC0ACC*/
+#define ADC0ACC_RVAL                   0x0 
+
+/* ADC0ACC[VALUE] -  */
+#define ADC0ACC_VALUE_MSK              (0xFFFFFFFF << 0  )
+
+/* Reset Value for ADC0ATH*/
+#define ADC0ATH_RVAL                   0x0 
+
+/* ADC0ATH[VALUE] -  */
+#define ADC0ATH_VALUE_MSK              (0xFFFFFFFF << 0  )
+
+/* Reset Value for ADC0PRO*/
+#define ADC0PRO_RVAL                   0x0 
+
+/* ADC0PRO[ACCEN] - ADC Accumulator Enable bits */
+#define ADC0PRO_ACCEN_MSK              (0x3   << 4  )
+#define ADC0PRO_ACCEN_Off              (0x0   << 4  ) /* Off                      */
+#define ADC0PRO_ACCEN_En               (0x1   << 4  ) /* En                       */
+#define ADC0PRO_ACCEN_EnNDec           (0x2   << 4  ) /* EnNDec                   */
+#define ADC0PRO_ACCEN_EnAccCnt         (0x3   << 4  ) /* EnAccCnt                 */
+
+/* ADC0PRO[CMPEN] - ADC Comparator Enable bits */
+#define ADC0PRO_CMPEN_MSK              (0x3   << 2  )
+#define ADC0PRO_CMPEN_Off              (0x0   << 2  ) /* Off                      */
+#define ADC0PRO_CMPEN_En               (0x1   << 2  ) /* En                       */
+#define ADC0PRO_CMPEN_EnCnt            (0x2   << 2  ) /* EnCnt                    */
+#define ADC0PRO_CMPEN_EnCntDec         (0x3   << 2  ) /* EnCntDec                 */
+
+/* ADC0PRO[OREN] - ADC OverRange Enable */
+#define ADC0PRO_OREN_BBA               (*(volatile unsigned long *) 0x42600884)
+#define ADC0PRO_OREN_MSK               (0x1   << 1  )
+#define ADC0PRO_OREN                   (0x1   << 1  )
+#define ADC0PRO_OREN_DIS               (0x0   << 1  ) /* DIS                      */
+#define ADC0PRO_OREN_EN                (0x1   << 1  ) /* EN                       */
+
+/* ADC0PRO[RCEN] - ADC Result Counter Enable */
+#define ADC0PRO_RCEN_BBA               (*(volatile unsigned long *) 0x42600880)
+#define ADC0PRO_RCEN_MSK               (0x1   << 0  )
+#define ADC0PRO_RCEN                   (0x1   << 0  )
+#define ADC0PRO_RCEN_DIS               (0x0   << 0  ) /* DIS                      */
+#define ADC0PRO_RCEN_EN                (0x1   << 0  ) /* EN                       */
+
+/* Reset Value for ADC0DAT*/
+#define ADC0DAT_RVAL                   0x0 
+
+/* ADC0DAT[VALUE] -  */
+#define ADC0DAT_VALUE_MSK              (0xFFFFFFFF << 0  )
+#if (__NO_MMR_STRUCTS__==1)
+
 #define          ADC1STA                                    (*(volatile unsigned char      *) 0x40030080)
 #define          ADC1MSKI                                   (*(volatile unsigned char      *) 0x40030084)
 #define          ADC1CON                                    (*(volatile unsigned long      *) 0x40030088)
@@ -8704,7 +9576,7 @@ typedef struct {                            /*!< pADI_ADC1 Structure            
 #define          ADC1INTGN                                  (*(volatile unsigned short int *) 0x40030090)
 #define          ADC1EXTGN                                  (*(volatile unsigned short int *) 0x40030094)
 #define          ADC1VDDGN                                  (*(volatile unsigned short int *) 0x40030098)
-#define          ADCCFG                                     (*(volatile unsigned short int *) 0x4003009C)
+#define          ADCSCFG1                                   (*(volatile unsigned short int *) 0x4003009C)
 #define          ADC1FLT                                    (*(volatile unsigned short int *) 0x400300A0)
 #define          ADC1MDE                                    (*(volatile unsigned short int *) 0x400300A4)
 #define          ADC1RCR                                    (*(volatile unsigned short int *) 0x400300A8)
@@ -8716,7 +9588,7 @@ typedef struct {                            /*!< pADI_ADC1 Structure            
 #define          ADC1ATH                                    (*(volatile unsigned long      *) 0x400300C0)
 #define          ADC1PRO                                    (*(volatile unsigned char      *) 0x400300C4)
 #define          ADC1DAT                                    (*(volatile unsigned long      *) 0x400300C8)
-#endif // (__NO_MMR_STRUCTS__==0)
+#endif // (__NO_MMR_STRUCTS__==1)
 
 /* Reset Value for ADC1STA*/
 #define ADC1STA_RVAL                   0x0 
@@ -8915,48 +9787,48 @@ typedef struct {                            /*!< pADI_ADC1 Structure            
 /* ADC1VDDGN[VALUE] - Gain with Avdd Ref */
 #define ADC1VDDGN_VALUE_MSK            (0xFFFF << 0  )
 
-/* Reset Value for ADCCFG*/
-#define ADCCFG_RVAL                    0xF 
+/* Reset Value for ADCSCFG1*/
+#define ADCSCFG1_RVAL                  0xF 
 
-/* ADCCFG[SIMU] - Enable both ADCs */
-#define ADCCFG_SIMU_BBA                (*(volatile unsigned long *) 0x426013BC)
-#define ADCCFG_SIMU_MSK                (0x1   << 15 )
-#define ADCCFG_SIMU                    (0x1   << 15 )
-#define ADCCFG_SIMU_DIS                (0x0   << 15 ) /* DIS                      */
-#define ADCCFG_SIMU_EN                 (0x1   << 15 ) /* EN                       */
+/* ADCSCFG1[SIMU] - Enable both ADCs */
+#define ADCSCFG1_SIMU_BBA              (*(volatile unsigned long *) 0x426013BC)
+#define ADCSCFG1_SIMU_MSK              (0x1   << 15 )
+#define ADCSCFG1_SIMU                  (0x1   << 15 )
+#define ADCSCFG1_SIMU_DIS              (0x0   << 15 ) /* DIS                      */
+#define ADCSCFG1_SIMU_EN               (0x1   << 15 ) /* EN                       */
 
-/* ADCCFG[BOOST30] - Boost the Vbias current source ability by 30 times */
-#define ADCCFG_BOOST30_BBA             (*(volatile unsigned long *) 0x426013B4)
-#define ADCCFG_BOOST30_MSK             (0x1   << 13 )
-#define ADCCFG_BOOST30                 (0x1   << 13 )
-#define ADCCFG_BOOST30_DIS             (0x0   << 13 ) /* DIS                      */
-#define ADCCFG_BOOST30_EN              (0x1   << 13 ) /* EN                       */
+/* ADCSCFG1[BOOST30] - Boost the Vbias current source ability by 30 times */
+#define ADCSCFG1_BOOST30_BBA           (*(volatile unsigned long *) 0x426013B4)
+#define ADCSCFG1_BOOST30_MSK           (0x1   << 13 )
+#define ADCSCFG1_BOOST30               (0x1   << 13 )
+#define ADCSCFG1_BOOST30_DIS           (0x0   << 13 ) /* DIS                      */
+#define ADCSCFG1_BOOST30_EN            (0x1   << 13 ) /* EN                       */
 
-/* ADCCFG[PINSEL] - Enable vbias generator, send vbias to selected ain pin bits */
-#define ADCCFG_PINSEL_MSK              (0x7   << 8  )
-#define ADCCFG_PINSEL_DIS              (0x0   << 8  ) /* Disable VBIAS generator  */
-#define ADCCFG_PINSEL_AIN7             (0x4   << 8  ) /* AIN7                     */
-#define ADCCFG_PINSEL_AIN11            (0x6   << 8  ) /* AIN11                    */
+/* ADCSCFG1[PINSEL] - Enable vbias generator, send vbias to selected ain pin bits */
+#define ADCSCFG1_PINSEL_MSK            (0x7   << 8  )
+#define ADCSCFG1_PINSEL_DIS            (0x0   << 8  ) /* Disable VBIAS generator  */
+#define ADCSCFG1_PINSEL_AIN7           (0x4   << 8  ) /* AIN7                     */
+#define ADCSCFG1_PINSEL_AIN11          (0x6   << 8  ) /* AIN11                    */
 
-/* ADCCFG[GNDSWON] - GND_SW */
-#define ADCCFG_GNDSWON_BBA             (*(volatile unsigned long *) 0x4260139C)
-#define ADCCFG_GNDSWON_MSK             (0x1   << 7  )
-#define ADCCFG_GNDSWON                 (0x1   << 7  )
-#define ADCCFG_GNDSWON_DIS             (0x0   << 7  ) /* DIS                      */
-#define ADCCFG_GNDSWON_EN              (0x1   << 7  ) /* EN                       */
+/* ADCSCFG1[GNDSWON] - GND_SW */
+#define ADCSCFG1_GNDSWON_BBA           (*(volatile unsigned long *) 0x4260139C)
+#define ADCSCFG1_GNDSWON_MSK           (0x1   << 7  )
+#define ADCSCFG1_GNDSWON               (0x1   << 7  )
+#define ADCSCFG1_GNDSWON_DIS           (0x0   << 7  ) /* DIS                      */
+#define ADCSCFG1_GNDSWON_EN            (0x1   << 7  ) /* EN                       */
 
-/* ADCCFG[GNDSWRESEN] - 20k resistor in series with GND_SW */
-#define ADCCFG_GNDSWRESEN_BBA          (*(volatile unsigned long *) 0x42601398)
-#define ADCCFG_GNDSWRESEN_MSK          (0x1   << 6  )
-#define ADCCFG_GNDSWRESEN              (0x1   << 6  )
-#define ADCCFG_GNDSWRESEN_DIS          (0x0   << 6  ) /* DIS                      */
-#define ADCCFG_GNDSWRESEN_EN           (0x1   << 6  ) /* EN                       */
+/* ADCSCFG1[GNDSWRESEN] - 20k resistor in series with GND_SW */
+#define ADCSCFG1_GNDSWRESEN_BBA        (*(volatile unsigned long *) 0x42601398)
+#define ADCSCFG1_GNDSWRESEN_MSK        (0x1   << 6  )
+#define ADCSCFG1_GNDSWRESEN            (0x1   << 6  )
+#define ADCSCFG1_GNDSWRESEN_DIS        (0x0   << 6  ) /* DIS                      */
+#define ADCSCFG1_GNDSWRESEN_EN         (0x1   << 6  ) /* EN                       */
 
-/* ADCCFG[EXTBUF] - Control signals for ext_ref buffers bits */
-#define ADCCFG_EXTBUF_MSK              (0x3   << 0  )
-#define ADCCFG_EXTBUF_OFF              (0x0   << 0  ) /* OFF                      */
-#define ADCCFG_EXTBUF_VREFPN           (0x1   << 0  ) /* VREFPN                   */
-#define ADCCFG_EXTBUF_VREFP_VREF2P     (0x2   << 0  ) /* VREFP_VREF2P             */
+/* ADCSCFG1[EXTBUF] - Control signals for ext_ref buffers bits */
+#define ADCSCFG1_EXTBUF_MSK            (0x3   << 0  )
+#define ADCSCFG1_EXTBUF_OFF            (0x0   << 0  ) /* OFF                      */
+#define ADCSCFG1_EXTBUF_VREFPN         (0x1   << 0  ) /* VREFPN                   */
+#define ADCSCFG1_EXTBUF_VREFP_VREF2P   (0x2   << 0  ) /* VREFP_VREF2P             */
 
 /* Reset Value for ADC1FLT*/
 #define ADC1FLT_RVAL                   0x7D 
@@ -9255,6 +10127,20 @@ typedef struct {                            /*!< pADI_ADCDMA Structure          
 #define ADCDMACON_ADC1CTRL             (0x1   << 2  )
 #define ADCDMACON_ADC1CTRL_DIS         (0x0   << 2  ) /* DIS                      */
 #define ADCDMACON_ADC1CTRL_EN          (0x1   << 2  ) /* EN                       */
+
+/* ADCDMACON[ADC0DMAEN] -  */
+#define ADCDMACON_ADC0DMAEN_BBA        (*(volatile unsigned long *) 0x42601F04)
+#define ADCDMACON_ADC0DMAEN_MSK        (0x1   << 1  )
+#define ADCDMACON_ADC0DMAEN            (0x1   << 1  )
+#define ADCDMACON_ADC0DMAEN_DIS        (0x0   << 1  ) /* DIS                      */
+#define ADCDMACON_ADC0DMAEN_EN         (0x1   << 1  ) /* EN                       */
+
+/* ADCDMACON[ADC0CTRL] -  */
+#define ADCDMACON_ADC0CTRL_BBA         (*(volatile unsigned long *) 0x42601F00)
+#define ADCDMACON_ADC0CTRL_MSK         (0x1   << 0  )
+#define ADCDMACON_ADC0CTRL             (0x1   << 0  )
+#define ADCDMACON_ADC0CTRL_DIS         (0x0   << 0  ) /* DIS                      */
+#define ADCDMACON_ADC0CTRL_EN          (0x1   << 0  ) /* EN                       */
 // ------------------------------------------------------------------------------------------------
 // -----                                        DAC                                        -----
 // ------------------------------------------------------------------------------------------------
@@ -9406,17 +10292,21 @@ typedef struct {                            /*!< pADI_DAC Structure             
 #define ADI_SPI0_ADDR                            0x40004000
 #define ADI_SPI1_ADDR                            0x40004400
 #define ADI_UART_ADDR                            0x40005000
+#define ADI_UART1_ADDR                           0x40005400
+#define ADI_UART2_ADDR                           0x40005800
 #define ADI_GP0_ADDR                             0x40006000
 #define ADI_GP1_ADDR                             0x40006030
 #define ADI_GP2_ADDR                             0x40006060
+#define ADI_GP3_ADDR                             0x40006090
 #define ADI_ANA_ADDR                             0x40008810
 #define ADI_DMA_ADDR                             0x40010000
 #define ADI_NVIC_ADDR                            0xE000E000
-#define ADI_ADCTEST_ADDR                         0x40030050
-#define ADI_EREFBUF_ADDR                         0x400300D0
+#define ADI_ADC0_ADDR                            0x40030000
 #define ADI_ADC1_ADDR                            0x40030080
 #define ADI_ADCSTEP_ADDR                         0x400300E0
+#define ADI_ADCTEST_ADDR                         0x40030050
 #define ADI_ADCDMA_ADDR                          0x400300F0
+#define ADI_EREFBUF_ADDR                         0x400300D0
 #define ADI_DAC_ADDR                             0x40020000
 
 // ------------------------------------------------------------------------------------------------
@@ -9436,18 +10326,22 @@ typedef struct {                            /*!< pADI_DAC Structure             
 #define pADI_SPI0                     ((ADI_SPI_TypeDef                *)ADI_SPI0_ADDR)
 #define pADI_SPI1                     ((ADI_SPI_TypeDef                *)ADI_SPI1_ADDR)
 #define pADI_UART                     ((ADI_UART_TypeDef               *)ADI_UART_ADDR)
+#define pADI_UART1                    ((ADI_UART_TypeDef               *)ADI_UART1_ADDR)
+#define pADI_UART2                    ((ADI_UART_TypeDef               *)ADI_UART2_ADDR)
 #define pADI_GP0                      ((ADI_GPIO_TypeDef               *)ADI_GP0_ADDR)
 #define pADI_GP1                      ((ADI_GPIO_TypeDef               *)ADI_GP1_ADDR)
 #define pADI_GP2                      ((ADI_GPIO_TypeDef               *)ADI_GP2_ADDR)
+#define pADI_GP3                      ((ADI_GPIO_TypeDef               *)ADI_GP3_ADDR)
 #define pADI_ANA                      ((ADI_ANA_TypeDef                *)ADI_ANA_ADDR)
 #define pADI_DMA                      ((ADI_DMA_TypeDef                *)ADI_DMA_ADDR)
+#define pADI_ADC0                     ((ADI_ADC_TypeDef                *)ADI_ADC0_ADDR)
 #define pADI_ADC1                     ((ADI_ADC_TypeDef                *)ADI_ADC1_ADDR)
 #define pADI_ADCSTEP                  ((ADI_ADCSTEP_TypeDef            *)ADI_ADCSTEP_ADDR)
 #define pADI_ADCDMA                   ((ADI_ADCDMA_TypeDef             *)ADI_ADCDMA_ADDR)
 #define pADI_DAC                      ((ADI_DAC_TypeDef                *)ADI_DAC_ADDR)
 
 /** @} */ /* End of group Device_Peripheral_Registers */
-/** @} */ /* End of group ADUCM361 */
+/** @} */ /* End of group ADUCM362 */
 /** @} */ /* End of group CMSIS */
 
 #ifdef __cplusplus
@@ -9455,4 +10349,4 @@ typedef struct {                            /*!< pADI_DAC Structure             
 #endif 
 
 
-#endif  // __ADUCM361_H__
+#endif  // __ADUCM362_H__

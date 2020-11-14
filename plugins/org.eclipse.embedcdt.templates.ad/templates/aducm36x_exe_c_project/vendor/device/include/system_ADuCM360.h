@@ -1,9 +1,9 @@
 /**************************************************************************//**
  * @file     system_ADuCM360.h
  * @brief    CMSIS Cortex-M3 Device Peripheral Access Layer Header File for
- *           ADuCM360 Device 
- * @version  V0.1
- * @date     11 September 2015
+ *           Device ADuCM360
+ * @version  V3.10
+ * @date     23. November 2012
  *
  * @note
  *
@@ -33,40 +33,48 @@
    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
    POSSIBILITY OF SUCH DAMAGE.
+
+   Portions Copyright (c) 2017 Analog Devices, Inc.
    ---------------------------------------------------------------------------*/
 
+/** @addtogroup CMSIS
+  * @{
+  */
 
-#ifndef SYSTEM_ADUCM360_H   /* ToDo: replace '<Device>' with your device name */
-#define SYSTEM_ADUCM360_H
+/** @addtogroup aducM360_system
+  * @{
+  */  
+
+#ifndef __SYSTEM_ADUCM360_H__
+#define __SYSTEM_ADUCM360_H__
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 #include <stdint.h>
 
 extern uint32_t SystemCoreClock;     /*!< System Clock Frequency (Core Clock)  */
 
-
 /**
- * Initialize the system
+ * @brief  Initialize the system
  *
  * @param  none
  * @return none
  *
- * @brief  Setup the microcontroller system.
- *         Initialize the System and update the SystemCoreClock variable.
+ * Setup the microcontroller system.
+ * Initialize the System and update the SystemCoreClock variable.
  */
 extern void SystemInit (void);
 
 /**
- * Update SystemCoreClock variable
+ * @brief  Update internal SystemCoreClock variable
  *
  * @param  none
  * @return none
  *
- * @brief  Updates the SystemCoreClock with current core Clock
- *         retrieved from cpu registers.
+ * Updates the internal SystemCoreClock with current core
+ * Clock retrieved from cpu registers.
  */
 extern void SystemCoreClockUpdate (void);
 
@@ -76,7 +84,7 @@ extern void SystemCoreClockUpdate (void);
  * @param  ExtClkFreq   External clock frequency in Hz
  * @return none
  *
- * Sets the clock frequency of the source connected to P0.5 clock input source
+ * Sets the clock frequency of the source connected to P1.0 clock input source
  */
 extern void SetSystemExtClkFreq (uint32_t ExtClkFreq);
 
@@ -85,13 +93,20 @@ extern void SetSystemExtClkFreq (uint32_t ExtClkFreq);
  *
  * @return External Clock frequency
  *
- * Gets the clock frequency of the source connected to P0.5 clock input source
+ * Gets the clock frequency of the source connected to P1.0 clock input source
  */
 extern uint32_t GetSystemExtClkFreq (void);
-
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* SYSTEM_ADUCM360_H */
+#endif /* __SYSTEM_ADUCM360_H__ */
+
+/**
+  * @}
+  */
+  
+/**
+  * @}
+  */  

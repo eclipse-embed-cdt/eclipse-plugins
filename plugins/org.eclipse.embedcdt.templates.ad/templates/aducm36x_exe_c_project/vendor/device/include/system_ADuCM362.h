@@ -1,7 +1,7 @@
 /**************************************************************************//**
- * @file     system_ADuCM361.h
+ * @file     system_ADuCM362.h
  * @brief    CMSIS Cortex-M3 Device Peripheral Access Layer Header File for
- *           Device ADuCM361
+ *           Device ADuCM362
  * @version  V3.10
  * @date     23. November 2012
  *
@@ -34,19 +34,19 @@
    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
    POSSIBILITY OF SUCH DAMAGE.
 
-   Portions Copyright (c) 2017 Analog Devices, Inc.
+   Portions Copyright (c) 2017-2018 Analog Devices, Inc.
    ---------------------------------------------------------------------------*/
 
 /** @addtogroup CMSIS
   * @{
   */
 
-/** @addtogroup aducM361_system
+/** @addtogroup aducM362_system
   * @{
   */  
 
-#ifndef __SYSTEM_ADUCM361_H__
-#define __SYSTEM_ADUCM361_H__
+#ifndef __SYSTEM_ADUCM362_H__
+#define __SYSTEM_ADUCM362_H__
 
 #ifdef __cplusplus
  extern "C" {
@@ -110,3 +110,4 @@ extern uint32_t GetSystemExtClkFreq (void);
 /**
   * @}
   */  
+
