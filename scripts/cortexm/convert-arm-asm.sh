@@ -132,6 +132,7 @@ sed -E '/^[[:space:]]*$/d' | \
 sed -E 's/^[[:space:]]*;/;/' | \
 sed -e 's/^0/0,/' | \
 sed -e 's/_IRQHandler/_IRQHandler,/' | \
+sed -e 's/_Handler/_Handler,/' | \
 sed -e 's/;/\/\//' | \
 sed -e 's/^/    /'
 
