@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <!-- 
-  Copyright (c) 2009, 2011 Wind River Systems, Inc. and others. 
+  Copyright (c) 2009, 2020 Wind River Systems, Inc. and others. 
 
   This program and the accompanying materials 
   are made available under the terms of the Eclipse Public License 2.0 
@@ -14,6 +14,7 @@
     Doug Schaefer (Wind River) - initial API and implementation 
     Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project 
     Liviu Ionescu - RISC-V version 
+    Alexander Fedorov (ArSysOp) - extract UI part
 -->
 <plugin>
 	<extension-point
@@ -747,7 +748,7 @@
 				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.saverestore">
 			</option>
 			<option
-				applicabilityCalculator="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.DisabledOption"
+				applicabilityCalculator="org.eclipse.embedcdt.managedbuild.cross.riscv.DisabledOption"
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.memcpy"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.memcpy">
@@ -995,7 +996,7 @@
 			</option>
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
+				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.assembler"
@@ -1116,7 +1117,7 @@
 			</tool>
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
+				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler"
@@ -1314,7 +1315,7 @@
 			</tool>
 			<tool
 				command="${cross_prefix}${cross_cpp}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
+				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.compiler"
@@ -2428,34 +2429,6 @@
 			</configuration>
 		</projectType>
 	</extension>
-	<extension point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
-		<wizardPage
-			ID="org.eclipse.embedcdt.managedbuild.cross.riscv.setCrossCommandWizardPage"
-			operationClass="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.SetCrossCommandWizardOperation"
-			pageClass="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.SetCrossCommandWizardPage">
-			<toolchain
-				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.elf.debug">
-			</toolchain>
-			<toolchain
-				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.elf.release">
-			</toolchain>
-			<toolchain
-				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.so.debug">
-			</toolchain>
-			<toolchain
-				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.so.release">
-			</toolchain>
-			<toolchain
-				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.lib.debug">
-			</toolchain>
-			<toolchain
-				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.lib.release">
-			</toolchain>
-			<toolchain
-				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.base">
-			</toolchain>
-		</wizardPage>
-	</extension>
 	<extension point="org.eclipse.core.contenttype.contentTypes">
 		<content-type
 			base-type="org.eclipse.core.runtime.text"
@@ -2514,55 +2487,10 @@
 			</language-scope>
 		</provider>
 	</extension>
-	<extension point="org.eclipse.cdt.ui.cPropertyTab">
-		<tab
-			class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.TabToolchains"
-			helpId="cdt_u_prop_build_setting_tool"
-			icon="icons/elcl16/config-tool.gif"
-			name="%tab.toolchainSettings"
-			parent="org.eclipse.cdt.managedbuilder.ui.properties.Page_BuildSettings"
-			tooltip="Select and configure the toolchain  "
-			weight="012">
-		</tab>
-	</extension>
 	<extension point="org.eclipse.embedcdt.debug.core.cprojectExtra">
 		<factory
 			class="org.eclipse.embedcdt.managedbuild.cross.xpi.CProjectExtraDataManagerFactory">
 		</factory>
-	</extension>
-	<extension point="org.eclipse.ui.preferencePages">
-		<page
-			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.riscv.preferencePage.workspaceToolchainsPaths"
-			name="%preferences.workspaceToolchainsPaths">
-		</page>
-		<page
-			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.preferences.GlobalToolchainsPathsPreferencesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.riscv.preferencePage.globalToolchainsPaths"
-			name="%preferences.globalToolchainsPaths">
-		</page>
-	</extension>
-	<extension point="org.eclipse.ui.propertyPages">
-		<page
-			category="org.eclipse.embedcdt.core.ui.properties.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.properties.ProjectToolchainsPathPropertiesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.riscv.properties.toolchainsPage"
-			name="%properties.projectToolchainsPaths">
-         <filter
-               name="projectNature"
-               value="org.eclipse.cdt.core.cnature">
-         </filter>
-			<enabledWhen>
-				<and>
-					<instanceof value="org.eclipse.core.resources.IProject">
-					</instanceof>
-					<test forcePluginActivation="true" property="ilg.gnumcueclipse.managedbuild.cross.riscv.isGnuRiscv">
-					</test>
-				</and>
-			</enabledWhen>
-		</page>
 	</extension>
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
@@ -2571,7 +2499,7 @@
 	</extension>
 	<extension point="org.eclipse.core.expressions.propertyTesters">
 		<propertyTester
-			class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.GnuRiscvPropertyTester"
+			class="org.eclipse.embedcdt.managedbuild.cross.riscv.GnuRiscvPropertyTester"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.propertyTester"
 			namespace="ilg.gnumcueclipse.managedbuild.cross.riscv"
 			properties="isGnuRiscv"
@@ -2579,13 +2507,6 @@
 		</propertyTester>
 	</extension>
 
-	<!-- <extension point="org.eclipse.ui.propertyPages"> <page class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.PageToolchainSettings" 
-		id="ilg.gnumcueclipse.managedbuild.cross.riscv.ui.properties.Page_ToolchainSettings" 
-		category="org.eclipse.cdt.managedbuilder.ui.properties.Page_head_build" name="Toolchain 
-		Settings" > <enabledWhen> <and> <adapt type="org.eclipse.core.resources.IResource"> 
-		<test property="org.eclipse.core.resources.projectNature" value="org.eclipse.cdt.managedbuilder.core.managedBuildNature"/> 
-		</adapt> <test property="org.eclipse.cdt.ui.checkPreference" value="org.eclipse.cdt.ui:properties.toolchain.modification.disable=false"/> 
-		</and> </enabledWhen> </page> </extension> -->
 	<extension point="org.eclipse.embedcdt.managedbuild.cross.riscv.toolchains">
 	   <!-- id 2029746065 -->
 		<toolchain
