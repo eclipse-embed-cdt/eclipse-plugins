@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.riscv;
+package org.eclipse.embedcdt.managedbuild.cross.riscv.core;
 
 import org.eclipse.cdt.managedbuilder.core.IManagedOutputNameProvider;
 import org.eclipse.cdt.managedbuilder.core.IOption;

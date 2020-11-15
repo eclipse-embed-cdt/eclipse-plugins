@@ -583,8 +583,8 @@
 		</tool>
 		<toolChain
 			archList="all"
-			configurationEnvironmentSupplier="org.eclipse.embedcdt.managedbuild.cross.riscv.EnvironmentVariableSupplier"
-			configurationMacroSupplier="org.eclipse.embedcdt.managedbuild.cross.riscv.ConfigurationBuildMacroSupplier"
+			configurationEnvironmentSupplier="org.eclipse.embedcdt.managedbuild.cross.riscv.core.EnvironmentVariableSupplier"
+			configurationMacroSupplier="org.eclipse.embedcdt.managedbuild.cross.riscv.core.ConfigurationBuildMacroSupplier"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.base"
 			isAbstract="false"
 			languageSettingsProviders="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser;org.eclipse.embedcdt.managedbuild.cross.riscv.GCCBuiltinSpecsDetector"
@@ -748,7 +748,7 @@
 				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.saverestore">
 			</option>
 			<option
-				applicabilityCalculator="org.eclipse.embedcdt.managedbuild.cross.riscv.DisabledOption"
+				applicabilityCalculator="org.eclipse.embedcdt.managedbuild.cross.riscv.core.DisabledOption"
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.memcpy"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.memcpy">
@@ -2089,7 +2089,7 @@
 				<outputType
 					buildVariable="SECONDARY_FLASH"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.createflash.output"
-					nameProvider="org.eclipse.embedcdt.managedbuild.cross.riscv.FlashImageManagedOutputNameProvider"
+					nameProvider="org.eclipse.embedcdt.managedbuild.cross.riscv.core.FlashImageManagedOutputNameProvider"
 					outputContentType="ilg.gnumcueclipse.managedbuild.cross.riscv.content-type.hex"
 					outputs="hex"
 					primaryOutput="false">
@@ -2494,12 +2494,12 @@
 	</extension>
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="org.eclipse.embedcdt.managedbuild.cross.riscv.preferences.DefaultPreferenceInitializer">
+			class="org.eclipse.embedcdt.managedbuild.cross.riscv.core.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 	<extension point="org.eclipse.core.expressions.propertyTesters">
 		<propertyTester
-			class="org.eclipse.embedcdt.managedbuild.cross.riscv.GnuRiscvPropertyTester"
+			class="org.eclipse.embedcdt.managedbuild.cross.riscv.core.GnuRiscvPropertyTester"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.propertyTester"
 			namespace="ilg.gnumcueclipse.managedbuild.cross.riscv"
 			properties="isGnuRiscv"

@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.riscv;
+package org.eclipse.embedcdt.managedbuild.cross.riscv.core;
 
 public class IDs {
 

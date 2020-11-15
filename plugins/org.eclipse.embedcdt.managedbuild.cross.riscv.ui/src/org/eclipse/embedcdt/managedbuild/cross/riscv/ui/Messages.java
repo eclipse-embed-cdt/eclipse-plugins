@@ -19,7 +19,7 @@ package org.eclipse.embedcdt.managedbuild.cross.riscv.ui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.embedcdt.managedbuild.cross.riscv.Activator;
+import org.eclipse.embedcdt.managedbuild.cross.riscv.core.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {

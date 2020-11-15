@@ -30,8 +30,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.Activator;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.ToolchainDefinition;
+import org.eclipse.embedcdt.managedbuild.cross.riscv.core.Activator;
+import org.eclipse.embedcdt.managedbuild.cross.riscv.core.ToolchainDefinition;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizard;
 

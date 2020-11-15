@@ -92,6 +92,7 @@
 
 		<!-- RISC-V specific modules. -->
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.riscv</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.riscv.core</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.riscv.ui</module>
 		<module>features/org.eclipse.embedcdt.managedbuild.cross.riscv-feature</module>
 

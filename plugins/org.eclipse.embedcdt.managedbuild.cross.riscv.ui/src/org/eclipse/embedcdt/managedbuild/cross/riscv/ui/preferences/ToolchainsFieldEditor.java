@@ -14,7 +14,7 @@
 
 package org.eclipse.embedcdt.managedbuild.cross.riscv.ui.preferences;
 
-import org.eclipse.embedcdt.managedbuild.cross.riscv.ToolchainDefinition;
+import org.eclipse.embedcdt.managedbuild.cross.riscv.core.ToolchainDefinition;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 

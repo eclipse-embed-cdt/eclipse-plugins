@@ -13,7 +13,7 @@
  *     Alexander Fedorov (ArSysOp) - extract UI part.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.riscv;
+package org.eclipse.embedcdt.managedbuild.cross.riscv.core;
 
 import org.eclipse.embedcdt.core.AbstractActivator;
 import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;

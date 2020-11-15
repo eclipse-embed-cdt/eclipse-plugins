@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.riscv.preferences;
+package org.eclipse.embedcdt.managedbuild.cross.riscv.core.preferences;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -21,8 +21,8 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.INodeChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.NodeChangeEvent;
 import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.Activator;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.ToolchainDefinition;
+import org.eclipse.embedcdt.managedbuild.cross.riscv.core.Activator;
+import org.eclipse.embedcdt.managedbuild.cross.riscv.core.ToolchainDefinition;
 import org.osgi.service.prefs.Preferences;
 
 /**

@@ -14,7 +14,7 @@
  *     Liviu Ionescu - RISC-V version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.riscv;
+package org.eclipse.embedcdt.managedbuild.cross.riscv.core;
 
 import java.io.File;
 
