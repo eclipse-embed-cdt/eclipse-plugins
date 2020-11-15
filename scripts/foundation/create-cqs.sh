@@ -61,23 +61,23 @@ echo "Remove target folders..."
 rm -rf $(find main -type d -name 'target' -print)
 
 echo
-echo "Move the ad template..."
-mv "main/plugins/org.eclipse.embedcdt.core/src/com/github/zafarkhaja/semver"/* semver
+echo "Move the semver folders..."
+mv -v "main/plugins/org.eclipse.embedcdt.core/src/com/github/zafarkhaja/semver"/* semver
 
 echo
-echo "Move the ad folder..."
+echo "Move the ad folders..."
 mv -v "main/plugins/org.eclipse.embedcdt.templates.ad/templates/aducm36x_exe_c_project/vendor"/* template-ad
 
 echo
-echo "Move the freescale folder..."
+echo "Move the freescale folders..."
 mv -v "main/plugins/org.eclipse.embedcdt.templates.freescale/templates/micro-os-plus"/* template-freescale
 
 echo
-echo "Move the stm folder..."
+echo "Move the stm folders..."
 mv -v "main/plugins/org.eclipse.embedcdt.templates.stm/templates/micro-os-plus"/* template-stm
 
 echo
-echo "Move the cortexm folder..."
+echo "Move the cortexm folders..."
 mv -v "main/plugins/org.eclipse.embedcdt.templates.cortexm/templates/cortexm_project/Vendor" template-core/cortexm
 
 echo
