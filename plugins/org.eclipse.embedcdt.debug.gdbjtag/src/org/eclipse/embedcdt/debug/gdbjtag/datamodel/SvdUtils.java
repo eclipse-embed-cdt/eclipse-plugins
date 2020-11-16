@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -9,14 +9,14 @@
  * SPDX-License-Identifier: EPL-2.0
  * 
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.datamodel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-// import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -45,8 +45,8 @@ import org.eclipse.embedcdt.debug.gdbjtag.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.data.CProjectExtraDataManagerProxy;
 import org.eclipse.embedcdt.debug.gdbjtag.data.SVDPathManagerProxy;
-import org.eclipse.embedcdt.packs.core.ConsoleStream;
 import org.eclipse.embedcdt.packs.core.PackType;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.IPacksDataManager;
 import org.eclipse.embedcdt.packs.core.data.JsonGenericParser;
 import org.eclipse.embedcdt.packs.core.data.PacksDataManagerFactoryProxy;
@@ -59,7 +59,6 @@ import org.eclipse.embedcdt.packs.core.tree.AbstractTreePreOrderIterator;
 import org.eclipse.embedcdt.packs.core.tree.ITreeIterator;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.data.xcdl.Utils;
-import org.eclipse.ui.console.MessageConsoleStream;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -402,7 +401,7 @@ public class SvdUtils {
 
 		assert path != null;
 
-		MessageConsoleStream out = ConsoleStream.getConsoleOut();
+		PacksConsoleStream out = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 		try {
 
 			out.println("Parsing SVD file \"" + path.toOSString() + "\"...");

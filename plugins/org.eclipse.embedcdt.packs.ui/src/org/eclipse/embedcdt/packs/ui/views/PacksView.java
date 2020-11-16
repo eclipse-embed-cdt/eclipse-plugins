@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,15 +10,18 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui.views;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -26,12 +29,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.embedcdt.core.StringUtils;
-import org.eclipse.embedcdt.packs.core.ConsoleStream;
 import org.eclipse.embedcdt.packs.core.PackType;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.DurationMonitor;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
-import org.eclipse.embedcdt.packs.core.tree.NodeViewContentProvider;
 import org.eclipse.embedcdt.packs.core.tree.PackNode;
 import org.eclipse.embedcdt.packs.core.tree.Property;
 import org.eclipse.embedcdt.packs.core.tree.Selector;
@@ -77,7 +79,6 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.commands.ICommandService;
-import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IServiceLocator;
 
@@ -260,11 +261,11 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 	private boolean fIsCopyExampleEnabled;
 
 	private DataManager fDataManager;
-	private MessageConsoleStream fOut;
+	private PacksConsoleStream fOut;
 
 	public PacksView() {
 
-		fOut = ConsoleStream.getConsoleOut();
+		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 
 		fDataManager = DataManager.getInstance();
 	}
@@ -582,8 +583,11 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				if (Activator.getInstance().isDebugging()) {
 					System.out.println(selection);
 				}
-
-				Job job = new InstallJob("Install CMSIS Packs", selection);
+				List<Node> nodes = Arrays.stream(selection.toArray())//
+						.filter(Node.class::isInstance)//
+						.map(Node.class::cast)//
+						.collect(Collectors.toList());
+				Job job = new InstallJob("Install CMSIS Packs", nodes);
 				job.schedule();
 			}
 		};
@@ -602,8 +606,11 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 				TreeSelection selection = (TreeSelection) fViewer.getSelection();
 				// System.out.println(selection);
-
-				Job job = new RemoveJob("Remove CMSIS Packs", selection);
+				List<Node> nodes = Arrays.stream(selection.toArray())//
+						.filter(Node.class::isInstance)//
+						.map(Node.class::cast)//
+						.collect(Collectors.toList());
+				Job job = new RemoveJob("Remove CMSIS Packs", nodes);
 				job.schedule();
 			}
 		};
@@ -626,7 +633,11 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 						String out[] = dlg.getData();
 
 						if (checkCopyDestinationFolders(selection, out)) {
-							Job job = new CopyExampleJob("Copy example", selection, out);
+							List<PackNode> nodes = Arrays.stream(selection.toArray())//
+									.filter(PackNode.class::isInstance)//
+									.map(PackNode.class::cast)//
+									.collect(Collectors.toList());
+							Job job = new CopyExampleJob("Copy example", nodes, out);
 							job.schedule();
 						}
 					}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,11 +10,13 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui.preferences;
 
 import org.eclipse.embedcdt.packs.core.Preferences;
+import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -36,7 +38,7 @@ public class FolderPage extends FieldEditorPreferencePage implements IWorkbenchP
 
 	public FolderPage() {
 		super(GRID);
-		setPreferenceStore(Preferences.getPreferenceStore());
+		setPreferenceStore(Activator.getInstance().getCorePreferenceStore());
 		setDescription("The location where packages are stored.");
 	}
 

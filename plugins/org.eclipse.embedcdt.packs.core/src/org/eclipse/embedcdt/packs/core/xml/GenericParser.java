@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.core.xml;
@@ -19,12 +20,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.embedcdt.core.Xml;
-import org.eclipse.embedcdt.packs.core.ConsoleStream;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.Property;
 import org.eclipse.embedcdt.packs.core.tree.Type;
-import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -41,11 +41,10 @@ import org.w3c.dom.Element;
  */
 public class GenericParser {
 
-	protected MessageConsoleStream fOut;
+	protected PacksConsoleStream fOut;
 
 	public GenericParser() {
-
-		fOut = ConsoleStream.getConsoleOut();
+		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 	}
 
 	// Override this in derived class

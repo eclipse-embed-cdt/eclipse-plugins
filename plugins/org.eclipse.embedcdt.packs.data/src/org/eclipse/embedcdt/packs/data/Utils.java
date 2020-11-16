@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -9,7 +9,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Liviu Ionescu - initial version
+ *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.data;
@@ -31,11 +32,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.embedcdt.core.StringUtils;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.FileNotFoundException;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.console.MessageConsoleStream;
 
 public class Utils {
 
@@ -53,59 +51,7 @@ public class Utils {
 		return pushbackInputStream;
 	}
 
-	/**
-	 * 
-	 * @param sourceUrl
-	 * @param destinationFile
-	 * @param out
-	 * @param monitor
-	 * @param shell
-	 * @return 0 = Ok, 1 = Retry, 2 = Ignore, 3 = Ignore All, 4 = Abort
-	 * @throws IOException
-	 */
-	public static int copyFileWithShell(final URL sourceUrl, File destinationFile, MessageConsoleStream out,
-			IProgressMonitor monitor, final Shell shell, final boolean ignoreError) throws IOException {
-
-		while (true) {
-			try {
-				Utils.copyFile(sourceUrl, destinationFile, out, monitor);
-				return 0;
-			} catch (final IOException e) {
-
-				if (ignoreError) {
-					return 3; // Ignore All
-				}
-
-				class ErrorMessageDialog implements Runnable {
-
-					public int retCode = 0;
-
-					@Override
-					public void run() {
-						String[] buttons = new String[] { "Retry", "Ignore", "Ignore All", "Abort" };
-						MessageDialog dialog = new MessageDialog(shell, "Read error", null,
-								sourceUrl.toString() + "\n" + e.getMessage(), MessageDialog.ERROR, buttons, 0);
-						retCode = dialog.open();
-					}
-				}
-
-				ErrorMessageDialog messageDialog = new ErrorMessageDialog();
-				Display.getDefault().syncExec(messageDialog);
-
-				if (messageDialog.retCode == 3) {
-					throw e; // Abort
-				} else if (messageDialog.retCode == 1 || messageDialog.retCode == 2) {
-					return messageDialog.retCode + 1; // Ignore & Ignore All
-				}
-
-				// Else try again
-			}
-		}
-
-		// HandlerUtil.getActiveShell(event)
-	}
-
-	public static void copyFile(URL sourceUrl, File destinationFile, MessageConsoleStream out, IProgressMonitor monitor)
+	public static void copyFile(URL sourceUrl, File destinationFile, PacksConsoleStream out, IProgressMonitor monitor)
 			throws IOException {
 
 		URL url = sourceUrl;
@@ -180,7 +126,7 @@ public class Utils {
 		}
 	}
 
-	public static void copyFile(File sourceFile, File destinationFile, MessageConsoleStream out,
+	public static void copyFile(File sourceFile, File destinationFile, PacksConsoleStream out,
 			IProgressMonitor monitor) throws IOException {
 
 		if (out != null) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui.views;
@@ -24,14 +25,13 @@ import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
-import org.eclipse.embedcdt.packs.core.tree.NodeViewContentProvider;
 import org.eclipse.embedcdt.packs.core.tree.PackNode;
 import org.eclipse.embedcdt.packs.core.tree.Property;
 import org.eclipse.embedcdt.packs.core.tree.Type;
-import org.eclipse.embedcdt.packs.core.ui.IconUtils;
 import org.eclipse.embedcdt.packs.data.DataManager;
 import org.eclipse.embedcdt.packs.jobs.ParsePdscRunnable;
 import org.eclipse.embedcdt.packs.ui.Activator;
+import org.eclipse.embedcdt.packs.ui.IconUtils;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -487,7 +487,7 @@ public class OutlineView extends ViewPart {
 		// If the version node is installed, get outline
 		IProgressService progressService = PlatformUI.getWorkbench().getProgressService();
 		try {
-			progressService.busyCursorWhile(new ParsePdscRunnable("Parse Outline", (PackNode) versionNode));
+			progressService.busyCursorWhile(m-> new ParsePdscRunnable("Parse Outline", (PackNode) versionNode));
 
 		} catch (InvocationTargetException e1) {
 			Activator.log(e1);

@@ -12,15 +12,16 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.packs.core.tree;
+package org.eclipse.embedcdt.packs.ui.views;
 
-import java.util.List;
+import java.util.Collection;
 
+import org.eclipse.embedcdt.packs.core.jstree.JsNode;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-public abstract class NodeViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
+public abstract class JsNodeViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
 	protected Viewer fViewer;
 
@@ -42,36 +43,40 @@ public abstract class NodeViewContentProvider implements IStructuredContentProvi
 		return getChildren(inputElement);
 	}
 
+	/**
+	 * @return an array of Objects, or null if there are no children.
+	 */
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		if (parentElement instanceof Node) {
-			Node node = (Node) parentElement;
-			if (node.hasChildren()) {
-				List<Leaf> children = node.getChildren();
-				return children.toArray(new Leaf[children.size()]);
-			} else {
-				return new Leaf[0];
-			}
-		} else if (parentElement instanceof Leaf) {
-			return new Leaf[0];
+		if (parentElement instanceof JsNode) {
+			JsNode node = (JsNode) parentElement;
+			Collection<JsNode> children = node.getChildren();
+			return children.toArray(new JsNode[children.size()]);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * @return a JsNode or null, if the element is the root node.
+	 */
+	@Override
+	public Object getParent(Object element) {
+		if (element instanceof JsNode) {
+			JsNode node = (JsNode) element;
+			return node.getParent();
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public Object getParent(Object element) {
-		return ((Leaf) element).getParent();
-	}
-
-	@Override
 	public boolean hasChildren(Object element) {
-		Object[] children = getChildren(element);
-		if (children != null && children.length > 0) {
-			return true;
-		} else {
-			return false;
+		if (element instanceof JsNode) {
+			JsNode node = (JsNode) element;
+			return node.hasChildren();
 		}
+		return false;
 	}
 
 }

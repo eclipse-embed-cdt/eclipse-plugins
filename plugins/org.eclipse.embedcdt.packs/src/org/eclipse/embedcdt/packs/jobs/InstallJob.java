@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.jobs;
@@ -34,7 +35,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.packs.Activator;
-import org.eclipse.embedcdt.packs.core.ConsoleStream;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.FileNotFoundException;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
@@ -44,15 +45,13 @@ import org.eclipse.embedcdt.packs.core.tree.Type;
 import org.eclipse.embedcdt.packs.data.DataManager;
 import org.eclipse.embedcdt.packs.data.DataManagerEvent;
 import org.eclipse.embedcdt.packs.data.Utils;
-import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.ui.console.MessageConsoleStream;
 
 public class InstallJob extends Job {
 
 	private static boolean fgRunning = false;
 
-	private MessageConsoleStream fOut;
-	private TreeSelection fSelection;
+	private PacksConsoleStream fOut;
+	private List<Node> fSelection;
 
 	// private String m_folderPath;
 	private IProgressMonitor fMonitor;
@@ -61,11 +60,11 @@ public class InstallJob extends Job {
 	// private PacksStorage fStorage;
 	private DataManager fDataManager;
 
-	public InstallJob(String name, TreeSelection selection) {
+	public InstallJob(String name, List<Node> selection) {
 
 		super(name);
 
-		fOut = ConsoleStream.getConsoleOut();
+		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 
 		fSelection = selection;
 
@@ -94,9 +93,7 @@ public class InstallJob extends Job {
 		List<Node> packsToInstall = new ArrayList<Node>();
 
 		// Iterate selection and build the list of versions to be installed
-		for (Object obj : fSelection.toArray()) {
-
-			Node node = (Node) obj;
+		for (Node node : fSelection) {
 			// Model properties are passed to view, so we can test them here
 			if (!node.isBooleanProperty(Property.INSTALLED)) {
 
@@ -202,7 +199,7 @@ public class InstallJob extends Job {
 		return status;
 	}
 
-	private int computeWorkUnits(Node versionNode, MessageConsoleStream out) {
+	private int computeWorkUnits(Node versionNode, PacksConsoleStream out) {
 
 		int workUnits = 0;
 

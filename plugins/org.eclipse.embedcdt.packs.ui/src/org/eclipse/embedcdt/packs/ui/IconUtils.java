@@ -12,9 +12,8 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.packs.core.ui;
+package org.eclipse.embedcdt.packs.ui;
 
-import org.eclipse.embedcdt.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.swt.graphics.Image;
