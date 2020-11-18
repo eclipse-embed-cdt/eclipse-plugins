@@ -19,7 +19,7 @@ public interface ConfigurationAttributes {
 	// ------------------------------------------------------------------------
 
 	// public static final String PREFIX = Activator.PLUGIN_ID;
-	public static final String PREFIX = "org.eclipse.embedcdt.debug.gdbjtag";
+	public static final String PREFIX = "ilg.gnumcueclipse.debug.gdbjtag";
 
 	// ------------------------------------------------------------------------
 
@@ -30,6 +30,6 @@ public interface ConfigurationAttributes {
 
 	// TabSvd
 	public static final String ATTR_JTAG_DEVICE = "org.eclipse.cdt.debug.gdbjtag.core.jtagDevice"; //$NON-NLS-1$
-
+	
 	// ------------------------------------------------------------------------
 }

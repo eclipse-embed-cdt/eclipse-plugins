@@ -19,7 +19,7 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 	// ------------------------------------------------------------------------
 
 	// public static final String PREFIX = Activator.PLUGIN_ID;
-	public static final String PREFIX = "org.eclipse.embedcdt.debug.gdbjtag.jlink";
+	public static final String PREFIX = "ilg.gnumcueclipse.debug.gdbjtag.jlink";
 
 	// ------------------------------------------------------------------------
 
