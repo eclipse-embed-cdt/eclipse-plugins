@@ -17,20 +17,10 @@
 
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 		<launchConfigurationType
-			id="org.eclipse.embedcdt.debug.gdbjtag.jumper.launchConfigurationType"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationType"
 			modes="debug, run"
 			name="%launchConfig.name"
 			public="true" />
-  <launchConfigurationType
-        delegate="org.eclipse.embedcdt.debug.gdbjtag.jumper.dsf.LaunchConfigurationDelegate"
-        id="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationType"
-        migrationDelegate="org.eclipse.embedcdt.debug.gdbjtag.jumper.dsf.LaunchConfigurationMigrationDelegate"
-        modes="debug,run"
-        name="%launchConfig.compatibilityName"
-        public="false"
-        sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
-        sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
-  </launchConfigurationType>
 	</extension>
 
 	<extension point="org.eclipse.debug.core.launchDelegates">
@@ -42,13 +32,13 @@
 			name="%launchDelegate.jtagDsf.name"
 			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
 			sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
-			type="org.eclipse.embedcdt.debug.gdbjtag.jumper.launchConfigurationType">
+			type="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationType">
 		</launchDelegate>
 	</extension>
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 		<launchConfigurationTypeImage
-			configTypeID="org.eclipse.embedcdt.debug.gdbjtag.jumper.launchConfigurationType"
+			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationType"
 			icon="icons/obj16/c_app.gif"
 			id="org.eclipse.embedcdt.debug.gdbjtag.jumper.launchConfigurationTypeImage" />
 	</extension>
@@ -56,8 +46,8 @@
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup
 			class="org.eclipse.embedcdt.debug.gdbjtag.jumper.ui.TabGroupLaunchConfiguration"
-			id="org.eclipse.embedcdt.debug.gdbjtag.jumper.launchConfigurationTabGroup"
-			type="org.eclipse.embedcdt.debug.gdbjtag.jumper.launchConfigurationType" />
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationTabGroup"
+			type="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationType" />
 	</extension>
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
