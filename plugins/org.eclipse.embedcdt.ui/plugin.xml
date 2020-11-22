@@ -16,15 +16,15 @@
 <plugin>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			class="org.eclipse.embedcdt.core.ui.preferences.McuPreferencesPage"
-			id="org.eclipse.embedcdt.core.ui.preferences.mcu"
+			class="org.eclipse.embedcdt.internal.ui.preferences.McuPreferencesPage"
+			id="org.eclipse.embedcdt.ui.preferences.mcu"
 			name="%preferences.mcu">
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			class="org.eclipse.embedcdt.core.ui.properties.McuPropertiesPage"
-			id="org.eclipse.embedcdt.core.ui.properties.mcu"
+			class="org.eclipse.embedcdt.internal.ui.properties.McuPropertiesPage"
+			id="org.eclipse.embedcdt.ui.properties.mcu"
 			name="%properties.mcu">
 			<filter
 				name="projectNature"

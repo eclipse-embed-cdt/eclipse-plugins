@@ -15,11 +15,11 @@
 package org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.embedcdt.core.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.Messages;
+import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;

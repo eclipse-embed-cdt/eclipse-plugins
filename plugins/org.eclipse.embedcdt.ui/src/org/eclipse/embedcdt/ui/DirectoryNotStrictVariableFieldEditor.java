@@ -9,17 +9,16 @@
  * SPDX-License-Identifier: EPL-2.0
  * 
  * Contributors:
- *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.core.ui;
+package org.eclipse.embedcdt.ui;
 
 import org.eclipse.embedcdt.core.Activator;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 
-public class StringVariableFieldEditor extends StringFieldEditor {
+public class DirectoryNotStrictVariableFieldEditor extends DirectoryNotStrictFieldEditor {
 
 	// ------------------------------------------------------------------------
 
@@ -28,9 +27,9 @@ public class StringVariableFieldEditor extends StringFieldEditor {
 
 	// ------------------------------------------------------------------------
 
-	public StringVariableFieldEditor(String name, String variableName, String variableDescription, String labelText,
-			Composite parent) {
-		super(name, labelText, parent);
+	public DirectoryNotStrictVariableFieldEditor(String buildToolsPathKey, String variableName,
+			String variableDescription, String toolsPaths_label, Composite fieldEditorParent, boolean isStrict) {
+		super(buildToolsPathKey, toolsPaths_label, fieldEditorParent, isStrict);
 
 		fVariableName = variableName;
 		fVariableDescription = variableDescription;
@@ -49,7 +48,7 @@ public class StringVariableFieldEditor extends StringFieldEditor {
 			if (value == null || value.isEmpty()) {
 				value = getPreferenceStore().getString(getPreferenceName());
 				if (Activator.getInstance().isDebugging()) {
-					System.out.println("StringVariableFieldEditor.doLoad() got \"" + value + "\"");
+					System.out.println("DirectoryNotStrictVariableFieldEditor.doLoad() got \"" + value + "\"");
 				}
 				setPresentsDefaultValue(false);
 			}

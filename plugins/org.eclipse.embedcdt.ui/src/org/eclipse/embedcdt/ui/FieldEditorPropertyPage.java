@@ -12,7 +12,7 @@
  *    Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.core.ui;
+package org.eclipse.embedcdt.ui;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;

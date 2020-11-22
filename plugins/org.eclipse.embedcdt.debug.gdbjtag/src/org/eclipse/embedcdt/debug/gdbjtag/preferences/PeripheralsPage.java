@@ -15,11 +15,11 @@
 package org.eclipse.embedcdt.debug.gdbjtag.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.core.ui.ThemeColorFieldEditor;
 import org.eclipse.embedcdt.debug.gdbjtag.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.render.peripheral.PeripheralColumnLabelProvider;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.Messages;
+import org.eclipse.embedcdt.ui.ThemeColorFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;

@@ -12,21 +12,32 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.core.ui.properties;
+package org.eclipse.embedcdt.internal.ui.preferences;
 
+import org.eclipse.embedcdt.internal.ui.Messages;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
-/**
- * @noextend This class is not intended to be subclassed by clients.
- * @noinstantiate This class is not intended to be instantiated by clients.
- */
-public class McuPropertiesPage extends PropertyPage {
+public class McuPreferencesPage extends PreferencePage implements IWorkbenchPreferencePage {
+
+	public McuPreferencesPage() {
+		super();
+		// setPreferenceStore(CUIPlugin.getDefault().getPreferenceStore());
+		setDescription(Messages.McuPreferencesPage_description);
+	}
+
+	@Override
+	public void init(IWorkbench workbench) {
+		// TODO Auto-generated method stub
+
+	}
 
 	@Override
 	protected Control createContents(Composite parent) {
@@ -43,5 +54,4 @@ public class McuPropertiesPage extends PropertyPage {
 		Dialog.applyDialogFont(container);
 		return container;
 	}
-
 }

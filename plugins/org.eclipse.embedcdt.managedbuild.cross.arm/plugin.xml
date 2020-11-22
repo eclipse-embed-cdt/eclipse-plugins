@@ -3629,13 +3629,13 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
+			category="org.eclipse.embedcdt.ui.preferences.mcu"
 			id="org.eclipse.embedcdt.managedbuild.cross.arm.preferencePage.workspaceToolchainsPaths"
 			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
 			name="%preferences.toolsPaths">
 		</page>
 		<page
-			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
+			category="org.eclipse.embedcdt.ui.preferences.mcu"
 			id="org.eclipse.embedcdt.managedbuild.cross.arm.preferencePage.globalToolchainsPaths"
 			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences.GlobalToolchainsPathsPreferencesPage"
 			name="%preferences.globalToolsPaths">
@@ -3643,7 +3643,7 @@
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="org.eclipse.embedcdt.core.ui.properties.mcu"
+			category="org.eclipse.embedcdt.ui.properties.mcu"
 			id="org.eclipse.embedcdt.managedbuild.cross.arm.properties.toolchainsPage"
 			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.properties.ProjectToolchainsPathPropertiesPage"
 			name="%properties.projectToolsPaths">

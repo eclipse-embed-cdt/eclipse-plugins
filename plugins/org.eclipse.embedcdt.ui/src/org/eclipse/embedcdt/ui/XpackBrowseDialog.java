@@ -12,9 +12,10 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.core.ui;
+package org.eclipse.embedcdt.ui;
 
 import org.eclipse.embedcdt.core.Activator;
+import org.eclipse.embedcdt.internal.ui.Messages;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

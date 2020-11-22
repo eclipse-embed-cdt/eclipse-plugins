@@ -35,6 +35,7 @@
 	<modules>
 		<!-- MCU common modules. -->
 		<module>plugins/org.eclipse.embedcdt.core</module>
+		<module>plugins/org.eclipse.embedcdt.ui</module>
 		<module>features/org.eclipse.embedcdt-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross</module>

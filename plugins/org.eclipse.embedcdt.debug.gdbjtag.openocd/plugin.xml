@@ -78,13 +78,13 @@
 
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
+			category="org.eclipse.embedcdt.ui.preferences.mcu"
 			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.preferences.WorkspaceMcuPage"
 			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.workspacePreferencePage"
 			name="%preferences.workspaceMcu">
 		</page>
 		<page
-			category="org.eclipse.embedcdt.core.ui.preferences.mcu"
+			category="org.eclipse.embedcdt.ui.preferences.mcu"
 			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.preferences.GlobalMcuPage"
 			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.globalPreferencePage"
 			name="%preferences.globalMcu">
@@ -92,7 +92,7 @@
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="org.eclipse.embedcdt.core.ui.properties.mcu"
+			category="org.eclipse.embedcdt.ui.properties.mcu"
 			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.properties.ProjectMcuPage"
 			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.projectPropertiesPage"
 			name="%properties.mcu">

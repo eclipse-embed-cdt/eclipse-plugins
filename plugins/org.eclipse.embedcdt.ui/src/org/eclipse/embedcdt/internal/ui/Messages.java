@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
   *******************************************************************************/
 
-package org.eclipse.embedcdt.core.ui;
+package org.eclipse.embedcdt.internal.ui;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

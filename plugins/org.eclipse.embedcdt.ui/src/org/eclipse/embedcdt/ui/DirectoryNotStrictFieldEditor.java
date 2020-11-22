@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.core.ui;
+package org.eclipse.embedcdt.ui;
 
 import java.io.File;
 

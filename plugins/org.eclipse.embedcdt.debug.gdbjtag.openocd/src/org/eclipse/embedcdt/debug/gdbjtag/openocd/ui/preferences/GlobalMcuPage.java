@@ -15,11 +15,11 @@
 package org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.embedcdt.core.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.Messages;
+import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
