@@ -14,5 +14,5 @@
 #   Liviu Ionescu - RISC-V version   
 ###############################################################################
 
-bundle.name=Embedded C/C++ RISC-V Cross Compiler (incubation)
-bundle.vendor=Eclipse Embedded CDT
+# Control if trace messages are shown.
+org.eclipse.embedcdt.managedbuild.cross.riscv.core/debug=true
