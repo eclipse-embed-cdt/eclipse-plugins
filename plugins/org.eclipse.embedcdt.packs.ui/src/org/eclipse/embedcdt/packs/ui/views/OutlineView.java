@@ -21,7 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
@@ -32,6 +31,7 @@ import org.eclipse.embedcdt.packs.data.DataManager;
 import org.eclipse.embedcdt.packs.jobs.ParsePdscRunnable;
 import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.embedcdt.packs.ui.IconUtils;
+import org.eclipse.embedcdt.ui.EclipseUtils;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;

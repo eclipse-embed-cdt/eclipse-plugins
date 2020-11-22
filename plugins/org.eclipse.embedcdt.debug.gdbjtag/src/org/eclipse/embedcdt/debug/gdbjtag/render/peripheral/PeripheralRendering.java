@@ -31,7 +31,6 @@ import org.eclipse.debug.ui.memory.AbstractTableRendering;
 import org.eclipse.debug.ui.memory.IMemoryRendering;
 import org.eclipse.debug.ui.memory.IMemoryRenderingContainer;
 import org.eclipse.debug.ui.memory.IMemoryRenderingSynchronizationService;
-import org.eclipse.embedcdt.core.SystemUIJob;
 import org.eclipse.embedcdt.debug.gdbjtag.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.memory.PeripheralMemoryBlockExtension;
 import org.eclipse.embedcdt.debug.gdbjtag.viewmodel.peripheral.PeripheralClusterArrayVMNode;
@@ -39,6 +38,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.viewmodel.peripheral.PeripheralGroupVM
 import org.eclipse.embedcdt.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterArrayVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.viewmodel.peripheral.PeripheralTreeVMNode;
+import org.eclipse.embedcdt.ui.SystemUIJob;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;

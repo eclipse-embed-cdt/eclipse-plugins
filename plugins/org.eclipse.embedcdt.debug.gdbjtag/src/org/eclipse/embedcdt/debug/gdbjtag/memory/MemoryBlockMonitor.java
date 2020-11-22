@@ -27,7 +27,7 @@ import org.eclipse.debug.ui.memory.IMemoryRendering;
 import org.eclipse.debug.ui.memory.IMemoryRenderingContainer;
 import org.eclipse.debug.ui.memory.IMemoryRenderingSite;
 import org.eclipse.debug.ui.memory.IMemoryRenderingType;
-import org.eclipse.embedcdt.core.EclipseUtils;
+import org.eclipse.embedcdt.ui.EclipseUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.datamodel.PeripheralDMContext;
 import org.eclipse.embedcdt.debug.gdbjtag.render.peripheral.PeripheralRendering;
