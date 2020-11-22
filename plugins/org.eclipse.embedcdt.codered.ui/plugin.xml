@@ -16,16 +16,16 @@
 <plugin>
 	<extension point="org.eclipse.ui.perspectives">
 		<perspective
-			class="org.eclipse.embedcdt.codered.perspectives.CodeRedPerspectiveFactory"
+			class="org.eclipse.embedcdt.internal.codered.ui.perspectives.CodeRedPerspectiveFactory"
 			icon="icons/cr.gif"
-			id="org.eclipse.embedcdt.codered.perspectives.CodeRedPerspective"
+			id="org.eclipse.embedcdt.codered.ui.perspectives.CodeRedPerspective"
 			name="%perspectives.codered">
 		</perspective>
 	</extension>
 
 	<extension point="org.eclipse.ui.perspectiveExtensions">
 		<perspectiveExtension
-			targetID="org.eclipse.embedcdt.codered.perspectives.CodeRedPerspective">
+			targetID="org.eclipse.embedcdt.codered.ui.perspectives.CodeRedPerspective">
 			<view
 				id="org.eclipse.debug.ui.ExpressionView"
 				minimized="false"
@@ -74,12 +74,12 @@
 
 		<perspectiveExtension targetID="org.eclipse.cdt.ui.CPerspective">
 			<perspectiveShortcut
-				id="org.eclipse.embedcdt.codered.perspectives.CodeRedPerspective" />
+				id="org.eclipse.embedcdt.codered.ui.perspectives.CodeRedPerspective" />
 		</perspectiveExtension>
 
 		<perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
 			<perspectiveShortcut
-				id="org.eclipse.embedcdt.codered.perspectives.CodeRedPerspective" />
+				id="org.eclipse.embedcdt.codered.ui.perspectives.CodeRedPerspective" />
 		</perspectiveExtension>
 
 	</extension>

@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.codered;
+package org.eclipse.embedcdt.internal.codered.ui;
 
 import org.eclipse.osgi.util.NLS;
 

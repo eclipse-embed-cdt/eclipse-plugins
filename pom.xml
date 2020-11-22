@@ -70,6 +70,7 @@
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.restart</module>
 
 		<module>plugins/org.eclipse.embedcdt.codered</module>
+		<module>plugins/org.eclipse.embedcdt.codered.ui</module>
 		<module>features/org.eclipse.embedcdt.codered-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.doc.user</module>

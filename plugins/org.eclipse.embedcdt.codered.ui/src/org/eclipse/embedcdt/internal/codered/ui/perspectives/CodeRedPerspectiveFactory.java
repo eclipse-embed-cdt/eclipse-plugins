@@ -13,7 +13,7 @@
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
-package org.eclipse.embedcdt.codered.perspectives;
+package org.eclipse.embedcdt.internal.codered.ui.perspectives;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,7 +24,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.embedcdt.codered.Activator;
+import org.eclipse.embedcdt.internal.codered.ui.Activator;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
@@ -45,7 +45,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "org.eclipse.embedcdt.codered.perspectives.CodeRedPerspective";
+	public static final String ID = "org.eclipse.embedcdt.codered.ui.perspectives.CodeRedPerspective";
 
 	// ------------------------------------------------------------------------
 

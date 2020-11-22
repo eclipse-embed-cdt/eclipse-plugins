@@ -10,9 +10,7 @@
 #
 # Contributors:
 #   Liviu Ionescu - Arm version   
-#   Alexander Fedorov (ArSysOp) - extract branding
 ###############################################################################
 
-bundle.name=Embedded C/C++ CodeRed Debug Perspective Plug-in (incubation)
-bundle.vendor=Eclipse Embedded CDT
-
+# Control if trace messages are shown.
+org.eclipse.embedcdt.codered.ui/debug=false
