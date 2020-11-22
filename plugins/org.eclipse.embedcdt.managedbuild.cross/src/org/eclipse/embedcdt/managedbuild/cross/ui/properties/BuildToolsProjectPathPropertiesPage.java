@@ -16,13 +16,13 @@ package org.eclipse.embedcdt.managedbuild.cross.ui.properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.embedcdt.core.preferences.ScopedPreferenceStoreWithoutDefaults;
 import org.eclipse.embedcdt.managedbuild.cross.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.ui.Messages;
 import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
+import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 

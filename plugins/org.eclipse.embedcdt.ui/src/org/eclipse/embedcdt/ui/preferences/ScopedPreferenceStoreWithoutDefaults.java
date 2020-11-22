@@ -12,7 +12,7 @@
  *    Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.core.preferences;
+package org.eclipse.embedcdt.ui.preferences;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IScopeContext;

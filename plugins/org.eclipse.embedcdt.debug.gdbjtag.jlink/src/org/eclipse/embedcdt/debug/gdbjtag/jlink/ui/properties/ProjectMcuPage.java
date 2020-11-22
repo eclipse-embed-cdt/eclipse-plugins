@@ -16,13 +16,13 @@ package org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.embedcdt.core.preferences.ScopedPreferenceStoreWithoutDefaults;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.Messages;
 import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
+import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.StringFieldEditor;
