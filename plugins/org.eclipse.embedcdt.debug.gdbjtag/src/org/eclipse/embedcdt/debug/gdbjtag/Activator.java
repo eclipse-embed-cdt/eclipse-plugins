@@ -14,8 +14,8 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag;
 
-import org.eclipse.embedcdt.core.AbstractUIActivator;
 import org.eclipse.embedcdt.debug.gdbjtag.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.ui.AbstractUIActivator;
 import org.osgi.framework.BundleContext;
 
 /**

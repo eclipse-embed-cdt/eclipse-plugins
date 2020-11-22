@@ -14,7 +14,7 @@
 
 package org.eclipse.embedcdt.managedbuild.packs;
 
-import org.eclipse.embedcdt.core.AbstractUIActivator;
+import org.eclipse.embedcdt.ui.AbstractUIActivator;
 import org.osgi.framework.BundleContext;
 
 /**

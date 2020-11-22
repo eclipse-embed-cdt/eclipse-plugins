@@ -16,7 +16,7 @@
 package org.eclipse.embedcdt.packs.ui;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.core.AbstractUIActivator;
+import org.eclipse.embedcdt.ui.AbstractUIActivator;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.BundleContext;

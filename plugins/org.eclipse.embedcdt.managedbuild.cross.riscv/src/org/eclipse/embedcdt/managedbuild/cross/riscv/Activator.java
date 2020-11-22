@@ -14,8 +14,8 @@
 
 package org.eclipse.embedcdt.managedbuild.cross.riscv;
 
-import org.eclipse.embedcdt.core.AbstractUIActivator;
 import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.ui.AbstractUIActivator;
 import org.osgi.framework.BundleContext;
 
 /**

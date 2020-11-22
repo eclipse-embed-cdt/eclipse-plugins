@@ -16,9 +16,9 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag.pyocd;
 
-import org.eclipse.embedcdt.core.AbstractUIActivator;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.ui.AbstractUIActivator;
 import org.osgi.framework.BundleContext;
 
 /**
