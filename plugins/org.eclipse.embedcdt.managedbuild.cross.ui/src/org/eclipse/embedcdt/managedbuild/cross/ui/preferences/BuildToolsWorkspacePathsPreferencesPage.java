@@ -14,17 +14,17 @@
 
 package org.eclipse.embedcdt.managedbuild.cross.ui.preferences;
 
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.embedcdt.internal.managedbuild.cross.ui.Messages;
 import org.eclipse.embedcdt.managedbuild.cross.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.managedbuild.cross.ui.Messages;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
+import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
  * This class represents a preference page that is contributed to the
@@ -36,13 +36,12 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  * preference store that belongs to the main plug-in class. That way,
  * preferences can be accessed directly via the preference store.
  */
-
-public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferencePage
+public class BuildToolsWorkspacePathsPreferencesPage extends FieldEditorPreferencePage
 		implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "org.eclipse.embedcdt.managedbuild.cross.ui.preferencePage.globalToolsPaths";
+	public static final String ID = "org.eclipse.embedcdt.managedbuild.cross.ui.preferencePage.workspaceToolsPaths";
 
 	// ------------------------------------------------------------------------
 
@@ -50,14 +49,14 @@ public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferenceP
 
 	// ------------------------------------------------------------------------
 
-	public BuildToolsGlobalPathsPreferencesPage() {
+	public BuildToolsWorkspacePathsPreferencesPage() {
 		super(GRID);
 
 		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 
-		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
+		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
 
-		setDescription(Messages.GlobalBuildToolsPathsPreferencesPage_description);
+		setDescription(Messages.WorkspaceBuildToolsPathsPreferencesPage_description);
 	}
 
 	// ------------------------------------------------------------------------
@@ -65,8 +64,8 @@ public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferenceP
 	// Contributed by IWorkbenchPreferencePage
 	@Override
 	public void init(IWorkbench workbench) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GlobalToolsPathsPreferencePage.init()");
+		if (org.eclipse.embedcdt.internal.managedbuild.cross.ui.Activator.getInstance().isDebugging()) {
+			System.out.println("WorkspaceToolsPathsPreferencePage.init()");
 		}
 	}
 
@@ -75,12 +74,11 @@ public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferenceP
 	 * blocks needed to manipulate various types of preferences. Each field editor
 	 * knows how to save and restore itself.
 	 */
-
 	@Override
 	protected void createFieldEditors() {
 
 		boolean isStrict;
-		isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.GLOBAL_BUILDTOOLS_PATH_STRICT, true);
+		isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.WORKSPACE_BUILDTOOLS_PATH_STRICT, true);
 
 		String[] xpackNames = fDefaultPreferences.getBuildToolsXpackNames();
 

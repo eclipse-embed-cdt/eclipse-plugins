@@ -1348,40 +1348,6 @@
 			</option>
 		</tool>
 	</extension>
-	<extension point="org.eclipse.ui.preferencePages">
-		<page
-			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.ui.preferences.BuildToolsWorkspacePathsPreferencesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.ui.preferencePage.workspaceToolsPaths"
-			name="%preferences.workspaceBuildToolsPaths">
-		</page>
-		<page
-			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.ui.preferences.BuildToolsGlobalPathsPreferencesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.ui.preferencePage.globalToolsPaths"
-			name="%preferences.globalBuildToolsPaths">
-		</page>
-	</extension>
-	<extension point="org.eclipse.ui.propertyPages">
-		<page
-			category="org.eclipse.embedcdt.ui.properties.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.ui.properties.BuildToolsProjectPathPropertiesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.ui.properties.toolsPage"
-			name="%properties.projectBuildToolsPaths">
-			<filter
-				name="projectNature"
-				value="org.eclipse.cdt.core.cnature">
-			</filter>
-			<enabledWhen>
-				<and>
-					<instanceof value="org.eclipse.core.resources.IProject">
-					</instanceof>
-					<test forcePluginActivation="true" property="org.eclipse.embedcdt.managedbuild.cross.isGnuMcu">
-					</test>
-				</and>
-			</enabledWhen>
-		</page>
-	</extension>
 
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer

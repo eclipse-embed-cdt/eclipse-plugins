@@ -79,6 +79,13 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.embedcdt.managedbuild.cross.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.embedcdt.managedbuild.packs"
          download-size="0"
          install-size="0"

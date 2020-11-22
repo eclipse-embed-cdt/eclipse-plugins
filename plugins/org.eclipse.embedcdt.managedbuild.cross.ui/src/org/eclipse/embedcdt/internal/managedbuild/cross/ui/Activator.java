@@ -12,21 +12,21 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross;
+package org.eclipse.embedcdt.internal.managedbuild.cross.ui;
 
-import org.eclipse.embedcdt.core.AbstractActivator;
 import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.ui.AbstractUIActivator;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractActivator {
+public class Activator extends AbstractUIActivator {
 
 	// ------------------------------------------------------------------------
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.embedcdt.managedbuild.cross"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.embedcdt.managedbuild.cross.ui"; //$NON-NLS-1$
 
 	@Override
 	public String getBundleId() {
