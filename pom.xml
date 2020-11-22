@@ -34,6 +34,7 @@
 
 	<modules>
 		<!-- MCU common modules. -->
+		<module>plugins/org.eclipse.embedcdt</module>
 		<module>plugins/org.eclipse.embedcdt.core</module>
 		<module>plugins/org.eclipse.embedcdt.ui</module>
 		<module>features/org.eclipse.embedcdt-feature</module>
