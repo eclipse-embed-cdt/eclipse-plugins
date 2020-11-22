@@ -170,9 +170,9 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		});
 	}
 
-	private static final String[] launchIds = { "org.eclipse.embedcdt.debug.gdbjtag.jlink.launchConfigurationType",
-			"org.eclipse.embedcdt.debug.gdbjtag.qemu.launchConfigurationType",
-			"org.eclipse.embedcdt.debug.gdbjtag.openocd.launchConfigurationType" };
+	private static final String[] launchIds = { "ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationType",
+			"ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType",
+			"ilg.gnumcueclipse.debug.gdbjtag.openocd.launchConfigurationType" };
 
 	/**
 	 * Associate some launchers with this perspective. Currently not used.

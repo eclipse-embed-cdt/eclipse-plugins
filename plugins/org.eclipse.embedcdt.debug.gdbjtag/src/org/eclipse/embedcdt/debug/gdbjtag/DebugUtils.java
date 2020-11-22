@@ -719,9 +719,11 @@ public class DebugUtils {
 			return (V) value;
 		}
 		String compatKey = key.replace("org.eclipse.embedcdt.", "ilg.gnumcueclipse.");
-		value = attributes.get(compatKey);
-		if (defaultValue.getClass().isInstance(value)) {
-			return (V) value;
+		if (!compatKey.equals(key)) {
+			value = attributes.get(compatKey);
+			if (defaultValue.getClass().isInstance(value)) {
+				return (V) value;
+			}
 		}
 		return defaultValue;
 	}

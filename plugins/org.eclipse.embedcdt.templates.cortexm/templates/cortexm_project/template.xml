@@ -682,10 +682,10 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/include/Timer-$(fileExtension).h" />
+						value="$(commonDir)/include/timer-$(fileExtension).h" />
 					<simple
 						name="target"
-						value="$(includeDir)/Timer.h" />
+						value="$(includeDir)/timer.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -693,10 +693,10 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/src/Timer.$(fileExtension)" />
+						value="$(commonDir)/src/timer.$(fileExtension)" />
 					<simple
 						name="target"
-						value="$(sourceDir)/Timer.$(fileExtension)" />
+						value="$(sourceDir)/timer.$(fileExtension)" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -875,10 +875,10 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/system/include/cortexm/ExceptionHandlers.h" />
+						value="$(commonDir)/system/include/cortexm/exception-handlers.h" />
 					<simple
 						name="target"
-						value="$(sysDir)/$(includeDir)/cortexm/ExceptionHandlers.h" />
+						value="$(sysDir)/$(includeDir)/cortexm/exception-handlers.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -896,10 +896,10 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/system/include/diag/Trace.h" />
+						value="$(commonDir)/system/include/diag/trace.h" />
 					<simple
 						name="target"
-						value="$(sysDir)/$(includeDir)/diag/Trace.h" />
+						value="$(sysDir)/$(includeDir)/diag/trace.h" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -965,10 +965,10 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				<element>
 					<simple
 						name="source"
-						value="$(commonDir)/system/src/_write.c" />
+						value="$(commonDir)/system/src/write.c" />
 					<simple
 						name="target"
-						value="$(sourceDir)/_write.c" />
+						value="$(sourceDir)/write.c" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1201,20 +1201,6 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 					<simple
 						name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.missingdeclaration" />
-					<simple
-						name="value"
-						value="true" />
-					<simple
-						name="path"
-						value="" />
-					<simple
-						name="buildType"
-						value="" />
-				</element>
-				<element>
-					<simple
-						name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.conversion" />
 					<simple
 						name="value"
 						value="true" />

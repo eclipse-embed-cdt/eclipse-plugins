@@ -1,3 +1,3 @@
-      timer.sleep(Timer::FREQUENCY_HZ);
+      timer.sleep(timer::FREQUENCY_HZ);
 	  
 	    ++seconds;

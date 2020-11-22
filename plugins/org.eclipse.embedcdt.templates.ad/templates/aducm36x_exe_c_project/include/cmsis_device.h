@@ -32,7 +32,7 @@
 // Add pragmas if the header triggers warnings.
 // #pragma GCC diagnostic ignored "-Wpadded"
 
-#include "$(CMSIS_name).h"
+#include "adi_processor.h"
 
 #pragma GCC diagnostic pop
 

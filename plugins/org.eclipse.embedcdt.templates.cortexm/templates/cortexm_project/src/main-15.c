@@ -13,7 +13,7 @@ main (int argc, char* argv[])
   // Normally at this stage most of the microcontroller subsystems, including
   // the clock, were initialised by the CMSIS SystemInit() function invoked
   // from the startup file, before calling main().
-  // (see system/src/cortexm/_initialize_hardware.c)
+  // (see system/src/cortexm/initialize-hardware.c)
   // If further initialisations are required, customise __initialize_hardware()
   // or add the additional initialisation here, for example:
   //

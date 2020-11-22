@@ -1,15 +1,41 @@
-/****************************************************************************************************//**
+/**************************************************************************//**
  * @file     ADUCM361.h
- *
  * @brief    CMSIS Cortex-M3 Core Peripheral Access Layer Header File for
- *           default ADUCM361 Device Series
+ *           Device ADUCM361
+ * @version  V3.10
+ * @date     23. November 2012
  *
- * @version  V0.7
- * @date     Friday May 30 2014 14:49
+ * @note
  *
- *******************************************************************************************************/
+ ******************************************************************************/
+/* Copyright (c) 2012 ARM LIMITED
 
+   All rights reserved.
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are met:
+   - Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   - Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+   - Neither the name of ARM nor the names of its contributors may be used
+     to endorse or promote products derived from this software without
+     specific prior written permission.
+   *
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+   ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+   POSSIBILITY OF SUCH DAMAGE.
 
+   Portions Copyright (c) 2017-2018 Analog Devices, Inc.
+   ---------------------------------------------------------------------------*/
 
 /** @addtogroup CMSIS
   * @{
@@ -3948,7 +3974,6 @@ typedef struct {                            /*!< pADI_UART Structure            
   __IO uint16_t  COMDIV;                    /*!< Baud rate Divisor register            */
   __I  uint16_t  RESERVED8[3];
   __IO uint8_t   COMCON;                    /*!< UART control register                 */
-  __I  uint8_t   RESERVED9[3];
 } ADI_UART_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          COMTX                                      (*(volatile unsigned char      *) 0x40005000)
@@ -4291,7 +4316,6 @@ typedef struct {                            /*!< pADI_GP0 Structure             
   __IO uint8_t   GPCLR;                     /*!< GPIO Port 0 data out clear.           */
   __I  uint8_t   RESERVED7[3];
   __IO uint8_t   GPTGL;                     /*!< GPIO Port 0 pin toggle.               */
-  __I  uint8_t   RESERVED8[3];
 } ADI_GPIO_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          GP0CON                                     (*(volatile unsigned short int *) 0x40006000)
@@ -5811,7 +5835,6 @@ typedef struct {                            /*!< pADI_ANA Structure             
   __IO uint8_t   IEXCCON;                   /*!< Controls the on-chip Excitation Current Sources */
   __I  uint8_t   RESERVED2[3];
   __IO uint8_t   IEXCDAT;                   /*!< Sets the output current setting for both Excitation Current sources */
-  __I  uint8_t   RESERVED3[3];
 } ADI_ANA_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          REFCTRL                                    (*(volatile unsigned short int *) 0x40008840)
@@ -5934,7 +5957,6 @@ typedef struct {                            /*!< pADI_DMA Structure             
   __IO uint8_t   DMAPCELLID2;               /*!< PrimeCell identification 2            */
   __I  uint8_t   RESERVED11[3];
   __IO uint8_t   DMAPCELLID3;               /*!< PrimeCell identification 3            */
-  __I  uint8_t   RESERVED12[3];
 } ADI_DMA_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          DMASTA                                     (*(volatile unsigned long      *) 0x40010000)
@@ -9205,7 +9227,6 @@ typedef struct {                            /*!< pADI_ADCSTEP Structure         
 typedef struct {                            /*!< pADI_ADCDMA Structure                  */
   __I  uint32_t  RESERVED0[2];
   __IO uint16_t  ADCDMACON;                 /*!< ADC DMA mode Configuration register   */
-  __I  uint16_t  RESERVED1;
 } ADI_ADCDMA_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          ADCDMACON                                  (*(volatile unsigned short int *) 0x400300F8)

@@ -1,26 +1,26 @@
 
-  Timer timer;
+  timer timer;
   timer.start ();
 
   // Perform all necessary initialisations for the LEDs.
   for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
     {
-      blinkLeds[i].powerUp ();
+      blinkLeds[i].power_up ();
     }
 
   uint32_t seconds = 0;
 
   for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
     {
-      blinkLeds[i].turnOn ();
+      blinkLeds[i].turn_on ();
     }
 
   // First second is long.
-  timer.sleep (Timer::FREQUENCY_HZ);
+  timer.sleep (timer::FREQUENCY_HZ);
 
   for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
     {
-      blinkLeds[i].turnOff ();
+      blinkLeds[i].turn_off ();
     }
 
   timer.sleep (BLINK_OFF_TICKS);
@@ -33,10 +33,10 @@
       // Blink individual LEDs.
       for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
         {
-          blinkLeds[i].turnOn ();
+          blinkLeds[i].turn_on ();
           timer.sleep (BLINK_ON_TICKS);
 
-          blinkLeds[i].turnOff ();
+          blinkLeds[i].turn_off ();
           timer.sleep (BLINK_OFF_TICKS);
 
           ++seconds;
@@ -55,7 +55,7 @@
                   break;
                 }
             }
-          timer.sleep (Timer::FREQUENCY_HZ);
+          timer.sleep (timer::FREQUENCY_HZ);
 
           ++seconds;
           trace_printf ("Second %u\n", seconds);
@@ -66,10 +66,10 @@
     {
       while (1)
         {
-          blinkLeds[0].turnOn ();
+          blinkLeds[0].turn_on ();
           timer.sleep (BLINK_ON_TICKS);
 
-          blinkLeds[0].turnOff ();
+          blinkLeds[0].turn_off ();
           timer.sleep (BLINK_OFF_TICKS);
 
           ++seconds;

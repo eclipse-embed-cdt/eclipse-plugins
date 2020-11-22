@@ -17,20 +17,10 @@
 
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 		<launchConfigurationType
-			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.launchConfigurationType"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationType"
 			modes="debug,run"
 			name="%launchConfig.name"
 			public="true" />
-  <launchConfigurationType
-        delegate="org.eclipse.embedcdt.debug.gdbjtag.jlink.dsf.LaunchConfigurationDelegate"
-        id="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationType"
-        migrationDelegate="org.eclipse.embedcdt.debug.gdbjtag.jlink.dsf.LaunchConfigurationMigrationDelegate"
-        modes="debug,run"
-        name="%launchConfig.compatibilityName"
-        public="false"
-        sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
-        sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
-  </launchConfigurationType>
 	</extension>
 
 	<!-- LaunchConfigurationDelegate.java is where fun starts -->
@@ -43,13 +33,13 @@
 			name="%launchDelegate.jtagDsf.name"
 			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
 			sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
-			type="org.eclipse.embedcdt.debug.gdbjtag.jlink.launchConfigurationType">
+			type="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationType">
 		</launchDelegate>
 	</extension>
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 		<launchConfigurationTypeImage
-			configTypeID="org.eclipse.embedcdt.debug.gdbjtag.jlink.launchConfigurationType"
+			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationType"
 			icon="icons/obj16/c_app.gif"
 			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.launchConfigurationTypeImage" />
 	</extension>
@@ -58,7 +48,7 @@
 		<launchConfigurationTabGroup
 			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.TabGroupLaunchConfiguration"
 			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.launchConfigurationTabGroup"
-			type="org.eclipse.embedcdt.debug.gdbjtag.jlink.launchConfigurationType" />
+			type="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationType" />
 	</extension>
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">

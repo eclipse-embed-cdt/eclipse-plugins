@@ -29,4 +29,4 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "diag/Trace.h"
+#include "diag/trace.h"
