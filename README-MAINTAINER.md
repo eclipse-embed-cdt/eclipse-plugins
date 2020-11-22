@@ -54,10 +54,7 @@ The official download page is
 
 - https://projects.eclipse.org/projects/iot.embed-cdt/downloads/
 
-## How to fix issues
-
-Normally all changes should be done as a result of a ticket registered as
-a GitHub Issue.
+## Prepare release
 
 ### Create a new milestone
 
@@ -73,6 +70,9 @@ milestone. As title, use the current version, like _v6.0.0_.
 
 ### Fix issues
 
+Normally all changes should be done as a result of a ticket registered as
+a GitHub Issue.
+
 - be sure the `develop` branch is selected
 - scan the
 [plug-ins issues](https://github.com/eclipse-embed-cdt/eclipse-plugins/issues/)
@@ -82,7 +82,9 @@ number, like `[#122]`;
 - add a message like _fixed on 2020-01-10_;
 - close the issues
 
-### Build locally
+## Build locally
+
+### Run maven
 
 After fixing issues, run the maven build locally:
 
@@ -91,6 +93,8 @@ $ mvn clean verify
 ```
 
 Start a Debug/Run session and try the result in a child Eclipse.
+
+## How to make the pre-release
 
 ### Push to GitHub
 
@@ -139,6 +143,8 @@ Add a tag like `v6.0.0` (with `v`).
 Jenkins job to copy the files from `builds/master` to `updates/v6-test/`,
 which is the public location for the pre-release
 - click the **Build Now** link
+
+### Announce pre-release
 
 Announce the pre-release to the **embed-cdt-dev@eclipse.org** list;
 use a subject like **Eclipse Embedded CDT v6.0.0 released**, and
@@ -192,9 +198,10 @@ Start with _Pre-release_ (Header 3).
 	<li>none</li>
 </ul>
 
-<p>More details at GitHub:<br />
-<br />
-- <a href="https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19">https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19</a></p>
+<p>More details at GitHub:</p>
+<ul>
+	<li><a href="https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19">https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19</a></li>
+</ul>
 
 <h3>Release content</h3>
 
@@ -229,7 +236,7 @@ Select the **Release Type** (major, minor, service).
 
 Install the plug-ins on several platforms.
 
-### Publish the final release
+## Publish the final release
 
 When the plug-ins are considered stable:
 
@@ -310,80 +317,6 @@ Update the URLs to use the download redirect:
 
 Remove the _Pre-release_ top header.
 
-### Create the test package (deprecated)
-
-TODO: explain how to edit/update the EPP project.
-
-- switch to the `embed-cdt-develop` branch
-- in the `parent/pom.xml` file, edit the Embed CDT specifics
-- commit
-- push `embed-cdt-develop` to GitHub
-- go to https://ci.eclipse.org/embed-cdt/
-- login (otherwise the next link is not visible!)
-- use the [make-packages](https://ci.eclipse.org/embed-cdt/job/make-packages/)
-  Jenkins job to maven build the `embed-cdt-develop` branch and
-  copy the result in `packages-test/<version>
-- click the **Build Now** link
-
-The direct download URL is:
-
-- https://download.eclipse.org/embed-cdt/packages-test/
-
-Check if everything is fine and test.
-
-Test on various platforms.
-
-### Create the final package (deprecated)
-
-- merge `embed-cdt-develop` int `embed-cdt`
-- push `embed-cdt` to GitHub
-- tag `2020-09_R-ecdt`
-- go to https://ci.eclipse.org/embed-cdt/
-- login (otherwise the next link is not visible!)
-- use the [make-packages](https://ci.eclipse.org/embed-cdt/job/make-packages/)
-  Jenkins job to maven build the `embed-cdt` branch and
-  copy the result in `packages/<version>
-- click the **Build Now** link
-
-The direct download URL is:
-
-- `https://download.eclipse.org/embed-cdt/packages/`
-
-### Update the release record (deprecated)
-
-- go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/governance/) and select the new release
-- click Edit -> The Basics
-- switch to Source mode
-
-```html
-<h3>Eclipse IDE for Embedded C/C++ Developers</h3>
-
-<p>For convenience, this version of the plug-ins is also available as Eclipse packages, which pack together the <strong>Eclipse IDE for C/C++ Developers</strong> standard distribution with the <strong>Eclipse Embedded CDT plug-ins</strong>:</p>
-
-<h4>2020-06 (Eclipse 4.16)</h4>
-
-<ul>
-	<li>Windows <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/packages/2020-06/eclipse-embedcdt-2020-06-R-win32.win32.x86_64.zip">64-bit</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/packages/2020-06/eclipse-embedcdt-2020-06-R-win32.win32.x86_64.zip.sha">SHA</a></li>
-	<li>macOS <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/packages/2020-06/eclipse-embedcdt-2020-06-R-macosx.cocoa.x86_64.tar.gz">64-bit</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/packages/2020-06/eclipse-embedcdt-2020-06-R-macosx.cocoa.x86_64.tar.gz.sha">SHA</a></li>
-	<li>Intel Linux <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/packages/2020-06/eclipse-embedcdt-2020-06-R-linux.gtk.x86_64.tar.gz">64-bit</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/packages/2020-06/eclipse-embedcdt-2020-06-R-linux.gtk.x86_64.tar.gz.sha">SHA</a></li>
-	<li>Arm Linux <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/packages/2020-06/eclipse-embedcdt-2020-06-R-linux.gtk.aarch64.tar.gz">64-bit</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/packages/2020-06/eclipse-embedcdt-2020-06-R-linux.gtk.aarch64.tar.gz.sha">SHA</a></li>
-</ul>
-
-<h4>macOS security notice</h4>
-
-<p>On macOS, if you download the archive with the browser, the strict security checks on recent macOS will prevent it to run, and complain that the program is damaged. That&#39;s obviously not true, and the fix is simple, you need to remove the <strong>com.apple.quarantine</strong> extended attribute.</p>
-
-<pre>
-$ xattr -d com.apple.quarantine ~/Downloads/eclipse-embedcdt-2020-06-R-macosx.cocoa.x86_64.tar.gz</pre>
-
-<p>After un-archiving, if the Eclipse.app still does not run, check/remove the attribute from the Eclipse.app folder too:</p>
-
-<pre>
-$ xattr -dr com.apple.quarantine ~/Downloads/Eclipse.app
-</pre>
-
-```
-
 ### Update the Downloads page
 
 - go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/) and select the new release
@@ -392,7 +325,103 @@ $ xattr -dr com.apple.quarantine ~/Downloads/Eclipse.app
 
 Use copy/paste/edit.
 
-### Share on Twitter
+## Check & update SimRel
+
+Use the CBI Aggregator installed from:
+
+- https://download.eclipse.org/cbi/updates/aggregator/ide/4.13
+
+The first time clone the SimRel Git project:
+
+```
+git clone "ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build"
+scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "org.eclipse.simrel.build/.git/hooks/"
+```
+
+In subsequent runs, pull new commits.
+
+In Eclipse:
+
+- import existing project `org.eclipse.simrel.build`
+- open `simrel.aggr`
+- expand the 'Contribution: Embedded CDT'
+- select **Mapped Repository**
+- right click: **Show Properties View**
+- in the right side, edit the **Location** field to the new p2 URL and press Enter
+- select all the features in the contribution, right-click and choose **Fix Versions**
+- select the Contribution and **Validate**
+- select the Aggregation and **Validate**
+
+```bash
+git commit
+git push ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build HEAD:refs/for/master
+```
+
+In Gerrit, click **CODE_REVIEW+2** and then **SUBMIT** to merge the changes.
+
+The commit will trigger the [SimRel](https://ci.eclipse.org/simrel/)
+Jenkins aggregator pipeline:  
+
+- https://ci.eclipse.org/simrel/job/simrel.runaggregator.pipeline/
+
+In about one hour it'll automatically rebuild the staging repo:
+
+- https://download.eclipse.org/staging/
+
+## Check & update EPP
+
+If the list of features changed, it is necessary to
+update the EPP project.
+
+The first time clone the EPP Git project:
+
+```
+git clone "ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git"
+scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "epp/org.eclipse.epp.packages.git/.git/hooks/"
+```
+
+In subsequent runs, pull new commits.
+
+- edit `org.eclipse.epp.package.embedcpp.product/epp.product`
+- update the list of features
+
+To change the default preferences, edit the
+`org.eclipse.epp.package.embedcpp/plugin_customization.ini`
+
+If necessary, update the text displayed in the Downloads page, it is in
+`org.eclipse.epp.package.embedcpp.feature/epp.website.xml` file, the
+`<description>` element.
+
+Commit and push to Gerrit:
+
+```bash
+git commit
+git push ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git HEAD:refs/for/master
+```
+
+In Gerrit, click **CODE_REVIEW+2** and then **SUBMIT** to merge the changes.
+
+The commit will trigger the [EPP](https://ci.eclipse.org/packaging/)
+Jenkins job:  
+
+- https://ci.eclipse.org/packaging/job/simrel.epp-tycho-build/
+
+In 1.5 hours the new test versions of the integrated epp builds are
+available from:
+
+- https://ci.eclipse.org/packaging/job/simrel.epp-tycho-build/lastSuccessfulBuild/artifact/org.eclipse.epp.packages/archive/ 
+
+### Announce release
+
+Announce the release to the **embed-cdt-dev@eclipse.org** list;
+use a subject like **Eclipse Embedded CDT v6.0.0 released**, and
+pass a link to the release page.
+
+Beta testers can install the pre-release from:
+
+- https://ci.eclipse.org/packaging/job/simrel.epp-tycho-build/lastSuccessfulBuild/artifact/org.eclipse.epp.packages/archive/ 
+
+## Share on Twitter
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@embedCDT` account, enter a message like

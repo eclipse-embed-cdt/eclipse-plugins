@@ -17,7 +17,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.jumper;
 public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbjtag.ConfigurationAttributes {
 
 	// public static final String PREFIX = Activator.PLUGIN_ID;
-	public static final String PREFIX = "org.eclipse.embedcdt.debug.gdbjtag.jumper";
+	public static final String PREFIX = "ilg.gnumcueclipse.debug.gdbjtag.jumper";
 
 	// TabDebugger
 

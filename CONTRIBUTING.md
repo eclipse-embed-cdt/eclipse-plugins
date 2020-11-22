@@ -26,13 +26,15 @@ tracker.
 Be sure you report only issues related to the **Eclipse Embedded CDT plug-ins**.
 **DO NOT** use it for issues related to the tools (QEMU, OpenOCD, Build
 tools, etc), which should be addressed to their corresponding trackers.
-Web content issues should be addressed to the
-[Web Issues](https://github.com/gnu-mcu-eclipse/gnu-mcu-eclipse.github.io/issues/)
-tracker. J-Link specific questions should be addresses to SEGGER support.
+J-Link specific questions should be addresses to SEGGER support.
+
+Web content issues should be addressed to the web
+[issues](https://github.com/eclipse-embed-cdt/web-jekyll/issues/)
+tracker.
 
 Before reporting issues, please check the list of
-[Known Issues](http://gnu-mcu-eclipse.github.io/support/known-issues/)
-and the [FAQ](http://gnu-mcu-eclipse.github.io/support/faq/).
+[Known Issues](https://eclipse-embed-cdt.github.io/support/known-issues/)
+and the [FAQ](https://eclipse-embed-cdt.github.io/support/faq/).
 
 When entering a new issue, be sure you provide:
 
@@ -73,8 +75,8 @@ In short, the process is something like this:
 
 ### Prerequisites
 
-* JavaSE-11 or later
-* Maven 3
+Please follow the steps in the
+[prerequisites](https://eclipse-embed-cdt.github.io/develop/) page.
 
 ### Command line
 
