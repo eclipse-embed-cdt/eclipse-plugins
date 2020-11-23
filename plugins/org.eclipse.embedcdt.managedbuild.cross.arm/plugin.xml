@@ -3531,30 +3531,6 @@
 			</configuration>
 		</projectType>
 	</extension>
-	<extension point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
-		<wizardPage
-			ID="org.eclipse.embedcdt.managedbuild.cross.setCrossCommandWizardPage"
-			operationClass="org.eclipse.embedcdt.managedbuild.cross.arm.ui.SetCrossCommandWizardOperation"
-			pageClass="org.eclipse.embedcdt.managedbuild.cross.arm.ui.SetCrossCommandWizardPage">
-			<toolchain toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug">
-			</toolchain>
-			<toolchain
-				toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.release">
-			</toolchain>
-			<toolchain toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.so.debug">
-			</toolchain>
-			<toolchain
-				toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.so.release">
-			</toolchain>
-			<toolchain toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.lib.debug">
-			</toolchain>
-			<toolchain
-				toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.lib.release">
-			</toolchain>
-			<toolchain toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
-			</toolchain>
-		</wizardPage>
-	</extension>
 	<extension point="org.eclipse.core.contenttype.contentTypes">
 		<content-type
 			base-type="org.eclipse.core.runtime.text"
@@ -3611,55 +3587,10 @@
 			</language-scope>
 		</provider>
 	</extension>
-	<extension point="org.eclipse.cdt.ui.cPropertyTab">
-		<tab
-			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.TabToolchains"
-			helpId="cdt_u_prop_build_setting_tool"
-			icon="icons/elcl16/config-tool.gif"
-			name="%tab.toolchainSettings"
-			parent="org.eclipse.cdt.managedbuilder.ui.properties.Page_BuildSettings"
-			tooltip="Select and configure the toolchain  "
-			weight="012">
-		</tab>
-	</extension>
 	<extension point="org.eclipse.embedcdt.debug.core.cprojectExtra">
 		<factory
 			class="org.eclipse.embedcdt.managedbuild.cross.core.xpi.CProjectExtraDataManagerFactory">
 		</factory>
-	</extension>
-	<extension point="org.eclipse.ui.preferencePages">
-		<page
-			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			id="org.eclipse.embedcdt.managedbuild.cross.arm.preferencePage.workspaceToolchainsPaths"
-			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
-			name="%preferences.toolsPaths">
-		</page>
-		<page
-			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			id="org.eclipse.embedcdt.managedbuild.cross.arm.preferencePage.globalToolchainsPaths"
-			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences.GlobalToolchainsPathsPreferencesPage"
-			name="%preferences.globalToolsPaths">
-		</page>
-	</extension>
-	<extension point="org.eclipse.ui.propertyPages">
-		<page
-			category="org.eclipse.embedcdt.ui.properties.mcu"
-			id="org.eclipse.embedcdt.managedbuild.cross.arm.properties.toolchainsPage"
-			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.properties.ProjectToolchainsPathPropertiesPage"
-			name="%properties.projectToolsPaths">
-         <filter
-               name="projectNature"
-               value="org.eclipse.cdt.core.cnature">
-         </filter>
-			<enabledWhen>
-				<and>
-					<instanceof value="org.eclipse.core.resources.IProject">
-					</instanceof>
-					<test property="ilg.gnuarmeclipse.managedbuild.cross.isGnuArm">
-					</test>
-				</and>
-			</enabledWhen>
-		</page>
 	</extension>
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
@@ -3668,7 +3599,7 @@
 	</extension>
 	<extension point="org.eclipse.core.expressions.propertyTesters">
 		<propertyTester
-			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.GnuArmPropertyTester"
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.GnuArmPropertyTester"
 			id="ilg.gnuarmeclipse.managedbuild.cross.propertyTester"
 			namespace="ilg.gnuarmeclipse.managedbuild.cross"
 			properties="isGnuArm"
