@@ -12,10 +12,10 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.arm.preferences;
+package org.eclipse.embedcdt.managedbuild.cross.arm.core.preferences;
 
 import org.eclipse.embedcdt.core.preferences.Discoverer;
-import org.eclipse.embedcdt.managedbuild.cross.arm.ToolchainDefinition;
+import org.eclipse.embedcdt.managedbuild.cross.arm.core.ToolchainDefinition;
 
 public class DefaultPreferences extends org.eclipse.embedcdt.managedbuild.cross.core.preferences.DefaultPreferences {
 

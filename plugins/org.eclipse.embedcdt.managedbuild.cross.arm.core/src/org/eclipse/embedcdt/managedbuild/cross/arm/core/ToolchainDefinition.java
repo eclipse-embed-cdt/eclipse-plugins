@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.arm;
+package org.eclipse.embedcdt.managedbuild.cross.arm.core;
 
 import java.util.ArrayList;
 import java.util.List;

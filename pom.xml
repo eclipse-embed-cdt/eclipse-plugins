@@ -82,6 +82,7 @@
 
 		<!-- Arm specific modules. -->
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.arm</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.arm.core</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.arm.ui</module>
 		<module>features/org.eclipse.embedcdt.managedbuild.cross.arm-feature</module>
 

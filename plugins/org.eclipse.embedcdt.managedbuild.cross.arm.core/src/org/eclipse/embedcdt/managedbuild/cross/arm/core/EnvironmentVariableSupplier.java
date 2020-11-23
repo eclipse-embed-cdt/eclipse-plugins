@@ -13,7 +13,7 @@
  *     Liviu Ionescu - Arm version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.arm;
+package org.eclipse.embedcdt.managedbuild.cross.arm.core;
 
 import java.io.File;
 

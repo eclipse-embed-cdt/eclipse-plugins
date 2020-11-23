@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.arm.preferences;
+package org.eclipse.embedcdt.managedbuild.cross.arm.core.preferences;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -20,8 +20,8 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.INodeChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.NodeChangeEvent;
-import org.eclipse.embedcdt.managedbuild.cross.arm.Activator;
-import org.eclipse.embedcdt.managedbuild.cross.arm.ToolchainDefinition;
+import org.eclipse.embedcdt.managedbuild.cross.arm.core.Activator;
+import org.eclipse.embedcdt.managedbuild.cross.arm.core.ToolchainDefinition;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 import org.osgi.service.prefs.Preferences;
 

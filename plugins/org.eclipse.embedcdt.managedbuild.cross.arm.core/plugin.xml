@@ -1114,7 +1114,7 @@
 				name="%option.target.arm.floatABI"
 				tip="Specifies which floating-point ABI to use. Specifying ‘soft’ causes GCC to generate output containing library calls for floating-point operations. ‘softfp’ allows the generation of code using hardware floating-point instructions, but still uses the soft-float calling conventions. ‘hard’ allows generation of floating-point instructions and uses FPU-specific calling conventions. The default depends on the specific target configuration. Note that the hard-float and soft-float ABIs are not link-compatible; you must compile your entire program with the same ABI, and link with a compatible set of libraries."
 				useByScannerDiscovery="true"
-				valueHandler="org.eclipse.embedcdt.managedbuild.cross.arm.FloatABIManagedOptionHandleValue"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.arm.core.FloatABIManagedOptionHandleValue"
 				valueType="enumerated">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
@@ -1668,8 +1668,8 @@
 		</tool>
 		<toolChain
 			archList="all"
-			configurationEnvironmentSupplier="org.eclipse.embedcdt.managedbuild.cross.arm.EnvironmentVariableSupplier"
-			configurationMacroSupplier="org.eclipse.embedcdt.managedbuild.cross.arm.ConfigurationBuildMacroSupplier"
+			configurationEnvironmentSupplier="org.eclipse.embedcdt.managedbuild.cross.arm.core.EnvironmentVariableSupplier"
+			configurationMacroSupplier="org.eclipse.embedcdt.managedbuild.cross.arm.core.ConfigurationBuildMacroSupplier"
 			id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
 			isAbstract="false"
 			languageSettingsProviders="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser;org.eclipse.embedcdt.managedbuild.cross.GCCBuiltinSpecsDetector"
@@ -1694,7 +1694,7 @@
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
 				isAbstract="false"
 				name="%option.toolchain.architecture"
-				valueHandler="org.eclipse.embedcdt.managedbuild.cross.arm.ToolchainFamilyManagedOptionValueHandler"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.arm.core.ToolchainFamilyManagedOptionValueHandler"
 				valueType="enumerated">
 				<enumeratedOptionValue
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm"
@@ -3192,7 +3192,7 @@
 				<outputType
 					buildVariable="SECONDARY_FLASH"
 					id="ilg.gnuarmeclipse.managedbuild.cross.createflash.output"
-					nameProvider="org.eclipse.embedcdt.managedbuild.cross.arm.FlashImageManagedOutputNameProvider"
+					nameProvider="org.eclipse.embedcdt.managedbuild.cross.arm.core.FlashImageManagedOutputNameProvider"
 					outputContentType="ilg.gnuarmeclipse.managedbuild.cross.content-type.hex"
 					outputs="hex"
 					primaryOutput="false">
@@ -3594,12 +3594,12 @@
 	</extension>
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="org.eclipse.embedcdt.managedbuild.cross.arm.preferences.DefaultPreferenceInitializer">
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.core.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 	<extension point="org.eclipse.core.expressions.propertyTesters">
 		<propertyTester
-			class="org.eclipse.embedcdt.managedbuild.cross.arm.GnuArmPropertyTester"
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.core.GnuArmPropertyTester"
 			id="ilg.gnuarmeclipse.managedbuild.cross.propertyTester"
 			namespace="ilg.gnuarmeclipse.managedbuild.cross"
 			properties="isGnuArm"

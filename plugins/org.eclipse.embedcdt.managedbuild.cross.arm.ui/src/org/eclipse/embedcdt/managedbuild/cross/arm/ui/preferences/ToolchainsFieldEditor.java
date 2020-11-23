@@ -14,7 +14,7 @@
 
 package org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences;
 
-import org.eclipse.embedcdt.managedbuild.cross.arm.ToolchainDefinition;
+import org.eclipse.embedcdt.managedbuild.cross.arm.core.ToolchainDefinition;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 
