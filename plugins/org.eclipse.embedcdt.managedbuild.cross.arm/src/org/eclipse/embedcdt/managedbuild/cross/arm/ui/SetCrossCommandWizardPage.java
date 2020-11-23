@@ -20,7 +20,7 @@ import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
 import org.eclipse.embedcdt.managedbuild.cross.arm.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.arm.IDs;
 import org.eclipse.embedcdt.managedbuild.cross.arm.ToolchainDefinition;
-import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardPage;

@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross;
+package org.eclipse.embedcdt.managedbuild.cross.core;
 
 // Base class for Arm and RISC-V toolchain definitions.
 public abstract class ToolchainDefinition {

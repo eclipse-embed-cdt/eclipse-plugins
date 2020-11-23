@@ -388,7 +388,7 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.createflash"
 				isAbstract="true"
 				name="%option.toolchain.flash"
-				valueHandler="org.eclipse.embedcdt.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.core.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -409,7 +409,7 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.createlisting"
 				isAbstract="true"
 				name="%option.toolchain.listing"
-				valueHandler="org.eclipse.embedcdt.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.core.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -430,7 +430,7 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.printsize"
 				isAbstract="true"
 				name="%option.toolchain.size"
-				valueHandler="org.eclipse.embedcdt.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.core.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -560,7 +560,7 @@
 			</option>
 			<option
 				browseType="file"
-				commandGenerator="org.eclipse.embedcdt.managedbuild.cross.LinkerScriptCommandGenerator"
+				commandGenerator="org.eclipse.embedcdt.managedbuild.cross.core.LinkerScriptCommandGenerator"
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.scriptfile"
 				isAbstract="true"
 				name="%option.linker.scriptfile"
@@ -888,7 +888,7 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.useglobalpath"
 				isAbstract="true"
 				name="%option.toolchain.useglobalpath"
-				valueHandler="org.eclipse.embedcdt.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="org.eclipse.embedcdt.managedbuild.cross.core.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement type="UI_VISIBILITY">
 					<false> false body text
@@ -1351,13 +1351,13 @@
 
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="org.eclipse.embedcdt.managedbuild.cross.DefaultPreferenceInitializer">
+			class="org.eclipse.embedcdt.managedbuild.cross.core.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 
 	<extension point="org.eclipse.core.expressions.propertyTesters">
 		<propertyTester
-			class="org.eclipse.embedcdt.managedbuild.cross.GnuMcuPropertyTester"
+			class="org.eclipse.embedcdt.managedbuild.cross.core.GnuMcuPropertyTester"
 			id="org.eclipse.embedcdt.managedbuild.cross.propertyTester"
 			namespace="org.eclipse.embedcdt.managedbuild.cross"
 			properties="isGnuMcu"

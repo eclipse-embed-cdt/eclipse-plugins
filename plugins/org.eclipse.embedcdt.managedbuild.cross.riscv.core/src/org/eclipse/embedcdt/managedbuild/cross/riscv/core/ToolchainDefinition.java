@@ -20,7 +20,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 
-public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross.ToolchainDefinition {
+public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross.core.ToolchainDefinition {
 
 	// ------------------------------------------------------------------------
 

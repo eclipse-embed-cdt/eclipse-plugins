@@ -18,7 +18,7 @@ package org.eclipse.embedcdt.managedbuild.cross.riscv.ui;
 
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPage;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
-import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.riscv.core.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.riscv.core.ToolchainDefinition;
 import org.eclipse.jface.resource.ImageDescriptor;

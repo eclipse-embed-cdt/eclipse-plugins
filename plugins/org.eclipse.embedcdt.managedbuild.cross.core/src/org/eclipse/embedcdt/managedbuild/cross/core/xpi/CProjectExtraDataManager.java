@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.xpi;
+package org.eclipse.embedcdt.managedbuild.cross.core.xpi;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.embedcdt.core.CProjectPacksStorage;
 import org.eclipse.embedcdt.debug.core.data.ICProjectExtraDataManager;
-import org.eclipse.embedcdt.managedbuild.cross.Activator;
+import org.eclipse.embedcdt.managedbuild.cross.core.Activator;
 
 public class CProjectExtraDataManager implements ICProjectExtraDataManager {
 

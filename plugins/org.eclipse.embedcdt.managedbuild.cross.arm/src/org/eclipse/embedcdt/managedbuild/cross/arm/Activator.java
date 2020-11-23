@@ -14,7 +14,7 @@
 
 package org.eclipse.embedcdt.managedbuild.cross.arm;
 
-import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.ui.AbstractUIActivator;
 import org.osgi.framework.BundleContext;
 

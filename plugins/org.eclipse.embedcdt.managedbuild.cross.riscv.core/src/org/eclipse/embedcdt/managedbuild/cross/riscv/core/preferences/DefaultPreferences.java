@@ -17,7 +17,7 @@ package org.eclipse.embedcdt.managedbuild.cross.riscv.core.preferences;
 import org.eclipse.embedcdt.core.preferences.Discoverer;
 import org.eclipse.embedcdt.managedbuild.cross.riscv.core.ToolchainDefinition;
 
-public class DefaultPreferences extends org.eclipse.embedcdt.managedbuild.cross.preferences.DefaultPreferences {
+public class DefaultPreferences extends org.eclipse.embedcdt.managedbuild.cross.core.preferences.DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 

@@ -7,7 +7,7 @@ Bundle-Activator: org.eclipse.embedcdt.managedbuild.cross.riscv.core.Activator
 Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.packs.core,
  org.eclipse.embedcdt.debug.core,
- org.eclipse.embedcdt.managedbuild.cross,
+ org.eclipse.embedcdt.managedbuild.cross.core;bundle-version="2.0.0",
  org.eclipse.cdt.core;bundle-version="7.0.0",
  org.eclipse.cdt.managedbuilder.core;bundle-version="9.0.0",
  org.eclipse.core.expressions;bundle-version="3.7.0",

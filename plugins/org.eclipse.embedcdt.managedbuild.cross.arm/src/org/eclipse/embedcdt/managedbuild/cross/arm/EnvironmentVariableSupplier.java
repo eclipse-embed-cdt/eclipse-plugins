@@ -29,7 +29,7 @@ import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 
 public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVariableSupplier {
 
@@ -82,7 +82,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 			IProject project = (IProject) configuration.getManagedProject().getOwner();
 
-			PersistentPreferences commonPersistentPreferences = org.eclipse.embedcdt.managedbuild.cross.Activator
+			PersistentPreferences commonPersistentPreferences = org.eclipse.embedcdt.managedbuild.cross.core.Activator
 					.getInstance().getPersistentPreferences();
 
 			PersistentPreferences deprecatedPersistentPreferences = new PersistentPreferences(

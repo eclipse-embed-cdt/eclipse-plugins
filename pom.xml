@@ -40,6 +40,7 @@
 		<module>features/org.eclipse.embedcdt-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.core</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.ui</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.packs</module>
 

@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.xpi;
+package org.eclipse.embedcdt.managedbuild.cross.core.xpi;
 
 import org.eclipse.embedcdt.debug.core.data.ICProjectExtraDataManager;
 import org.eclipse.embedcdt.debug.core.data.ICProjectExtraDataManagerFactory;

@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences.INodeChangeListe
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.NodeChangeEvent;
 import org.eclipse.embedcdt.managedbuild.cross.arm.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.arm.ToolchainDefinition;
-import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 import org.osgi.service.prefs.Preferences;
 
 /**

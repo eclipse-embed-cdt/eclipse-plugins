@@ -599,7 +599,7 @@
 				osList="all">
 			</targetPlatform>
 			<builder
-				buildfileGenerator="org.eclipse.embedcdt.managedbuild.cross.GnuMcuMakefileGenerator"
+				buildfileGenerator="org.eclipse.embedcdt.managedbuild.cross.core.GnuMcuMakefileGenerator"
 				command="${cross_make}"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.builder"
 				superClass="cdt.managedbuild.target.gnu.builder">
@@ -996,7 +996,7 @@
 			</option>
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
-				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.CompilerCommandLineGenerator"
+				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.core.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.assembler"
@@ -1117,7 +1117,7 @@
 			</tool>
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
-				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.CompilerCommandLineGenerator"
+				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.core.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler"
@@ -1315,7 +1315,7 @@
 			</tool>
 			<tool
 				command="${cross_prefix}${cross_cpp}${cross_suffix}"
-				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.CompilerCommandLineGenerator"
+				commandLineGenerator="org.eclipse.embedcdt.managedbuild.cross.core.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.compiler"
@@ -2489,7 +2489,7 @@
 	</extension>
 	<extension point="org.eclipse.embedcdt.debug.core.cprojectExtra">
 		<factory
-			class="org.eclipse.embedcdt.managedbuild.cross.xpi.CProjectExtraDataManagerFactory">
+			class="org.eclipse.embedcdt.managedbuild.cross.core.xpi.CProjectExtraDataManagerFactory">
 		</factory>
 	</extension>
 	<extension point="org.eclipse.core.runtime.preferences">
