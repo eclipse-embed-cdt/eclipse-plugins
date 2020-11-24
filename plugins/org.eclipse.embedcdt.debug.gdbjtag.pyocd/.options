@@ -1,5 +1,5 @@
 ###############################################################################
-# Copyright (c) 2007-2010 QNX Software Systems and others.
+# Copyright (c) 2007, 2020 QNX Software Systems and others.
 #
 # This program and the accompanying materials
 # are made available under the terms of the Eclipse Public License 2.0
@@ -16,6 +16,7 @@
 #              - API generalization to become transport-independent (e.g. to
 #                allow connections via serial ports and pipes).
 #   Liviu Ionescu - Arm version
+#   Alexander Fedorov (ArSysOp) - extract UI part
 ###############################################################################
 
 # Control if trace messages are shown.

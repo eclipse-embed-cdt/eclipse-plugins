@@ -19,15 +19,5 @@
 #   Alexander Fedorov (ArSysOp) - extract UI part
 ###############################################################################
 
-bundle.name=Embedded C/C++ PyOCD Debugging Plug-in (incubation)
-bundle.vendor=Eclipse Embedded CDT
-
-launchConfig.name=GDB PyOCD Debugging
-
-JTagDevice.generic.name=GNU MCU PyOCD
-JTagDevice.deprecated.name=GNU ARM PyOCD
-
-JTagDevice.name=JTAG Device
-
-launchDelegate.jtagDsf.name=GDB PyOCD Hardware Debugging (DSF)
-launchDelegate.jtagDsf.description=PyOCD hardware debugging using the Debugger Services Framework (DSF).
+# Control if trace messages are shown.
+org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui/debug=false
