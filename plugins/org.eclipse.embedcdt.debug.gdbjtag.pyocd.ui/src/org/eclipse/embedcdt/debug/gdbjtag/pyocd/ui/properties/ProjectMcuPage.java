@@ -16,9 +16,9 @@ package org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui.properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui.Messages;
 import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;

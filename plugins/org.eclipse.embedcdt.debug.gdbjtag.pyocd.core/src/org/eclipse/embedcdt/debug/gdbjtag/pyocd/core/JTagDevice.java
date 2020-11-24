@@ -14,24 +14,29 @@
  *     Chris Reed - pyOCD changes
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui;
+package org.eclipse.embedcdt.debug.gdbjtag.pyocd.core;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
+import java.util.Collection;
 
-// toolbar:org.eclipse.debug.ui.main.toolbar?after=additions
+import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.DefaultGDBJtagDeviceImpl;
 
-public class ButtonResetHandler extends AbstractHandler {
+public class JTagDevice extends DefaultGDBJtagDeviceImpl {
 
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public void doDelay(int delay, Collection<String> commands) {
+	}
 
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("pyocd.ButtonResetHandler.execute(" + event + ")");
-		}
-		return null;
+	@Override
+	public void doHalt(Collection<String> commands) {
+	}
+
+	@Override
+	public void doReset(Collection<String> commands) {
+	}
+
+	@Override
+	public void doStopAt(String stopAt, Collection<String> commands) {
+		super.doStopAt(stopAt, commands);
 	}
 
 }

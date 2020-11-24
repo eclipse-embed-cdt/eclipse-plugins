@@ -19,7 +19,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages {

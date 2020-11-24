@@ -19,5 +19,5 @@
 #   Alexander Fedorov (ArSysOp) - extract UI part
 ###############################################################################
 
-bundle.name=Embedded C/C++ PyOCD Debugging Plug-in (incubation)
-bundle.vendor=Eclipse Embedded CDT
+# Control if trace messages are shown.
+org.eclipse.embedcdt.debug.gdbjtag.pyocd.core/debug=false

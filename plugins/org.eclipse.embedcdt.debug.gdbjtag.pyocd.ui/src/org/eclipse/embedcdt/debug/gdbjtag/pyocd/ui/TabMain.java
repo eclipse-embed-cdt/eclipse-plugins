@@ -18,7 +18,7 @@
 package org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui;
 
 import org.eclipse.cdt.launch.ui.CMainTab2;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
 
 public class TabMain extends CMainTab2 {
 

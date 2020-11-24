@@ -69,6 +69,7 @@
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.openocd-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.pyocd</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.pyocd.core</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.pyocd-feature</module>
 
