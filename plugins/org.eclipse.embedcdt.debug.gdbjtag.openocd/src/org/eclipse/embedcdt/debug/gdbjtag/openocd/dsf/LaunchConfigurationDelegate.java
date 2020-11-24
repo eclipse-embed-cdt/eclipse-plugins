@@ -46,9 +46,9 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ISourceLocator;
-import org.eclipse.embedcdt.debug.gdbjtag.DebugUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.dsf.AbstractGnuMcuLaunchConfigurationDelegate;
-import org.eclipse.embedcdt.debug.gdbjtag.dsf.GnuMcuServerServicesLaunchSequence;
+import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
+import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.AbstractGnuMcuLaunchConfigurationDelegate;
+import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuServerServicesLaunchSequence;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.Configuration;
 

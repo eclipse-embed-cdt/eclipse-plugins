@@ -14,7 +14,7 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag.qemu;
 
-public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbjtag.ConfigurationAttributes {
+public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbjtag.core.ConfigurationAttributes {
 
 	// public static final String PREFIX = Activator.PLUGIN_ID;
 	public static final String PREFIX = "ilg.gnumcueclipse.debug.gdbjtag.qemu";

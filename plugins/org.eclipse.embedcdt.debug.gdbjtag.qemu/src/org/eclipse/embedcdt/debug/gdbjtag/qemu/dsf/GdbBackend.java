@@ -21,8 +21,8 @@ import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.embedcdt.debug.gdbjtag.DebugUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.dsf.GnuMcuGdbBackend;
+import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
+import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbBackend;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.Configuration;
 

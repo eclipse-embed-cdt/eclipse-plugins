@@ -34,6 +34,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.debug.gdbjtag.preferences,
- org.eclipse.embedcdt.debug.gdbjtag.ui
+Export-Package: org.eclipse.embedcdt.debug.gdbjtag.ui,
+ org.eclipse.embedcdt.debug.gdbjtag.ui.preferences
 Import-Package: org.eclipse.embedcdt.packs.data.xcdl

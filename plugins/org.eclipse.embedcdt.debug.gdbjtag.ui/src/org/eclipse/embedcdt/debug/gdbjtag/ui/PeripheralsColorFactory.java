@@ -16,7 +16,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.ui;
 
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.debug.gdbjtag.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.themes.IColorFactory;
 

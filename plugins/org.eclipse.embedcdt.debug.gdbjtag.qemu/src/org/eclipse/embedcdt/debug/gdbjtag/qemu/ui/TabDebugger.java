@@ -37,7 +37,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.data.CProjectAttributes;
+import org.eclipse.embedcdt.debug.gdbjtag.core.data.CProjectAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.ConfigurationAttributes;

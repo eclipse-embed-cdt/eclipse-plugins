@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.StringUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.dsf.GnuMcuGdbServerBackend;
+import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbServerBackend;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.Configuration;
 import org.osgi.framework.BundleContext;

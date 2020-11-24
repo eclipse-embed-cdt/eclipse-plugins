@@ -38,7 +38,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
-import org.eclipse.embedcdt.debug.gdbjtag.dsf.GnuMcuLaunch;
+import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuLaunch;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.ConfigurationAttributes;

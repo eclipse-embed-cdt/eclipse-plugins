@@ -19,9 +19,9 @@ package org.eclipse.embedcdt.debug.gdbjtag.pyocd.dsf;
 import org.eclipse.cdt.dsf.mi.service.IMIBackend;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.embedcdt.debug.gdbjtag.dsf.GnuMcuDebuggerCommandsService;
-import org.eclipse.embedcdt.debug.gdbjtag.dsf.GnuMcuGdbServerBackend;
-import org.eclipse.embedcdt.debug.gdbjtag.dsf.GnuMcuServicesFactory;
+import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuDebuggerCommandsService;
+import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbServerBackend;
+import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuServicesFactory;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.Activator;
 
 public class ServicesFactory extends GnuMcuServicesFactory {

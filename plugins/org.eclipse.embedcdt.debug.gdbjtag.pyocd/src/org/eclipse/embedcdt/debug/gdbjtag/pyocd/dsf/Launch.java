@@ -40,7 +40,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
-import org.eclipse.embedcdt.debug.gdbjtag.dsf.GnuMcuLaunch;
+import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuLaunch;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.ConfigurationAttributes;

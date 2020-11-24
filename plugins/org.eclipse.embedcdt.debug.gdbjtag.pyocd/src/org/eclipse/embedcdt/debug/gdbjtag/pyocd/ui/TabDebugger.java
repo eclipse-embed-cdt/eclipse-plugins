@@ -47,7 +47,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.DebugUtils;
+import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.ConfigurationAttributes;

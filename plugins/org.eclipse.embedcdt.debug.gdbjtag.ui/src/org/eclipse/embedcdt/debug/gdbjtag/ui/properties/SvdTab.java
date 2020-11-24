@@ -19,7 +19,7 @@ import org.eclipse.cdt.ui.newui.AbstractCPropertyTab;
 import org.eclipse.cdt.utils.ui.controls.ControlFactory;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.embedcdt.debug.gdbjtag.properties.PersistentProperties;
+import org.eclipse.embedcdt.debug.gdbjtag.core.properties.PersistentProperties;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.Messages;
 import org.eclipse.embedcdt.ui.DirectoryNotStrictFieldEditor;

@@ -35,7 +35,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.StringUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.dsf.GnuMcuGdbServerBackend;
+import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbServerBackend;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.ConfigurationAttributes;

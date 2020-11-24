@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.StringUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.DebugUtils;
+import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.DynamicVariableResolver;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
