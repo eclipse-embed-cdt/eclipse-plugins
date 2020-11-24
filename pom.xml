@@ -53,6 +53,8 @@
 		<module>plugins/org.eclipse.embedcdt.debug.core</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag</module>
 		<module>plugins/org.eclipse.embedcdt.debug.packs</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.restart</module>
+		<module>features/org.eclipse.embedcdt.debug.gdbjtag-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jlink</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.jlink-feature</module>
@@ -68,8 +70,6 @@
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jumper</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.jumper-feature</module>
-
-		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.restart</module>
 
 		<module>plugins/org.eclipse.embedcdt.codered</module>
 		<module>plugins/org.eclipse.embedcdt.codered.ui</module>

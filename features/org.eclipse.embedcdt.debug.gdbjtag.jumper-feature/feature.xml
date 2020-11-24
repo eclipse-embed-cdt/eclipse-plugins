@@ -29,29 +29,12 @@
       %copyright
    </copyright>
 
+   <requires>
+      <import feature="org.eclipse.embedcdt.debug.gdbjtag" version="6.0.0.qualifier"/>
+   </requires>
+
    <plugin
          id="org.eclipse.embedcdt.debug.gdbjtag.jumper"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.embedcdt.debug.gdbjtag.restart"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.embedcdt.debug.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.embedcdt.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
