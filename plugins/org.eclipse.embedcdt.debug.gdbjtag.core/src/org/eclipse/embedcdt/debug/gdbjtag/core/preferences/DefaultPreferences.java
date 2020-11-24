@@ -12,11 +12,10 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.ui.preferences;
+package org.eclipse.embedcdt.debug.gdbjtag.core.preferences;
 
 import org.eclipse.embedcdt.core.Activator;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences;
 
 public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.DefaultPreferences {
 

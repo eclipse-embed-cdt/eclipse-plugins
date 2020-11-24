@@ -18,7 +18,7 @@ import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.preferences.Discoverer;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
 
-public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.DefaultPreferences {
+public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.preferences.DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
