@@ -15,27 +15,6 @@
 
 <plugin>
 
-	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
-		<launchConfigurationType
-			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.launchConfigurationType"
-			modes="debug,run"
-			name="%launchConfig.name"
-			public="true" />
-	</extension>
-
-	<extension point="org.eclipse.debug.core.launchDelegates">
-		<launchDelegate
-			delegate="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf.LaunchConfigurationDelegate"
-			delegateDescription="%launchDelegate.jtagDsf.description"
-			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsfLaunchDelegate"
-			modes="debug,run"
-			name="%launchDelegate.jtagDsf.name"
-			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
-			sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
-			type="ilg.gnumcueclipse.debug.gdbjtag.openocd.launchConfigurationType">
-		</launchDelegate>
-	</extension>
-
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 		<launchConfigurationTypeImage
 			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.openocd.launchConfigurationType"
@@ -48,22 +27,6 @@
 			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.TabGroupLaunchConfiguration"
 			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.launchConfigurationTabGroup"
 			type="ilg.gnumcueclipse.debug.gdbjtag.openocd.launchConfigurationType" />
-	</extension>
-
-	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
-		<device
-			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.JTagDevice"
-			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.jtagdevice"
-			name="%JTagDevice.generic.name">
-		</device>
-	</extension>
-
-	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
-		<device
-			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.JTagDevice"
-			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.jtagdevice"
-			name="%JTagDevice.deprecated.name">
-		</device>
 	</extension>
 
 	<extension point="org.eclipse.ui.preferencePages">
@@ -99,12 +62,6 @@
 				</and>
 			</enabledWhen>
 		</page>
-	</extension>
-	
-	<extension point="org.eclipse.core.runtime.preferences">
-		<initializer
-			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.DefaultPreferenceInitializer">
-		</initializer>
 	</extension>
 
 </plugin>
