@@ -16,15 +16,7 @@
 #              - API generalization to become transport-independent (e.g. to
 #                allow connections via serial ports and pipes).
 #   Liviu Ionescu - Arm version   
-#   Alexander Fedorov (ArSysOp) - normalize content of source bundles
 ###############################################################################
 
-bin.includes = META-INF/,\
-               .,\
-               plugin.properties,\
-               GME-32.png,\
-               about.html,\
-               about.ini,\
-               about.mappings,\
-               about.properties
-src.includes = about.html
+# Control if trace messages are shown.
+org.eclipse.embedcdt.debug.gdbjtag.jlink.core/debug=false

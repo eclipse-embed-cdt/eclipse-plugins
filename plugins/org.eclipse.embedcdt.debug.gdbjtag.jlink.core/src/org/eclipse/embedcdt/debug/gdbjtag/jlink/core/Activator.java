@@ -12,11 +12,11 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jlink;
+package org.eclipse.embedcdt.debug.gdbjtag.jlink.core;
 
 import org.eclipse.embedcdt.core.AbstractActivator;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.PersistentPreferences;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -27,7 +27,7 @@ public class Activator extends AbstractActivator {
 	// ------------------------------------------------------------------------
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag.jlink"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag.jlink.core"; //$NON-NLS-1$
 
 	@Override
 	public String getBundleId() {

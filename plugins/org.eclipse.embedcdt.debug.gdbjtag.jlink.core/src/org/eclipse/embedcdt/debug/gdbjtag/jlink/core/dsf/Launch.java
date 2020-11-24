@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jlink.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.jlink.core.dsf;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,10 +38,10 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuLaunch;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.Configuration;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.ConfigurationAttributes;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Configuration;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.ConfigurationAttributes;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuMcuLaunch {

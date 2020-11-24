@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jlink;
+package org.eclipse.embedcdt.debug.gdbjtag.jlink.core;
 
 import java.util.Collection;
 

@@ -12,7 +12,7 @@
  *    Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jlink;
+package org.eclipse.embedcdt.debug.gdbjtag.jlink.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Configuration {

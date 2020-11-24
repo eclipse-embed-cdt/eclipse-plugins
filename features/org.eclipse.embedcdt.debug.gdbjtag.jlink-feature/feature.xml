@@ -40,6 +40,13 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.embedcdt.debug.gdbjtag.jlink.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui"
          download-size="0"
          install-size="0"

@@ -26,7 +26,7 @@
 	<!-- LaunchConfigurationDelegate.java is where fun starts -->
 	<extension point="org.eclipse.debug.core.launchDelegates">
 		<launchDelegate
-			delegate="org.eclipse.embedcdt.debug.gdbjtag.jlink.dsf.LaunchConfigurationDelegate"
+			delegate="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.dsf.LaunchConfigurationDelegate"
 			delegateDescription="%launchDelegate.jtagDsf.description"
 			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.dsfLaunchDelegate"
 			modes="debug,run"
@@ -39,7 +39,7 @@
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.JTagDevice"
 			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.jtagdevice"
 			name="%JTagDevice.generic.name">
 		</device>
@@ -47,7 +47,7 @@
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.JTagDevice"
 			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.jtagdevice"
 			name="%JTagDevice.deprecated.name">
 		</device>
@@ -56,7 +56,7 @@
 	<!-- legacy from early versions -->
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.JTagDevice"
 			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.jtagdevice.compat"
 			name="J-Link">
 		</device>
@@ -64,7 +64,7 @@
 
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.DefaultPreferenceInitializer">
+			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 	

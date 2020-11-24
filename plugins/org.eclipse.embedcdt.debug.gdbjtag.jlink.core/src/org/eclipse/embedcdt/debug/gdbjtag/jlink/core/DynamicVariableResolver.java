@@ -12,13 +12,13 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jlink;
+package org.eclipse.embedcdt.debug.gdbjtag.jlink.core;
 
 import java.util.regex.Matcher;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.PersistentPreferences;
 
 // Resolves variables from persistent preferences.
 

@@ -15,9 +15,9 @@
 package org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.Messages;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;

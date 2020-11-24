@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jlink.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.jlink.core.dsf;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -34,11 +34,11 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbServerBackend;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.Configuration;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.ConfigurationAttributes;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.SemihostingProcess;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Configuration;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.ConfigurationAttributes;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.SemihostingProcess;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.DefaultPreferences;
 import org.osgi.framework.BundleContext;
 
 public class GdbServerBackend extends GnuMcuGdbServerBackend {

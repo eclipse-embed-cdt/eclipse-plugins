@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences;
+package org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.INodeChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.NodeChangeEvent;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Activator;
 import org.osgi.service.prefs.Preferences;
 
 /**

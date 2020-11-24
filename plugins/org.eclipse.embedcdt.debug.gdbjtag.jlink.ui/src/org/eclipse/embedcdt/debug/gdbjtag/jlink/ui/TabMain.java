@@ -16,7 +16,7 @@
 package org.eclipse.embedcdt.debug.gdbjtag.jlink.ui;
 
 import org.eclipse.cdt.launch.ui.CMainTab2;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Activator;
 
 public class TabMain extends CMainTab2 {
 

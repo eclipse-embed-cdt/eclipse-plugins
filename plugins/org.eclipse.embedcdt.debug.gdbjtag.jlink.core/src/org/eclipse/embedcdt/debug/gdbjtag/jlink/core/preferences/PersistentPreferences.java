@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences;
+package org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences;
 
 /**
  * Manage a workspace preference file stored in:
