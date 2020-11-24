@@ -17,7 +17,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.qemu.ui;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Activator;
 
 // toolbar:org.eclipse.debug.ui.main.toolbar?after=additions
 

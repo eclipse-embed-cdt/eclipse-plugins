@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences;
+package org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences;
 
 public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences {
 

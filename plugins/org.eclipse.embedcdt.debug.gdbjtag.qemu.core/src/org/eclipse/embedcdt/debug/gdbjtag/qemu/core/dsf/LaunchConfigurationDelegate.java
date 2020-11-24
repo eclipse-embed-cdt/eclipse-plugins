@@ -13,7 +13,7 @@
  *     Jonah Graham - fix for Neon
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.qemu.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsf;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
@@ -49,8 +49,8 @@ import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.AbstractGnuMcuLaunchConfigurationDelegate;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuServerServicesLaunchSequence;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.Configuration;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Configuration;
 
 /**
  * This class is referred in the plugin.xml as an

@@ -13,7 +13,7 @@
  *     Jonah Graham - fix for Neon
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.qemu.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsf;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,10 +39,10 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuLaunch;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.Configuration;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.ConfigurationAttributes;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Configuration;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.ConfigurationAttributes;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuMcuLaunch {

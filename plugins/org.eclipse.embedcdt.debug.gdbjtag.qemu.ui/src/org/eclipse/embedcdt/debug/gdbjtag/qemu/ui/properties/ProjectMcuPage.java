@@ -16,9 +16,9 @@ package org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.Messages;
 import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;

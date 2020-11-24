@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.qemu.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsf;
 
 import java.util.List;
 
@@ -25,9 +25,9 @@ import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuDebuggerCommandsService;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.ConfigurationAttributes;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.ConfigurationAttributes;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
 import org.osgi.framework.BundleContext;
 
 public class DebuggerCommands extends GnuMcuDebuggerCommandsService {

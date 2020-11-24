@@ -12,10 +12,24 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences;
+package org.eclipse.embedcdt.debug.gdbjtag.qemu.core;
 
-public interface PreferenceConstants {
+import java.util.Collection;
 
-	public static final String DEFAULT_GDB_COMMAND = "arm-none-eabi-gdb"; //$NON-NLS-1$
+import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.DefaultGDBJtagDeviceImpl;
+
+public class JTagDevice extends DefaultGDBJtagDeviceImpl {
+
+	@Override
+	public void doDelay(int delay, Collection<String> commands) {
+	}
+
+	@Override
+	public void doHalt(Collection<String> commands) {
+	}
+
+	@Override
+	public void doReset(Collection<String> commands) {
+	}
 
 }

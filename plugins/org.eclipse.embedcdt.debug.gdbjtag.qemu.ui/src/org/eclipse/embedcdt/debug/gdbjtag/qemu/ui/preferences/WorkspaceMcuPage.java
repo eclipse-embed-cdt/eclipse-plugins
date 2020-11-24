@@ -15,9 +15,9 @@
 package org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.Messages;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;

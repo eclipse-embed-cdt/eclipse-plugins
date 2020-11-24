@@ -12,13 +12,13 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.qemu;
+package org.eclipse.embedcdt.debug.gdbjtag.qemu.core;
 
 import java.util.regex.Matcher;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.PersistentPreferences;
 
 // Resolves variables from persistent preferences.
 

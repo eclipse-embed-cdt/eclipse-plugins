@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.qemu;
+package org.eclipse.embedcdt.debug.gdbjtag.qemu.core;
 
 public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbjtag.core.ConfigurationAttributes {
 
