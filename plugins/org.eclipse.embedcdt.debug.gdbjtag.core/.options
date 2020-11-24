@@ -12,5 +12,5 @@
 #   Liviu Ionescu - Arm version   
 ###############################################################################
 
-bundle.name=Embedded C/C++ Debugging GDB Plug-in (incubation)
-bundle.vendor=Eclipse Embedded CDT
+# Control if trace messages are shown.
+org.eclipse.embedcdt.debug.gdbjtag.core/debug=false

@@ -26,7 +26,7 @@ public class Activator extends AbstractUIActivator {
 	// ------------------------------------------------------------------------
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag.ui"; //$NON-NLS-1$
 
 	@Override
 	public String getBundleId() {
