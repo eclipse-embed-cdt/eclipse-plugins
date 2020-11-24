@@ -36,6 +36,20 @@
 		</launchDelegate>
 	</extension>
 
+	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+		<launchConfigurationTypeImage
+			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.openocd.launchConfigurationType"
+			icon="icons/obj16/c_app.gif"
+			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.launchConfigurationTypeImage" />
+	</extension>
+
+	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+		<launchConfigurationTabGroup
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.TabGroupLaunchConfiguration"
+			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.launchConfigurationTabGroup"
+			type="ilg.gnumcueclipse.debug.gdbjtag.openocd.launchConfigurationType" />
+	</extension>
+
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
 			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.JTagDevice"
@@ -52,6 +66,41 @@
 		</device>
 	</extension>
 
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="org.eclipse.embedcdt.ui.preferences.mcu"
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.preferences.WorkspaceMcuPage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.workspacePreferencePage"
+			name="%preferences.workspaceMcu">
+		</page>
+		<page
+			category="org.eclipse.embedcdt.ui.preferences.mcu"
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.preferences.GlobalMcuPage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.globalPreferencePage"
+			name="%preferences.globalMcu">
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.propertyPages">
+		<page
+			category="org.eclipse.embedcdt.ui.properties.mcu"
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.properties.ProjectMcuPage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.projectPropertiesPage"
+			name="%properties.mcu">
+			<filter
+				name="projectNature"
+				value="org.eclipse.cdt.core.cnature">
+			</filter>
+			<enabledWhen>
+				<and>
+					<instanceof value="org.eclipse.core.resources.IProject">
+					</instanceof>
+					<test forcePluginActivation="true" property="org.eclipse.embedcdt.managedbuild.cross.isGnuMcu">
+					</test>
+				</and>
+			</enabledWhen>
+		</page>
+	</extension>
+	
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
 			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences.DefaultPreferenceInitializer">
