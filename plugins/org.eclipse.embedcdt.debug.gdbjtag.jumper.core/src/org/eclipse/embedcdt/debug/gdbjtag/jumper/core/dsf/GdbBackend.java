@@ -13,7 +13,7 @@
  *     Jonathan Seroussi - Jumper Virtual Lab adjustments
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jumper.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.jumper.core.dsf;
 
 import java.io.File;
 
@@ -24,8 +24,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbBackend;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Configuration;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Configuration;
 
 /**
  * The Kepler CDT GDBBackend does not allow such a simple customisation, we had

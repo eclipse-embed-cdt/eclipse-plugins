@@ -18,7 +18,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.jumper.ui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages {

@@ -13,11 +13,10 @@
  *     Jonathan Seroussi - Jumper Virtual Lab adjustments
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jumper.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.jumper.core.dsf;
 
 import java.util.List;
 
-import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.IStatus;
@@ -27,9 +26,9 @@ import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuDebuggerCommandsService;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.ConfigurationAttributes;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.ConfigurationAttributes;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences.DefaultPreferences;
 import org.osgi.framework.BundleContext;
 
 public class DebuggerCommands extends GnuMcuDebuggerCommandsService {

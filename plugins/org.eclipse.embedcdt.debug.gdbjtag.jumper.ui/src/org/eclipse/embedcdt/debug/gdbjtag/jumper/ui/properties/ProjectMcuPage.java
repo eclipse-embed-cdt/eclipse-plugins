@@ -16,9 +16,9 @@ package org.eclipse.embedcdt.debug.gdbjtag.jumper.ui.properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.jumper.ui.Messages;
 import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;

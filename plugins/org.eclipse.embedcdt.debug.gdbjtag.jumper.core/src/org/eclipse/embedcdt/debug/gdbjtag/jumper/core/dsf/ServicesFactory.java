@@ -13,7 +13,7 @@
  *     Jonathan Seroussi - Jumper Virtual Lab adjustments
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jumper.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.jumper.core.dsf;
 
 import org.eclipse.cdt.dsf.mi.service.IMIBackend;
 import org.eclipse.cdt.dsf.service.DsfSession;
@@ -21,7 +21,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuDebuggerCommandsService;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbServerBackend;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuServicesFactory;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Activator;
 
 public class ServicesFactory extends GnuMcuServicesFactory {
 

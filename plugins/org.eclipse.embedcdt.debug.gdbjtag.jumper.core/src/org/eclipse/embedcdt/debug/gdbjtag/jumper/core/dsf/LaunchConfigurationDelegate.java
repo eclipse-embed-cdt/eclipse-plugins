@@ -14,7 +14,7 @@
  *     Jonathan Seroussi - Jumper Virtual Lab adjustments
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jumper.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.jumper.core.dsf;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
@@ -50,8 +50,8 @@ import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.AbstractGnuMcuLaunchConfigurationDelegate;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuServerServicesLaunchSequence;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Configuration;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Configuration;
 
 /**
  * This class is referred in the plugin.xml as an

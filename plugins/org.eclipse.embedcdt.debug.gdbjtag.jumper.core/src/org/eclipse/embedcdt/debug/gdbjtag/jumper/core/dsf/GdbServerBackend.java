@@ -13,7 +13,7 @@
  *     Jonathan Seroussi - Jumper Virtual Lab adjustments
 *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jumper.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.jumper.core.dsf;
 
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.service.DsfSession;
@@ -23,8 +23,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbServerBackend;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Configuration;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Configuration;
 import org.osgi.framework.BundleContext;
 
 public class GdbServerBackend extends GnuMcuGdbServerBackend {

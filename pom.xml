@@ -73,6 +73,7 @@
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.qemu-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jumper</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jumper.core</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jumper.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.jumper-feature</module>
 

@@ -14,7 +14,7 @@
  *     Jonathan Seroussi - Jumper Virtual Lab adjustments
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jumper.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.jumper.core.dsf;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,10 +40,10 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuLaunch;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Configuration;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.ConfigurationAttributes;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Configuration;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.ConfigurationAttributes;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuMcuLaunch {

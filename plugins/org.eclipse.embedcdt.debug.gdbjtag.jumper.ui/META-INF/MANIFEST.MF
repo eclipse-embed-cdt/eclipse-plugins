@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag.jumper.ui;singleton:=tru
 Bundle-Version: 2.0.0.qualifier
 Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.0.0",
  org.eclipse.embedcdt.debug.gdbjtag.core;bundle-version="5.0.0",
- org.eclipse.embedcdt.debug.gdbjtag.jumper;bundle-version="2.0.0",
+ org.eclipse.embedcdt.debug.gdbjtag.jumper.core;bundle-version="2.0.0",
  org.eclipse.embedcdt.debug.gdbjtag.ui;bundle-version="5.0.0",
  org.eclipse.embedcdt.ui;bundle-version="6.0.0",
  org.eclipse.cdt.core;bundle-version="7.0.0",

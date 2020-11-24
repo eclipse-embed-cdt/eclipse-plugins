@@ -13,7 +13,7 @@
  *     Jonathan Seroussi - Jumper Virtual Lab adjustments
 *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences;
+package org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences;
 
 public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences {
 

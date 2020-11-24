@@ -17,7 +17,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.jumper.ui;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Activator;
 
 // toolbar:org.eclipse.debug.ui.main.toolbar?after=additions
 

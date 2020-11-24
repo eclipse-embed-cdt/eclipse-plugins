@@ -19,24 +19,5 @@
 #   Alexander Fedorov (ArSysOp) - extract UI part
 ###############################################################################
 
-bundle.name=Embedded C/C++ Jumper Virtual Lab Debugging UI Plug-in (incubation)
-bundle.vendor=Eclipse Embedded CDT
-
-launchTab.main.name=Main
-launchTab.debugger.name=Debugger
-launchTab.startup.name=Startup
-launchTab.source.name=Source
-launchTab.common.name=Common
-
-launchtab.cmaintab.name=Main
-launchtab.debuggertab.name=Debugger
-launchtab.startuptab.name=Startup
-launchTab.sourceLookup.name=Source
-launchTab.common.name=Common
-
-restartButton.label=Restart
-restartButton.tooltip=Reset target and restart debugging
-
-preferences.workspaceMcu=Workspace Jumper Path
-preferences.globalMcu=Global Jumper Path
-properties.mcu=Jumper Path
+# Control if trace messages are shown.
+org.eclipse.embedcdt.debug.gdbjtag.jumper.core/debug=false

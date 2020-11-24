@@ -13,7 +13,7 @@
  *     Jonathan Seroussi - Jumper Virtual Lab adjustments
 *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jumper;
+package org.eclipse.embedcdt.debug.gdbjtag.jumper.core;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,7 +35,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Configuration {

@@ -15,9 +15,9 @@
 package org.eclipse.embedcdt.debug.gdbjtag.jumper.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.jumper.ui.Messages;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;

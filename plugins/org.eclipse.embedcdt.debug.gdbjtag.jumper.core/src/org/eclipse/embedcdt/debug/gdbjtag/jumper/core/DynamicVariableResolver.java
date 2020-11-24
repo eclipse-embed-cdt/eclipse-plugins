@@ -13,13 +13,13 @@
  *     Jonathan Seroussi - Jumper Virtual Lab adjustments
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jumper;
+package org.eclipse.embedcdt.debug.gdbjtag.jumper.core;
 
 import java.util.regex.Matcher;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences.PersistentPreferences;
 
 // Resolves variables from persistent preferences.
 

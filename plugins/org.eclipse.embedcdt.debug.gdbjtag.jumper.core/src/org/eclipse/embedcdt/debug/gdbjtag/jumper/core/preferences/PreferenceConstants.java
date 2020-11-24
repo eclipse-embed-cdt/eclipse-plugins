@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences;
+package org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences;
 
 public interface PreferenceConstants {
 

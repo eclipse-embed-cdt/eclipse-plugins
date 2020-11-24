@@ -13,11 +13,11 @@
  *     Jonathan Seroussi - Jumper Virtual Lab adjustments
 *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.jumper;
+package org.eclipse.embedcdt.debug.gdbjtag.jumper.core;
 
 import org.eclipse.embedcdt.core.AbstractActivator;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.jumper.core.preferences.PersistentPreferences;
 import org.osgi.framework.BundleContext;
 
 /**
