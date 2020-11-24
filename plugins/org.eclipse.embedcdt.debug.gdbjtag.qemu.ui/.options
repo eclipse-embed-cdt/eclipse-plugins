@@ -16,21 +16,8 @@
 #              - API generalization to become transport-independent (e.g. to
 #                allow connections via serial ports and pipes).
 #   Liviu Ionescu - Arm version   
-#   Alexander Fedorov (ArSysOp) - normalize content of source bundles
 #   Alexander Fedorov (ArSysOp) - extract UI part
 ###############################################################################
 
-source.. = src/
-output.. = target/classes
-bin.includes = META-INF/,\
-               .,\
-               plugin.properties,\
-               plugin.xml,\
-               .options,\
-               preferences.ini,\
-               GME-32.png,\
-               about.html,\
-               about.ini,\
-               about.mappings,\
-               about.properties
-src.includes = about.html
+# Control if trace messages are shown.
+org.eclipse.embedcdt.debug.gdbjtag.qemu.ui/debug=false

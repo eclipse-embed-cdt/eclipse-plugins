@@ -74,6 +74,7 @@
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.pyocd-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.qemu</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.qemu.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.qemu-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jumper</module>

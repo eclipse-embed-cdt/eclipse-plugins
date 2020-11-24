@@ -16,7 +16,6 @@ package org.eclipse.embedcdt.debug.gdbjtag.qemu.dsf;
 
 import java.util.List;
 
-import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.IStatus;

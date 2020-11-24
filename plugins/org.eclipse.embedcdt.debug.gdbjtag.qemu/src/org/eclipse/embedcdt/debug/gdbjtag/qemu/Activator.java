@@ -14,15 +14,15 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag.qemu;
 
+import org.eclipse.embedcdt.core.AbstractActivator;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.ui.AbstractUIActivator;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIActivator {
+public class Activator extends AbstractActivator {
 
 	// ------------------------------------------------------------------------
 
