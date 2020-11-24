@@ -13,11 +13,11 @@
  *     Liviu Ionescu - Arm version.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.restart.action;
+package org.eclipse.embedcdt.debug.gdbjtag.restart.ui.action;
 
 import org.eclipse.debug.core.commands.IRestartHandler;
 import org.eclipse.debug.ui.actions.DebugCommandAction;
-import org.eclipse.embedcdt.debug.gdbjtag.restart.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.restart.ui.Activator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 

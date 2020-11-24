@@ -13,7 +13,7 @@
  *     IBM Corporation - bug fixing
  *     Liviu Ionescu - Arm version.
  *******************************************************************************/
-package org.eclipse.embedcdt.debug.gdbjtag.restart;
+package org.eclipse.embedcdt.debug.gdbjtag.restart.ui;
 
 import org.eclipse.debug.core.commands.IRestartHandler;
 import org.eclipse.debug.ui.actions.DebugCommandHandler;

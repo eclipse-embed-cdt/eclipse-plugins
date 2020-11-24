@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.restart;
+package org.eclipse.embedcdt.debug.gdbjtag.restart.ui;
 
 import org.eclipse.embedcdt.ui.AbstractUIActivator;
 import org.osgi.framework.BundleContext;
@@ -25,7 +25,7 @@ public class Activator extends AbstractUIActivator {
 	// ------------------------------------------------------------------------
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag.restart"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag.restart.ui"; //$NON-NLS-1$
 
 	@Override
 	public String getBundleId() {

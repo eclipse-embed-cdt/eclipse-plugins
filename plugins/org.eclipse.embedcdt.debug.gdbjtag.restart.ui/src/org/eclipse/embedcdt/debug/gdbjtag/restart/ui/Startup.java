@@ -13,7 +13,7 @@
  *     Liviu Ionescu - Arm version.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.restart;
+package org.eclipse.embedcdt.debug.gdbjtag.restart.ui;
 
 import org.eclipse.ui.IStartup;
 

@@ -65,7 +65,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.embedcdt.debug.gdbjtag.restart"
+         id="org.eclipse.embedcdt.debug.gdbjtag.restart.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

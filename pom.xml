@@ -55,7 +55,7 @@
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.core</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.ui</module>
-		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.restart</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.restart.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jlink</module>
