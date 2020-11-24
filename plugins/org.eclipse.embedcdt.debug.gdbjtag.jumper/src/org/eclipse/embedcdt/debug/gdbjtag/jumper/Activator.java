@@ -15,15 +15,15 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag.jumper;
 
+import org.eclipse.embedcdt.core.AbstractActivator;
 import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.ui.AbstractUIActivator;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIActivator {
+public class Activator extends AbstractActivator {
 
 	// ------------------------------------------------------------------------
 
