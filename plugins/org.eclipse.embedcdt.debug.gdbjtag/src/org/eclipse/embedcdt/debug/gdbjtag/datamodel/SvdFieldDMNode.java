@@ -17,7 +17,6 @@ package org.eclipse.embedcdt.debug.gdbjtag.datamodel;
 import java.math.BigInteger;
 
 import org.eclipse.embedcdt.debug.gdbjtag.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.viewmodel.peripheral.PeripheralValue;
 import org.eclipse.embedcdt.packs.core.tree.AbstractTreePreOrderIterator;
 import org.eclipse.embedcdt.packs.core.tree.ITreeIterator;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;

@@ -19,6 +19,7 @@ import java.math.BigInteger;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.embedcdt.debug.gdbjtag.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.datamodel.PeripheralValue;
 import org.eclipse.embedcdt.debug.gdbjtag.datamodel.SvdDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.datamodel.SvdRegisterDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.datamodel.SvdUtils;

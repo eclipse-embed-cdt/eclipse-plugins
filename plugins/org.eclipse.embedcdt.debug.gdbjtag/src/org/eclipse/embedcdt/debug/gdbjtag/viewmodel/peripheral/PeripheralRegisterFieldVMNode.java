@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.embedcdt.debug.gdbjtag.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.datamodel.PeripheralValue;
 import org.eclipse.embedcdt.debug.gdbjtag.datamodel.SvdDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.datamodel.SvdEnumeratedValueDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.datamodel.SvdEnumerationDMNode;

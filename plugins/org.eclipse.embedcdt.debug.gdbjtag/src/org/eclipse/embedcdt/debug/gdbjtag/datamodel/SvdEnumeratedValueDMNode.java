@@ -16,7 +16,6 @@ package org.eclipse.embedcdt.debug.gdbjtag.datamodel;
 
 import java.math.BigInteger;
 
-import org.eclipse.embedcdt.debug.gdbjtag.viewmodel.peripheral.PeripheralValue;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 
 public class SvdEnumeratedValueDMNode extends SvdObjectDMNode {

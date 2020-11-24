@@ -20,8 +20,6 @@ import java.math.BigInteger;
 import org.eclipse.cdt.dsf.datamodel.AbstractDMContext;
 import org.eclipse.cdt.dsf.datamodel.IDMContext;
 import org.eclipse.cdt.dsf.service.DsfSession;
-import org.eclipse.embedcdt.debug.gdbjtag.memory.MemoryBlockMonitor;
-import org.eclipse.ui.IWorkbenchWindow;
 
 /**
  * Peripheral data context, represents a handle to a chunk of data in the Data
@@ -114,18 +112,6 @@ public class PeripheralDMContext extends AbstractDMContext
 	@Override
 	public boolean hasMemoryMonitor() {
 		return fDMNode.isShown();
-	}
-
-	/**
-	 * Support function, to forward the action to the service, with more details,
-	 * the DMcontext and the flag. Called from UI thread.
-	 * 
-	 * @param workbenchWindow
-	 *            the window where the check widget is displayed.
-	 */
-	public void displayPeripheralMonitor(IWorkbenchWindow workbenchWindow) {
-
-		MemoryBlockMonitor.getInstance().displayPeripheralMonitor(workbenchWindow, this, isChecked());
 	}
 
 	@Override

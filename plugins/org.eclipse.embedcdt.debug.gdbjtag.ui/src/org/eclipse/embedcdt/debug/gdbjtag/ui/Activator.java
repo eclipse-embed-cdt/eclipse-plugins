@@ -12,16 +12,16 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag;
+package org.eclipse.embedcdt.debug.gdbjtag.ui;
 
-import org.eclipse.embedcdt.core.AbstractActivator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.ui.AbstractUIActivator;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractActivator {
+public class Activator extends AbstractUIActivator {
 
 	// ------------------------------------------------------------------------
 

@@ -15,7 +15,7 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag.jumper.preferences;
 
-public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.preferences.PersistentPreferences {
+public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences {
 
 	// ------------------------------------------------------------------------
 

@@ -23,7 +23,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.jlink.preferences;
  *
  * Some of the values may be retrieved from the EclipseDefaults.
  */
-public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.preferences.PersistentPreferences {
+public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences {
 
 	// ------------------------------------------------------------------------
 

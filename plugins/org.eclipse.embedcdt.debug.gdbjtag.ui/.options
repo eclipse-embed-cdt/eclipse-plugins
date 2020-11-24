@@ -10,15 +10,8 @@
 #
 # Contributors:
 #   Liviu Ionescu - Arm version   
-#   Alexander Fedorov - normalize content of source bundles
+#   Alexander Fedorov (ArSysOp) - extract UI part
 ###############################################################################
 
-source.. = src/
-output.. = target/classes
-bin.includes = META-INF/,\
-               .,\
-               plugin.properties,\
-               .options,\
-               preferences.ini,\
-               about.html
-src.includes = about.html
+# Control if trace messages are shown.
+org.eclipse.embedcdt.debug.gdbjtag.ui/debug=false
