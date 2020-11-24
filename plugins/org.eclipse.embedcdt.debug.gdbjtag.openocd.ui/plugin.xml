@@ -25,7 +25,7 @@
 
 	<extension point="org.eclipse.debug.core.launchDelegates">
 		<launchDelegate
-			delegate="org.eclipse.embedcdt.debug.gdbjtag.openocd.dsf.LaunchConfigurationDelegate"
+			delegate="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf.LaunchConfigurationDelegate"
 			delegateDescription="%launchDelegate.jtagDsf.description"
 			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsfLaunchDelegate"
 			modes="debug,run"
@@ -52,7 +52,7 @@
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.JTagDevice"
 			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.jtagdevice"
 			name="%JTagDevice.generic.name">
 		</device>
@@ -60,7 +60,7 @@
 
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device
-			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.JTagDevice"
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.JTagDevice"
 			id="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.jtagdevice"
 			name="%JTagDevice.deprecated.name">
 		</device>
@@ -103,7 +103,7 @@
 	
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences.DefaultPreferenceInitializer">
+			class="org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 

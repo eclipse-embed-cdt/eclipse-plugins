@@ -18,7 +18,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.openocd.ui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages {

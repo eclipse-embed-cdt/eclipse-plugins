@@ -64,6 +64,7 @@
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.jlink-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.openocd</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.openocd.core</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.openocd.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.openocd-feature</module>
 

@@ -16,9 +16,9 @@ package org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.Messages;
 import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;

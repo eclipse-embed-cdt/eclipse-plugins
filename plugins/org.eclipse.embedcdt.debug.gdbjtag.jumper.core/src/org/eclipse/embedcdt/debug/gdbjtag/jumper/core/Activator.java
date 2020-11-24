@@ -28,7 +28,7 @@ public class Activator extends AbstractActivator {
 	// ------------------------------------------------------------------------
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag.jumper"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag.jumper.core"; //$NON-NLS-1$
 
 	@Override
 	public String getBundleId() {

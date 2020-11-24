@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.openocd.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf;
 
 import java.io.File;
 
@@ -23,8 +23,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbBackend;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.Configuration;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Configuration;
 
 /**
  * The Kepler CDT GDBBackend does not allow such a simple customisation, we had

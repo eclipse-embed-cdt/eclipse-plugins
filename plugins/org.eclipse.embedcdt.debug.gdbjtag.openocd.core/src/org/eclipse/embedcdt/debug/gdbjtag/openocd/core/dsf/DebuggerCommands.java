@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.openocd.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf;
 
 import java.util.List;
 
@@ -25,9 +25,9 @@ import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuDebuggerCommandsService;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.ConfigurationAttributes;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.ConfigurationAttributes;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.DefaultPreferences;
 import org.osgi.framework.BundleContext;
 
 public class DebuggerCommands extends GnuMcuDebuggerCommandsService {

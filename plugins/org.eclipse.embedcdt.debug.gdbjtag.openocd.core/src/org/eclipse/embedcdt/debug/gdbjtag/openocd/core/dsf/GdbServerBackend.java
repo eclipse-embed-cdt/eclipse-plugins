@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.openocd.dsf;
+package org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf;
 
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.service.DsfSession;
@@ -22,8 +22,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbServerBackend;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.Configuration;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Configuration;
 import org.osgi.framework.BundleContext;
 
 public class GdbServerBackend extends GnuMcuGdbServerBackend {

@@ -12,11 +12,11 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.openocd;
+package org.eclipse.embedcdt.debug.gdbjtag.openocd.core;
 
 import org.eclipse.embedcdt.core.AbstractActivator;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.PersistentPreferences;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -27,7 +27,7 @@ public class Activator extends AbstractActivator {
 	// ------------------------------------------------------------------------
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag.openocd"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag.openocd.core"; //$NON-NLS-1$
 
 	@Override
 	public String getBundleId() {

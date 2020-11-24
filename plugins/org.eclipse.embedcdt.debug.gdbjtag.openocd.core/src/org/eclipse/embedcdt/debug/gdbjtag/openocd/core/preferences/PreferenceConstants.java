@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences;
+package org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences;
 
 public interface PreferenceConstants {
 

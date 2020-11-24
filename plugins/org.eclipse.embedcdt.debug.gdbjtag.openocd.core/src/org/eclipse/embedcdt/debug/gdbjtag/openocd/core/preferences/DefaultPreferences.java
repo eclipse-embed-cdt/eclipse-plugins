@@ -12,11 +12,11 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.debug.gdbjtag.openocd.preferences;
+package org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences;
 
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.preferences.Discoverer;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Activator;
 
 public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.preferences.DefaultPreferences {
 
