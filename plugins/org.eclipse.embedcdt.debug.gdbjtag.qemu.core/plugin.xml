@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+  Copyright (c) 2012, 2017 Liviu Ionescu.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
+  https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+
+  Contributors:
+    Liviu Ionescu
+-->
+
+<plugin>
+
+	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+		<launchConfigurationType
+			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType"
+			modes="debug, run"
+			name="%launchConfig.name"
+			public="true" />
+	</extension>
+
+	<extension point="org.eclipse.debug.core.launchDelegates">
+		<launchDelegate
+			delegate="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsf.LaunchConfigurationDelegate"
+			delegateDescription="%launchDelegate.jtagDsf.description"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsfLaunchDelegate"
+			modes="debug,run"
+			name="%launchDelegate.jtagDsf.name"
+			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+			sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
+			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType">
+		</launchDelegate>
+	</extension>
+
+	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
+		<device
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.JTagDevice"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.jtagdevice"
+			name="%JTagDevice.generic.name">
+		</device>
+	</extension>
+
+	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
+		<device
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.JTagDevice"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.jtagdevice"
+			name="%JTagDevice.deprecated.name">
+		</device>
+	</extension>
+
+	<extension point="org.eclipse.core.runtime.preferences">
+		<initializer
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferenceInitializer">
+		</initializer>
+	</extension>
+
+</plugin>

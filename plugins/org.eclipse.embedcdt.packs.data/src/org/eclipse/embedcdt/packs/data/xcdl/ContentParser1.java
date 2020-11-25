@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.data.xcdl;
@@ -17,23 +18,22 @@ package org.eclipse.embedcdt.packs.data.xcdl;
 import java.util.List;
 
 import org.eclipse.embedcdt.core.Xml;
-import org.eclipse.embedcdt.packs.core.ConsoleStream;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.PackNode;
 import org.eclipse.embedcdt.packs.core.tree.Type;
 import org.eclipse.embedcdt.packs.core.xml.DocumentParseException;
-import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class ContentParser1 {
 
-	private MessageConsoleStream fOut;
+	private PacksConsoleStream fOut;
 	private Document fDocument;
 
 	public ContentParser1(Document document) {
 
-		fOut = ConsoleStream.getConsoleOut();
+		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 		fDocument = document;
 	}
 

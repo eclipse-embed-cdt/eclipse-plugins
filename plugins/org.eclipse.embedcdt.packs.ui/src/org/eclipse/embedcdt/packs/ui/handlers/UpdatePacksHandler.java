@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui.handlers;
@@ -35,7 +36,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.embedcdt.core.StringUtils;
-import org.eclipse.embedcdt.packs.core.ConsoleStream;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.Property;
@@ -50,7 +51,6 @@ import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.xml.sax.SAXParseException;
 
@@ -65,7 +65,7 @@ import org.xml.sax.SAXParseException;
  */
 public class UpdatePacksHandler extends AbstractHandler {
 
-	private MessageConsoleStream fOut;
+	private PacksConsoleStream fOut;
 	private boolean fRunning;
 
 	private Repos fRepos;
@@ -85,7 +85,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 		}
 		fRunning = false;
 
-		fOut = ConsoleStream.getConsoleOut();
+		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 
 		fRepos = Repos.getInstance();
 		fDataManager = DataManager.getInstance();
@@ -314,7 +314,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 				if (!cachedFile.exists()) {
 
 					// If local file does not exist, create it
-					int ret = Utils.copyFileWithShell(sourceUrl, cachedFile, fOut, null, window.getShell(),
+					int ret = org.eclipse.embedcdt.packs.ui.Utils.copyFileWithShell(sourceUrl, cachedFile, fOut, null, window.getShell(),
 							ignoreError);
 					if (ret == 0) {
 

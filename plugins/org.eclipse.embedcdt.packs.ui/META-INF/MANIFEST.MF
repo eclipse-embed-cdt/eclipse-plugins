@@ -8,10 +8,12 @@ Require-Bundle: org.eclipse.embedcdt.core,
  org.eclipse.embedcdt.packs.core,
  org.eclipse.embedcdt.packs.data,
  org.eclipse.embedcdt.packs,
+ org.eclipse.embedcdt.ui;bundle-version="6.0.0",
  org.eclipse.cdt.ui;bundle-version="7.0.0",
  org.eclipse.core.filesystem;bundle-version="1.7.700",
  org.eclipse.core.runtime;bundle-version="3.19.0",
  org.eclipse.jface;bundle-version="3.21.0",
+ org.eclipse.osgi.services;bundle-version="3.9.0",
  org.eclipse.ui;bundle-version="3.118.0",
  org.eclipse.ui.console;bundle-version="3.9.300",
  org.eclipse.ui.ide;bundle-version="3.17.200",
@@ -21,4 +23,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.packs.ui,
- org.eclipse.embedcdt.packs.ui.preferences
+ org.eclipse.embedcdt.packs.ui.preferences,
+ org.eclipse.embedcdt.packs.ui.views;x-friends:="org.eclipse.embedcdt.managedbuild.packs"
+Service-Component: OSGI-INF/org.eclipse.embedcdt.internal.packs.ui.MessageConsoles.xml

@@ -34,10 +34,14 @@
 
 	<modules>
 		<!-- MCU common modules. -->
+		<module>plugins/org.eclipse.embedcdt</module>
 		<module>plugins/org.eclipse.embedcdt.core</module>
+		<module>plugins/org.eclipse.embedcdt.ui</module>
 		<module>features/org.eclipse.embedcdt-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.core</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.ui</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.packs</module>
 
 		<module>plugins/org.eclipse.embedcdt.packs</module>
@@ -47,27 +51,40 @@
 		<module>features/org.eclipse.embedcdt.packs-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.core</module>
-		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag</module>
 		<module>plugins/org.eclipse.embedcdt.debug.packs</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.core</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.ui</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.restart.ui</module>
+		<module>features/org.eclipse.embedcdt.debug.gdbjtag-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jlink</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jlink.core</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jlink.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.jlink-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.openocd</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.openocd.core</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.openocd.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.openocd-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.pyocd</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.pyocd.core</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.pyocd-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.qemu</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.qemu.core</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.qemu.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.qemu-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jumper</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jumper.core</module>
+		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jumper.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.jumper-feature</module>
 
-		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.restart</module>
-
 		<module>plugins/org.eclipse.embedcdt.codered</module>
+		<module>plugins/org.eclipse.embedcdt.codered.ui</module>
 		<module>features/org.eclipse.embedcdt.codered-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.doc.user</module>
@@ -77,6 +94,8 @@
 
 		<!-- Arm specific modules. -->
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.arm</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.arm.core</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.arm.ui</module>
 		<module>features/org.eclipse.embedcdt.managedbuild.cross.arm-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.templates.core</module>
@@ -92,6 +111,7 @@
 
 		<!-- RISC-V specific modules. -->
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.riscv</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.riscv.core</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.riscv.ui</module>
 		<module>features/org.eclipse.embedcdt.managedbuild.cross.riscv-feature</module>
 

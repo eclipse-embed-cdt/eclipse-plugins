@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+  Copyright (c) 2012, 2017 Liviu Ionescu.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
+  https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+
+  Contributors:
+    Liviu Ionescu
+-->
+
+<plugin>
+
+	<extension point="org.eclipse.ui.commands">
+		<category
+			name="%runCategory.name"
+			description="%runCategory.description"
+			id="org.eclipse.embedcdt.debug.gdbjtag.restart.ui.category">
+		</category>
+		<command
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.restart.ui.category"
+			defaultHandler="org.eclipse.embedcdt.debug.gdbjtag.restart.ui.RestartCommandHandler"
+			description="%ActionDefinition.restart.description"
+			id="org.eclipse.embedcdt.debug.gdbjtag.restart.ui.commands.Restart"
+			name="%ActionDefinition.restart.name">
+		</command>
+	</extension>
+
+	<extension point="org.eclipse.ui.actionSets">
+		<actionSet
+			id="org.eclipse.embedcdt.debug.gdbjtag.restart.ui.actionset"
+			label="%ActionDefinition.restart.name"
+			visible="true">
+			<action
+				class="org.eclipse.embedcdt.debug.gdbjtag.restart.ui.action.RestartCommandActionDelegate"
+				definitionId="org.eclipse.embedcdt.debug.gdbjtag.restart.ui.commands.Restart"
+				disabledIcon="icons/dlcl16/restart_co.gif"
+				icon="icons/elcl16/restart_co.gif"
+				id="org.eclipse.embedcdt.debug.gdbjtag.restart.ui.action"
+				label="%ActionDefinition.restart.name"
+				toolbarPath="org.eclipse.debug.ui.main.toolbar/additions"
+				tooltip="%ActionDefinition.restart.description">
+			</action>
+		</actionSet>
+	</extension>
+
+	<extension point="org.eclipse.ui.startup">
+		<startup class="org.eclipse.embedcdt.debug.gdbjtag.restart.ui.Startup">
+		</startup>
+	</extension>
+</plugin>

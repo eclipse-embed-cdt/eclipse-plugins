@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.jobs;
@@ -23,7 +24,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.embedcdt.packs.core.ConsoleStream;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
@@ -32,15 +33,13 @@ import org.eclipse.embedcdt.packs.core.tree.Type;
 import org.eclipse.embedcdt.packs.data.DataManager;
 import org.eclipse.embedcdt.packs.data.DataManagerEvent;
 import org.eclipse.embedcdt.packs.data.Utils;
-import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.ui.console.MessageConsoleStream;
 
 public class RemoveJob extends Job {
 
 	private static boolean fgRunning = false;
 
-	private MessageConsoleStream fOut;
-	private TreeSelection fSelection;
+	private PacksConsoleStream fOut;
+	private List<Node> fSelection;
 
 	// private String m_folderPath;
 	private IProgressMonitor fMonitor;
@@ -48,11 +47,11 @@ public class RemoveJob extends Job {
 	// private PacksStorage fStorage;
 	private DataManager fDataManager;
 
-	public RemoveJob(String name, TreeSelection selection) {
+	public RemoveJob(String name, List<Node> selection) {
 
 		super(name);
 
-		fOut = ConsoleStream.getConsoleOut();
+		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 
 		fSelection = selection;
 
@@ -79,9 +78,7 @@ public class RemoveJob extends Job {
 
 		List<Node> packsToRemove = new LinkedList<Node>();
 
-		for (Object obj : fSelection.toArray()) {
-
-			Node node = (Node) obj;
+		for (Node node : fSelection) {
 
 			if (node.isType(Type.VERSION) & node.isBooleanProperty(Property.INSTALLED)) {
 

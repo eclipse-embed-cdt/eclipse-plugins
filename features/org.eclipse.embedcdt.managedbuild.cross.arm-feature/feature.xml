@@ -37,6 +37,20 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.embedcdt.managedbuild.cross.arm.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.embedcdt.managedbuild.cross.arm.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.embedcdt.packs.core"
          download-size="0"
          install-size="0"
@@ -58,7 +72,14 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.embedcdt.managedbuild.cross"
+         id="org.eclipse.embedcdt.managedbuild.cross.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.embedcdt.managedbuild.cross.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

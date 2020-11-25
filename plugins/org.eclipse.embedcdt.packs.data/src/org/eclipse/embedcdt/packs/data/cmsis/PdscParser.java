@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.data.cmsis;
@@ -28,16 +29,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.embedcdt.packs.core.ConsoleStream;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.data.Utils;
-import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class PdscParser {
 
-	protected MessageConsoleStream fOut;
+	protected PacksConsoleStream fOut;
 
 	protected IPath fPath;
 	protected Document fDocument;
@@ -46,7 +46,7 @@ public class PdscParser {
 
 	public PdscParser() {
 
-		fOut = ConsoleStream.getConsoleOut();
+		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 	}
 
 	public void setDocument(Document document) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.jobs;
@@ -17,29 +18,28 @@ package org.eclipse.embedcdt.packs.jobs;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.embedcdt.packs.Activator;
-import org.eclipse.embedcdt.packs.core.ConsoleStream;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.PackNode;
 import org.eclipse.embedcdt.packs.core.tree.Property;
 import org.eclipse.embedcdt.packs.data.cmsis.PdscParserFull;
-import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.ui.console.MessageConsoleStream;
 import org.xml.sax.SAXParseException;
 
-public class ParsePdscRunnable implements IRunnableWithProgress {
+public class ParsePdscRunnable implements ICoreRunnable {
 
 	private static boolean fgRunning = false;
 
-	private MessageConsoleStream fgOut;
+	private PacksConsoleStream fgOut;
 	private PackNode fgVersionNode;
 
 	public ParsePdscRunnable(String name, PackNode versionNode) {
 
-		fgOut = ConsoleStream.getConsoleOut();
+		fgOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 
 		fgVersionNode = versionNode;
 	}

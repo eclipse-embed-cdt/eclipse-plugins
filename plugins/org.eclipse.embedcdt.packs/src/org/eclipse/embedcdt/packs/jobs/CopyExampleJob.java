@@ -1,5 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ * 
+ * Contributors:
+/*******************************************************************************
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,12 +21,14 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.jobs;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -25,7 +38,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.packs.Activator;
-import org.eclipse.embedcdt.packs.core.ConsoleStream;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
@@ -33,27 +46,25 @@ import org.eclipse.embedcdt.packs.core.tree.PackNode;
 import org.eclipse.embedcdt.packs.core.tree.Property;
 import org.eclipse.embedcdt.packs.core.tree.Type;
 import org.eclipse.embedcdt.packs.data.Utils;
-import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.ui.console.MessageConsoleStream;
 
 public class CopyExampleJob extends Job {
 
 	private static boolean fgRunning = false;
 
 	private String fParam[];
-	private MessageConsoleStream fOut;
-	private TreeSelection fSelection;
+	private PacksConsoleStream fOut;
+	private List<PackNode> fSelection;
 	private IPath fDestFolderPath;
 
 	private IProgressMonitor fMonitor;
 
 	private int fSizeOfPrefixToStrip;
 
-	public CopyExampleJob(String name, TreeSelection selection, String[] param) {
+	public CopyExampleJob(String name, List<PackNode> selection, String[] param) {
 
 		super(name);
 
-		fOut = ConsoleStream.getConsoleOut();
+		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 
 		fSelection = selection;
 		fParam = param;
@@ -80,13 +91,12 @@ public class CopyExampleJob extends Job {
 
 		int exampleCount = 0;
 
-		for (Object o : fSelection.toList()) {
+		for (PackNode exampleNode : fSelection) {
 
 			if (monitor.isCanceled()) {
 				break;
 			}
 
-			PackNode exampleNode = (PackNode) o;
 			PackNode versionNode = (PackNode) exampleNode.getParent();
 
 			Leaf outlineExampleNode = exampleNode.getOutline().findChild(Type.EXAMPLE);

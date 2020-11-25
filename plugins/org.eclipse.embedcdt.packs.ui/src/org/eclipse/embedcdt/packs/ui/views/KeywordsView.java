@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui.views;
@@ -18,11 +19,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.embedcdt.packs.core.ConsoleStream;
+import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.DurationMonitor;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
-import org.eclipse.embedcdt.packs.core.tree.NodeViewContentProvider;
 import org.eclipse.embedcdt.packs.core.tree.Type;
 import org.eclipse.embedcdt.packs.data.DataManager;
 import org.eclipse.embedcdt.packs.data.DataManagerEvent;
@@ -45,7 +45,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
 
 public class KeywordsView extends ViewPart implements IDataManagerListener {
@@ -100,11 +99,11 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 	private ViewContentProvider fContentProvider;
 
 	private DataManager fDataManager;
-	private MessageConsoleStream fOut;
+	private PacksConsoleStream fOut;
 
 	public KeywordsView() {
 
-		fOut = ConsoleStream.getConsoleOut();
+		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 
 		fDataManager = DataManager.getInstance();
 	}
