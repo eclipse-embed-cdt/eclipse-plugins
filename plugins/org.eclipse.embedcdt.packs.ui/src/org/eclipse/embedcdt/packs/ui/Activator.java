@@ -65,7 +65,7 @@ public class Activator extends AbstractUIActivator {
 
 	public IPreferenceStore getCorePreferenceStore() {
 		if (corePreferenceStore == null) {
-			corePreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, PLUGIN_ID);
+			corePreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, org.eclipse.embedcdt.packs.core.Activator.PLUGIN_ID);
 		}
 		return corePreferenceStore;
 	}

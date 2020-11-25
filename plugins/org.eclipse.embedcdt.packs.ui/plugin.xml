@@ -117,15 +117,6 @@
 			</toolbar>
 		</menuContribution>
 	</extension>
-	<extension
-		id="org.eclipse.embedcdt.packs.marker"
-		name="CMSIS Packs"
-		point="org.eclipse.core.resources.markers">
-		<super type="org.eclipse.core.resources.problemmarker">
-		</super>
-		<persistent value="false">
-		</persistent>
-	</extension>
 	<extension point="org.eclipse.ui.handlers">
 		<handler
 			class="org.eclipse.embedcdt.packs.ui.handlers.UpdatePacksHandler"
