@@ -29,6 +29,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.embedcdt.core.Xml;
 import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
@@ -135,7 +136,7 @@ public class Repos {
 			fList = list;
 			return list;
 		} catch (UsingDefaultFileException e) {
-			Activator.log(e.getMessage());
+			Activator.log(e.getMessage(), IStatus.INFO);
 			useDefaults = true;
 		} catch (Exception e) {
 			Activator.log(e);
