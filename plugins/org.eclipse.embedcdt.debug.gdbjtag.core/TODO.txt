@@ -1,0 +1,41 @@
+
+Bugs
+====
+
+[20140927] - implement derivedFrom fully
+
+[20140927] - implement dimElementGroup
+	[20141008] - peripheral arrays functional
+	[20141009] - cluster arrays implemented
+
+[20140927] - add force_read.png
+
+[20140927] - fully implement cluster (add offsets)
+	[20141009] - clusters implemented (used by Atmel SAM20)
+	
+[20140927] - implement scale for scaledNonNegativeInteger
+	[20141012] - done
+
+[20140929] - implement prependToName/appendToName (used by Atmel SAM20)
+	hmmm... not sure this is neded, it just makes the names longer
+
+[20140929] - implement unions, registers with the same address
+	[20141010] - read regions ok, check contained 
+	TODO: manual updates of same address registers
+
+New features
+============
+
+[20140927] - add sorting code for rendering
+
+[20140927] - implement enumerations
+
+[20140927] - add reset value, version, groupName
+	[20141010] - done
+	
+[20140927] - save/restore the memory monitors
+
+[20140929] - support 8 bit registers (used by Freescale?)
+	[20141010] - done
+	
+[20140929] - better integration with other renderings and/or monitors
