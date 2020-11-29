@@ -34,51 +34,52 @@
 
 	<modules>
 		<!-- MCU common modules. -->
-		<module>plugins/org.eclipse.embedcdt</module>
+		<module>branding/org.eclipse.embedcdt-branding</module>
 		<module>plugins/org.eclipse.embedcdt.core</module>
 		<module>plugins/org.eclipse.embedcdt.ui</module>
 		<module>features/org.eclipse.embedcdt-feature</module>
 
-		<module>plugins/org.eclipse.embedcdt.managedbuild.cross</module>
+		<module>branding/org.eclipse.embedcdt.managedbuild.cross-branding</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.core</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.ui</module>
-		<module>plugins/org.eclipse.embedcdt.managedbuild.packs</module>
 
-		<module>plugins/org.eclipse.embedcdt.packs</module>
+		<module>plugins/org.eclipse.embedcdt.managedbuild.packs.ui</module>
+
+		<module>branding/org.eclipse.embedcdt.packs-branding</module>
 		<module>plugins/org.eclipse.embedcdt.packs.core</module>
-		<module>plugins/org.eclipse.embedcdt.packs.data</module>
 		<module>plugins/org.eclipse.embedcdt.packs.ui</module>
 		<module>features/org.eclipse.embedcdt.packs-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.debug.core</module>
-		<module>plugins/org.eclipse.embedcdt.debug.packs</module>
-		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag</module>
+		<module>branding/org.eclipse.embedcdt.debug.packs-branding</module>
+
+		<module>branding/org.eclipse.embedcdt.debug.gdbjtag-branding</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.core</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.ui</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.restart.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag-feature</module>
 
-		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jlink</module>
+		<module>branding/org.eclipse.embedcdt.debug.gdbjtag.jlink-branding</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jlink.core</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.jlink.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.jlink-feature</module>
 
-		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.openocd</module>
+		<module>branding/org.eclipse.embedcdt.debug.gdbjtag.openocd-branding</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.openocd.core</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.openocd.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.openocd-feature</module>
 
-		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.pyocd</module>
+		<module>branding/org.eclipse.embedcdt.debug.gdbjtag.pyocd-branding</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.pyocd.core</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.pyocd-feature</module>
 
-		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.qemu</module>
+		<module>branding/org.eclipse.embedcdt.debug.gdbjtag.qemu-branding</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.qemu.core</module>
 		<module>plugins/org.eclipse.embedcdt.debug.gdbjtag.qemu.ui</module>
 		<module>features/org.eclipse.embedcdt.debug.gdbjtag.qemu-feature</module>
 
-		<module>plugins/org.eclipse.embedcdt.codered</module>
+		<module>branding/org.eclipse.embedcdt.codered-branding</module>
 		<module>plugins/org.eclipse.embedcdt.codered.ui</module>
 		<module>features/org.eclipse.embedcdt.codered-feature</module>
 
@@ -88,7 +89,7 @@
 		<module>repositories/org.eclipse.embedcdt-repository</module>
 
 		<!-- Arm specific modules. -->
-		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.arm</module>
+		<module>branding/org.eclipse.embedcdt.managedbuild.cross.arm-branding</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.arm.core</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.arm.ui</module>
 		<module>features/org.eclipse.embedcdt.managedbuild.cross.arm-feature</module>
@@ -105,7 +106,7 @@
 		<module>features/org.eclipse.embedcdt.templates.ad-feature</module>
 
 		<!-- RISC-V specific modules. -->
-		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.riscv</module>
+		<module>branding/org.eclipse.embedcdt.managedbuild.cross.riscv-branding</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.riscv.core</module>
 		<module>plugins/org.eclipse.embedcdt.managedbuild.cross.riscv.ui</module>
 		<module>features/org.eclipse.embedcdt.managedbuild.cross.riscv-feature</module>
