@@ -15,21 +15,18 @@
 
 package org.eclipse.embedcdt.packs.core;
 
-final class SystemOutputConsoleStream implements IConsoleStream {
+/**
+ * 
+ * Provides access to console streams.
+ * 
+ * @since 3.0
+ */
+public interface IConsolesFactory {
 	
-	@Override
-	public void print(String message) {
-		System.out.print(message);
-	}
-
-	@Override
-	public void println() {
-		System.out.println();
-	}
-
-	@Override
-	public void println(String message) {
-		System.out.println(message);
-	}
-
+	/**
+	 * 
+	 * @return an output stream
+	 */
+	IConsoleStream output();
+	
 }

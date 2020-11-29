@@ -15,21 +15,35 @@
 
 package org.eclipse.embedcdt.packs.core;
 
-final class SystemOutputConsoleStream implements IConsoleStream {
+/**
+ * 
+ * Used to write messages to a message console. A message console may have more
+ * than one stream connected to it. Each stream may be displayed in a different
+ * color.
+ * 
+ * @since 3.0
+ */
+public interface IConsoleStream {
 	
-	@Override
-	public void print(String message) {
-		System.out.print(message);
-	}
+	/**
+	 * Appends the specified message to this stream.
+	 *
+	 * @param message message to append
+	 */
+	public void print(String message);
 
-	@Override
-	public void println() {
-		System.out.println();
-	}
 
-	@Override
-	public void println(String message) {
-		System.out.println(message);
-	}
+	/**
+	 * Appends a line separator string to this stream.
+	 */
+	public void println();
+
+	/**
+	 * Appends the specified message to this stream, followed by a line
+	 * separator string.
+	 *
+	 * @param message message to print
+	 */
+	public void println(String message);
 
 }

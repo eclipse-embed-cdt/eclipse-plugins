@@ -11,22 +11,24 @@
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.core.data;
 
-import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
+import org.eclipse.embedcdt.packs.core.Activator;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.Utils;
 
 public class DurationMonitor {
 
 	private int fDepth;
-	private PacksConsoleStream fOut;
+	private IConsoleStream fOut;
 	long fBeginTime;
 
 	public DurationMonitor() {
 		fDepth = 0;
-		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
+		fOut = Activator.getInstance().getConsoleOutput();
 	}
 
 	public void displayTimeAndRun(Runnable runnable) {

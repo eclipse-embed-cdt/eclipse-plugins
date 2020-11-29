@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.core.data;
@@ -32,7 +33,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.embedcdt.packs.core.Activator;
-import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.Preferences;
 
 public class PacksStorage {
@@ -131,7 +132,7 @@ public class PacksStorage {
 
 	// ------------------------------------------------------------------------
 
-	public static long getPackSize(String packName, URL url, PacksConsoleStream out) throws IOException {
+	public static long getPackSize(String packName, URL url, IConsoleStream out) throws IOException {
 		// Check if the .pack file is present (i.e. it was installed).
 		File f = getCachedFileObject(packName);
 		if (f.isFile()) {
@@ -175,7 +176,7 @@ public class PacksStorage {
 		return sz;
 	}
 
-	public static long getRemoteFileSize(String packName, URL url, PacksConsoleStream out) throws IOException {
+	public static long getRemoteFileSize(String packName, URL url, IConsoleStream out) throws IOException {
 
 		URLConnection connection;
 		while (true) {
@@ -247,7 +248,7 @@ public class PacksStorage {
 		return length;
 	}
 
-	public static int getRemoteFileSize(URL url, PacksConsoleStream out) throws IOException {
+	public static int getRemoteFileSize(URL url, IConsoleStream out) throws IOException {
 		return (int) getRemoteFileSize(null, url, out);
 	}
 

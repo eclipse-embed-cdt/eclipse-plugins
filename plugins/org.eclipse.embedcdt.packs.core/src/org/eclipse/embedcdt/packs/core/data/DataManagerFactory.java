@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 ArSysOp and others.
+ * Copyright (c) 2014 Liviu Ionescu.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -9,27 +9,27 @@
  * SPDX-License-Identifier: EPL-2.0
  * 
  * Contributors:
- *     Alexander Fedorov (ArSysOp) - initial API and implementation.
- *     Liviu Ionescu - UI part extraction.
+ *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.packs.core;
+package org.eclipse.embedcdt.packs.core.data;
 
-final class SystemOutputConsoleStream implements IConsoleStream {
-	
-	@Override
-	public void print(String message) {
-		System.out.print(message);
+public class DataManagerFactory implements IPacksDataManagerFactory {
+
+	public DataManagerFactory() {
+		;
 	}
 
 	@Override
-	public void println() {
-		System.out.println();
+	public IPacksDataManager createDataManager() {
+
+		// Return the static manager object
+		return DataManager.getInstance();
 	}
 
 	@Override
-	public void println(String message) {
-		System.out.println(message);
+	public void dispose() {
+		;
 	}
 
 }
