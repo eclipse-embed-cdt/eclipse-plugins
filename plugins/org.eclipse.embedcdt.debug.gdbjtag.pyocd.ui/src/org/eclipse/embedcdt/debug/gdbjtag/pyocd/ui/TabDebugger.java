@@ -22,6 +22,7 @@
  *     Chris Reed - pyOCD changes
  *     John Cortell - cleanup and fixes
  *     Jonah Graham - fix for Neon
+ *     Liviu Ionescu - UI part extraction.
  ******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui;
@@ -46,7 +47,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.PyOCD;
@@ -56,6 +56,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences.PersistentPrefe
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui.preferences.GlobalMcuPage;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui.preferences.WorkspaceMcuPage;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui.properties.ProjectMcuPage;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.Messages;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

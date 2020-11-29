@@ -9,9 +9,10 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Intel Corporation - Initial API and implementation
- *    James Blackburn (Broadcom Corp.)
- *    Liviu Ionescu - Arm version
+ *     Intel Corporation - Initial API and implementation
+ *     James Blackburn (Broadcom Corp.)
+ *     Liviu Ionescu - Arm version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.arm.ui;
@@ -37,7 +38,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.managedbuild.cross.arm.core.Activator;
+import org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.Messages;
 import org.eclipse.embedcdt.managedbuild.cross.arm.core.IDs;
 import org.eclipse.embedcdt.managedbuild.cross.arm.core.Option;
 import org.eclipse.embedcdt.managedbuild.cross.arm.core.ToolchainDefinition;

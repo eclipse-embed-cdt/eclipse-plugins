@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripherals;
@@ -18,7 +19,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripherals;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentation2;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationContext;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.Messages;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Messages;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 /**

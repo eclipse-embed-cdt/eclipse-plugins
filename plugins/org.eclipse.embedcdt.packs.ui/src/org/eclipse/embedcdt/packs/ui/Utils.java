@@ -9,8 +9,9 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Liviu Ionescu - initial version
- *    Alexander Fedorov (ArSysOp) - extract UI part
+ *     Liviu Ionescu - initial version
+ *     Alexander Fedorov (ArSysOp) - extract UI part
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui;
@@ -20,7 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -37,12 +38,12 @@ public class Utils {
 	 * @return 0 = Ok, 1 = Retry, 2 = Ignore, 3 = Ignore All, 4 = Abort
 	 * @throws IOException
 	 */
-	public static int copyFileWithShell(final URL sourceUrl, File destinationFile, PacksConsoleStream out,
+	public static int copyFileWithShell(final URL sourceUrl, File destinationFile, IConsoleStream out,
 			IProgressMonitor monitor, final Shell shell, final boolean ignoreError) throws IOException {
 
 		while (true) {
 			try {
-				org.eclipse.embedcdt.packs.data.Utils.copyFile(sourceUrl, destinationFile, out, monitor);
+				org.eclipse.embedcdt.packs.core.data.DataUtils.copyFile(sourceUrl, destinationFile, out, monitor);
 				return 0;
 			} catch (final IOException e) {
 

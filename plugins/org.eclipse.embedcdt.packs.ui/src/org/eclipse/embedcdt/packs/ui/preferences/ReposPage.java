@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui.preferences;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.cdt.ui.newui.AbstractCPropertyTab;
-import org.eclipse.embedcdt.packs.data.Repos;
+import org.eclipse.embedcdt.packs.core.data.Repos;
 import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.PreferencePage;

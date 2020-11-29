@@ -20,6 +20,7 @@
  *                allow connections via serial ports and pipes).
  *     Liviu Ionescu - Arm version
  *     Jonah Graham - fix for Neon
+ *     Liviu Ionescu - UI part extraction.
  ******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.qemu.ui;
@@ -38,7 +39,6 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.data.CProjectAttributes;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
@@ -46,6 +46,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.PersistentPrefer
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.preferences.GlobalMcuPage;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.preferences.WorkspaceMcuPage;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.properties.ProjectMcuPage;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Messages;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

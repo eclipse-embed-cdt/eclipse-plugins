@@ -10,15 +10,16 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.Messages;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.Messages;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
 import org.eclipse.jface.preference.FieldEditor;

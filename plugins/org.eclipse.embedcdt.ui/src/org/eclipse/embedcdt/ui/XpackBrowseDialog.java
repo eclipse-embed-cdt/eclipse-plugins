@@ -10,11 +10,11 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.ui;
 
-import org.eclipse.embedcdt.core.Activator;
 import org.eclipse.embedcdt.internal.ui.Messages;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;

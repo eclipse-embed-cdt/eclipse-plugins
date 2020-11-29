@@ -10,14 +10,15 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
-  *******************************************************************************/
+ *     Liviu Ionescu - UI part extraction.
+ *******************************************************************************/
 
 package org.eclipse.embedcdt.internal.ui;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.embedcdt.core.Activator;
+import org.eclipse.embedcdt.ui.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
@@ -29,6 +30,7 @@ public class Messages extends NLS {
 	public static String McuPropertiesPage_description;
 	public static String McuPreferencesPage_description;
 	public static String XpackBrowseDialog_Label_text;
+	
 	// ------------------------------------------------------------------------
 
 	static {

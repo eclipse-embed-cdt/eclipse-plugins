@@ -12,6 +12,7 @@
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Chris Reed - pyOCD changes
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.pyocd.core;
@@ -65,6 +66,8 @@ public class Activator extends AbstractActivator {
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 	}
+
+	// ------------------------------------------------------------------------
 
 	public DefaultPreferences getDefaultPreferences() {
 

@@ -11,14 +11,14 @@
  * Contributors:
  *     Marc-Andre Laperle - initial API and implementation
  *     Liviu Ionescu - Arm version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.arm.ui;
 
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPage;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
-import org.eclipse.embedcdt.managedbuild.cross.arm.core.Activator;
-import org.eclipse.embedcdt.managedbuild.cross.arm.core.IDs;
+import org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.Messages;
 import org.eclipse.embedcdt.managedbuild.cross.arm.core.ToolchainDefinition;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 import org.eclipse.jface.resource.ImageDescriptor;

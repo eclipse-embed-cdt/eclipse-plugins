@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui.views;
@@ -19,14 +20,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
+import org.eclipse.embedcdt.packs.core.data.DataManager;
+import org.eclipse.embedcdt.packs.core.data.DataManagerEvent;
 import org.eclipse.embedcdt.packs.core.data.DurationMonitor;
+import org.eclipse.embedcdt.packs.core.data.IDataManagerListener;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.Type;
-import org.eclipse.embedcdt.packs.data.DataManager;
-import org.eclipse.embedcdt.packs.data.DataManagerEvent;
-import org.eclipse.embedcdt.packs.data.IDataManagerListener;
 import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -99,11 +100,11 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 	private ViewContentProvider fContentProvider;
 
 	private DataManager fDataManager;
-	private PacksConsoleStream fOut;
+	private IConsoleStream fOut;
 
 	public KeywordsView() {
 
-		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
+		fOut = Activator.getInstance().getConsoleOutput();
 
 		fDataManager = DataManager.getInstance();
 	}

@@ -10,11 +10,11 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.ui;
 
-import org.eclipse.embedcdt.core.Activator;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;

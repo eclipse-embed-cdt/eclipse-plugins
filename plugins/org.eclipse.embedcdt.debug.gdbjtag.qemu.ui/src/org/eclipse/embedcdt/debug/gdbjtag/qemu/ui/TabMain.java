@@ -11,12 +11,12 @@
  * Contributors:
  *     QNX Software Systems - Initial implementation
  *     Liviu Ionescu - Arm version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.qemu.ui;
 
 import org.eclipse.cdt.launch.ui.CMainTab2;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Activator;
 
 public class TabMain extends CMainTab2 {
 

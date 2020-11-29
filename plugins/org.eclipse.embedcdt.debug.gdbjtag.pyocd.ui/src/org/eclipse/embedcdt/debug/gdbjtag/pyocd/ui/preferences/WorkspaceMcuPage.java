@@ -10,15 +10,16 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui.Messages;
+import org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.Messages;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
 import org.eclipse.jface.preference.FieldEditor;
@@ -60,7 +61,7 @@ public class WorkspaceMcuPage extends FieldEditorPreferencePage implements IWork
 		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 
 		// Explicit use of the workspace preferences.
-		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
+		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.CORE_PLUGIN_ID));
 
 		setDescription(Messages.WorkspaceMcuPagePropertyPage_description);
 	}

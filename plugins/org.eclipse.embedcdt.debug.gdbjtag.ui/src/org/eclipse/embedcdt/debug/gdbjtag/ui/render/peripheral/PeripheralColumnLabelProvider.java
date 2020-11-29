@@ -11,19 +11,20 @@
  * Contributors:
  *     Liviu Ionescu - initial version 
  *     		(many thanks to Code Red for providing the inspiration)
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IMemoryBlockExtension;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdEnumeratedValueDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralRegisterFieldVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralRegisterVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralTopVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralTreeVMNode;
+import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralColumnInfo.ColumnType;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -192,7 +193,7 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider implement
 
 				// Get the image from the named file.
 				String name = ((PeripheralTreeVMNode) element).getImageName();
-				return org.eclipse.embedcdt.debug.gdbjtag.ui.Activator.getInstance().getImage(name);
+				return Activator.getInstance().getImage(name);
 			}
 		}
 		return null;

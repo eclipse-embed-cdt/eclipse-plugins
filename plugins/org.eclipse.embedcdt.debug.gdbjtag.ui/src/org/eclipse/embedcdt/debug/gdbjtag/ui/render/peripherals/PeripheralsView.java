@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripherals;
@@ -31,7 +32,7 @@ import org.eclipse.debug.internal.ui.views.variables.VariablesView;
 import org.eclipse.embedcdt.debug.gdbjtag.core.memory.PeripheralMemoryBlockExtension;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.MemoryBlockMonitor;
-import org.eclipse.embedcdt.ui.EclipseUtils;
+import org.eclipse.embedcdt.ui.EclipseUiUtils;
 import org.eclipse.embedcdt.ui.SystemUIJob;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -111,7 +112,7 @@ public class PeripheralsView extends VariablesView implements IMemoryBlockListen
 			if (events[i].getKind() == DebugEvent.TERMINATE) {
 
 				// Clear possible messages.
-				EclipseUtils.clearStatusMessage();
+				EclipseUiUtils.clearStatusMessage();
 
 			} else if (events[i].getKind() == DebugEvent.MODEL_SPECIFIC) {
 				// Currently no longer fired

@@ -10,15 +10,16 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.embedcdt.internal.managedbuild.cross.ui.Messages;
-import org.eclipse.embedcdt.managedbuild.cross.core.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.ui.Activator;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
 import org.eclipse.jface.preference.FieldEditor;
@@ -52,9 +53,9 @@ public class BuildToolsWorkspacePathsPreferencesPage extends FieldEditorPreferen
 	public BuildToolsWorkspacePathsPreferencesPage() {
 		super(GRID);
 
-		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 
-		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
+		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.CORE_PLUGIN_ID));
 
 		setDescription(Messages.WorkspaceBuildToolsPathsPreferencesPage_description);
 	}
@@ -64,7 +65,7 @@ public class BuildToolsWorkspacePathsPreferencesPage extends FieldEditorPreferen
 	// Contributed by IWorkbenchPreferencePage
 	@Override
 	public void init(IWorkbench workbench) {
-		if (org.eclipse.embedcdt.internal.managedbuild.cross.ui.Activator.getInstance().isDebugging()) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("WorkspaceToolsPathsPreferencePage.init()");
 		}
 	}

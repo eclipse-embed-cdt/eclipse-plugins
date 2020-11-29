@@ -10,11 +10,13 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.arm.core;
 
 import org.eclipse.embedcdt.core.AbstractActivator;
+import org.eclipse.embedcdt.managedbuild.cross.arm.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 import org.osgi.framework.BundleContext;
 
@@ -42,14 +44,13 @@ public class Activator extends AbstractActivator {
 		return fgInstance;
 	}
 
-	protected PersistentPreferences fPersistentPreferences;
+	protected PersistentPreferences fPersistentPreferences = null;
+	private DefaultPreferences fDefaultPreferences = null;
 
 	public Activator() {
 
 		super();
 		fgInstance = this;
-
-		fPersistentPreferences = new PersistentPreferences(PLUGIN_ID);
 	}
 
 	// ------------------------------------------------------------------------
@@ -62,8 +63,22 @@ public class Activator extends AbstractActivator {
 		super.stop(context);
 	}
 
+	// ------------------------------------------------------------------------
+
 	public PersistentPreferences getPersistentPreferences() {
+		
+		if (fPersistentPreferences == null) {
+			fPersistentPreferences = new PersistentPreferences(PLUGIN_ID);
+		}
 		return fPersistentPreferences;
+	}
+
+	public DefaultPreferences getDefaultPreferences() {
+		
+		if (fDefaultPreferences == null) {
+			fDefaultPreferences = new DefaultPreferences(PLUGIN_ID);
+		}
+		return fDefaultPreferences;
 	}
 
 	// ------------------------------------------------------------------------

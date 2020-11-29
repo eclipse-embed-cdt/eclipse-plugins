@@ -9,10 +9,11 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Intel Corporation - Initial API and implementation
- *    James Blackburn (Broadcom Corp.)
- *    Liviu Ionescu - Arm version
- *    Liviu Ionescu - RISC-V version
+ *     Intel Corporation - Initial API and implementation
+ *     James Blackburn (Broadcom Corp.)
+ *     Liviu Ionescu - Arm version
+ *     Liviu Ionescu - RISC-V version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.riscv.ui;
@@ -37,10 +38,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.Messages;
 import org.eclipse.embedcdt.managedbuild.cross.core.GnuMcuMakefileGenerator;
 import org.eclipse.embedcdt.managedbuild.cross.core.Utils;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.core.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.riscv.core.IDs;
 import org.eclipse.embedcdt.managedbuild.cross.riscv.core.Option;
 import org.eclipse.embedcdt.managedbuild.cross.riscv.core.ToolchainDefinition;

@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.ui.viewmodel.peripherals;
@@ -59,7 +60,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.services.IPeripheralsService;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.MemoryBlockMonitor;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripherals.PeripheralsColumnPresentation;
-import org.eclipse.embedcdt.ui.EclipseUtils;
+import org.eclipse.embedcdt.ui.EclipseUiUtils;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -258,7 +259,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 
 							update.done();
 						} else {
-							EclipseUtils.showStatusErrorMessage(getStatus().getMessage());
+							EclipseUiUtils.showStatusErrorMessage(getStatus().getMessage());
 							handleFailedUpdate(update);
 						}
 					}

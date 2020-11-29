@@ -10,10 +10,12 @@
  * 
  * Contributors:
  *     Alexander Fedorov (ArSysOp) - initial API and implementation.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
+
 package org.eclipse.embedcdt.packs.core;
 
-final class SystemOutputConsoleStream implements PacksConsoleStream {
+final class SystemOutputConsoleStream implements IConsoleStream {
 	
 	@Override
 	public void print(String message) {

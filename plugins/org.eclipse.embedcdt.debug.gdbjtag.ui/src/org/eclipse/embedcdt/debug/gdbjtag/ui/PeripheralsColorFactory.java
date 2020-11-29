@@ -10,13 +10,13 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.ui;
 
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.themes.IColorFactory;
 
@@ -43,7 +43,7 @@ public class PeripheralsColorFactory implements IColorFactory {
 		String value;
 		value = InstanceScope.INSTANCE.getNode("org.eclipse.ui.workbench").get(fThemeColorName, null);
 		if (value == null) {
-			value = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID).get(fPreferenceName, null);
+			value = DefaultScope.INSTANCE.getNode(Activator.CORE_PLUGIN_ID).get(fPreferenceName, null);
 		}
 		if (value == null) {
 			value = DefaultScope.INSTANCE.getNode("ilg.gnumcueclipse.debug.gdbjtag").get(fPreferenceName, "0,0,0");

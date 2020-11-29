@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui.views;
@@ -21,17 +22,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.embedcdt.packs.core.data.DataManager;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
+import org.eclipse.embedcdt.packs.core.jobs.ParsePdscRunnable;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.PackNode;
 import org.eclipse.embedcdt.packs.core.tree.Property;
 import org.eclipse.embedcdt.packs.core.tree.Type;
-import org.eclipse.embedcdt.packs.data.DataManager;
-import org.eclipse.embedcdt.packs.jobs.ParsePdscRunnable;
 import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.embedcdt.packs.ui.IconUtils;
-import org.eclipse.embedcdt.ui.EclipseUtils;
+import org.eclipse.embedcdt.ui.EclipseUiUtils;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -641,12 +642,12 @@ public class OutlineView extends ViewPart {
 
 				// Open external file in Eclipse editor (as read only, since the
 				// packages were marked as read only.
-				EclipseUtils.openFileWithInternalEditor(fPackageAbsolutePath.append(relativeFile));
+				EclipseUiUtils.openFileWithInternalEditor(fPackageAbsolutePath.append(relativeFile));
 
 			} else if ("doc".equals(category)) {
 
 				// System.out.println("Document " + node);
-				EclipseUtils.openExternalFile(fPackageAbsolutePath.append(relativeFile));
+				EclipseUiUtils.openExternalFile(fPackageAbsolutePath.append(relativeFile));
 
 			} else if ("include".equals(category) || "library".equals(category)) {
 				; // ignore folders
@@ -661,12 +662,12 @@ public class OutlineView extends ViewPart {
 			if (url.length() > 0) {
 
 				// System.out.println("Open " + url);
-				EclipseUtils.openExternalBrowser(new URL(url));
+				EclipseUiUtils.openExternalBrowser(new URL(url));
 
 			} else if (relativeFile.length() > 0) {
 
 				// System.out.println("Path " + relativeFile);
-				EclipseUtils.openExternalFile(fPackageAbsolutePath.append(relativeFile));
+				EclipseUiUtils.openExternalFile(fPackageAbsolutePath.append(relativeFile));
 
 			} else {
 				Activator.log("Book " + node + " ignored");
@@ -680,7 +681,7 @@ public class OutlineView extends ViewPart {
 
 			// Open external file in Eclipse editor (as read only, since the
 			// packages were marked as read only
-			EclipseUtils.openFileWithInternalEditor(fPackageAbsolutePath.append(relativeFile));
+			EclipseUiUtils.openFileWithInternalEditor(fPackageAbsolutePath.append(relativeFile));
 
 		} else if (Type.DEBUG.equals(type)) {
 
@@ -690,7 +691,7 @@ public class OutlineView extends ViewPart {
 
 			// Open external file in Eclipse editor (as read only, since the
 			// packages were marked as read only
-			EclipseUtils.openFileWithInternalEditor(fPackageAbsolutePath.append(relativeFile));
+			EclipseUiUtils.openFileWithInternalEditor(fPackageAbsolutePath.append(relativeFile));
 		} else {
 			// System.out.println("Double-click detected on " + node + " " +
 			// type);
@@ -704,7 +705,7 @@ public class OutlineView extends ViewPart {
 		if (relativeFile.length() > 0) {
 
 			assert (fPackageAbsolutePath != null);
-			EclipseUtils.openFileWithInternalEditor(fPackageAbsolutePath.append(relativeFile));
+			EclipseUiUtils.openFileWithInternalEditor(fPackageAbsolutePath.append(relativeFile));
 		}
 	}
 
@@ -714,14 +715,14 @@ public class OutlineView extends ViewPart {
 		if (relativeFile.length() > 0) {
 
 			assert (fPackageAbsolutePath != null);
-			EclipseUtils.openExternalFile(fPackageAbsolutePath.append(relativeFile));
+			EclipseUiUtils.openExternalFile(fPackageAbsolutePath.append(relativeFile));
 			return;
 		}
 
 		String url = node.getProperty(Node.URL_PROPERTY);
 		if (url.length() > 0) {
 
-			EclipseUtils.openExternalBrowser(new URL(url));
+			EclipseUiUtils.openExternalBrowser(new URL(url));
 			return;
 		}
 	}

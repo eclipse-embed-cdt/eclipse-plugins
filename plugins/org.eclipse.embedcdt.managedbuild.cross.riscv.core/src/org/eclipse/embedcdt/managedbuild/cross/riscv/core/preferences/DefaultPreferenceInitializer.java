@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.riscv.core.preferences;
@@ -51,8 +52,8 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			System.out.println("riscv.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
-		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
-		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 
 		// Default toolchain name
 		String toolchainName = ToolchainDefinition.DEFAULT_TOOLCHAIN_NAME;

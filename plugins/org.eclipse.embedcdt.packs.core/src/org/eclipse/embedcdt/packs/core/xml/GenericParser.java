@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.core.xml;
@@ -20,7 +21,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.embedcdt.core.Xml;
-import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
+import org.eclipse.embedcdt.packs.core.Activator;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.Property;
@@ -41,10 +43,10 @@ import org.w3c.dom.Element;
  */
 public class GenericParser {
 
-	protected PacksConsoleStream fOut;
+	protected IConsoleStream fOut;
 
 	public GenericParser() {
-		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
+		fOut = Activator.getInstance().getConsoleOutput();
 	}
 
 	// Override this in derived class

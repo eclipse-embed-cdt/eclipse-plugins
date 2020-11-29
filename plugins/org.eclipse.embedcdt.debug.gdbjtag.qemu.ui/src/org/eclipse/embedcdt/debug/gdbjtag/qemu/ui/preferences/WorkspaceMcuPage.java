@@ -10,15 +10,16 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.Messages;
+import org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Messages;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
 import org.eclipse.jface.preference.FieldEditor;
@@ -55,7 +56,7 @@ public class WorkspaceMcuPage extends FieldEditorPreferencePage implements IWork
 		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 
-		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
+		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.CORE_PLUGIN_ID));
 
 		setDescription(Messages.WorkspaceMcuPagePropertyPage_description);
 	}

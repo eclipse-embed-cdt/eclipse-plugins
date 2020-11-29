@@ -10,12 +10,13 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.preferences;
 
-import org.eclipse.embedcdt.core.Activator;
 import org.eclipse.embedcdt.core.EclipseUtils;
+import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 
 public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.DefaultPreferences {
 

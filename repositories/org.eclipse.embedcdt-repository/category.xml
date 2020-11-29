@@ -63,9 +63,6 @@
    <feature id="org.eclipse.embedcdt.debug.gdbjtag.qemu">
       <category name="org.eclipse.embedcdt.category"/>
    </feature>
-   <feature id="org.eclipse.embedcdt.debug.gdbjtag.jumper">
-      <category name="org.eclipse.embedcdt.category"/>
-   </feature>
    <category-def name="org.eclipse.embedcdt.category.source" label="Embedded C/C++ Cross Development Tools (incubation) Developer Resources"/>
    <feature id="org.eclipse.embedcdt.managedbuild.cross.arm.source">
       <category name="org.eclipse.embedcdt.category.source"/>
@@ -110,9 +107,6 @@
       <category name="org.eclipse.embedcdt.category.source"/>
    </feature>
    <feature id="org.eclipse.embedcdt.debug.gdbjtag.qemu.source">
-      <category name="org.eclipse.embedcdt.category.source"/>
-   </feature>
-   <feature id="org.eclipse.embedcdt.debug.gdbjtag.jumper.source">
       <category name="org.eclipse.embedcdt.category.source"/>
    </feature>
 </site>

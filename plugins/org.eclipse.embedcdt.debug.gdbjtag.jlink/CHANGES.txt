@@ -1,7 +1,0 @@
-There were many changes required to implement the J-Link plug-in.
-
-This is a summary of them:
-
-- the consoles are created in LaunchConfigurationDelegate using code defined in
-Launch.
-

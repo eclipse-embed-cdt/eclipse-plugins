@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.ui;singleton:=true
 Bundle-Version: 6.0.0.qualifier
-Bundle-Activator: org.eclipse.embedcdt.internal.ui.Activator
+Bundle-Activator: org.eclipse.embedcdt.ui.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
