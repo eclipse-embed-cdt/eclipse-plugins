@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Liviu Ionescu.
+ * Copyright (c) 2014 Liviu Ionescu.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0

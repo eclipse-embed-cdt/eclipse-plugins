@@ -10,15 +10,16 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.Messages;
+import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralColumnLabelProvider;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Messages;
 import org.eclipse.embedcdt.ui.ThemeColorFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
@@ -49,7 +50,7 @@ public class PeripheralsPage extends FieldEditorPreferencePage implements IWorkb
 		super(GRID);
 
 		// Explicit use of the workspace storage.
-		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
+		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.CORE_PLUGIN_ID));
 
 		setDescription(Messages.PeripheralsPreferencePage_description);
 	}
@@ -61,7 +62,7 @@ public class PeripheralsPage extends FieldEditorPreferencePage implements IWorkb
 	public void init(IWorkbench workbench) {
 		// TODO Auto-generated method stub
 
-		if (org.eclipse.embedcdt.debug.gdbjtag.ui.Activator.getInstance().isDebugging()) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("PeripheralsPage.init()");
 		}
 	}

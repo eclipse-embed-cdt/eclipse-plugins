@@ -10,16 +10,17 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.Messages;
+import org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.Messages;
 import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
@@ -62,7 +63,7 @@ public class ProjectMcuPage extends FieldEditorPropertyPage {
 			if (Activator.getInstance().isDebugging()) {
 				System.out.println("openocd.ProjectMcuPage.doGetPreferenceStore() project store");
 			}
-			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element), Activator.PLUGIN_ID);
+			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element), Activator.CORE_PLUGIN_ID);
 		}
 		return null;
 	}

@@ -20,6 +20,7 @@
  *                allow connections via serial ports and pipes).
  *     Liviu Ionescu - Arm & RISC-V versions
  *     Jonah Graham - fix for Neon
+ *     Liviu Ionescu - UI part extraction.
  ******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.openocd.ui;
@@ -36,7 +37,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.DefaultPreferences;
@@ -44,6 +44,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.PersistentPre
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.preferences.GlobalMcuPage;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.preferences.WorkspaceMcuPage;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.properties.ProjectMcuPage;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.Messages;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

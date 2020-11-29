@@ -13,6 +13,7 @@
  *     Andy Jin - Hardware debugging UI improvements, bug 229946
  *     Andy Jin - Added DSF debugging, bug 248593
  *     Liviu Ionescu - Arm version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.qemu.ui;
@@ -32,10 +33,10 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Messages;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

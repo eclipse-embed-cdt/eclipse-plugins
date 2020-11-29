@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.jlink.ui;
@@ -17,7 +18,6 @@ package org.eclipse.embedcdt.debug.gdbjtag.jlink.ui;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Activator;
 
 // toolbar:org.eclipse.debug.ui.main.toolbar?after=additions
 

@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui.views;
@@ -29,23 +30,23 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.embedcdt.core.StringUtils;
+import org.eclipse.embedcdt.internal.packs.ui.Messages;
 import org.eclipse.embedcdt.packs.core.PackType;
-import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
+import org.eclipse.embedcdt.packs.core.data.DataManager;
+import org.eclipse.embedcdt.packs.core.data.DataManagerEvent;
 import org.eclipse.embedcdt.packs.core.data.DurationMonitor;
+import org.eclipse.embedcdt.packs.core.data.IDataManagerListener;
+import org.eclipse.embedcdt.packs.core.jobs.CopyExampleJob;
+import org.eclipse.embedcdt.packs.core.jobs.InstallJob;
+import org.eclipse.embedcdt.packs.core.jobs.RemoveJob;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.PackNode;
 import org.eclipse.embedcdt.packs.core.tree.Property;
 import org.eclipse.embedcdt.packs.core.tree.Selector;
 import org.eclipse.embedcdt.packs.core.tree.Type;
-import org.eclipse.embedcdt.packs.data.DataManager;
-import org.eclipse.embedcdt.packs.data.DataManagerEvent;
-import org.eclipse.embedcdt.packs.data.IDataManagerListener;
-import org.eclipse.embedcdt.packs.jobs.CopyExampleJob;
-import org.eclipse.embedcdt.packs.jobs.InstallJob;
-import org.eclipse.embedcdt.packs.jobs.RemoveJob;
 import org.eclipse.embedcdt.packs.ui.Activator;
-import org.eclipse.embedcdt.packs.ui.Messages;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -261,11 +262,11 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 	private boolean fIsCopyExampleEnabled;
 
 	private DataManager fDataManager;
-	private PacksConsoleStream fOut;
+	private IConsoleStream fOut;
 
 	public PacksView() {
 
-		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
+		fOut = Activator.getInstance().getConsoleOutput();
 
 		fDataManager = DataManager.getInstance();
 	}

@@ -10,12 +10,15 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core;
 
 import org.eclipse.embedcdt.core.AbstractActivator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -60,12 +63,25 @@ public class Activator extends AbstractActivator {
 		super.stop(context);
 	}
 
-	public PersistentPreferences getPersistentPreferences() {
+	// ------------------------------------------------------------------------
 
+	
+	public IConsoleStream getConsoleOutput() {
+		return org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
+	}
+
+	// ------------------------------------------------------------------------
+
+
+	public PersistentPreferences getPersistentPreferences() {
 		if (fPersistentPreferences == null) {
 			fPersistentPreferences = new PersistentPreferences(PLUGIN_ID);
 		}
 		return fPersistentPreferences;
+	}
+
+	public IPreferenceStore getCorePreferenceStore() {
+		return org.eclipse.embedcdt.packs.core.Activator.getInstance().getCorePreferenceStore();
 	}
 
 	// ------------------------------------------------------------------------

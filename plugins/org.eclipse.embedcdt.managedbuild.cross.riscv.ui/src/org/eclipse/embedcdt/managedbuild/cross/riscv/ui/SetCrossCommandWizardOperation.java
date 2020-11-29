@@ -13,6 +13,7 @@
  *     Marc-Andre Laperle - Moved to an operation for a custom wizard page
  *     Liviu Ionescu - Arm version
  *     Liviu Ionescu - RISC-V version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.riscv.ui;
@@ -30,7 +31,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.core.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.riscv.core.ToolchainDefinition;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizard;

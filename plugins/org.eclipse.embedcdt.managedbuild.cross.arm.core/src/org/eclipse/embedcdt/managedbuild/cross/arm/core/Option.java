@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.arm.core;
@@ -205,6 +206,7 @@ public class Option {
 		return sReturn;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static Boolean getOptionBooleanValue(IConfiguration config, String sOptionId) {
 
 		IOption option = config.getToolChain().getOptionBySuperClassId(sOptionId);
@@ -222,6 +224,7 @@ public class Option {
 		return bReturn;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static Boolean getOptionBooleanValue2(IConfiguration config, String sOptionId) {
 
 		IOption option = config.getToolChain().getOptionBySuperClassId(sOptionId);

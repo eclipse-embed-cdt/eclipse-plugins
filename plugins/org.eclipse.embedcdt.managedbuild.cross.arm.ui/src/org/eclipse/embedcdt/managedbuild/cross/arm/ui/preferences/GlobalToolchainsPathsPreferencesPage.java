@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences;
@@ -25,10 +26,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.managedbuild.cross.arm.core.Activator;
+import org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.Messages;
 import org.eclipse.embedcdt.managedbuild.cross.arm.core.Option;
-import org.eclipse.embedcdt.managedbuild.cross.arm.ui.Messages;
-import org.eclipse.embedcdt.managedbuild.cross.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.arm.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.arm.ui.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.ui.LabelFakeFieldEditor;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
@@ -67,9 +68,9 @@ public class GlobalToolchainsPathsPreferencesPage extends FieldEditorPreferenceP
 		super(GRID);
 
 		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
-		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 
-		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
+		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.CORE_PLUGIN_ID));
 
 		setDescription(Messages.GlobalToolchainsPathsPreferencesPage_description);
 	}

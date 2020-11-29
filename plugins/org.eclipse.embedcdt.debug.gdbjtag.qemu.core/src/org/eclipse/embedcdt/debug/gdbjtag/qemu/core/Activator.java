@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.qemu.core;
@@ -61,6 +62,8 @@ public class Activator extends AbstractActivator {
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 	}
+
+	// ------------------------------------------------------------------------
 
 	public DefaultPreferences getDefaultPreferences() {
 

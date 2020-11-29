@@ -10,13 +10,15 @@
  * 
  * Contributors:
  *     Alexander Fedorov (ArSysOp) - initial API and implementation.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
+
 package org.eclipse.embedcdt.internal.packs.ui;
 
-import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.ui.console.MessageConsoleStream;
 
-final class UiConsoleStream implements PacksConsoleStream {
+final class UiConsoleStream implements IConsoleStream {
 	
 	private final MessageConsoleStream console;
 

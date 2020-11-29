@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.ui;
@@ -27,6 +28,8 @@ public class Activator extends AbstractUIActivator {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag.ui"; //$NON-NLS-1$
+	public static final String CORE_PLUGIN_ID = "org.eclipse.embedcdt.debug.gdbjtag.core"; //$NON-NLS-1$
+	public static final String COMPATIBILITY_PLUGIN_ID = "ilg.gnumcueclipse.debug.gdbjtag"; //$NON-NLS-1$
 
 	@Override
 	public String getBundleId() {
@@ -60,12 +63,10 @@ public class Activator extends AbstractUIActivator {
 		super.stop(context);
 	}
 
-	public PersistentPreferences getPersistentPreferences() {
+	// ------------------------------------------------------------------------
 
-		if (fPersistentPreferences == null) {
-			fPersistentPreferences = new PersistentPreferences(PLUGIN_ID);
-		}
-		return fPersistentPreferences;
+	public PersistentPreferences getPersistentPreferences() {
+		return org.eclipse.embedcdt.debug.gdbjtag.core.Activator.getInstance().getPersistentPreferences();
 	}
 
 	// ------------------------------------------------------------------------

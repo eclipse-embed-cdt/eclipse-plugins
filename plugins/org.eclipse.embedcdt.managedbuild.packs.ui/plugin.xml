@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+  Copyright (c) 2014 Liviu Ionescu.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
+  https://www.eclipse.org/legal/epl-2.0/
+
+  SPDX-License-Identifier: EPL-2.0
+
+  Contributors:
+    Liviu Ionescu - initial version  
+-->
+<plugin>
+
+	<extension point="org.eclipse.cdt.ui.cPropertyTab">
+
+		<tab
+			class="org.eclipse.embedcdt.managedbuild.packs.ui.TabDevices"
+			helpId="cdt_u_prop_build_setting_tool"
+			icon="icons/hardware_chip.png"
+			name="%tab.deviceSettings"
+			parent="org.eclipse.cdt.managedbuilder.ui.properties.Page_BuildSettings"
+			tooltip="Select the device from the available device in CMSIS Packs."
+			weight="013">
+		</tab>
+
+	</extension>
+
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension targetID="org.eclipse.cdt.ui.CPerspective">
+			<view
+				id="org.eclipse.embedcdt.managedbuild.packs.ui.views.DocsView"
+				minimized="false"
+				relationship="stack"
+				relative="org.eclipse.ui.views.ContentOutline"
+				visible="true">
+			</view>
+			<viewShortcut
+				id="org.eclipse.embedcdt.managedbuild.packs.ui.views.DocsView">
+			</viewShortcut>
+		</perspectiveExtension>
+	</extension>
+
+	<extension point="org.eclipse.ui.views">
+		<category
+			id="org.eclipse.embedcdt.packs"
+			name="%views.packs.category">
+		</category>
+		<view
+			allowMultiple="false"
+			category="org.eclipse.embedcdt.packs"
+			class="org.eclipse.embedcdt.managedbuild.packs.ui.views.DocsView"
+			icon="icons/pdficon_small.png"
+			id="org.eclipse.embedcdt.managedbuild.packs.ui.views.DocsView"
+			name="%views.packs.docs">
+		</view>
+	</extension>
+
+</plugin>

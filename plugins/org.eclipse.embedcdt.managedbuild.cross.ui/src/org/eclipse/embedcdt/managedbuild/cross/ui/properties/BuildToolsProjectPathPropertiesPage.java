@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.ui.properties;
@@ -17,9 +18,9 @@ package org.eclipse.embedcdt.managedbuild.cross.ui.properties;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.embedcdt.internal.managedbuild.cross.ui.Messages;
-import org.eclipse.embedcdt.managedbuild.cross.core.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.ui.Activator;
 import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
@@ -41,8 +42,8 @@ public class BuildToolsProjectPathPropertiesPage extends FieldEditorPropertyPage
 	public BuildToolsProjectPathPropertiesPage() {
 		super(GRID);
 
-		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
-
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+		
 		setDescription(Messages.ProjectBuildToolsPathsPropertiesPage_description);
 	}
 
@@ -52,7 +53,7 @@ public class BuildToolsProjectPathPropertiesPage extends FieldEditorPropertyPage
 
 		Object element = getElement();
 		if (element instanceof IProject) {
-			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element), Activator.PLUGIN_ID);
+			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element), Activator.CORE_PLUGIN_ID);
 		}
 		return null;
 	}

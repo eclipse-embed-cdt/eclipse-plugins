@@ -16,16 +16,16 @@
 <plugin>
 	<extension point="org.eclipse.ui.perspectives">
 		<perspective
-			class="org.eclipse.embedcdt.internal.codered.ui.perspectives.CodeRedPerspectiveFactory"
+			class="org.eclipse.embedcdt.codered.ui.internal.codered.ui.perspectives.CodeRedPerspectiveFactory"
 			icon="icons/cr.gif"
-			id="org.eclipse.embedcdt.codered.ui.perspectives.CodeRedPerspective"
+			id="org.eclipse.embedcdt.internal.codered.ui.perspectives.CodeRedPerspective"
 			name="%perspectives.codered">
 		</perspective>
 	</extension>
 
 	<extension point="org.eclipse.ui.perspectiveExtensions">
 		<perspectiveExtension
-			targetID="org.eclipse.embedcdt.codered.ui.perspectives.CodeRedPerspective">
+			targetID="org.eclipse.embedcdt.internal.codered.ui.perspectives.CodeRedPerspective">
 			<view
 				id="org.eclipse.debug.ui.ExpressionView"
 				minimized="false"
@@ -64,7 +64,7 @@
 			<viewShortcut id="org.eclipse.cdt.dsf.debug.ui.disassembly.view" />
 
 			<viewShortcut
-				id="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView" />
+				id="org.eclipse.embedcdt.codered.ui.debug.gdbjtag.ui.views.PeripheralsView" />
 
 			<showInPart id="org.eclipse.cdt.ui.includeBrowser" />
 			<showInPart id="org.eclipse.cdt.ui.CView" />
@@ -74,12 +74,12 @@
 
 		<perspectiveExtension targetID="org.eclipse.cdt.ui.CPerspective">
 			<perspectiveShortcut
-				id="org.eclipse.embedcdt.codered.ui.perspectives.CodeRedPerspective" />
+				id="org.eclipse.embedcdt.internal.codered.ui.perspectives.CodeRedPerspective" />
 		</perspectiveExtension>
 
 		<perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
 			<perspectiveShortcut
-				id="org.eclipse.embedcdt.codered.ui.perspectives.CodeRedPerspective" />
+				id="org.eclipse.embedcdt.internal.codered.ui.perspectives.CodeRedPerspective" />
 		</perspectiveExtension>
 
 	</extension>

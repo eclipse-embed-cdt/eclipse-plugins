@@ -11,13 +11,15 @@
  * Contributors:
  *     Marc-Andre Laperle - initial API and implementation
  *     Liviu Ionescu - MCU version
-  *******************************************************************************/
+ *     Liviu Ionescu - UI part extraction.
+ *******************************************************************************/
 
 package org.eclipse.embedcdt.internal.managedbuild.cross.ui;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.embedcdt.managedbuild.cross.ui.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {

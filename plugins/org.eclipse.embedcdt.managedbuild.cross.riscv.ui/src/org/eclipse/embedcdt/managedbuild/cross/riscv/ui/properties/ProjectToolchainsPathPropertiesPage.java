@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.riscv.ui.properties;
@@ -24,11 +25,11 @@ import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.embedcdt.core.EclipseUtils;
+import org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.Messages;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.core.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.riscv.core.Option;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.ui.Messages;
+import org.eclipse.embedcdt.managedbuild.cross.riscv.ui.Activator;
 import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
 import org.eclipse.embedcdt.ui.LabelFakeFieldEditor;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
@@ -53,7 +54,7 @@ public class ProjectToolchainsPathPropertiesPage extends FieldEditorPropertyPage
 		super(GRID);
 
 		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
-		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 
 		setDescription(Messages.ProjectToolchainsPathsPropertiesPage_description);
 	}
@@ -64,7 +65,7 @@ public class ProjectToolchainsPathPropertiesPage extends FieldEditorPropertyPage
 
 		Object element = getElement();
 		if (element instanceof IProject) {
-			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element), Activator.PLUGIN_ID);
+			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element), Activator.CORE_PLUGIN_ID);
 		}
 		return null;
 	}

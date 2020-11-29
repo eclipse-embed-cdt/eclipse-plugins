@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     		(many thanks to Code Red for providing the inspiration)
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.internal.codered.ui.perspectives;
@@ -24,7 +25,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.embedcdt.internal.codered.ui.Activator;
+import org.eclipse.embedcdt.codered.ui.Activator;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
@@ -45,7 +46,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "org.eclipse.embedcdt.codered.ui.perspectives.CodeRedPerspective";
+	public static final String ID = "org.eclipse.embedcdt.internal.codered.ui.perspectives.CodeRedPerspective";
 
 	// ------------------------------------------------------------------------
 
@@ -92,9 +93,9 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		topLeftLayout.addPlaceholder(IPageLayout.ID_BOOKMARKS);
 
 		topLeftLayout.addView(IDebugUIConstants.ID_REGISTER_VIEW);
-		bundle = Platform.getBundle("org.eclipse.embedcdt.debug.gdbjtag");
+		bundle = Platform.getBundle("org.eclipse.embedcdt.codered.ui.debug.gdbjtag");
 		if (bundle != null) {
-			topLeftLayout.addView("org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView");
+			topLeftLayout.addView("org.eclipse.embedcdt.codered.ui.debug.gdbjtag.ui.views.PeripheralsView");
 		}
 
 		IFolderLayout bottomLeftLayout = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.5F, "topLeft");

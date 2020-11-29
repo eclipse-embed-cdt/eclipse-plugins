@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.ui;
@@ -31,7 +32,8 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.PeripheralDMContext;
 import org.eclipse.embedcdt.debug.gdbjtag.core.memory.PeripheralMemoryBlockExtension;
 import org.eclipse.embedcdt.debug.gdbjtag.core.memory.PeripheralMemoryBlockRetrieval;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralRendering;
-import org.eclipse.embedcdt.ui.EclipseUtils;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Messages;
+import org.eclipse.embedcdt.ui.EclipseUiUtils;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -166,17 +168,17 @@ public class MemoryBlockMonitor {
 					addDefaultRenderings(workbenchWindow, memoryBlockToAdd, PeripheralRendering.ID);
 
 				} else {
-					EclipseUtils.openError(Messages.AddMemoryBlockAction_title,
+					EclipseUiUtils.openError(Messages.AddMemoryBlockAction_title,
 							Messages.AddMemoryBlockAction_noMemoryBlock, null);
 				}
 			} else {
 				Activator.log("Cannot process memory block retrieval " + memoryBlockRetrieval);
 			}
 		} catch (DebugException e) {
-			EclipseUtils.openError(Messages.AddMemoryBlockAction_title, Messages.AddMemoryBlockAction_failed, e);
+			EclipseUiUtils.openError(Messages.AddMemoryBlockAction_title, Messages.AddMemoryBlockAction_failed, e);
 		} catch (NumberFormatException e) {
 			String msg = Messages.AddMemoryBlockAction_failed + "\n" + Messages.AddMemoryBlockAction_input_invalid;
-			EclipseUtils.openError(Messages.AddMemoryBlockAction_title, msg, null);
+			EclipseUiUtils.openError(Messages.AddMemoryBlockAction_title, msg, null);
 		}
 	}
 

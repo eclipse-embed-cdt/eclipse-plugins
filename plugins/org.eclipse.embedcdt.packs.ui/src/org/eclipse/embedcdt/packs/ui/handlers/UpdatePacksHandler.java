@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui.handlers;
@@ -36,17 +37,17 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.embedcdt.core.StringUtils;
-import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
+import org.eclipse.embedcdt.packs.core.data.DataManager;
+import org.eclipse.embedcdt.packs.core.data.DataUtils;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
+import org.eclipse.embedcdt.packs.core.data.Repos;
+import org.eclipse.embedcdt.packs.core.data.cmsis.Index;
+import org.eclipse.embedcdt.packs.core.data.cmsis.PdscParserForContent;
+import org.eclipse.embedcdt.packs.core.data.xcdl.ContentSerialiser;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.Property;
 import org.eclipse.embedcdt.packs.core.tree.Type;
-import org.eclipse.embedcdt.packs.data.DataManager;
-import org.eclipse.embedcdt.packs.data.Repos;
-import org.eclipse.embedcdt.packs.data.Utils;
-import org.eclipse.embedcdt.packs.data.cmsis.Index;
-import org.eclipse.embedcdt.packs.data.cmsis.PdscParserForContent;
-import org.eclipse.embedcdt.packs.data.xcdl.ContentSerialiser;
 import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -65,7 +66,7 @@ import org.xml.sax.SAXParseException;
  */
 public class UpdatePacksHandler extends AbstractHandler {
 
-	private PacksConsoleStream fOut;
+	private IConsoleStream fOut;
 	private boolean fRunning;
 
 	private Repos fRepos;
@@ -85,7 +86,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 		}
 		fRunning = false;
 
-		fOut = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
+		fOut = Activator.getInstance().getConsoleOutput();
 
 		fRepos = Repos.getInstance();
 		fDataManager = DataManager.getInstance();
@@ -168,9 +169,9 @@ public class UpdatePacksHandler extends AbstractHandler {
 					workUnits++;
 
 				} else if (Repos.UNUSED_PACK_TYPE.equals(type)) {
-					fOut.println(Utils.reportWarning("Repo \"" + indexUrl + "\" ignored."));
+					fOut.println(DataUtils.reportWarning("Repo \"" + indexUrl + "\" ignored."));
 				} else {
-					fOut.println(Utils.reportWarning("Repo type \"" + type + "\" not supported."));
+					fOut.println(DataUtils.reportWarning("Repo type \"" + type + "\" not supported."));
 				}
 			}
 
@@ -208,7 +209,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 
 		} catch (Exception e) {
 			Activator.log(e);
-			fOut.println(Utils.reportError(e.toString()));
+			fOut.println(DataUtils.reportError(e.toString()));
 		}
 
 		IStatus status;
@@ -227,7 +228,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 				duration = 1;
 			}
 
-			fOut.println(Utils.reportInfo("Update packs completed in " + (duration + 500) / 1000 + "s."));
+			fOut.println(DataUtils.reportInfo("Update packs completed in " + (duration + 500) / 1000 + "s."));
 
 			status = Status.OK_STATUS;
 		}
@@ -253,9 +254,9 @@ public class UpdatePacksHandler extends AbstractHandler {
 			return;
 
 		} catch (FileNotFoundException e) {
-			fOut.println(Utils.reportError("File not found: " + e.getMessage()));
+			fOut.println(DataUtils.reportError("File not found: " + e.getMessage()));
 		} catch (Exception e) {
-			fOut.println(Utils.reportError(e.toString()));
+			fOut.println(DataUtils.reportError(e.toString()));
 		}
 
 		return;
@@ -318,9 +319,9 @@ public class UpdatePacksHandler extends AbstractHandler {
 							ignoreError);
 					if (ret == 0) {
 
-						Utils.reportInfo("File " + pdscName + " version " + pdscVersion + " cached locally.");
+						DataUtils.reportInfo("File " + pdscName + " version " + pdscVersion + " cached locally.");
 					} else {
-						fOut.println(Utils.reportWarning("Missing \"" + cachedFile + "\", ignored by user request."));
+						fOut.println(DataUtils.reportWarning("Missing \"" + cachedFile + "\", ignored by user request."));
 						if (ret == 3) {
 							ignoreError = true;
 						}
@@ -334,7 +335,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 					parser.parse(pdscName, pdscVersion, contentRoot);
 
 				} else {
-					fOut.println(Utils.reportWarning("Missing \"" + cachedFile + "\", ignored."));
+					fOut.println(DataUtils.reportWarning("Missing \"" + cachedFile + "\", ignored."));
 					// return;
 				}
 
@@ -342,11 +343,11 @@ public class UpdatePacksHandler extends AbstractHandler {
 				String xmsg = "line=" + e.getLineNumber() + ", column=" + e.getColumnNumber() + ", \"" + e.getMessage()
 						+ "\"";
 				fOut.println(xmsg + ",  ignored.");
-				Utils.reportWarning(
+				DataUtils.reportWarning(
 						"File " + pdscName + " version " + pdscVersion + " parse error (" + xmsg + "), ignored");
 			} catch (Exception e) {
-				fOut.println(Utils.reportWarning("\"" + e.getMessage() + "\", ignored."));
-				Utils.reportWarning(
+				fOut.println(DataUtils.reportWarning("\"" + e.getMessage() + "\", ignored."));
+				DataUtils.reportWarning(
 						"File " + pdscName + " version " + pdscVersion + "  error (" + e.getMessage() + "), ignored");
 			}
 
@@ -370,7 +371,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 				fOut.println();
 
 			} catch (IOException e) {
-				fOut.println(Utils.reportError(e.toString()));
+				fOut.println(DataUtils.reportError(e.toString()));
 			}
 		}
 	}
@@ -383,16 +384,16 @@ public class UpdatePacksHandler extends AbstractHandler {
 			String fileName = fRepos.getRepoContentXmlFromUrl(contentUrl);
 			File cachedFile = PacksStorage.getFileObject(fileName);
 
-			Utils.copyFile(new URL(contentUrl), cachedFile, fOut, null);
+			DataUtils.copyFile(new URL(contentUrl), cachedFile, fOut, null);
 
 			fMonitor.worked(1);
 
 		} catch (MalformedURLException e) {
-			fOut.println(Utils.reportError(e.toString()));
+			fOut.println(DataUtils.reportError(e.toString()));
 		} catch (FileNotFoundException e) {
-			fOut.println(Utils.reportError("File not found: " + e.getMessage()));
+			fOut.println(DataUtils.reportError("File not found: " + e.getMessage()));
 		} catch (IOException e) {
-			fOut.println(Utils.reportError(e.toString()));
+			fOut.println(DataUtils.reportError(e.toString()));
 		}
 	}
 }

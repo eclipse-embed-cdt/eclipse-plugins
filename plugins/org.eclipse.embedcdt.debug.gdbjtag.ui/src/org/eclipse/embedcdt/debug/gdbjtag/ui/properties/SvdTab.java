@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.ui.properties;
@@ -21,7 +22,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.embedcdt.debug.gdbjtag.core.properties.PersistentProperties;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.Messages;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Messages;
 import org.eclipse.embedcdt.ui.DirectoryNotStrictFieldEditor;
 import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.swt.SWT;
@@ -58,7 +59,7 @@ public class SvdTab extends AbstractCPropertyTab {
 
 		IProject project = page.getProject();
 		fPreferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
-		fCompatPreferences = new ProjectScope(project).getNode("ilg.gnumcueclipse.debug.gdbjtag");
+		fCompatPreferences = new ProjectScope(project).getNode(Activator.COMPATIBILITY_PLUGIN_ID);
 
 		super.createControls(parent);
 

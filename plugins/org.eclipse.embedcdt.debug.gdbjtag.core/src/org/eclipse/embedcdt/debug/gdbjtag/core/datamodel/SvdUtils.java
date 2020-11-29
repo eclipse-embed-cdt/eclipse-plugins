@@ -11,6 +11,7 @@
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
@@ -46,7 +47,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.data.CProjectExtraDataManagerProxy;
 import org.eclipse.embedcdt.debug.gdbjtag.core.data.SVDPathManagerProxy;
 import org.eclipse.embedcdt.packs.core.PackType;
-import org.eclipse.embedcdt.packs.core.PacksConsoleStream;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.IPacksDataManager;
 import org.eclipse.embedcdt.packs.core.data.JsonGenericParser;
 import org.eclipse.embedcdt.packs.core.data.PacksDataManagerFactoryProxy;
@@ -54,11 +55,11 @@ import org.eclipse.embedcdt.packs.core.data.SvdGenericParser;
 import org.eclipse.embedcdt.packs.core.data.SvdJsGenericParser;
 import org.eclipse.embedcdt.packs.core.data.XmlJsGenericParser;
 import org.eclipse.embedcdt.packs.core.data.XsvdGenericParser;
+import org.eclipse.embedcdt.packs.core.data.xcdl.XcdlUtils;
 import org.eclipse.embedcdt.packs.core.jstree.JsObject;
 import org.eclipse.embedcdt.packs.core.tree.AbstractTreePreOrderIterator;
 import org.eclipse.embedcdt.packs.core.tree.ITreeIterator;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
-import org.eclipse.embedcdt.packs.data.xcdl.Utils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -230,7 +231,7 @@ public class SvdUtils {
 
 			JSONObject packageJson;
 			try {
-				packageJson = Utils.getPackageJson(project);
+				packageJson = XcdlUtils.getPackageJson(project);
 				deviceId = (String) JsonUtils.get(packageJson, "config.xcdl.device.id");
 				deviceVendorId = (String) JsonUtils.get(packageJson, "config.xcdl.device.supplier.id");
 
@@ -401,7 +402,7 @@ public class SvdUtils {
 
 		assert path != null;
 
-		PacksConsoleStream out = org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
+		IConsoleStream out = Activator.getInstance().getConsoleOutput();
 		try {
 
 			out.println("Parsing SVD file \"" + path.toOSString() + "\"...");

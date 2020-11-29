@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.core;
@@ -89,9 +90,9 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		 */
 		public void finalizeInitializationsDefaultPreferences() {
 
-			DefaultPreferences defaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+			DefaultPreferences defaultPreferences = Activator.getInstance().getDefaultPreferences();
 			DefaultPreferences deprecatedDefaultPreferences = new DefaultPreferences(
-					"ilg.gnuarmeclipse.managedbuild.cross");
+					Activator.COMPATIBILITY_PLUGIN_ID);
 
 			// Try to get the build tools path from the GNU MCU Eclipse
 			// store.

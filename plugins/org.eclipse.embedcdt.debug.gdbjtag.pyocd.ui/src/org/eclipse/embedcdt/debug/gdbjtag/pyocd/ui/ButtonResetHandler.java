@@ -12,6 +12,7 @@
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Chris Reed - pyOCD changes
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui;
@@ -19,7 +20,6 @@ package org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
 
 // toolbar:org.eclipse.debug.ui.main.toolbar?after=additions
 

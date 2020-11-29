@@ -10,15 +10,16 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.embedcdt.internal.managedbuild.cross.ui.Messages;
-import org.eclipse.embedcdt.managedbuild.cross.core.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.ui.Activator;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -53,9 +54,9 @@ public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferenceP
 	public BuildToolsGlobalPathsPreferencesPage() {
 		super(GRID);
 
-		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 
-		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
+		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.CORE_PLUGIN_ID));
 
 		setDescription(Messages.GlobalBuildToolsPathsPreferencesPage_description);
 	}
@@ -65,7 +66,7 @@ public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferenceP
 	// Contributed by IWorkbenchPreferencePage
 	@Override
 	public void init(IWorkbench workbench) {
-		if (org.eclipse.embedcdt.internal.managedbuild.cross.ui.Activator.getInstance().isDebugging()) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("GlobalToolsPathsPreferencePage.init()");
 		}
 	}
