@@ -9,3 +9,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Eclipse-BundleShape: dir
+Automatic-Module-Name: org.eclipse.embedcdt.templates.cortexm.ui

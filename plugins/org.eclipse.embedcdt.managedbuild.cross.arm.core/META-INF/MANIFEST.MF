@@ -17,3 +17,4 @@ Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.managedbuild.cross.arm.core,
  org.eclipse.embedcdt.managedbuild.cross.arm.core.preferences
+Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.cross.arm.core

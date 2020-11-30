@@ -16,3 +16,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.embedcdt.templates.freescale.pe.ui

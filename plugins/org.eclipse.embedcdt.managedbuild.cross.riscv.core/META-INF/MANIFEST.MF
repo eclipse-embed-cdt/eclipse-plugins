@@ -20,3 +20,4 @@ Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.managedbuild.cross.riscv.core,
  org.eclipse.embedcdt.managedbuild.cross.riscv.core.preferences
+Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.cross.riscv.core

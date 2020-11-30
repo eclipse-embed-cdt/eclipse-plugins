@@ -18,3 +18,4 @@ Require-Bundle: org.eclipse.core.filesystem;bundle-version="1.7.700",
  org.eclipse.ui;bundle-version="3.118.0",
  org.eclipse.ui.ide;bundle-version="3.17.200"
 Bundle-ClassPath: .
+Automatic-Module-Name: org.eclipse.embedcdt.ui

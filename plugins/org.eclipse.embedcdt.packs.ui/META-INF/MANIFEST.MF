@@ -26,3 +26,4 @@ Export-Package: org.eclipse.embedcdt.packs.ui,
  org.eclipse.embedcdt.packs.ui.preferences,
  org.eclipse.embedcdt.packs.ui.views;x-friends:="org.eclipse.embedcdt.managedbuild.packs.ui"
 Service-Component: OSGI-INF/org.eclipse.embedcdt.internal.packs.ui.MessageConsoles.xml
+Automatic-Module-Name: org.eclipse.embedcdt.packs.ui

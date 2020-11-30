@@ -26,3 +26,4 @@ Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.0.0",
  org.eclipse.core.commands;bundle-version="3.9.700"
 Import-Package: org.eclipse.jface.preference,
  org.eclipse.ui.preferences
+Automatic-Module-Name: org.eclipse.embedcdt.packs.core

@@ -29,3 +29,4 @@ Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.managedbuild.packs.ui,
  org.eclipse.embedcdt.managedbuild.packs.ui.views
+Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.packs.ui

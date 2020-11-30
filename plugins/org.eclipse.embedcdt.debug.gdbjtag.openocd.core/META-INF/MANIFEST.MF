@@ -21,3 +21,4 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.debug.gdbjtag.openocd.core,
  org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf,
  org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences
+Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.openocd.core

@@ -21,3 +21,4 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.debug.gdbjtag.pyocd.core,
  org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.dsf,
  org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences
+Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.pyocd.core

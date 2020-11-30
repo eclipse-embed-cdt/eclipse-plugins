@@ -19,3 +19,4 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.managedbuild.cross.core,
  org.eclipse.embedcdt.managedbuild.cross.core.preferences,
  org.eclipse.embedcdt.managedbuild.cross.core.xpi
+Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.cross.core

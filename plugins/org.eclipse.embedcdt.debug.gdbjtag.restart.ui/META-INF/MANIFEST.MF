@@ -18,3 +18,4 @@ Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.0.0",
  org.eclipse.ui;bundle-version="3.118.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.restart.ui.Activator
+Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.restart.ui

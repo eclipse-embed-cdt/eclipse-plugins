@@ -9,3 +9,4 @@ Require-Bundle: org.eclipse.embedcdt.core,
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.eclipse.embedcdt.doc.user

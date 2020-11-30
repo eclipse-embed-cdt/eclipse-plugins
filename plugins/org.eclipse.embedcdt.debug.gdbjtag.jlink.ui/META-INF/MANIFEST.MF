@@ -25,3 +25,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.debug.gdbjtag.jlink.ui
 Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.Activator
+Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.jlink.ui

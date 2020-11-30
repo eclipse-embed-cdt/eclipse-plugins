@@ -32,3 +32,4 @@ Export-Package: org.eclipse.embedcdt.debug.gdbjtag.core,
  org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral
 Import-Package: org.eclipse.embedcdt.packs.core.data.xcdl,
  org.eclipse.jface.preference
+Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.core

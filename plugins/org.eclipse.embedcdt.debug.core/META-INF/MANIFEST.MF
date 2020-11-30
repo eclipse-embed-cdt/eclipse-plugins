@@ -13,3 +13,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.debug.core,
  org.eclipse.embedcdt.debug.core.data
+Automatic-Module-Name: org.eclipse.embedcdt.debug.core

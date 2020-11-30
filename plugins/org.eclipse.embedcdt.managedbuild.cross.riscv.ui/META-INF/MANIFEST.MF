@@ -25,3 +25,4 @@ Export-Package: org.eclipse.embedcdt.managedbuild.cross.riscv.ui,
  org.eclipse.embedcdt.managedbuild.cross.riscv.ui.properties
 Bundle-Activator: org.eclipse.embedcdt.managedbuild.cross.riscv.ui.Activator
 Import-Package: org.eclipse.embedcdt.managedbuild.cross.arm.core.preferences
+Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.cross.riscv.ui

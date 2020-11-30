@@ -14,3 +14,4 @@ Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Eclipse-BundleShape: dir
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.eclipse.embedcdt.templates.core

@@ -36,3 +36,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.debug.gdbjtag.ui,
  org.eclipse.embedcdt.debug.gdbjtag.ui.preferences
+Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.ui

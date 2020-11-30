@@ -22,3 +22,4 @@ Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.managedbuild.cross.arm.ui
 Bundle-Activator: org.eclipse.embedcdt.managedbuild.cross.arm.ui.Activator
+Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.cross.arm.ui
