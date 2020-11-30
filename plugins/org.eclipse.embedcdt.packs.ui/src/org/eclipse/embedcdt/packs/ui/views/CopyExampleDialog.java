@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -7,15 +7,17 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- *
+ * 
  * Contributors:
- *    Liviu Ionescu - initial version
+ *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui.views;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.embedcdt.packs.core.Preferences;
+import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.SWT;
@@ -53,7 +55,7 @@ public class CopyExampleDialog extends Dialog {
 		// m_exampleName = exampleNode.getProperty(Property.EXAMPLE_NAME,
 		// exampleNode.getName());
 
-		String folderPath = Preferences.getPreferenceStore().getString(Preferences.PACKS_FOLDER_PATH);
+		String folderPath = Activator.getInstance().getCorePreferenceStore().getString(Preferences.PACKS_FOLDER_PATH);
 		// m_inputFolder = folderPath + "/../Examples/" + m_exampleName;
 		fInputFolder = new Path(folderPath).append("../Examples/").toOSString();
 

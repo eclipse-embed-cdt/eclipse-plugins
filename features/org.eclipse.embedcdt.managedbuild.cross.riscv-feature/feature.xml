@@ -37,6 +37,13 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.embedcdt.managedbuild.cross.riscv.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.embedcdt.managedbuild.cross.riscv.ui"
          download-size="0"
          install-size="0"
@@ -65,14 +72,21 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.embedcdt.managedbuild.cross"
+         id="org.eclipse.embedcdt.managedbuild.cross.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.embedcdt.managedbuild.packs"
+         id="org.eclipse.embedcdt.managedbuild.cross.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.embedcdt.managedbuild.packs.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -9,7 +9,8 @@ The project is hosted on GitHub:
 To clone it, be sure the submodules are also cloned:
 
 ```
-git clone --recurse-submodule https://github.com/eclipse-embed-cdt/eclipse-plugins \
+git clone --recurse-submodule https://github.com/eclipse-embed-cdt/eclips
+e-plugins \
   eclipse-plugins.git
 ```
 
@@ -55,6 +56,28 @@ The official download page is
 - https://projects.eclipse.org/projects/iot.embed-cdt/downloads/
 
 ## Prepare release
+
+### Prepare EPP
+
+Clone the EPP Git project:
+
+```
+git clone "ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git"
+scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "epp/org.eclipse.epp.packages.git/.git/hooks/"
+```
+
+### Prepare SimRel
+
+Use the CBI Aggregator installed from:
+
+- https://download.eclipse.org/cbi/updates/aggregator/ide/4.13
+
+Clone the SimRel Git project:
+
+```
+git clone "ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build"
+scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "org.eclipse.simrel.build/.git/hooks/"
+```
 
 ### Create a new milestone
 
@@ -236,6 +259,46 @@ Select the **Release Type** (major, minor, service).
 
 Install the plug-ins on several platforms.
 
+### Update SimRel for pre-release
+
+If everything fine, update SimRel.
+
+With Sourcetree:
+
+- open `org.eclipse.simrel.build.git`
+- pull new commits
+
+In Eclipse:
+
+- import existing project `org.eclipse.simrel.build`
+- open `simrel.aggr`
+- expand the 'Contribution: Embedded CDT'
+- select **Mapped Repository**
+- right click: **Show Properties View**
+- in the right side, edit the **Location** field to the new pre-release p2 URL
+(like `https://download.eclipse.org/embed-cdt/pre-releases/6.0.0-202011221632/p2/`
+and press Enter
+- select all the features in the contribution, right-click and choose **Fix Versions**
+- select the Contribution and **Validate**
+- select the Aggregation and **Validate**
+- Save
+
+```bash
+git commit -m 'embedcdt: update for 6.0.0-202011221632'
+git push ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build HEAD:refs/for/master
+```
+
+In Gerrit, click **CODE_REVIEW+2** and then **SUBMIT** to merge the changes.
+
+The commit will trigger the [SimRel](https://ci.eclipse.org/simrel/)
+Jenkins aggregator pipeline:  
+
+- https://ci.eclipse.org/simrel/job/simrel.runaggregator.pipeline/
+
+In about one hour it'll automatically rebuild the staging repo:
+
+- https://download.eclipse.org/staging/
+
 ## Publish the final release
 
 When the plug-ins are considered stable:
@@ -327,18 +390,7 @@ Use copy/paste/edit.
 
 ## Check & update SimRel
 
-Use the CBI Aggregator installed from:
-
-- https://download.eclipse.org/cbi/updates/aggregator/ide/4.13
-
-The first time clone the SimRel Git project:
-
-```
-git clone "ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build"
-scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "org.eclipse.simrel.build/.git/hooks/"
-```
-
-In subsequent runs, pull new commits.
+Pull new commits.
 
 In Eclipse:
 
@@ -347,13 +399,15 @@ In Eclipse:
 - expand the 'Contribution: Embedded CDT'
 - select **Mapped Repository**
 - right click: **Show Properties View**
-- in the right side, edit the **Location** field to the new p2 URL and press Enter
+- in the right side, edit the **Location** field to the new pre-release p2 URL
+(like `https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/`
+and press Enter
 - select all the features in the contribution, right-click and choose **Fix Versions**
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
 
 ```bash
-git commit
+git commit -m 'embedcdt: update for 6.0.0'
 git push ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build HEAD:refs/for/master
 ```
 
@@ -373,14 +427,7 @@ In about one hour it'll automatically rebuild the staging repo:
 If the list of features changed, it is necessary to
 update the EPP project.
 
-The first time clone the EPP Git project:
-
-```
-git clone "ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git"
-scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "epp/org.eclipse.epp.packages.git/.git/hooks/"
-```
-
-In subsequent runs, pull new commits.
+Pull new commits.
 
 - edit `org.eclipse.epp.package.embedcpp.product/epp.product`
 - update the list of features
@@ -392,10 +439,22 @@ If necessary, update the text displayed in the Downloads page, it is in
 `org.eclipse.epp.package.embedcpp.feature/epp.website.xml` file, the
 `<description>` element.
 
+Update the version in **NewAndNoteworthy**, in the same file.
+
+Compare with `package.cpp.*`:
+
+```
+cd org.eclipse.epp.packages.git
+
+diff packages/org.eclipse.epp.package.cpp packages/org.eclipse.epp.package.embedcpp
+diff packages/org.eclipse.epp.package.cpp.feature packages/org.eclipse.epp.package.embedcpp.feature
+diff packages/org.eclipse.epp.package.cpp.product packages/org.eclipse.epp.package.embedcpp.product
+```
+
 Commit and push to Gerrit:
 
 ```bash
-git commit
+git commit -m 'embedcpp ...'
 git push ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git HEAD:refs/for/master
 ```
 

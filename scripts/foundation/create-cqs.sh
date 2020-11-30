@@ -104,12 +104,29 @@ echo
 echo "Creating archives..."
 
 zip -r "main-${version}.zip" "main"
+echo "main-${version}.zip done"
+echo
 zip -r "semver-${version}.zip" "semver"
+echo "semver-${version}.zip done"
+echo
 zip -r "template-core-${version}.zip" "template-core"
+echo "template-core-${version}.zip done"
+echo
 zip -r "template-ad-${version}.zip" "template-ad"
+echo "template-ad-${version}.zip done"
+echo
 zip -r "template-cortexm-${version}.zip" "template-cortexm"
+echo "template-cortexm-${version}.zip done"
+echo
 zip -r "template-freescale-${version}.zip" "template-freescale"
+echo "template-freescale-${version}.zip done"
+echo
 zip -r "template-stm-${version}.zip" "template-stm"
+echo "template-stm-${version}.zip done"
+
+echo
+pwd
+ls -lL "$(pwd)"
 
 echo
 echo "Done"

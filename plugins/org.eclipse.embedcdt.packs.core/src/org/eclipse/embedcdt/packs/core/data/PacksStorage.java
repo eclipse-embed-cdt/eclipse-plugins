@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,8 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.core.data;
@@ -29,9 +31,10 @@ import java.net.URLConnection;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.embedcdt.packs.core.Activator;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.Preferences;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.ui.console.MessageConsoleStream;
 
 public class PacksStorage {
 
@@ -97,12 +100,11 @@ public class PacksStorage {
 	// to store packages
 	public static String getFolderPathString() throws IOException {
 
-		IPreferenceStore store = Preferences.getPreferenceStore();
-		String folderPath = store.getString(Preferences.PACKS_FOLDER_PATH).trim();
-
+		String folderPath = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, Preferences.PACKS_FOLDER_PATH, null, null);
 		if (folderPath == null) {
 			throw new IOException("Missing folder path.");
 		}
+		folderPath = folderPath.trim();
 
 		// Remove the terminating separator
 		if (folderPath.endsWith(String.valueOf(IPath.SEPARATOR))) {
@@ -130,7 +132,7 @@ public class PacksStorage {
 
 	// ------------------------------------------------------------------------
 
-	public static long getPackSize(String packName, URL url, MessageConsoleStream out) throws IOException {
+	public static long getPackSize(String packName, URL url, IConsoleStream out) throws IOException {
 		// Check if the .pack file is present (i.e. it was installed).
 		File f = getCachedFileObject(packName);
 		if (f.isFile()) {
@@ -174,7 +176,7 @@ public class PacksStorage {
 		return sz;
 	}
 
-	public static long getRemoteFileSize(String packName, URL url, MessageConsoleStream out) throws IOException {
+	public static long getRemoteFileSize(String packName, URL url, IConsoleStream out) throws IOException {
 
 		URLConnection connection;
 		while (true) {
@@ -246,7 +248,7 @@ public class PacksStorage {
 		return length;
 	}
 
-	public static int getRemoteFileSize(URL url, MessageConsoleStream out) throws IOException {
+	public static int getRemoteFileSize(URL url, IConsoleStream out) throws IOException {
 		return (int) getRemoteFileSize(null, url, out);
 	}
 

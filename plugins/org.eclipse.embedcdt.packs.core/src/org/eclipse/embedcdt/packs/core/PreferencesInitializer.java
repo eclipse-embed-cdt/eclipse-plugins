@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.core;
@@ -21,10 +22,12 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.XpackUtils;
-import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * Class used to initialise default preference values.
@@ -91,13 +94,12 @@ public class PreferencesInitializer extends AbstractPreferenceInitializer {
 		}
 
 		assert (packagesPath != null);
-		
-		IPreferenceStore store = Preferences.getPreferenceStore();
-		store.setDefault(Preferences.PACKS_FOLDER_PATH, packagesPath.toOSString());
-		store.setDefault(Preferences.PACKS_MACRO_NAME, Preferences.DEFAULT_MACRO_NAME);
+		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID);
+		node.put(Preferences.PACKS_FOLDER_PATH, packagesPath.toOSString());
+		node.put(Preferences.PACKS_MACRO_NAME, Preferences.DEFAULT_MACRO_NAME);
 
 		// Read back the actual value.
-		String folderPath = store.getString(Preferences.PACKS_FOLDER_PATH);
+		String folderPath = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, Preferences.PACKS_FOLDER_PATH, packagesPath.toOSString(), null);
 
 		File packagesFolder = new File(folderPath);
 		if (!packagesFolder.exists()) {

@@ -37,7 +37,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.embedcdt.templates.stm"
+         id="org.eclipse.embedcdt.templates.stm.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

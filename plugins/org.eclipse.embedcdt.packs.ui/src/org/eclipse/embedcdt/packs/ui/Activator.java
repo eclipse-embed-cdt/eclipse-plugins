@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2020 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,11 +10,15 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - UI part extraction.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.ui;
 
-import org.eclipse.embedcdt.core.AbstractUIActivator;
+import org.eclipse.embedcdt.packs.core.IConsoleStream;
+import org.eclipse.embedcdt.ui.AbstractUIActivator;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -26,7 +30,8 @@ public class Activator extends AbstractUIActivator {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.embedcdt.packs.ui"; //$NON-NLS-1$
-
+	public static final String CORE_PLUGIN_ID = "org.eclipse.embedcdt.packs.core"; //$NON-NLS-1$
+	
 	@Override
 	public String getBundleId() {
 		return PLUGIN_ID;
@@ -55,6 +60,16 @@ public class Activator extends AbstractUIActivator {
 
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
+	}
+
+	// ------------------------------------------------------------------------
+
+	public IPreferenceStore getCorePreferenceStore() {
+		return org.eclipse.embedcdt.packs.core.Activator.getInstance().getCorePreferenceStore();
+	}
+	
+	public IConsoleStream getConsoleOutput() {
+		return org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 	}
 
 	// ------------------------------------------------------------------------

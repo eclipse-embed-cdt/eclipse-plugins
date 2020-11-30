@@ -1,32 +1,41 @@
 # Enable all debug options
-org.eclipse.embedcdt.codered/debug=true
+org.eclipse.embedcdt.codered.ui/debug=true
 
 org.eclipse.embedcdt.core/debug=true
 
 org.eclipse.embedcdt.debug.core/debug=true
-org.eclipse.embedcdt.debug.gdbjtag/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.core/debug=true
 
-org.eclipse.embedcdt.debug.gdbjtag.jlink/debug=true
-org.eclipse.embedcdt.debug.gdbjtag.openocd/debug=true
-org.eclipse.embedcdt.debug.gdbjtag.pyocd/debug=true
-org.eclipse.embedcdt.debug.gdbjtag.qemu/debug=true
-org.eclipse.embedcdt.debug.gdbjtag.restart/debug=true
-org.eclipse.embedcdt.debug.packs/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.jlink.core/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.jlink.ui/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.openocd.core/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.openocd.ui/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.pyocd.core/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.qemu.core/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.qemu.ui/debug=true
 
-org.eclipse.embedcdt.managedbuild.cross/debug=true
-org.eclipse.embedcdt.managedbuild.cross.arm/debug=true
-org.eclipse.embedcdt.managedbuild.cross.riscv/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.restart.ui/debug=true
 
-org.eclipse.embedcdt.managedbuild.packs/debug=true
+org.eclipse.embedcdt.debug.gdbjtag.ui/debug=true
 
-org.eclipse.embedcdt.packs/debug=true
+org.eclipse.embedcdt.managedbuild.cross.arm.core/debug=true
+org.eclipse.embedcdt.managedbuild.cross.arm.ui/debug=true
+
+org.eclipse.embedcdt.managedbuild.cross.core/debug=true
+org.eclipse.embedcdt.managedbuild.cross.riscv.core/debug=true
+org.eclipse.embedcdt.managedbuild.cross.riscv.ui/debug=true
+org.eclipse.embedcdt.managedbuild.cross.ui/debug=true
+
+org.eclipse.embedcdt.managedbuild.packs.ui/debug=true
+
 org.eclipse.embedcdt.packs.core/debug=true
-org.eclipse.embedcdt.packs.data/debug=true
 org.eclipse.embedcdt.packs.ui/debug=true
 
-org.eclipse.embedcdt.templates.ad/debug=true
+org.eclipse.embedcdt.templates.ad.ui/debug=true
 org.eclipse.embedcdt.templates.core/debug=true
-org.eclipse.embedcdt.templates.cortexm/debug=true
-org.eclipse.embedcdt.templates.freescale/debug=true
-org.eclipse.embedcdt.templates.freescale.pe/debug=true
-org.eclipse.embedcdt.templates.stm/debug=true
+org.eclipse.embedcdt.templates.cortexm.ui/debug=true
+org.eclipse.embedcdt.templates.freescale.ui/debug=true
+org.eclipse.embedcdt.templates.freescale.pe.ui/debug=true
+org.eclipse.embedcdt.templates.sifive.ui/debug=true
+org.eclipse.embedcdt.templates.stm.ui/debug=true

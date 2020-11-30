@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!-- 
+  Copyright (c) 2009, 2020 Wind River Systems, Inc. and others. 
+  This program and the accompanying materials 
+  are made available under the terms of the Eclipse Public License 2.0 
+  which accompanies this distribution, and is available at 
+  https://www.eclipse.org/legal/epl-2.0/
+
+  SPDX-License-Identifier: EPL-2.0 
+
+  Contributors: 
+    Doug Schaefer (Wind River) - initial API and implementation 
+    Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project 
+    Liviu Ionescu - Arm version 
+    Alexander Fedorov (ArSysOp) - extract UI part
+-->
+<plugin>
+	<extension point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
+		<wizardPage
+			ID="org.eclipse.embedcdt.managedbuild.cross.setCrossCommandWizardPage"
+			operationClass="org.eclipse.embedcdt.managedbuild.cross.arm.ui.SetCrossCommandWizardOperation"
+			pageClass="org.eclipse.embedcdt.managedbuild.cross.arm.ui.SetCrossCommandWizardPage">
+			<toolchain toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug">
+			</toolchain>
+			<toolchain
+				toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.release">
+			</toolchain>
+			<toolchain toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.so.debug">
+			</toolchain>
+			<toolchain
+				toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.so.release">
+			</toolchain>
+			<toolchain toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.lib.debug">
+			</toolchain>
+			<toolchain
+				toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.lib.release">
+			</toolchain>
+			<toolchain toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+			</toolchain>
+		</wizardPage>
+	</extension>
+	<extension point="org.eclipse.cdt.ui.cPropertyTab">
+		<tab
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.TabToolchains"
+			helpId="cdt_u_prop_build_setting_tool"
+			icon="icons/elcl16/config-tool.gif"
+			name="%tab.toolchainSettings"
+			parent="org.eclipse.cdt.managedbuilder.ui.properties.Page_BuildSettings"
+			tooltip="Select and configure the toolchain  "
+			weight="012">
+		</tab>
+	</extension>
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="org.eclipse.embedcdt.ui.preferences.mcu"
+			id="org.eclipse.embedcdt.managedbuild.cross.arm.preferencePage.workspaceToolchainsPaths"
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
+			name="%preferences.toolsPaths">
+		</page>
+		<page
+			category="org.eclipse.embedcdt.ui.preferences.mcu"
+			id="org.eclipse.embedcdt.managedbuild.cross.arm.preferencePage.globalToolchainsPaths"
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences.GlobalToolchainsPathsPreferencesPage"
+			name="%preferences.globalToolsPaths">
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.propertyPages">
+		<page
+			category="org.eclipse.embedcdt.ui.properties.mcu"
+			id="org.eclipse.embedcdt.managedbuild.cross.arm.properties.toolchainsPage"
+			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.properties.ProjectToolchainsPathPropertiesPage"
+			name="%properties.projectToolsPaths">
+         <filter
+               name="projectNature"
+               value="org.eclipse.cdt.core.cnature">
+         </filter>
+			<enabledWhen>
+				<and>
+					<instanceof value="org.eclipse.core.resources.IProject">
+					</instanceof>
+					<test property="ilg.gnuarmeclipse.managedbuild.cross.isGnuArm">
+					</test>
+				</and>
+			</enabledWhen>
+		</page>
+	</extension>
+</plugin>

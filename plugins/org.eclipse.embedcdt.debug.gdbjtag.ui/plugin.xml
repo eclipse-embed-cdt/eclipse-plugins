@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+  Copyright (c) 2012, 2017 Liviu Ionescu.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
+  https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+
+  Contributors:
+    Liviu Ionescu
+-->
+
+<plugin>
+
+	<extension point="org.eclipse.ui.views">
+		<view
+			allowMultiple="false"
+			category="org.eclipse.debug.ui"
+			class="org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripherals.PeripheralsView"
+			icon="icons/peripheral.png"
+			id="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView"
+			name="%views.peripheral.name">
+		</view>
+	</extension>
+
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
+			<view
+				id="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView"
+				minimized="false"
+				relationship="stack"
+				relative="org.eclipse.debug.ui.VariableView"
+				visible="true">
+			</view>
+			<viewShortcut
+				id="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView">
+			</viewShortcut>
+		</perspectiveExtension>
+	</extension>
+
+	<extension point="org.eclipse.debug.ui.contextViewBindings">
+		<contextViewBinding
+			contextId="org.eclipse.cdt.debug.ui.debugging"
+			viewId="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView"
+			autoOpen="true"
+			autoClose="true">
+		</contextViewBinding>
+	</extension>
+
+	<extension point="org.eclipse.core.runtime.adapters">
+		<factory
+			adaptableType="org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuLaunch"
+			class="org.eclipse.embedcdt.debug.gdbjtag.ui.viewmodel.GnuMcuAdapterFactory">
+			<!-- this list needs to match the list of adapters that GnuMcuAdapterFactory's 
+				super class can adapt to, see org.eclipse.cdt.dsf.gdb.ui/plugin.xml for reference 
+				list -->
+			<adapter
+				type="org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider" />
+			<adapter
+				type="org.eclipse.debug.internal.ui.viewers.model.provisional.IModelProxyFactory" />
+			<adapter type="org.eclipse.debug.ui.contexts.ISuspendTrigger" />
+			<adapter
+				type="org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentationFactory" />
+			<adapter type="org.eclipse.debug.core.commands.ITerminateHandler" />
+			<adapter type="org.eclipse.cdt.debug.core.model.IConnectHandler" />
+			<adapter type="org.eclipse.debug.core.commands.IDisconnectHandler" />
+			<adapter
+				type="org.eclipse.cdt.debug.core.model.IDebugNewExecutableHandler" />
+		</factory>
+	</extension>
+
+	<extension point="org.eclipse.debug.ui.memoryRenderings">
+		<renderingType
+			class="org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralRenderingDelegate"
+			id="org.eclipse.embedcdt.debug.gdbjtag.memoryRendering"
+			name="Peripheral">
+		</renderingType>
+		<renderingBindings
+			defaultIds="org.eclipse.embedcdt.debug.gdbjtag.memoryRendering"
+			primaryId="org.eclipse.embedcdt.debug.gdbjtag.memoryRendering"
+			renderingIds="org.eclipse.embedcdt.debug.gdbjtag.memoryRendering">
+			<!-- org.eclipse.debug.ui.rendering.raw_memory not yet functional -->
+			<enablement>
+				<or>
+					<!-- Without this instanceof, adding memory renderings fail with NPE -->
+					<instanceof
+						value="org.eclipse.embedcdt.debug.gdbjtag.core.memory.PeripheralMemoryBlockExtension" />
+				</or>
+			</enablement>
+		</renderingBindings>
+	</extension>
+	<extension point="org.eclipse.ui.themes">
+		<themeElementCategory
+			id="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			label="Peripherals views">
+			<description>
+				Colors used in the peripherals views.
+			</description>
+		</themeElementCategory>
+		<colorDefinition
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.ColorReadOnlyFactory"
+			id="org.eclipse.embedcdt.debug.gdbjtag.peripherals.color.readonly"
+			isEditable="true"
+			label="Read only background">
+			<description>
+				Color for the read only peripherals/registers.
+			</description>
+		</colorDefinition>
+		<colorDefinition
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.ColorWriteOnlyFactory"
+			id="org.eclipse.embedcdt.debug.gdbjtag.peripherals.color.writeonly"
+			isEditable="true"
+			label="Write only background">
+			<description>
+				Color for the write only peripherals/registers.
+			</description>
+		</colorDefinition>
+		<colorDefinition
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.ColorChangedFactory"
+			id="org.eclipse.embedcdt.debug.gdbjtag.peripherals.color.changed"
+			isEditable="true"
+			label="Changed background">
+			<description>
+				Color for the value fields that changed during edit.
+			</description>
+		</colorDefinition>
+		<colorDefinition
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.ColorChangedLightFactory"
+			id="org.eclipse.embedcdt.debug.gdbjtag.peripherals.color.changed.light"
+			isEditable="true"
+			label="Changed background (light)">
+			<description>
+				Color for the value fields that changed during edit,
+				light contrast.
+			</description>
+		</colorDefinition>
+		<colorDefinition
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.ColorChangedMediumFactory"
+			id="org.eclipse.embedcdt.debug.gdbjtag.peripherals.color.changed.medium"
+			isEditable="true"
+			label="Changed background (medium)">
+			<description>
+				Color for the value fields that changed during edit,
+				medium contrast.
+			</description>
+		</colorDefinition>
+	</extension>
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="org.eclipse.debug.ui.DebugPreferencePage"
+			class="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.PeripheralsPage"
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.preferencePage.peripherals"
+			name="%preferences.peripherals">
+		</page>
+	</extension>
+
+
+</plugin>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2012, 2017 Liviu Ionescu.
+  Copyright (c) 2012, 2020 Liviu Ionescu and others.
   This program and the accompanying materials
   are made available under the terms of the Eclipse Public License 2.0
   which accompanies this distribution, and is available at
@@ -10,8 +10,8 @@
 
   Contributors:
     Liviu Ionescu
+    Alexander Fedorov (ArSysOp)
 -->
-
 <feature
       id="org.eclipse.embedcdt.codered"
       label="%featureName"
@@ -29,6 +29,10 @@
       %copyright
    </copyright>
 
+   <requires>
+      <import feature="org.eclipse.embedcdt" version="6.0.0.qualifier"/>
+   </requires>
+
    <plugin
          id="org.eclipse.embedcdt.codered"
          download-size="0"
@@ -37,7 +41,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.embedcdt.core"
+         id="org.eclipse.embedcdt.codered.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

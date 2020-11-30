@@ -12,15 +12,16 @@
  *     Marc-Andre Laperle - initial API and implementation
  *     Liviu Ionescu - Arm version
  *     Liviu Ionescu - RISC-V version
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.riscv.ui;
 
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPage;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
-import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.Activator;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.ToolchainDefinition;
+import org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.Messages;
+import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.riscv.core.ToolchainDefinition;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardPage;

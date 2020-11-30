@@ -87,7 +87,11 @@ public abstract class AbstractActivator extends Plugin {
 	}
 
 	public static void log(String message) {
-		log(new Status(IStatus.ERROR, getInstance().getBundleId(), 1, message, null)); // $NON-NLS-1$
+		log(message, IStatus.ERROR); // $NON-NLS-1$
+	}
+
+	public static void log(String message, int status) {
+		log(new Status(status, getInstance().getBundleId(), 1, message, null)); // $NON-NLS-1$
 	}
 
 	// ------------------------------------------------------------------------

@@ -1,0 +1,327 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial version
+ *******************************************************************************/
+
+package org.eclipse.embedcdt.debug.gdbjtag.core.dsf;
+
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
+import org.eclipse.cdt.debug.gdbjtag.core.Messages;
+import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
+import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
+import org.eclipse.cdt.dsf.service.AbstractDsfService;
+import org.eclipse.cdt.dsf.service.DsfServicesTracker;
+import org.eclipse.cdt.dsf.service.DsfSession;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.embedcdt.core.EclipseUtils;
+import org.eclipse.embedcdt.core.StringUtils;
+import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
+import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
+import org.eclipse.embedcdt.debug.gdbjtag.core.services.IGnuMcuDebuggerCommandsService;
+
+public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
+		implements IGnuMcuDebuggerCommandsService {
+
+	// ------------------------------------------------------------------------
+
+	protected DsfSession fSession;
+	protected ILaunchConfiguration fConfig;
+	protected boolean fDoDoubleBackslash;
+	protected DsfServicesTracker fTracker;
+	protected IGDBBackend fGdbBackend;
+	protected Map<String, Object> fAttributes;
+	protected String fMode;
+
+	// protected static final String LINESEP = System
+	// .getProperty("line.separator"); //$NON-NLS-1$
+
+	// ------------------------------------------------------------------------
+
+	public GnuMcuDebuggerCommandsService(DsfSession session, ILaunchConfiguration lc, String mode) {
+		this(session, lc, mode, false);
+	}
+
+	public GnuMcuDebuggerCommandsService(DsfSession session, ILaunchConfiguration lc, String mode,
+			boolean doubleBackslash) {
+		super(session);
+
+		fSession = session;
+		fConfig = lc;
+
+		fMode = mode;
+		fDoDoubleBackslash = doubleBackslash;
+	}
+
+	// ------------------------------------------------------------------------
+
+	public void initialize(final RequestMonitor rm) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuMcuDebuggerCommandsService.initialize()");
+		}
+
+		super.initialize(new RequestMonitor(getExecutor(), rm) {
+
+			protected void handleSuccess() {
+				doInitialize(rm);
+			}
+		});
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void doInitialize(RequestMonitor rm) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuMcuDebuggerCommandsService.doInitialize()");
+		}
+
+		// Get and remember the command control service
+		// fCommandControl = ((ICommandControlService) getServicesTracker()
+		// .getService(ICommandControlService.class));
+
+		// Register this service to DSF.
+		// For completeness, use both the interface and the class name.
+		register(new String[] { IGnuMcuDebuggerCommandsService.class.getName(), this.getClass().getName() },
+				new Hashtable());
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(this.getClass().getName() + " registered ");
+		}
+
+		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle().getBundleContext(), fSession.getId());
+		fGdbBackend = fTracker.getService(IGDBBackend.class);
+		if (fGdbBackend == null) {
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, "Cannot obtain GDBBackend service", null)); //$NON-NLS-1$
+			rm.done();
+			return;
+		}
+
+		rm.done();
+	}
+
+	@Override
+	public void shutdown(RequestMonitor rm) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuMcuDebuggerCommandsService.shutdown()");
+		}
+
+		// Remove this service from DSF.
+		unregister();
+
+		super.shutdown(rm);
+	}
+
+	// ------------------------------------------------------------------------
+
+	@Override
+	public void setAttributes(Map<String, Object> attributes) {
+		fAttributes = attributes;
+	}
+
+	// ------------------------------------------------------------------------
+
+	public IStatus addGnuMcuSelectRemoteCommands(List<String> commandsList) {
+
+		String remoteTcpHost = DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IP_ADDRESS,
+				IGDBJtagConstants.DEFAULT_IP_ADDRESS);
+		Integer remoteTcpPort = DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_PORT_NUMBER,
+				IGDBJtagConstants.DEFAULT_PORT_NUMBER);
+
+		commandsList.add("-target-select remote " + remoteTcpHost + ":" + remoteTcpPort + "");
+
+		return Status.OK_STATUS;
+	}
+
+	@Override
+	public IStatus addGnuMcuRestartCommands(List<String> commandsList) {
+
+		return addStartRestartCommands(true, commandsList);
+	}
+
+	// ------------------------------------------------------------------------
+
+	protected String escapeSpaces(String file) {
+		if (file.indexOf(' ') >= 0) {
+			return '"' + file + '"';
+		}
+		return file;
+	}
+
+	/**
+	 * Add the "symbol-file <path>" command, using the jtag device definition.
+	 * Always duplicate backslashes on Windows.
+	 */
+	@Override
+	public IStatus addLoadSymbolsCommands(List<String> commandsList) {
+
+		IPath programPath = fGdbBackend.getProgramPath();
+
+		if (!DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
+				IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS)) {
+
+			// Not required.
+			return Status.OK_STATUS;
+		}
+
+		String symbolsFileName = null;
+
+		// New setting in Helios. Default is true. Check for existence
+		// in order to support older launch configs
+		if (fAttributes.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)
+				&& DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+						IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS)) {
+			if (programPath != null) {
+				symbolsFileName = programPath.toOSString();
+			}
+		} else {
+			symbolsFileName = DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
+					IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
+			if (!symbolsFileName.isEmpty()) {
+				symbolsFileName = DebugUtils.resolveAll(symbolsFileName, fAttributes);
+			} else {
+				symbolsFileName = null;
+			}
+		}
+
+		if (symbolsFileName == null) {
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
+					Messages.getString("GDBJtagDebugger.err_no_img_file"), null); //$NON-NLS-1$
+		}
+
+		if (EclipseUtils.isWindows()) {
+			// Escape windows path separator characters TWICE, once for
+			// Java and once for GDB.
+			symbolsFileName = StringUtils.duplicateBackslashes(symbolsFileName);
+		}
+
+		String file = escapeSpaces(symbolsFileName);
+
+		String symbolsOffset = DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
+				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
+		if (!symbolsOffset.isEmpty()) {
+			symbolsOffset = "0x" + symbolsOffset;
+			// addCmd(commandsList, "add-symbol-file " + file + " "
+			// + symbolsOffset);
+			commandsList.add("add-symbol-file " + file + " " + symbolsOffset);
+		} else {
+			// addCmd(commandsList, "symbol-file " + file);
+			commandsList.add("symbol-file " + file);
+		}
+
+		return Status.OK_STATUS;
+	}
+
+	/**
+	 * Add the "load <path>" command, using the jtag device definition. Always
+	 * duplicate backslashes on Windows.
+	 */
+	@Override
+	public IStatus addLoadImageCommands(List<String> commandsList) {
+
+		IPath programPath = fGdbBackend.getProgramPath();
+
+		String imageFileName = null;
+
+		if (fAttributes.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)
+				&& DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+						IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE)) {
+			if (programPath != null) {
+				imageFileName = programPath.toOSString();
+			}
+		} else {
+			imageFileName = DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
+					IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
+			if (!imageFileName.isEmpty()) {
+				imageFileName = DebugUtils.resolveAll(imageFileName, fAttributes);
+			} else {
+				imageFileName = null;
+			}
+		}
+
+		if (imageFileName == null) {
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
+					Messages.getString("GDBJtagDebugger.err_no_img_file"), null); //$NON-NLS-1$
+		}
+
+		imageFileName = DebugUtils.resolveAll(imageFileName, fAttributes);
+
+		if (EclipseUtils.isWindows()) {
+			// Escape windows path separator characters TWICE, once
+			// for Java and once for GDB.
+			imageFileName = StringUtils.duplicateBackslashes(imageFileName);
+		}
+
+		String imageOffset = CDebugUtils
+				.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IMAGE_OFFSET, IGDBJtagConstants.DEFAULT_IMAGE_OFFSET)
+				.trim();
+		if (!imageOffset.isEmpty()) {
+			imageOffset = (imageFileName.endsWith(".elf")) ? ""
+					: "0x" + DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+							IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); // $NON-NLS-2$
+		}
+
+		String file = escapeSpaces(imageFileName);
+		// addCmd(commandsList, "load " + file + ' ' + imageOffset);
+		commandsList.add("load " + file + ' ' + imageOffset);
+
+		return Status.OK_STATUS;
+	}
+
+	public IStatus addSetPcCommands(List<String> commandsList) {
+
+		if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SET_PC_REGISTER,
+				IGDBJtagConstants.DEFAULT_SET_PC_REGISTER)) {
+			String pcRegister = CDebugUtils
+					.getAttribute(fAttributes, IGDBJtagConstants.ATTR_PC_REGISTER, DebugUtils.getAttribute(fAttributes,
+							IGDBJtagConstants.ATTR_IMAGE_OFFSET, IGDBJtagConstants.DEFAULT_PC_REGISTER))
+					.trim();
+			if (!pcRegister.isEmpty()) {
+				commandsList.add("set $pc=0x" + pcRegister);
+			}
+		}
+
+		return Status.OK_STATUS;
+	}
+
+	public IStatus addStopAtCommands(List<String> commandsList) {
+
+		// This code is also used to start run configurations.
+		// Set the breakpoint only for debug.
+		if (fMode.equals(ILaunchManager.DEBUG_MODE)) {
+			if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SET_STOP_AT,
+					IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
+				String stopAt = CDebugUtils
+						.getAttribute(fAttributes, IGDBJtagConstants.ATTR_STOP_AT, IGDBJtagConstants.DEFAULT_STOP_AT)
+						.trim();
+
+				if (!stopAt.isEmpty()) {
+					// doAtopAt replaced by a simple tbreak
+					commandsList.add("tbreak " + stopAt);
+				}
+			}
+		}
+
+		return Status.OK_STATUS;
+	}
+
+	// ------------------------------------------------------------------------
+}

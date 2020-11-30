@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!-- 
+  Copyright (c) 2009, 2020 Wind River Systems, Inc. and others. 
+  This program and the accompanying materials 
+  are made available under the terms of the Eclipse Public License 2.0 
+  which accompanies this distribution, and is available at 
+  https://www.eclipse.org/legal/epl-2.0/
+
+  SPDX-License-Identifier: EPL-2.0 
+ 
+  Contributors: 
+    Doug Schaefer (Wind River) - initial API and implementation 
+    Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to 
+      build a project 
+    Liviu Ionescu - MCU version 
+    Alexander Fedorov (ArSysOp) - extract UI part
+-->
+<plugin>
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="org.eclipse.embedcdt.ui.preferences.mcu"
+			class="org.eclipse.embedcdt.managedbuild.cross.ui.preferences.BuildToolsWorkspacePathsPreferencesPage"
+			id="org.eclipse.embedcdt.managedbuild.cross.ui.preferencePage.workspaceToolsPaths"
+			name="%preferences.workspaceBuildToolsPaths">
+		</page>
+		<page
+			category="org.eclipse.embedcdt.ui.preferences.mcu"
+			class="org.eclipse.embedcdt.managedbuild.cross.ui.preferences.BuildToolsGlobalPathsPreferencesPage"
+			id="org.eclipse.embedcdt.managedbuild.cross.ui.preferencePage.globalToolsPaths"
+			name="%preferences.globalBuildToolsPaths">
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.propertyPages">
+		<page
+			category="org.eclipse.embedcdt.ui.properties.mcu"
+			class="org.eclipse.embedcdt.managedbuild.cross.ui.properties.BuildToolsProjectPathPropertiesPage"
+			id="org.eclipse.embedcdt.managedbuild.cross.ui.properties.toolsPage"
+			name="%properties.projectBuildToolsPaths">
+			<filter
+				name="projectNature"
+				value="org.eclipse.cdt.core.cnature">
+			</filter>
+			<enabledWhen>
+				<and>
+					<instanceof value="org.eclipse.core.resources.IProject">
+					</instanceof>
+					<test forcePluginActivation="true" property="org.eclipse.embedcdt.managedbuild.cross.isGnuMcu">
+					</test>
+				</and>
+			</enabledWhen>
+		</page>
+	</extension>
+
+</plugin>

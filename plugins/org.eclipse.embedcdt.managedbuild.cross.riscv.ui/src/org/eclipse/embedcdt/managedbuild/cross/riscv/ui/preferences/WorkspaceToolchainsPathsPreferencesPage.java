@@ -10,6 +10,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.riscv.ui.preferences;
@@ -25,14 +26,14 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.core.preferences.ScopedPreferenceStoreWithoutDefaults;
-import org.eclipse.embedcdt.core.ui.LabelFakeFieldEditor;
-import org.eclipse.embedcdt.core.ui.XpackDirectoryNotStrictFieldEditor;
-import org.eclipse.embedcdt.managedbuild.cross.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.managedbuild.cross.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.Activator;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.Option;
-import org.eclipse.embedcdt.managedbuild.cross.riscv.ui.Messages;
+import org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.Messages;
+import org.eclipse.embedcdt.managedbuild.cross.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.managedbuild.cross.riscv.core.Option;
+import org.eclipse.embedcdt.managedbuild.cross.riscv.ui.Activator;
+import org.eclipse.embedcdt.ui.LabelFakeFieldEditor;
+import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
+import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
@@ -66,9 +67,9 @@ public class WorkspaceToolchainsPathsPreferencesPage extends FieldEditorPreferen
 		super(GRID);
 
 		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
-		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 
-		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
+		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.CORE_PLUGIN_ID));
 
 		setDescription(Messages.WorkspaceToolchainsPathsPreferencesPage_description);
 	}
