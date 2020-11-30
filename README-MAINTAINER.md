@@ -57,15 +57,6 @@ The official download page is
 
 ## Prepare release
 
-### Prepare EPP
-
-Clone the EPP Git project:
-
-```
-git clone "ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git"
-scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "epp/org.eclipse.epp.packages.git/.git/hooks/"
-```
-
 ### Prepare SimRel
 
 Use the CBI Aggregator installed from:
@@ -79,6 +70,22 @@ git clone "ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build"
 scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "org.eclipse.simrel.build/.git/hooks/"
 ```
 
+### SimRel deadline
+
+The deadline for SimRel changes is **Wed 5pm Ottawa time**.
+
+### Prepare EPP
+
+Clone the EPP Git project:
+
+```
+git clone "ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git"
+scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "epp/org.eclipse.epp.packages.git/.git/hooks/"
+```
+
+### EPP deadline
+
+The deadline for EPP changes is **Thu 9am Ottawa time**.
 ### Create a new milestone
 
 If not already done, create a new milestone.
@@ -117,13 +124,13 @@ $ mvn clean verify
 
 Start a Debug/Run session and try the result in a child Eclipse.
 
-## How to make the pre-release
+## How to make a release candidate
 
 ### Push to GitHub
 
 Be sure the repo is clean and push the `develop` branch to GitHub.
 
-This will also trigger a CI job that will run a maven build.
+This will also trigger a GitHub Actions CI job that will run a maven build.
 
 ### Trigger the Jenkins development build
 
@@ -146,9 +153,7 @@ on a separate Eclipse (not the one used for development); use the URL:
 
 When ready, merge the `develop` branch into `master`, and push them to GitHub.
 
-Wait for the CI to confirm that the build passed.
-
-Add a tag like `v6.0.0` (with `v`).
+Wait for the GitHub Actions CI job to confirm that the build passed.
 
 ### Trigger the Jenkins master build
 
@@ -158,44 +163,39 @@ Add a tag like `v6.0.0` (with `v`).
 - when ready, the p2 repository is published at
 [https://download.eclipse.org/embed-cdt/builds/master/p2/](https://download.eclipse.org/embed-cdt/builds/master/p2/)
 
-### Publish the pre-release
+### Publish the release candidate
 
 - go to https://ci.eclipse.org/embed-cdt/
 - login (otherwise the next link is not visible!)
-- use the [make-pre-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-pre-release-from-master/)
-Jenkins job to copy the files from `builds/master` to `updates/v6-test/`,
-which is the public location for the pre-release
+- use the [make-release-candidate-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-candidate-from-master/)
+Jenkins job to copy the files from `builds/master` to `updates/v6-test/` and
+`release-candidates/<version>-<date>`,
+which is the public location for the release candidates until the final
+release is out
 - click the **Build Now** link
 
-### Announce pre-release
+### Create a release candidate record
 
-Announce the pre-release to the **embed-cdt-dev@eclipse.org** list;
-use a subject like **Eclipse Embedded CDT v6.0.0 released**, and
-pass a link to the release page.
-
-Beta testers can install the pre-release from:
-
-- https://download.eclipse.org/embed-cdt/updates/v6-test/
-
-### Create a pre-release record
+This applies only for the first release candidate, or for the final release.
 
 In the official
 [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/)
 page, click the
-[Create a new release](https://projects.eclipse.org/node/18638/create-release/) link in the right sidebar.
+[Create a new release](https://projects.eclipse.org/node/18638/create-release/)
+link in the right side bar.
 
 Name it like `6.0.0` (no v).
 
 Click on Edit, The Basics; switch to Source mode
 
-Start with _Pre-release_ (Header 3).
+Start with _Release candidate_ (Header 3).
 
 ```html
-<p>Version <strong>6.0.0</strong> is a maintenance release; if fixes XXX.</p>
+<p>Version <strong>6.0.0</strong> is a major/new/maintenance release; if fixes XXX.</p>
 
-<h3>Pre-release</h3>
+<h3>Release candidate</h3>
 
-<p>For those who want to beta test, the pre-release is available via <strong>Install New Software</strong> from:</p>
+<p>For those who want to beta test, the release candidate is available via <strong>Install New Software</strong> from:</p>
 
 <ul>
 	<li>https://download.eclipse.org/embed-cdt/updates/v6-test/</li>
@@ -259,9 +259,9 @@ Select the **Release Type** (major, minor, service).
 
 Install the plug-ins on several platforms.
 
-### Update SimRel for pre-release
+### Update SimRel for the release candidate
 
-If everything fine, update SimRel.
+If everything is fine, update SimRel.
 
 With Sourcetree:
 
@@ -275,10 +275,12 @@ In Eclipse:
 - expand the 'Contribution: Embedded CDT'
 - select **Mapped Repository**
 - right click: **Show Properties View**
-- in the right side, edit the **Location** field to the new pre-release p2 URL
-(like `https://download.eclipse.org/embed-cdt/pre-releases/6.0.0-202011221632/p2/`
+- in the right side, edit the **Location** field to the new release
+candidate p2 URL (like
+`https://download.eclipse.org/embed-cdt/release-candidates/6.0.0-202011221632/p2/`
 and press Enter
-- select all the features in the contribution, right-click and choose **Fix Versions**
+- select all the features in the contribution, right-click and choose
+**Fix Versions**
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
 - Save
@@ -299,15 +301,30 @@ In about one hour it'll automatically rebuild the staging repo:
 
 - https://download.eclipse.org/staging/
 
+### Announce release candidate
+
+Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
+use a subject like
+**Eclipse Embedded CDT v6.0.0-202011221632 release candidate**,
+and pass a link to the release page.
+
+Beta testers can install the release candidate from:
+
+- https://download.eclipse.org/embed-cdt/updates/v6-test/
+
+## Add Git tag
+
+Add a tag like `v6.0.0-202011301954` (with `v`).
+
 ## Publish the final release
 
 When the plug-ins are considered stable:
 
 - go to https://ci.eclipse.org/embed-cdt/
 - login (otherwise the next link is not visible!)
-- use the [make-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-from-master/)
-Jenkins job to copy from `builds/master` to `updates/v6/` and
-`releases/<version>`
+- use the
+[make-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-from-master/)
+Jenkins job to copy from `builds/master` to `updates/v6/` and `releases/<version>`
 - click the **Build with Parameters** link
 - enter _yes_
 - click the **Build** link
@@ -335,10 +352,11 @@ The public update URLs are:
 
 ### Update the release record
 
-- go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/governance/) and select the new release
+- go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/governance/)
+and select the new release
 - click Edit -> The Basics
 - switch to Source mode
-- replace the **Pre-release** section with the above:
+- replace the **Release candidate** section with the above:
 
 ```html
 <h3>Eclipse Marketplace</h3>
@@ -368,7 +386,8 @@ The public update URLs are:
 </ul>
 ```
 
-As links for the latest two, open https://download.eclipse.org/embed-cdt/releases/ and get something like:
+As links for the latest two, open https://download.eclipse.org/embed-cdt/releases/
+and get something like:
 
 - https://download.eclipse.org/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202010292017.zip
 - https://download.eclipse.org/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202010292017.zip.sha
@@ -382,7 +401,8 @@ Remove the _Pre-release_ top header.
 
 ### Update the Downloads page
 
-- go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/) and select the new release
+- go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/)
+and select the new release
 - click Edit -> The Basics
 - switch to Source mode
 
@@ -399,10 +419,11 @@ In Eclipse:
 - expand the 'Contribution: Embedded CDT'
 - select **Mapped Repository**
 - right click: **Show Properties View**
-- in the right side, edit the **Location** field to the new pre-release p2 URL
+- in the right side, edit the **Location** field to the new release p2 URL
 (like `https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/`
 and press Enter
-- select all the features in the contribution, right-click and choose **Fix Versions**
+- select all the features in the contribution, right-click and choose
+**Fix Versions**
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
 
@@ -469,6 +490,10 @@ In 1.5 hours the new test versions of the integrated epp builds are
 available from:
 
 - https://ci.eclipse.org/packaging/job/simrel.epp-tycho-build/lastSuccessfulBuild/artifact/org.eclipse.epp.packages/archive/ 
+
+## Add Git tag
+
+Add a tag like `v6.0.0` (with `v`).
 
 ### Announce release
 
