@@ -131,7 +131,7 @@ public class PeripheralEditingSupport extends EditingSupport {
 				if (index != null) {
 					return index;
 				}
-				return new Integer(0);
+				return Integer.valueOf(0);
 			}
 		}
 		return value;

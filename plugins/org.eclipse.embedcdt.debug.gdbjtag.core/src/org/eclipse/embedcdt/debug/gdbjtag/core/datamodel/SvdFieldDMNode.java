@@ -326,7 +326,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 			// Return first match.
 			if (((SvdEnumeratedValueDMNode) children[i]).isMatchForValue(value)) {
-				return new Integer(i);
+				return Integer.valueOf(i);
 			}
 		}
 
@@ -363,13 +363,13 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 							fOffset = (int) SvdUtils.parseScaledNonNegativeLong(bitRange.split(":")[1]);
 						} else {
 							Activator.log("Missing offset, node " + getNode());
-							fOffset = new Integer(0);
+							fOffset = Integer.valueOf(0);
 						}
 					}
 				}
 			} catch (NumberFormatException e) {
 				Activator.log("Bad offset, node " + getNode());
-				fOffset = new Integer(0);
+				fOffset = Integer.valueOf(0);
 			}
 		}
 
@@ -391,7 +391,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 				} else {
 					String msb = getPropertyWithDerived("msb");
 					if (!msb.isEmpty()) {
-						fWidth = new Integer((int) (SvdUtils.parseScaledNonNegativeLong(msb) - getOffset() + 1));
+						fWidth = Integer.valueOf((int) (SvdUtils.parseScaledNonNegativeLong(msb) - getOffset() + 1));
 					} else {
 						String bitRange = getPropertyWithDerived("bitRange");
 						if (!bitRange.isEmpty()) {
@@ -399,17 +399,17 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 							bitRange = bitRange.replace(']', ' ');
 							bitRange = bitRange.trim();
 							// Convert the first value and subtract the offset
-							fWidth = new Integer((int) (SvdUtils.parseScaledNonNegativeLong(bitRange.split(":")[0])
+							fWidth = Integer.valueOf((int) (SvdUtils.parseScaledNonNegativeLong(bitRange.split(":")[0])
 									- getOffset() + 1));
 						} else {
 							Activator.log("Missing width, node " + getNode());
-							fWidth = new Integer(1);
+							fWidth = Integer.valueOf(1);
 						}
 					}
 				}
 			} catch (NumberFormatException e) {
 				Activator.log("Bad width, node " + getNode());
-				fWidth = new Integer(1);
+				fWidth = Integer.valueOf(1);
 			}
 		}
 		return fWidth.intValue();

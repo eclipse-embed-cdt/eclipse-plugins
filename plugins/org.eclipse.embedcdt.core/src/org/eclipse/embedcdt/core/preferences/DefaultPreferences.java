@@ -293,7 +293,7 @@ public class DefaultPreferences {
 		}
 
 		Set<Long> keys = map.keySet();
-		Long latestKey = new Long(0);
+		Long latestKey = Long.valueOf(0);
 		for (Long key : keys) {
 			if (key > latestKey) {
 				latestKey = key;
@@ -346,7 +346,7 @@ public class DefaultPreferences {
 				File file = path.toFile();
 				if (file.isFile()) {
 					File versioFolder = versionPath.toFile();
-					Long key = new Long(versioFolder.lastModified());
+					Long key = Long.valueOf(versioFolder.lastModified());
 					map.put(key, basePath.toPortableString());
 
 					if (Activator.getInstance().isDebugging()) {

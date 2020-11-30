@@ -275,10 +275,10 @@ public class SvdRegisterDMNode extends SvdDMNode {
 			}
 
 			try {
-				fSize = new Integer(SvdUtils.parseScaledNonNegativeBigInteger(size).intValue());
+				fSize = Integer.valueOf(SvdUtils.parseScaledNonNegativeBigInteger(size).intValue());
 			} catch (NumberFormatException e) {
 				Activator.log("Bad size, node " + getNode());
-				fSize = new Integer(32);
+				fSize = Integer.valueOf(32);
 			}
 
 		}

@@ -421,7 +421,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 		update.setProperty(PROPERTY_ADDRESS, context.getHexAddress());
 		update.setProperty(PROPERTY_DESCRIPTION, context.getDescription());
 
-		update.setProperty(PROPERTY_ISSYSTEM, new Boolean(context.isSystem()));
+		update.setProperty(PROPERTY_ISSYSTEM, Boolean.valueOf(context.isSystem()));
 	}
 
 	/**

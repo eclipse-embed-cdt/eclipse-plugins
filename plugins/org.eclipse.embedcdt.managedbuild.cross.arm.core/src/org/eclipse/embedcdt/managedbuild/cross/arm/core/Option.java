@@ -206,14 +206,13 @@ public class Option {
 		return sReturn;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static Boolean getOptionBooleanValue(IConfiguration config, String sOptionId) {
 
 		IOption option = config.getToolChain().getOptionBySuperClassId(sOptionId);
 		Boolean bReturn = null;
 		if (option != null) {
 			try {
-				bReturn = new Boolean(option.getBooleanValue());
+				bReturn = Boolean.valueOf(option.getBooleanValue());
 			} catch (BuildException e) {
 				Activator.log(e);
 			}
@@ -224,7 +223,6 @@ public class Option {
 		return bReturn;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static Boolean getOptionBooleanValue2(IConfiguration config, String sOptionId) {
 
 		IOption option = config.getToolChain().getOptionBySuperClassId(sOptionId);
@@ -235,7 +233,7 @@ public class Option {
 				if (option2 == null)
 					return null;
 
-				bReturn = new Boolean(option.getBooleanValue());
+				bReturn = Boolean.valueOf(option.getBooleanValue());
 			} catch (BuildException e) {
 				Activator.log(e);
 			}

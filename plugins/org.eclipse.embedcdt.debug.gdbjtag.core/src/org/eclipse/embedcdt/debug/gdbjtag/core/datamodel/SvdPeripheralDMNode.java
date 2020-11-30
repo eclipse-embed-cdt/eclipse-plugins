@@ -302,9 +302,9 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 
 			BigInteger addr = getBigAbsoluteAddress();
 			if (addr.compareTo(fSystemLimit) >= 0) {
-				fIsSystem = new Boolean(true);
+				fIsSystem = Boolean.valueOf(true);
 			} else {
-				fIsSystem = new Boolean(false);
+				fIsSystem = Boolean.valueOf(false);
 			}
 		}
 		return fIsSystem.booleanValue();
