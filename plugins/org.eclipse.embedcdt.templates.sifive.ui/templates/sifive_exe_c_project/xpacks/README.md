@@ -7,16 +7,16 @@ Each xPack is a separate GitHub project, referred here as a git submodule.
 To link new submodules, use:
 
 ```bash
-git submodule add -b xpack https://github.com/micro-os-plus/sifive-templates-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-templates
-git submodule add -b xpack https://github.com/micro-os-plus/diag-trace-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace
-git submodule add -b xpack https://github.com/micro-os-plus/startup-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup
-git submodule add -b xpack https://github.com/micro-os-plus/c-libs-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-c-libs
-git submodule add -b xpack https://github.com/micro-os-plus/cpp-libs-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-cpp-libs
-git submodule add -b xpack https://github.com/micro-os-plus/riscv-arch-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-riscv-arch
-git submodule add -b xpack https://github.com/micro-os-plus/sifive-devices-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-devices
-git submodule add -b xpack https://github.com/micro-os-plus/sifive-arty-boards-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-arty-boards
-git submodule add -b xpack https://github.com/micro-os-plus/sifive-hifive1-board-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
-git submodule add -b xpack https://github.com/micro-os-plus/semihosting-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting
+git submodule add --force -b xpack https://github.com/micro-os-plus/sifive-templates-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-templates
+git submodule add --force -b xpack https://github.com/micro-os-plus/diag-trace-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace
+git submodule add --force -b xpack https://github.com/micro-os-plus/startup-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup
+git submodule add --force -b xpack https://github.com/micro-os-plus/c-libs-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-c-libs
+git submodule add --force -b xpack https://github.com/micro-os-plus/cpp-libs-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-cpp-libs
+git submodule add --force -b xpack https://github.com/micro-os-plus/riscv-arch-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-riscv-arch
+git submodule add --force -b xpack https://github.com/micro-os-plus/sifive-devices-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-devices
+git submodule add --force -b xpack https://github.com/micro-os-plus/sifive-arty-boards-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-arty-boards
+git submodule add --force -b xpack https://github.com/micro-os-plus/sifive-hifive1-board-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
+git submodule add --force -b xpack https://github.com/micro-os-plus/semihosting-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting
 git submodule init
 ```
 
@@ -48,6 +48,7 @@ git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/
 git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-devices
 git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-arty-boards
 git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
+git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting
 
 git rm -f --cached plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-templates
 git rm -f --cached plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace
@@ -58,6 +59,7 @@ git rm -f --cached plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/si
 git rm -f --cached plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-devices
 git rm -f --cached plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-arty-boards
 git rm -f --cached plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
+git rm -f --cached plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting
 
 rm -rf plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-templates
 rm -rf plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace
@@ -68,4 +70,6 @@ rm -rf plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_p
 rm -rf plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-devices
 rm -rf plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-arty-boards
 rm -rf plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
+rm -rf plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting
+
 ```
