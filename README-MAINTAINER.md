@@ -439,6 +439,8 @@ If necessary, update the text displayed in the Downloads page, it is in
 `org.eclipse.epp.package.embedcpp.feature/epp.website.xml` file, the
 `<description>` element.
 
+Update the version in **NewAndNoteworthy**, in the same file.
+
 Compare with `package.cpp.*`:
 
 ```
