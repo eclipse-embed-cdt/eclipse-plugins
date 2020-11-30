@@ -16,7 +16,7 @@
 <plugin>
 	<extension point="org.eclipse.ui.perspectives">
 		<perspective
-			class="org.eclipse.embedcdt.codered.ui.internal.codered.ui.perspectives.CodeRedPerspectiveFactory"
+			class="org.eclipse.embedcdt.internal.codered.ui.perspectives.CodeRedPerspectiveFactory"
 			icon="icons/cr.gif"
 			id="org.eclipse.embedcdt.internal.codered.ui.perspectives.CodeRedPerspective"
 			name="%perspectives.codered">
