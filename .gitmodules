@@ -34,3 +34,7 @@
 	path = plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
 	url = https://github.com/micro-os-plus/sifive-hifive1-board-xpack.git
 	branch = xpack
+[submodule "plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting"]
+	path = plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting
+	url = https://github.com/micro-os-plus/semihosting-xpack.git
+	branch = xpack

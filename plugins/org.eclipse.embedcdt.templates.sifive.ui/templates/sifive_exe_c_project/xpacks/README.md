@@ -12,10 +12,11 @@ git submodule add -b xpack https://github.com/micro-os-plus/diag-trace-xpack.git
 git submodule add -b xpack https://github.com/micro-os-plus/startup-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup
 git submodule add -b xpack https://github.com/micro-os-plus/c-libs-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-c-libs
 git submodule add -b xpack https://github.com/micro-os-plus/cpp-libs-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-cpp-libs
-git submodule add -b xpack  https://github.com/micro-os-plus/riscv-arch-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-riscv-arch
+git submodule add -b xpack https://github.com/micro-os-plus/riscv-arch-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-riscv-arch
 git submodule add -b xpack https://github.com/micro-os-plus/sifive-devices-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-devices
 git submodule add -b xpack https://github.com/micro-os-plus/sifive-arty-boards-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-arty-boards
 git submodule add -b xpack https://github.com/micro-os-plus/sifive-hifive1-board-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
+git submodule add -b xpack https://github.com/micro-os-plus/semihosting-xpack.git plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-semihosting
 git submodule init
 ```
 
@@ -38,6 +39,16 @@ $ git submodule foreach 'git pull'
 To remove the submodules
 
 ```bash
+git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-templates
+git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace
+git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup
+git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-c-libs
+git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-cpp-libs
+git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-riscv-arch
+git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-devices
+git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-arty-boards
+git submodule deinit plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
+
 git rm -f --cached plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/sifive-templates
 git rm -f --cached plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace
 git rm -f --cached plugins/org.eclipse.embedcdt.templates.sifive.ui/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup
