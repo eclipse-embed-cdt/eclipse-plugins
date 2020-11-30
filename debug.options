@@ -32,10 +32,10 @@ org.eclipse.embedcdt.managedbuild.packs.ui/debug=true
 org.eclipse.embedcdt.packs.core/debug=true
 org.eclipse.embedcdt.packs.ui/debug=true
 
-org.eclipse.embedcdt.templates.ad/debug=true
+org.eclipse.embedcdt.templates.ad.ui/debug=true
 org.eclipse.embedcdt.templates.core/debug=true
-org.eclipse.embedcdt.templates.cortexm/debug=true
-org.eclipse.embedcdt.templates.freescale/debug=true
-org.eclipse.embedcdt.templates.freescale.pe/debug=true
-org.eclipse.embedcdt.templates.sifive/debug=true
-org.eclipse.embedcdt.templates.stm/debug=true
+org.eclipse.embedcdt.templates.cortexm.ui/debug=true
+org.eclipse.embedcdt.templates.freescale.ui/debug=true
+org.eclipse.embedcdt.templates.freescale.pe.ui/debug=true
+org.eclipse.embedcdt.templates.sifive.ui/debug=true
+org.eclipse.embedcdt.templates.stm.ui/debug=true
