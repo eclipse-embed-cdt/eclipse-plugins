@@ -13,12 +13,11 @@
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
  *******************************************************************************/
 
-package org.eclipse.embedcdt.packs.core.jobs;
+package org.eclipse.embedcdt.packs.ui.jobs;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.embedcdt.packs.core.Activator;
@@ -28,9 +27,10 @@ import org.eclipse.embedcdt.packs.core.data.cmsis.PdscParserFull;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.PackNode;
 import org.eclipse.embedcdt.packs.core.tree.Property;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.xml.sax.SAXParseException;
 
-public class ParsePdscRunnable implements ICoreRunnable {
+public class ParsePdscRunnable implements IRunnableWithProgress {
 
 	private static boolean fgRunning = false;
 

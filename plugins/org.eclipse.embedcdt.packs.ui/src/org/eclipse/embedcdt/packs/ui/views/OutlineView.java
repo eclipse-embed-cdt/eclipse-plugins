@@ -24,7 +24,6 @@ import java.net.URL;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.embedcdt.packs.core.data.DataManager;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
-import org.eclipse.embedcdt.packs.core.jobs.ParsePdscRunnable;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.PackNode;
@@ -32,6 +31,7 @@ import org.eclipse.embedcdt.packs.core.tree.Property;
 import org.eclipse.embedcdt.packs.core.tree.Type;
 import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.embedcdt.packs.ui.IconUtils;
+import org.eclipse.embedcdt.packs.ui.jobs.ParsePdscRunnable;
 import org.eclipse.embedcdt.ui.EclipseUiUtils;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -39,6 +39,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -488,7 +489,8 @@ public class OutlineView extends ViewPart {
 		// If the version node is installed, get outline
 		IProgressService progressService = PlatformUI.getWorkbench().getProgressService();
 		try {
-			progressService.busyCursorWhile(m-> new ParsePdscRunnable("Parse Outline", (PackNode) versionNode));
+			IRunnableWithProgress runnable = new ParsePdscRunnable("Parse Outline", (PackNode) versionNode);
+			progressService.busyCursorWhile(runnable);
 
 		} catch (InvocationTargetException e1) {
 			Activator.log(e1);
