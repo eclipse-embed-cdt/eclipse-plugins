@@ -57,13 +57,13 @@ The official download page is
 
 ## Prepare release
 
-### Prepare SimRel
+### Clone SimRel
 
 Use the CBI Aggregator installed from:
 
 - https://download.eclipse.org/cbi/updates/aggregator/ide/4.13
 
-Clone the SimRel Git project:
+At first use, clone the SimRel Git repo:
 
 ```
 git clone "ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build"
@@ -74,9 +74,9 @@ scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "org.eclipse.simrel.bu
 
 The deadline for SimRel changes is **Wed 5pm Ottawa time**.
 
-### Prepare EPP
+### Clone EPP
 
-Clone the EPP Git project:
+At first use, clone the EPP Git repo:
 
 ```
 git clone "ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git"
@@ -86,6 +86,7 @@ scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "epp/org.eclipse.epp.p
 ### EPP deadline
 
 The deadline for EPP changes is **Thu 9am Ottawa time**.
+
 ### Create a new milestone
 
 If not already done, create a new milestone.
@@ -268,6 +269,10 @@ With Sourcetree:
 - open `org.eclipse.simrel.build.git`
 - pull new commits
 
+Go to the release candidate folder
+
+- [https://download.eclipse.org/embed-cdt/release-candidates/](https://download.eclipse.org/embed-cdt/release-candidates/)
+
 In Eclipse:
 
 - import existing project `org.eclipse.simrel.build`
@@ -314,7 +319,11 @@ Beta testers can install the release candidate from:
 
 ## Add Git tag
 
-Add a tag like `v6.0.0-202011301954` (with `v`).
+Go to the release candidate folder
+
+- [https://download.eclipse.org/embed-cdt/release-candidates/](https://download.eclipse.org/embed-cdt/release-candidates/)
+
+Copy the tag and enter it in Git, like `v6.0.0-202011301954` (with `v`).
 
 ## Publish the final release
 
@@ -453,8 +462,12 @@ Pull new commits.
 - edit `org.eclipse.epp.package.embedcpp.product/epp.product`
 - update the list of features
 
+### package.embedcpp
+
 To change the default preferences, edit the
 `org.eclipse.epp.package.embedcpp/plugin_customization.ini`
+
+### package.embedcpp.feature
 
 If necessary, update the text displayed in the Downloads page, it is in
 `org.eclipse.epp.package.embedcpp.feature/epp.website.xml` file, the
@@ -462,7 +475,9 @@ If necessary, update the text displayed in the Downloads page, it is in
 
 Update the version in **NewAndNoteworthy**, in the same file.
 
-Compare with `package.cpp.*`:
+### Compare to package.cpp
+
+Compare the three packages with the similar ones from CPP:
 
 ```
 cd org.eclipse.epp.packages.git
@@ -471,6 +486,8 @@ diff packages/org.eclipse.epp.package.cpp packages/org.eclipse.epp.package.embed
 diff packages/org.eclipse.epp.package.cpp.feature packages/org.eclipse.epp.package.embedcpp.feature
 diff packages/org.eclipse.epp.package.cpp.product packages/org.eclipse.epp.package.embedcpp.product
 ```
+
+### Commit & push
 
 Commit and push to Gerrit:
 
