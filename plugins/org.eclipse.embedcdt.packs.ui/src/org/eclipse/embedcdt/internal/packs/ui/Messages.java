@@ -19,6 +19,8 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
+	private static final String MESSAGES = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
+
 	public static String NewSiteDialog_label_title_edit;
 	public static String NewSiteDialog_label_title_new;
 
@@ -43,7 +45,7 @@ public class Messages extends NLS {
 
 	static {
 		// Initialise resource bundle.
-		NLS.initializeMessages(Messages.class.getName(), Messages.class);
+		NLS.initializeMessages(MESSAGES, Messages.class);
 	}
 
 	private Messages() {

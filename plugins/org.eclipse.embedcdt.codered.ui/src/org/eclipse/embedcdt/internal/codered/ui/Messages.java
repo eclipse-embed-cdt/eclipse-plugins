@@ -18,11 +18,13 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
+	private static final String MESSAGES = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
+
 	// public static String MyMessage_text;
 
 	static {
 		// Initialise resource bundle.
-		NLS.initializeMessages(Messages.class.getName(), Messages.class);
+		NLS.initializeMessages(MESSAGES, Messages.class);
 	}
 
 	private Messages() {
