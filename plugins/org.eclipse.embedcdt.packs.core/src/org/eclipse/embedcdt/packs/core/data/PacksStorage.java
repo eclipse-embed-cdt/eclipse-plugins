@@ -100,7 +100,7 @@ public class PacksStorage {
 	// to store packages
 	public static String getFolderPathString() throws IOException {
 
-		String folderPath = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, Preferences.PACKS_FOLDER_PATH, null, null);
+		String folderPath = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, Preferences.PACKS_CMSIS_FOLDER_PATH, null, null);
 		if (folderPath == null) {
 			throw new IOException("Missing folder path.");
 		}

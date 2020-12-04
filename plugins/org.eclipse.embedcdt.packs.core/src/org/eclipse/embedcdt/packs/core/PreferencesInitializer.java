@@ -95,11 +95,11 @@ public class PreferencesInitializer extends AbstractPreferenceInitializer {
 
 		assert (packagesPath != null);
 		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID);
-		node.put(Preferences.PACKS_FOLDER_PATH, packagesPath.toOSString());
-		node.put(Preferences.PACKS_MACRO_NAME, Preferences.DEFAULT_MACRO_NAME);
+		node.put(Preferences.PACKS_CMSIS_FOLDER_PATH, packagesPath.toOSString());
+		node.put(Preferences.PACKS_CMSIS_MACRO_NAME, Preferences.DEFAULT_CMSIS_MACRO_NAME);
 
 		// Read back the actual value.
-		String folderPath = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, Preferences.PACKS_FOLDER_PATH, packagesPath.toOSString(), null);
+		String folderPath = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, Preferences.PACKS_CMSIS_FOLDER_PATH, packagesPath.toOSString(), null);
 
 		File packagesFolder = new File(folderPath);
 		if (!packagesFolder.exists()) {

@@ -55,7 +55,7 @@ public class CopyExampleDialog extends Dialog {
 		// m_exampleName = exampleNode.getProperty(Property.EXAMPLE_NAME,
 		// exampleNode.getName());
 
-		String folderPath = Activator.getInstance().getCorePreferenceStore().getString(Preferences.PACKS_FOLDER_PATH);
+		String folderPath = Activator.getInstance().getCorePreferenceStore().getString(Preferences.PACKS_CMSIS_FOLDER_PATH);
 		// m_inputFolder = folderPath + "/../Examples/" + m_exampleName;
 		fInputFolder = new Path(folderPath).append("../Examples/").toOSString();
 

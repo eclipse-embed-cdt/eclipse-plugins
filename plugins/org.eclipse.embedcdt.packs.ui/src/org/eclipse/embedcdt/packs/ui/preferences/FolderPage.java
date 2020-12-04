@@ -39,7 +39,7 @@ public class FolderPage extends FieldEditorPreferencePage implements IWorkbenchP
 	public FolderPage() {
 		super(GRID);
 		setPreferenceStore(Activator.getInstance().getCorePreferenceStore());
-		setDescription("The location where packages are stored.");
+		setDescription("The location where packages are stored locally.");
 	}
 
 	/**
@@ -48,8 +48,8 @@ public class FolderPage extends FieldEditorPreferencePage implements IWorkbenchP
 	 * editor knows how to save and restore itself.
 	 */
 	public void createFieldEditors() {
-		addField(new DirectoryFieldEditor(Preferences.PACKS_FOLDER_PATH, "&Packages folder:", getFieldEditorParent()));
-		addField(new StringFieldEditor(Preferences.PACKS_MACRO_NAME, "&Macro name:", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(Preferences.PACKS_CMSIS_FOLDER_PATH, "&CMSIS Packs folder:", getFieldEditorParent()));
+		addField(new StringFieldEditor(Preferences.PACKS_CMSIS_MACRO_NAME, "&Macro name:", getFieldEditorParent()));
 	}
 
 	public void init(IWorkbench workbench) {

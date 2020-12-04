@@ -17,9 +17,9 @@ package org.eclipse.embedcdt.packs.core;
 
 public class Preferences {
 
-	public static final String PACKS_FOLDER_PATH = "packs.folder.path";
-	public static final String PACKS_MACRO_NAME = "packs.macro.name";
+	public static final String PACKS_CMSIS_FOLDER_PATH = "packs.cmsis.folder.path";
+	public static final String PACKS_CMSIS_MACRO_NAME = "packs.cmsis.macro.name";
 
-	public static final String DEFAULT_MACRO_NAME = "packs_path";
+	public static final String DEFAULT_CMSIS_MACRO_NAME = "cmsis_packs_path";
 
 }
