@@ -172,7 +172,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 	// ------------------------------------------------------------------------
 
-	private static final String CUSTOM_TOOLCHAINS_EXTENSION_POINT_ID = "org.eclipse.embedcdt.managedbuild.cross.arm.toolchains";
+	private static final String CUSTOM_TOOLCHAINS_EXTENSION_POINT_ID = "org.eclipse.embedcdt.managedbuild.cross.arm.core.toolchains";
 
 	// Initialise the list of known toolchains
 	static {

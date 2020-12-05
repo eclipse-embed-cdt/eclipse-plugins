@@ -19,9 +19,9 @@
 <plugin>
 	<extension point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
 		<wizardPage
-			ID="org.eclipse.embedcdt.managedbuild.cross.riscv.setCrossCommandWizardPage"
+			ID="org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.setCrossCommandWizardPage"
 			operationClass="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.SetCrossCommandWizardOperation"
-			pageClass="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.SetCrossCommandWizardPage">
+			pageClass="org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.SetCrossCommandWizardPage">
 			<toolchain
 				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.elf.debug">
 			</toolchain>
@@ -59,22 +59,22 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.riscv.preferencePage.workspaceToolchainsPaths"
+			class="org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
+			id="org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.preferencePage.workspaceToolchainsPaths"
 			name="%preferences.workspaceToolchainsPaths">
 		</page>
 		<page
 			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.preferences.GlobalToolchainsPathsPreferencesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.riscv.preferencePage.globalToolchainsPaths"
+			class="org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.preferences.GlobalToolchainsPathsPreferencesPage"
+			id="org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.preferencePage.globalToolchainsPaths"
 			name="%preferences.globalToolchainsPaths">
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			category="org.eclipse.embedcdt.ui.properties.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.riscv.ui.properties.ProjectToolchainsPathPropertiesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.riscv.properties.toolchainsPage"
+			class="org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.properties.ProjectToolchainsPathPropertiesPage"
+			id="org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.properties.toolchainsPage"
 			name="%properties.projectToolchainsPaths">
          <filter
                name="projectNature"

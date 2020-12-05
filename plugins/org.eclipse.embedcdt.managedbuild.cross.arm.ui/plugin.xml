@@ -18,9 +18,9 @@
 <plugin>
 	<extension point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
 		<wizardPage
-			ID="org.eclipse.embedcdt.managedbuild.cross.setCrossCommandWizardPage"
+			ID="org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.setCrossCommandWizardPage"
 			operationClass="org.eclipse.embedcdt.managedbuild.cross.arm.ui.SetCrossCommandWizardOperation"
-			pageClass="org.eclipse.embedcdt.managedbuild.cross.arm.ui.SetCrossCommandWizardPage">
+			pageClass="org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.SetCrossCommandWizardPage">
 			<toolchain toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug">
 			</toolchain>
 			<toolchain
@@ -54,22 +54,22 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			id="org.eclipse.embedcdt.managedbuild.cross.arm.preferencePage.workspaceToolchainsPaths"
-			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
+			id="org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.preferencePage.workspaceToolchainsPaths"
+			class="org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
 			name="%preferences.toolsPaths">
 		</page>
 		<page
 			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			id="org.eclipse.embedcdt.managedbuild.cross.arm.preferencePage.globalToolchainsPaths"
-			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences.GlobalToolchainsPathsPreferencesPage"
+			id="org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.preferencePage.globalToolchainsPaths"
+			class="org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.preferences.GlobalToolchainsPathsPreferencesPage"
 			name="%preferences.globalToolsPaths">
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			category="org.eclipse.embedcdt.ui.properties.mcu"
-			id="org.eclipse.embedcdt.managedbuild.cross.arm.properties.toolchainsPage"
-			class="org.eclipse.embedcdt.managedbuild.cross.arm.ui.properties.ProjectToolchainsPathPropertiesPage"
+			id="org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.properties.toolchainsPage"
+			class="org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.properties.ProjectToolchainsPathPropertiesPage"
 			name="%properties.projectToolsPaths">
          <filter
                name="projectNature"

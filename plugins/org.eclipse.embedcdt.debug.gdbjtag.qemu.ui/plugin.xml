@@ -19,7 +19,7 @@
 		<launchConfigurationTypeImage
 			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType"
 			icon="icons/obj16/c_app.gif"
-			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.launchConfigurationTypeImage" />
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.launchConfigurationTypeImage" />
 	</extension>
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -32,22 +32,22 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.preferences.WorkspaceMcuPage"
-			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.workspacePreferencePage"
+			class="org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.preferences.WorkspaceMcuPage"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.workspacePreferencePage"
 			name="%preferences.workspaceMcu">
 		</page>
 		<page
 			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.preferences.GlobalMcuPage"
-			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.globalPreferencePage"
+			class="org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.preferences.GlobalMcuPage"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.globalPreferencePage"
 			name="%preferences.globalMcu">
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			category="org.eclipse.embedcdt.ui.properties.mcu"
-			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.properties.ProjectMcuPage"
-			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.projectPropertiesPage"
+			class="org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.properties.ProjectMcuPage"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.projectPropertiesPage"
 			name="%properties.mcu">
 			<filter
 				name="projectNature"
@@ -57,7 +57,7 @@
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">
 					</instanceof>
-					<test forcePluginActivation="true" property="org.eclipse.embedcdt.managedbuild.cross.isGnuMcu">
+					<test forcePluginActivation="true" property="org.eclipse.embedcdt.managedbuild.cross.core.isGnuMcu">
 					</test>
 				</and>
 			</enabledWhen>

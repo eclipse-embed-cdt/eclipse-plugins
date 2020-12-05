@@ -199,7 +199,7 @@ public class DataUtils {
 		}
 	}
 
-	static final private String MARKER_ID = "org.eclipse.embedcdt.packs.marker";
+	static final private String MARKER_ID = "org.eclipse.embedcdt.packs.core.marker";
 
 	// Sample:
 	//

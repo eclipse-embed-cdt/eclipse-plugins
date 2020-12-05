@@ -29,6 +29,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.SetCrossCommandWizardPage;
 import org.eclipse.embedcdt.managedbuild.cross.arm.core.ToolchainDefinition;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 import org.eclipse.jface.operation.IRunnableWithProgress;

@@ -19,8 +19,8 @@ import org.eclipse.cdt.dsf.gdb.internal.ui.viewmodel.GdbViewModelAdapter;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.cdt.dsf.ui.viewmodel.IVMProvider;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationContext;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripherals.PeripheralsView;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.viewmodel.peripherals.PeripheralsVMProvider;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.render.peripherals.PeripheralsView;
 
 @SuppressWarnings("restriction")
 public class GnuMcuViewModelAdapter extends GdbViewModelAdapter {

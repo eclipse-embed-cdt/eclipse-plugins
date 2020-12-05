@@ -26,7 +26,7 @@ public class RestartCommandAction extends DebugCommandAction {
 	// ------------------------------------------------------------------------
 
 	public RestartCommandAction() {
-		setActionDefinitionId(Activator.PLUGIN_ID + ".commands.Restart");
+		setActionDefinitionId("org.eclipse.embedcdt.debug.gdbjtag.restart.ui.commands.Restart");
 	}
 
 	@Override

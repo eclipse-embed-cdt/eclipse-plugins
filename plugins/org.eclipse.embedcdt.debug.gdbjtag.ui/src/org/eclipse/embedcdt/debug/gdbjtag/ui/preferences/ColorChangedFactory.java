@@ -16,7 +16,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.ui.preferences;
 
 import org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.PeripheralsColorFactory;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralColumnLabelProvider;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.render.peripheral.PeripheralColumnLabelProvider;
 
 public class ColorChangedFactory extends PeripheralsColorFactory {
 

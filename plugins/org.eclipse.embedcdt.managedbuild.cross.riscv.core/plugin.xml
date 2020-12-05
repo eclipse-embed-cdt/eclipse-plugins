@@ -18,7 +18,7 @@
 -->
 <plugin>
 	<extension-point
-		id="org.eclipse.embedcdt.managedbuild.cross.riscv.toolchains"
+		id="org.eclipse.embedcdt.managedbuild.cross.riscv.core.toolchains"
 		name="Extra toolchains"
 		schema="schema/toolchains.exsd" />
 	<extension point="org.eclipse.cdt.managedbuilder.core.buildDefinitions">
@@ -587,7 +587,7 @@
 			configurationMacroSupplier="org.eclipse.embedcdt.managedbuild.cross.riscv.core.ConfigurationBuildMacroSupplier"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.base"
 			isAbstract="false"
-			languageSettingsProviders="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser;org.eclipse.embedcdt.managedbuild.cross.riscv.GCCBuiltinSpecsDetector"
+			languageSettingsProviders="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser;org.eclipse.embedcdt.managedbuild.cross.riscv.core.GCCBuiltinSpecsDetector"
 			name="%toolchain.name"
 			osList="all"
 			targetTool="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.linker;ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.linker;cdt.managedbuild.tool.gnu.archiver">
@@ -2477,7 +2477,7 @@
 	<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 		<provider
 			class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector"
-			id="org.eclipse.embedcdt.managedbuild.cross.riscv.GCCBuiltinSpecsDetector"
+			id="org.eclipse.embedcdt.managedbuild.cross.riscv.core.GCCBuiltinSpecsDetector"
 			name="%GCCBuiltinSpecsDetector.name"
 			parameter="${COMMAND} ${FLAGS} ${cross_toolchain_flags} -E -P -v -dD &quot;${INPUTS}&quot;"
 			prefer-non-shared="true">
@@ -2507,7 +2507,7 @@
 		</propertyTester>
 	</extension>
 
-	<extension point="org.eclipse.embedcdt.managedbuild.cross.riscv.toolchains">
+	<extension point="org.eclipse.embedcdt.managedbuild.cross.riscv.core.toolchains">
 	   <!-- id 2029746065 -->
 		<toolchain
 			name="Custom"

@@ -34,72 +34,72 @@
 	</extension>
 	<extension point="org.eclipse.ui.perspectives">
 		<perspective
-			class="org.eclipse.embedcdt.packs.ui.perspectives.PacksPerspective"
+			class="org.eclipse.embedcdt.internal.packs.ui.perspectives.PacksPerspective"
 			icon="icons/packages.png"
-			id="org.eclipse.embedcdt.packs.ui.perspectives.PacksPerspective"
+			id="org.eclipse.embedcdt.internal.packs.ui.perspectives.PacksPerspective"
 			name="%perspectives.packs">
 		</perspective>
 	</extension>
 	<extension point="org.eclipse.ui.views">
 		<category
-			id="org.eclipse.embedcdt.packs"
+			id="org.eclipse.embedcdt.packs.ui"
 			name="%views.packs.category">
 		</category>
 		<view
 			allowMultiple="false"
-			category="org.eclipse.embedcdt.packs"
-			class="org.eclipse.embedcdt.packs.ui.views.DevicesView"
+			category="org.eclipse.embedcdt.packs.ui"
+			class="org.eclipse.embedcdt.internal.packs.ui.views.DevicesView"
 			icon="icons/hardware_chip.png"
-			id="org.eclipse.embedcdt.packs.ui.views.DevicesView"
+			id="org.eclipse.embedcdt.internal.packs.ui.views.DevicesView"
 			name="%views.packs.devices">
 		</view>
 		<view
 			allowMultiple="false"
-			category="org.eclipse.embedcdt.packs"
-			class="org.eclipse.embedcdt.packs.ui.views.BoardsView"
+			category="org.eclipse.embedcdt.packs.ui"
+			class="org.eclipse.embedcdt.internal.packs.ui.views.BoardsView"
 			icon="icons/board.png"
-			id="org.eclipse.embedcdt.packs.ui.views.BoardsView"
+			id="org.eclipse.embedcdt.internal.packs.ui.views.BoardsView"
 			name="%viwes.packs.boards">
 		</view>
 		<view
 			allowMultiple="false"
-			category="org.eclipse.embedcdt.packs"
-			class="org.eclipse.embedcdt.packs.ui.views.KeywordsView"
+			category="org.eclipse.embedcdt.packs.ui"
+			class="org.eclipse.embedcdt.internal.packs.ui.views.KeywordsView"
 			icon="icons/info_obj.png"
-			id="org.eclipse.embedcdt.packs.ui.views.KeywordsView"
+			id="org.eclipse.embedcdt.internal.packs.ui.views.KeywordsView"
 			name="%viwes.packs.keywords">
 		</view>
 		<view
 			allowMultiple="false"
-			category="org.eclipse.embedcdt.packs"
-			class="org.eclipse.embedcdt.packs.ui.views.PacksView"
+			category="org.eclipse.embedcdt.packs.ui"
+			class="org.eclipse.embedcdt.internal.packs.ui.views.PacksView"
 			icon="icons/packages.png"
-			id="org.eclipse.embedcdt.packs.ui.views.PackagesView"
+			id="org.eclipse.embedcdt.internal.packs.ui.views.PacksView"
 			name="%viwes.packs.packages">
 		</view>
 		<view
 			allowMultiple="false"
-			category="org.eclipse.embedcdt.packs"
-			class="org.eclipse.embedcdt.packs.ui.views.OutlineView"
+			category="org.eclipse.embedcdt.packs.ui"
+			class="org.eclipse.embedcdt.internal.packs.ui.views.OutlineView"
 			icon="icons/outline_co.png"
-			id="org.eclipse.embedcdt.packs.ui.views.OutlineView"
+			id="org.eclipse.embedcdt.internal.packs.ui.views.OutlineView"
 			name="%viwes.packs.outline"
 			restorable="true">
 		</view>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<category
-			id="org.eclipse.embedcdt.packs.commands.category"
+			id="org.eclipse.embedcdt.packs.ui.commands.category"
 			name="%commands.packs.category">
 		</category>
 		<command
-			categoryId="org.eclipse.embedcdt.packs.commands.category"
-			id="org.eclipse.embedcdt.packs.commands.updateCommand"
+			categoryId="org.eclipse.embedcdt.packs.ui.commands.category"
+			id="org.eclipse.embedcdt.packs.ui.commands.updateCommand"
 			name="%commands.packs.refresh">
 		</command>
 		<command
-			categoryId="org.eclipse.embedcdt.packs.commands.category"
-			id="org.eclipse.embedcdt.packs.commands.showPerspectiveCommand"
+			categoryId="org.eclipse.embedcdt.packs.ui.commands.category"
+			id="org.eclipse.embedcdt.packs.ui.commands.showPerspectiveCommand"
 			name="%commands.packs.showPerspective">
 		</command>
 	</extension>
@@ -109,7 +109,7 @@
 			locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
 			<toolbar id="org.eclipse.embedcdt.packs.toolbar.main.showPerspective">
 				<command
-					commandId="org.eclipse.embedcdt.packs.commands.showPerspectiveCommand"
+					commandId="org.eclipse.embedcdt.packs.ui.commands.showPerspectiveCommand"
 					icon="icons/packages.png"
 					style="push"
 					tooltip="%menus.toolbar.showPerspective.tooltip">
@@ -120,11 +120,11 @@
 	<extension point="org.eclipse.ui.handlers">
 		<handler
 			class="org.eclipse.embedcdt.packs.ui.handlers.UpdatePacksHandler"
-			commandId="org.eclipse.embedcdt.packs.commands.updateCommand">
+			commandId="org.eclipse.embedcdt.packs.ui.commands.updateCommand">
 		</handler>
 		<handler
 			class="org.eclipse.embedcdt.packs.ui.handlers.ShowPerspectiveHandler"
-			commandId="org.eclipse.embedcdt.packs.commands.showPerspectiveCommand">
+			commandId="org.eclipse.embedcdt.packs.ui.commands.showPerspectiveCommand">
 		</handler>
 	</extension>
 

@@ -20,22 +20,22 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.ui.preferences.BuildToolsWorkspacePathsPreferencesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.ui.preferencePage.workspaceToolsPaths"
+			class="org.eclipse.embedcdt.internal.managedbuild.cross.ui.preferences.BuildToolsWorkspacePathsPreferencesPage"
+			id="org.eclipse.embedcdt.internal.managedbuild.cross.ui.preferencePage.workspaceToolsPaths"
 			name="%preferences.workspaceBuildToolsPaths">
 		</page>
 		<page
 			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.ui.preferences.BuildToolsGlobalPathsPreferencesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.ui.preferencePage.globalToolsPaths"
+			class="org.eclipse.embedcdt.internal.managedbuild.cross.ui.preferences.BuildToolsGlobalPathsPreferencesPage"
+			id="org.eclipse.embedcdt.internal.managedbuild.cross.ui.preferencePage.globalToolsPaths"
 			name="%preferences.globalBuildToolsPaths">
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			category="org.eclipse.embedcdt.ui.properties.mcu"
-			class="org.eclipse.embedcdt.managedbuild.cross.ui.properties.BuildToolsProjectPathPropertiesPage"
-			id="org.eclipse.embedcdt.managedbuild.cross.ui.properties.toolsPage"
+			class="org.eclipse.embedcdt.internal.managedbuild.cross.ui.properties.BuildToolsProjectPathPropertiesPage"
+			id="org.eclipse.embedcdt.internal.managedbuild.cross.ui.properties.toolsPage"
 			name="%properties.projectBuildToolsPaths">
 			<filter
 				name="projectNature"
@@ -45,7 +45,7 @@
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">
 					</instanceof>
-					<test forcePluginActivation="true" property="org.eclipse.embedcdt.managedbuild.cross.isGnuMcu">
+					<test forcePluginActivation="true" property="org.eclipse.embedcdt.managedbuild.cross.core.isGnuMcu">
 					</test>
 				</and>
 			</enabledWhen>

@@ -19,27 +19,27 @@
 		<launchConfigurationTypeImage
 			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationType"
 			icon="icons/obj16/c_app.gif"
-			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.launchConfigurationTypeImage" />
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.launchConfigurationTypeImage" />
 	</extension>
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup
 			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.TabGroupLaunchConfiguration"
-			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.launchConfigurationTabGroup"
+			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.launchConfigurationTabGroup"
 			type="ilg.gnumcueclipse.debug.gdbjtag.jlink.launchConfigurationType" />
 	</extension>
 
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.preferences.WorkspaceMcuPage"
-			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.workspacePreferencePage"
+			class="org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.ui.preferences.WorkspaceMcuPage"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.ui.workspacePreferencePage"
 			name="%preferences.workspaceMcu">
 		</page>
 		<page
 			category="org.eclipse.embedcdt.ui.preferences.mcu"
-			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.preferences.GlobalMcuPage"
-			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.globalPreferencePage"
+			class="org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.ui.preferences.GlobalMcuPage"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.ui.globalPreferencePage"
 			name="%preferences.globalMcu">
 		</page>
 	</extension>
@@ -47,8 +47,8 @@
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			category="org.eclipse.embedcdt.ui.properties.mcu"
-			class="org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.properties.ProjectMcuPage"
-			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.projectPropertiesPage"
+			class="org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.ui.properties.ProjectMcuPage"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.ui.projectPropertiesPage"
 			name="%properties.mcu">
 			<filter
 				name="projectNature"
@@ -58,7 +58,7 @@
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">
 					</instanceof>
-					<test forcePluginActivation="true" property="org.eclipse.embedcdt.managedbuild.cross.isGnuMcu">
+					<test forcePluginActivation="true" property="org.eclipse.embedcdt.managedbuild.cross.core.isGnuMcu">
 					</test>
 				</and>
 			</enabledWhen>

@@ -240,5 +240,12 @@ public class GnuMcuLaunch extends GdbLaunch {
 		return newProcess;
 	}
 
+	protected String getDefaultGDBPath()
+	{
+		// Currently returns 'gdb'.
+		String path = super.getDefaultGDBPath();
+		return path;
+	}
+	
 	// ------------------------------------------------------------------------
 }

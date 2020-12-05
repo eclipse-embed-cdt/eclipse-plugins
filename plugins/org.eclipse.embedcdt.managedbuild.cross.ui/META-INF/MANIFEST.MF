@@ -25,6 +25,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.managedbuild.cross.ui.preferences,
- org.eclipse.embedcdt.managedbuild.cross.ui.properties
+Export-Package: org.eclipse.embedcdt.internal.managedbuild.cross.ui.preferences,
+ org.eclipse.embedcdt.internal.managedbuild.cross.ui.properties
 Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.cross.ui

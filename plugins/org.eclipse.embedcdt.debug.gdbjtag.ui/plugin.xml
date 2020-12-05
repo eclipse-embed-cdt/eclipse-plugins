@@ -19,9 +19,9 @@
 		<view
 			allowMultiple="false"
 			category="org.eclipse.debug.ui"
-			class="org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripherals.PeripheralsView"
+			class="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.render.peripherals.PeripheralsView"
 			icon="icons/peripheral.png"
-			id="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.views.PeripheralsView"
 			name="%views.peripheral.name">
 		</view>
 	</extension>
@@ -29,14 +29,14 @@
 	<extension point="org.eclipse.ui.perspectiveExtensions">
 		<perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
 			<view
-				id="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView"
+				id="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.views.PeripheralsView"
 				minimized="false"
 				relationship="stack"
 				relative="org.eclipse.debug.ui.VariableView"
 				visible="true">
 			</view>
 			<viewShortcut
-				id="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView">
+				id="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.views.PeripheralsView">
 			</viewShortcut>
 		</perspectiveExtension>
 	</extension>
@@ -44,7 +44,7 @@
 	<extension point="org.eclipse.debug.ui.contextViewBindings">
 		<contextViewBinding
 			contextId="org.eclipse.cdt.debug.ui.debugging"
-			viewId="org.eclipse.embedcdt.debug.gdbjtag.ui.views.PeripheralsView"
+			viewId="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.views.PeripheralsView"
 			autoOpen="true"
 			autoClose="true">
 		</contextViewBinding>
@@ -75,13 +75,13 @@
 	<extension point="org.eclipse.debug.ui.memoryRenderings">
 		<renderingType
 			class="org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralRenderingDelegate"
-			id="org.eclipse.embedcdt.debug.gdbjtag.memoryRendering"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.memoryRendering"
 			name="Peripheral">
 		</renderingType>
 		<renderingBindings
-			defaultIds="org.eclipse.embedcdt.debug.gdbjtag.memoryRendering"
-			primaryId="org.eclipse.embedcdt.debug.gdbjtag.memoryRendering"
-			renderingIds="org.eclipse.embedcdt.debug.gdbjtag.memoryRendering">
+			defaultIds="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.memoryRendering"
+			primaryId="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.memoryRendering"
+			renderingIds="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.memoryRendering">
 			<!-- org.eclipse.debug.ui.rendering.raw_memory not yet functional -->
 			<enablement>
 				<or>
@@ -94,16 +94,16 @@
 	</extension>
 	<extension point="org.eclipse.ui.themes">
 		<themeElementCategory
-			id="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			id="org.eclipse.embedcdt.debug.gdbjtag.ui.peripheral.colors"
 			label="Peripherals views">
 			<description>
 				Colors used in the peripherals views.
 			</description>
 		</themeElementCategory>
 		<colorDefinition
-			categoryId="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.ui.peripheral.colors"
 			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.ColorReadOnlyFactory"
-			id="org.eclipse.embedcdt.debug.gdbjtag.peripherals.color.readonly"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.peripherals.color.readonly"
 			isEditable="true"
 			label="Read only background">
 			<description>
@@ -111,9 +111,9 @@
 			</description>
 		</colorDefinition>
 		<colorDefinition
-			categoryId="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.ui.peripheral.colors"
 			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.ColorWriteOnlyFactory"
-			id="org.eclipse.embedcdt.debug.gdbjtag.peripherals.color.writeonly"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.peripherals.color.writeonly"
 			isEditable="true"
 			label="Write only background">
 			<description>
@@ -121,9 +121,9 @@
 			</description>
 		</colorDefinition>
 		<colorDefinition
-			categoryId="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.ui.peripheral.colors"
 			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.ColorChangedFactory"
-			id="org.eclipse.embedcdt.debug.gdbjtag.peripherals.color.changed"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.peripherals.color.changed"
 			isEditable="true"
 			label="Changed background">
 			<description>
@@ -131,9 +131,9 @@
 			</description>
 		</colorDefinition>
 		<colorDefinition
-			categoryId="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.ui.peripheral.colors"
 			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.ColorChangedLightFactory"
-			id="org.eclipse.embedcdt.debug.gdbjtag.peripherals.color.changed.light"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.peripherals.color.changed.light"
 			isEditable="true"
 			label="Changed background (light)">
 			<description>
@@ -142,9 +142,9 @@
 			</description>
 		</colorDefinition>
 		<colorDefinition
-			categoryId="org.eclipse.embedcdt.debug.gdbjtag.peripheral.colors"
+			categoryId="org.eclipse.embedcdt.debug.gdbjtag.ui.peripheral.colors"
 			colorFactory="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.ColorChangedMediumFactory"
-			id="org.eclipse.embedcdt.debug.gdbjtag.peripherals.color.changed.medium"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.peripherals.color.changed.medium"
 			isEditable="true"
 			label="Changed background (medium)">
 			<description>
@@ -156,8 +156,8 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="org.eclipse.debug.ui.DebugPreferencePage"
-			class="org.eclipse.embedcdt.debug.gdbjtag.ui.preferences.PeripheralsPage"
-			id="org.eclipse.embedcdt.debug.gdbjtag.jlink.preferencePage.peripherals"
+			class="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.preferences.PeripheralsPage"
+			id="org.eclipse.embedcdt.internal.debug.gdbjtag.ui.preferencePage.peripheralss"
 			name="%preferences.peripherals">
 		</page>
 	</extension>

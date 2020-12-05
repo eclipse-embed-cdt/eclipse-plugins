@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.embedcdt.managedbuild.cross.arm" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.embedcdt.managedbuild.cross.arm.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.embedcdt.managedbuild.cross.arm" id="org.eclipse.embedcdt.managedbuild.cross.arm.toolchains" name="Toolchains Definitions"/>
+         <meta.schema plugin="org.eclipse.embedcdt.managedbuild.cross.arm.core" id="org.eclipse.embedcdt.managedbuild.cross.arm.core.toolchains" name="Toolchains Definitions"/>
       </appinfo>
       <documentation>
          This extension point provides the ability to add custom GNU MCU toolchains.

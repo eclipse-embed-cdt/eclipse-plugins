@@ -1358,8 +1358,8 @@
 	<extension point="org.eclipse.core.expressions.propertyTesters">
 		<propertyTester
 			class="org.eclipse.embedcdt.managedbuild.cross.core.GnuMcuPropertyTester"
-			id="org.eclipse.embedcdt.managedbuild.cross.propertyTester"
-			namespace="org.eclipse.embedcdt.managedbuild.cross"
+			id="org.eclipse.embedcdt.managedbuild.cross.core.propertyTester"
+			namespace="org.eclipse.embedcdt.managedbuild.cross.core"
 			properties="isGnuMcu"
 			type="java.lang.Object">
 		</propertyTester>

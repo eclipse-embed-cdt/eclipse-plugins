@@ -20,9 +20,9 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.managedbuild.cross.riscv.ui,
- org.eclipse.embedcdt.managedbuild.cross.riscv.ui.preferences,
- org.eclipse.embedcdt.managedbuild.cross.riscv.ui.properties
+Export-Package: org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.properties,
+ org.eclipse.embedcdt.managedbuild.cross.riscv.ui,
+ org.eclipse.embedcdt.managedbuild.cross.riscv.ui.preferences
 Bundle-Activator: org.eclipse.embedcdt.managedbuild.cross.riscv.ui.Activator
 Import-Package: org.eclipse.embedcdt.managedbuild.cross.arm.core.preferences
 Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.cross.riscv.ui

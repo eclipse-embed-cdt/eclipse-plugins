@@ -17,7 +17,7 @@ package org.eclipse.embedcdt.packs.ui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.embedcdt.packs.ui.perspectives.PacksPerspective;
+import org.eclipse.embedcdt.internal.packs.ui.perspectives.PacksPerspective;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.PlatformUI;
 

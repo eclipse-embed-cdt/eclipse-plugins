@@ -18,6 +18,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.ui.memory.IMemoryRendering;
 import org.eclipse.debug.ui.memory.IMemoryRenderingTypeDelegate;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.preferences.PeripheralRendering;
 
 public class PeripheralRenderingDelegate implements IMemoryRenderingTypeDelegate {
 

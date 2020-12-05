@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.embedcdt.managedbuild.cross.riscv" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.embedcdt.managedbuild.cross.riscv.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.embedcdt.managedbuild.cross.riscv" id="org.eclipse.embedcdt.managedbuild.cross.riscv.toolchains" name="Toolchains Definitions"/>
+         <meta.schema plugin="org.eclipse.embedcdt.managedbuild.cross.riscv.core" id="org.eclipse.embedcdt.managedbuild.cross.riscv.core.toolchains" name="Toolchains Definitions"/>
       </appinfo>
       <documentation>
          This extension point provides the ability to add custom GNU RISC-V toolchains.
@@ -109,7 +109,7 @@
       </appinfo>
       <documentation>
          &lt;extension
-      point=&quot;org.eclipse.embedcdt.managedbuild.cross.riscv.toolchains&quot;&gt;
+      point=&quot;org.eclipse.embedcdt.managedbuild.cross.riscv.core.toolchains&quot;&gt;
       &lt;toolchain name=&quot;Custom&quot; prefix=&quot;riscv64-unknown-linux-gnu-&quot; /&gt;
    &lt;/extension&gt;
       </documentation>

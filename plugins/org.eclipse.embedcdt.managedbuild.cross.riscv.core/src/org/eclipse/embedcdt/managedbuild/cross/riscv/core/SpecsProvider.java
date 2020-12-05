@@ -21,7 +21,7 @@ public class SpecsProvider {
 
 	// ------------------------------------------------------------------------
 
-	private static String PROVIDER_ID = "org.eclipse.embedcdt.managedbuild.cross.riscv.GCCBuiltinSpecsDetector";
+	private static String PROVIDER_ID = "org.eclipse.embedcdt.managedbuild.cross.riscv.core.GCCBuiltinSpecsDetector";
 
 	// ------------------------------------------------------------------------
 

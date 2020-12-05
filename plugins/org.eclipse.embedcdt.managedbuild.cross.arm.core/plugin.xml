@@ -16,7 +16,7 @@
 -->
 <plugin>
 	<extension-point
-		id="org.eclipse.embedcdt.managedbuild.cross.arm.toolchains"
+		id="org.eclipse.embedcdt.managedbuild.cross.arm.core.toolchains"
 		name="Extra toolchains"
 		schema="schema/toolchains.exsd" />
 	<extension point="org.eclipse.cdt.managedbuilder.core.buildDefinitions">
@@ -1672,7 +1672,7 @@
 			configurationMacroSupplier="org.eclipse.embedcdt.managedbuild.cross.arm.core.ConfigurationBuildMacroSupplier"
 			id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
 			isAbstract="false"
-			languageSettingsProviders="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser;org.eclipse.embedcdt.managedbuild.cross.GCCBuiltinSpecsDetector"
+			languageSettingsProviders="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser;org.eclipse.embedcdt.managedbuild.cross.arm.core.GCCBuiltinSpecsDetector"
 			name="%toolchain.name"
 			osList="all"
 			targetTool="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker;ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker;cdt.managedbuild.tool.gnu.archiver">
@@ -3577,7 +3577,7 @@
 	<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 		<provider
 			class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector"
-			id="org.eclipse.embedcdt.managedbuild.cross.GCCBuiltinSpecsDetector"
+			id="org.eclipse.embedcdt.managedbuild.cross.arm.core.GCCBuiltinSpecsDetector"
 			name="%GCCBuiltinSpecsDetector.name"
 			parameter="${COMMAND} ${FLAGS} ${cross_toolchain_flags} -E -P -v -dD &quot;${INPUTS}&quot;"
 			prefer-non-shared="true">
@@ -3606,7 +3606,7 @@
 			type="java.lang.Object">
 		</propertyTester>
 	</extension>
-	<extension point="org.eclipse.embedcdt.managedbuild.cross.arm.toolchains">
+	<extension point="org.eclipse.embedcdt.managedbuild.cross.arm.core.toolchains">
 		<toolchain
 			name="Custom"
 			prefix="arm-none-eabi-" />
