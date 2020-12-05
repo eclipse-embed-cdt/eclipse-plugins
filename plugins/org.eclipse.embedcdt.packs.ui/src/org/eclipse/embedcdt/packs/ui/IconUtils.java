@@ -20,8 +20,6 @@ import org.eclipse.swt.graphics.Image;
 
 public class IconUtils {
 
-	public static final String ICONS_PLUGIN_ID = "org.eclipse.embedcdt.packs.core";
-
 	public static Image getBookIcon(Leaf node) {
 
 		String url = node.getProperty(Node.URL_PROPERTY);
