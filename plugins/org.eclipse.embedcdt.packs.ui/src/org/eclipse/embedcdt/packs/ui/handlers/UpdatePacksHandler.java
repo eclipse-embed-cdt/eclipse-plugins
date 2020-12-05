@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -367,24 +366,4 @@ public class UpdatePacksHandler extends AbstractHandler {
 		}
 	}
 
-	private void cacheXcdlContent(Map<String, Object> repo) {
-
-		try {
-
-			String contentUrl = (String) repo.get("url");
-			String fileName = fRepos.getRepoContentXmlFromUrl(contentUrl);
-			File cachedFile = PacksStorage.getFileObject(fileName);
-
-			DataUtils.copyFile(new URL(contentUrl), cachedFile, fOut, null);
-
-			fMonitor.worked(1);
-
-		} catch (MalformedURLException e) {
-			fOut.println(DataUtils.reportError(e.toString()));
-		} catch (FileNotFoundException e) {
-			fOut.println(DataUtils.reportError("File not found: " + e.getMessage()));
-		} catch (IOException e) {
-			fOut.println(DataUtils.reportError(e.toString()));
-		}
-	}
 }
