@@ -163,11 +163,6 @@ public class UpdatePacksHandler extends AbstractHandler {
 					// One work unit for each file to process.
 					workUnits += list.size();
 
-				} else if (Repos.XCDL_CMSIS_PACK_TYPE.equals(type)) {
-
-					// One work unit, to copy the file locally.
-					workUnits++;
-
 				} else if (Repos.UNUSED_PACK_TYPE.equals(type)) {
 					fOut.println(DataUtils.reportWarning("Repo \"" + indexUrl + "\" ignored."));
 				} else {
@@ -196,10 +191,6 @@ public class UpdatePacksHandler extends AbstractHandler {
 						// Read all .pdsc files and collect summary
 						aggregateCmsis(repo);
 					}
-
-				} else if (Repos.XCDL_CMSIS_PACK_TYPE.equals(type)) {
-
-					cacheXcdlContent(repo);
 
 				}
 

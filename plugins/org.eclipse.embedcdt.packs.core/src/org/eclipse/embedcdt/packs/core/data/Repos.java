@@ -49,11 +49,10 @@ public class Repos {
 	public static final String REPOS_FILE_NAME = ".repos.xml";
 
 	public static final String CMSIS_PACK_TYPE = "CMSIS Pack";
-	public static final String XCDL_CMSIS_PACK_TYPE = "XCDL/CMSIS Pack";
 	public static final String UNUSED_PACK_TYPE = "Unused";
 
 	// Used in NewSiteDialog.java.
-	public static final String[] TYPES = { CMSIS_PACK_TYPE, XCDL_CMSIS_PACK_TYPE, UNUSED_PACK_TYPE };
+	public static final String[] TYPES = { CMSIS_PACK_TYPE, UNUSED_PACK_TYPE };
 
 	private static final Repos fgInstance;
 
@@ -339,7 +338,7 @@ public class Repos {
 			// String name = (String) map.get("name");
 			String url = (String) map.get("url");
 
-			if (Repos.CMSIS_PACK_TYPE.equals(type) || Repos.XCDL_CMSIS_PACK_TYPE.equals(type)) {
+			if (Repos.CMSIS_PACK_TYPE.equals(type)) {
 
 				String fileName = getRepoContentXmlFromUrl(url);
 
