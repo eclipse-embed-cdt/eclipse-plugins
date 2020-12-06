@@ -23,7 +23,12 @@
  */
 package org.eclipse.embedcdt.core.zafarkhaja.semver;
 
-import static org.eclipse.embedcdt.core.zafarkhaja.semver.VersionParser.CharType.*;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.VersionParser.CharType.DIGIT;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.VersionParser.CharType.DOT;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.VersionParser.CharType.EOI;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.VersionParser.CharType.HYPHEN;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.VersionParser.CharType.LETTER;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.VersionParser.CharType.PLUS;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

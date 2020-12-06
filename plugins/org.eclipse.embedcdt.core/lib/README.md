@@ -1,24 +1,10 @@
 ## Liquid
 
-I could not find an easy way to bring those JARs automatically, so I copied
-them manually from ${HOME}/.m2/repository.
+The Liquid template engine is from the Lipq Java package, copied
+here and renamed to the org.eclipse.embedcdt namespace.
 
-I got the actual versions from the `pom.xml` editor, the _Dependency
-Hierarchy_ view.
-
-To add them to the project, in the `plugin.xml` editor, the _Runtime_ tab, 
-_Classpath_ -> _Add..._; then, to export the `liqp` class, in the 
-_Exported Packages_ -> _Add..._.
-
-Note: The [Liquid parser](https://github.com/bkiers/Liqp) is [patched](https://github.com/eclipse-embed-cdt/Liqp), to allow for more convenient white space processing, i.e. `-%}` should not be greedy and stop after the first line terminator.
-
-To build the liqp library
-
-- go to the `libq-fork.git` folder
-- add maven to PATH (amaven)
-- mvn clean package
-- copy target/liqp-0.6.8.jar
-
+It requires the org.jsoup library.
+ 
 ## JSON
 
 The JSON.simple library `json-simple-1.1.1.json` is downloaded from:
@@ -49,11 +35,11 @@ Already approved. CQ#9858
 Submitted as separate CQ
 
 ```
-> ./plugins/org.eclipse.embedcdt.core/lib/liqp-0.6.8.jar
+> ./plugins/org.eclipse.embedcdt.core/lib/org.eclipse.embedcdt.core.liqp-0.6.8.jar
 
 Good contender for first submission. It appears to be MIT license and I don't
 think there is a CQ about it already.
-https://github.com/bkiers/Liqp/releases/tag/liqp-0.6.8
+https://github.com/bkiers/Liqp/releases/tag/org.eclipse.embedcdt.core.liqp-0.6.8
 ```
 
 To be upgraded:

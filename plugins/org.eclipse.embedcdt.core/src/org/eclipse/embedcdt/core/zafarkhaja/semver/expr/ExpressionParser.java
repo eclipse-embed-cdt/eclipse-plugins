@@ -23,8 +23,25 @@
  */
 package org.eclipse.embedcdt.core.zafarkhaja.semver.expr;
 
-import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.CompositeExpression.Helper.*;
-import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.*;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.CompositeExpression.Helper.eq;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.CompositeExpression.Helper.gt;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.CompositeExpression.Helper.gte;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.CompositeExpression.Helper.lt;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.CompositeExpression.Helper.lte;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.CompositeExpression.Helper.neq;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.CompositeExpression.Helper.not;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.AND;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.CARET;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.DOT;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.EOI;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.HYPHEN;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.LEFT_PAREN;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.NOT;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.NUMERIC;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.OR;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.RIGHT_PAREN;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.TILDE;
+import static org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token.Type.WILDCARD;
 
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -33,8 +50,8 @@ import org.eclipse.embedcdt.core.zafarkhaja.semver.Parser;
 import org.eclipse.embedcdt.core.zafarkhaja.semver.Version;
 import org.eclipse.embedcdt.core.zafarkhaja.semver.expr.Lexer.Token;
 import org.eclipse.embedcdt.core.zafarkhaja.semver.util.Stream;
-import org.eclipse.embedcdt.core.zafarkhaja.semver.util.UnexpectedElementException;
 import org.eclipse.embedcdt.core.zafarkhaja.semver.util.Stream.ElementType;
+import org.eclipse.embedcdt.core.zafarkhaja.semver.util.UnexpectedElementException;
 
 /**
  * A parser for the SemVer Expressions.

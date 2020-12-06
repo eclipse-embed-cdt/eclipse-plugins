@@ -39,6 +39,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.embedcdt.core.liqp.ParseSettings;
+import org.eclipse.embedcdt.core.liqp.Template;
 import org.eclipse.embedcdt.templates.core.Utils;
 
 /**
@@ -133,9 +135,9 @@ public class ConditionalAddLiquidFiles extends ProcessRunner {
 				try {
 					// The option simplifies usage, by automatically stripping spaces around tags;
 					// All previous \n are preserved; the first next \n is stripped.
-					liqp.ParseSettings liqSettings = new liqp.ParseSettings.Builder().withStripSpaceAroundTags(false)
+					ParseSettings liqSettings = new ParseSettings.Builder().withStripSpaceAroundTags(false)
 							.build();
-					liqp.Template liqTemplate = liqp.Template.parse(fileContents, liqSettings);
+					Template liqTemplate = Template.parse(fileContents, liqSettings);
 					String liqRendered = liqTemplate.render(liquidMap);
 					// System.out.println(liqRendered);
 					contents = new ByteArrayInputStream(liqRendered.getBytes());
