@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -29,6 +29,10 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle. The UI version is used
  * for the preference store.
+ *
+ * @noinstantiate This class is not intended to be instantiated by clients.
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noreference This class is not intended to be referenced by clients.
  */
 public class Activator extends AbstractActivator {
 
@@ -68,7 +72,7 @@ public class Activator extends AbstractActivator {
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 	}
-	
+
 	// ------------------------------------------------------------------------
 
 	private Job fLoadReposJob;
@@ -80,7 +84,7 @@ public class Activator extends AbstractActivator {
 	// ------------------------------------------------------------------------
 
 	public IPreferenceStore getCorePreferenceStore() {
-		
+
 		if (corePreferenceStore == null) {
 			corePreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID);
 		}
@@ -94,6 +98,6 @@ public class Activator extends AbstractActivator {
 		ServiceCaller.callOnce(getClass(), IConsolesFactory.class, x -> consoles[0] = x.output());
 		return Optional.ofNullable(consoles[0]).orElseGet(SystemOutputConsoleStream::new);
 	}
-	
+
 	// ------------------------------------------------------------------------
 }

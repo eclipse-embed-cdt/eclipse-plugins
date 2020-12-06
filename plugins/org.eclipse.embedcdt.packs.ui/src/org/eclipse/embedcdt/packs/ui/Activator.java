@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -23,6 +23,10 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
+ *
+ * @noinstantiate This class is not intended to be instantiated by clients.
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noreference This class is not intended to be referenced by clients.
  */
 public class Activator extends AbstractUIActivator {
 
@@ -31,7 +35,7 @@ public class Activator extends AbstractUIActivator {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.embedcdt.packs.ui"; //$NON-NLS-1$
 	public static final String CORE_PLUGIN_ID = "org.eclipse.embedcdt.packs.core"; //$NON-NLS-1$
-	
+
 	@Override
 	public String getBundleId() {
 		return PLUGIN_ID;
@@ -67,7 +71,7 @@ public class Activator extends AbstractUIActivator {
 	public IPreferenceStore getCorePreferenceStore() {
 		return org.eclipse.embedcdt.packs.core.Activator.getInstance().getCorePreferenceStore();
 	}
-	
+
 	public IConsoleStream getConsoleOutput() {
 		return org.eclipse.embedcdt.packs.core.Activator.getInstance().getConsoleOutput();
 	}

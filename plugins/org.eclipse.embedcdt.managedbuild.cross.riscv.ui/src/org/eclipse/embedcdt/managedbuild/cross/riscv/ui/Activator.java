@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - extract UI part
@@ -22,6 +22,10 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
+ *
+ * @noinstantiate This class is not intended to be instantiated by clients.
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noreference This class is not intended to be referenced by clients.
  */
 public class Activator extends AbstractUIActivator {
 
@@ -66,7 +70,7 @@ public class Activator extends AbstractUIActivator {
 	public PersistentPreferences getPersistentPreferences() {
 		return org.eclipse.embedcdt.managedbuild.cross.riscv.core.Activator.getInstance().getPersistentPreferences();
 	}
-	
+
 	public DefaultPreferences getDefaultPreferences() {
 		return org.eclipse.embedcdt.managedbuild.cross.riscv.core.Activator.getInstance().getDefaultPreferences();
 	}

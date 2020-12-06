@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -28,6 +28,10 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
+ *
+ * @noinstantiate This class is not intended to be instantiated by clients.
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noreference This class is not intended to be referenced by clients.
  */
 public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
@@ -88,7 +92,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 	/**
 	 * For a given name, get the 'icons/name.png' description from the registry.
 	 * If not there, register it.
-	 * 
+	 *
 	 * @param name
 	 *            a String with the file name (default .png).
 	 * @return an ImageDescriptor or null.
@@ -106,7 +110,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 	/**
 	 * For a given name, get the 'icons/name.png' image from the registry. If
 	 * not there, register it.
-	 * 
+	 *
 	 * @param name
 	 *            a String with the file name (default .png).
 	 * @return an Image, possibly a default one.
@@ -133,7 +137,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 	/**
 	 * For a given 'name', register 'icons/name.png' in the local image
 	 * registry.
-	 * 
+	 *
 	 * @param name
 	 *            a String with the file name (default .png).
 	 * @return an ImageDescriptor or null.
@@ -176,7 +180,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
 	/**
 	 * The key is based on the image name.
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 */
