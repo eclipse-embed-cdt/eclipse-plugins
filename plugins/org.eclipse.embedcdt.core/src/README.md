@@ -24,3 +24,13 @@ boolean result = v1.greaterThanOrEqualTo(v2);  // false
 boolean result = v1.lessThan(v2);              // true
 boolean result = v1.lessThanOrEqualTo(v2);     // true
 ```
+
+## Liquid
+
+The Liquid template engine is from the [Liqp fork](https://github.com/eclipse-embed-cdt/Liqp).
+
+The Java packages were copied
+here and renamed to the org.eclipse.embedcdt namespace.
+
+Liqp requires the org.jsoup library.
+

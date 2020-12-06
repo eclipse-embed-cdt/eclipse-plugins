@@ -1,10 +1,8 @@
-## Liquid
+## org.jsoup
 
-The Liquid template engine is from the Lipq Java package, copied
-here and renamed to the org.eclipse.embedcdt namespace.
+The `org.jsoup_1.7.2.v201411291515.jar` archive is downloaded from 
+[Orbit R20201130205003](https://download.eclipse.org/tools/orbit/downloads/drops/R20201130205003/).
 
-It requires the org.jsoup library.
- 
 ## JSON
 
 The JSON.simple library `json-simple-1.1.1.json` is downloaded from:
