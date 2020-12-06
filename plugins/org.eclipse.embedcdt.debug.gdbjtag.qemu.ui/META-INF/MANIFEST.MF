@@ -23,6 +23,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.debug.gdbjtag.qemu.ui
+Export-Package: org.eclipse.embedcdt.debug.gdbjtag.qemu.ui,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui;x-internal:=true,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.preferences;x-internal:=true,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.properties;x-internal:=true
 Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.Activator
 Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.qemu.ui

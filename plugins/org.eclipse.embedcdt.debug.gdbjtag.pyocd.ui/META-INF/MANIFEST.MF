@@ -23,6 +23,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui
+Export-Package: org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui;x-internal:=true,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.preferences;x-internal:=true,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.properties;x-internal:=true
 Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui.Activator
 Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui

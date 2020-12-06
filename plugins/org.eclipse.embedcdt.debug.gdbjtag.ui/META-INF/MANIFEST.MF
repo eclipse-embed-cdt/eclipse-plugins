@@ -35,5 +35,14 @@ Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.debug.gdbjtag.ui,
- org.eclipse.embedcdt.debug.gdbjtag.ui.preferences
+ org.eclipse.embedcdt.debug.gdbjtag.ui.preferences,
+ org.eclipse.embedcdt.debug.gdbjtag.ui.properties,
+ org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral,
+ org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripherals,
+ org.eclipse.embedcdt.debug.gdbjtag.ui.viewmodel,
+ org.eclipse.embedcdt.debug.gdbjtag.ui.viewmodel.peripherals,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.ui;x-internal:=true,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.ui.preferences;x-internal:=true,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.ui.render.peripheral;x-internal:=true,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.ui.render.peripherals;x-internal:=true
 Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.ui

@@ -20,3 +20,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Automatic-Module-Name: org.eclipse.embedcdt.codered.ui
+Export-Package: org.eclipse.embedcdt.codered.ui,
+ org.eclipse.embedcdt.internal.codered.ui;x-internal:=true,
+ org.eclipse.embedcdt.internal.codered.ui.perspectives;x-internal:=true

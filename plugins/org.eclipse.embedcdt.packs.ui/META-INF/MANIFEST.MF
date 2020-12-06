@@ -20,7 +20,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.internal.packs.ui.perspectives,
+Export-Package: org.eclipse.embedcdt.internal.packs.ui;x-internal:=true,
+ org.eclipse.embedcdt.internal.packs.ui.perspectives;x-internal:=true,
+ org.eclipse.embedcdt.internal.packs.ui.views;x-internal:=true,
  org.eclipse.embedcdt.packs.ui,
  org.eclipse.embedcdt.packs.ui.handlers,
  org.eclipse.embedcdt.packs.ui.preferences,

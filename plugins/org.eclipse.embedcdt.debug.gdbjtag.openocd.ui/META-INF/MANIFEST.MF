@@ -23,6 +23,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.debug.gdbjtag.openocd.ui
+Export-Package: org.eclipse.embedcdt.debug.gdbjtag.openocd.ui,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui;x-internal:=true,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.preferences;x-internal:=true,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.properties;x-internal:=true
 Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.openocd.ui.Activator
 Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.openocd.ui

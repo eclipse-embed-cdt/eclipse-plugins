@@ -27,6 +27,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.internal.managedbuild.packs.ui.views,
+Export-Package: org.eclipse.embedcdt.internal.managedbuild.packs.ui;x-internal:=true,
+ org.eclipse.embedcdt.internal.managedbuild.packs.ui.views;x-internal:=true,
  org.eclipse.embedcdt.managedbuild.packs.ui
 Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.packs.ui
