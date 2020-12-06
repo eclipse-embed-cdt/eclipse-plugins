@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -24,7 +24,7 @@ import org.json.simple.JSONObject;
 /**
  * Very simple parser, to convert the tree created by JSON.Simple into the same
  * tree used by the DOM parser. (Objects in the JSON tree do not have parents).
- * 
+ *
  * To make things simpler, there are no Leaf objects, all nodes are Node
  * objects. All nodes are tagged with PACK_TYPE_XPACK.
  */
@@ -36,7 +36,7 @@ public class JsonGenericParser {
 
 	/**
 	 * Check if the name refers to a collection.
-	 * 
+	 *
 	 * @param name
 	 * @return The type for the collection members.
 	 */
@@ -44,6 +44,15 @@ public class JsonGenericParser {
 		return null;
 	}
 
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 * @apiNote This method takes a non-API type, {@link JSONObject}, the concrete
+	 *          version of this type may change in a future release, however the
+	 *          method itself is API. Consumers of this API should ensure their
+	 *          {@link JSONObject} is loaded from the same bundle as this bundle.
+	 *          See https://github.com/eclipse-embed-cdt/eclipse-plugins/issues/453
+	 *          for the current status of this issue.
+	 */
 	public Node parse(JSONObject json) {
 
 		Node tree = new Node(Type.ROOT);

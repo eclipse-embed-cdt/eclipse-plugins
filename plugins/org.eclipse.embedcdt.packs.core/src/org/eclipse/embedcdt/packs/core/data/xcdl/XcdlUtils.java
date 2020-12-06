@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -43,6 +43,15 @@ public class XcdlUtils {
 		return value;
 	}
 
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 * @apiNote This method returns a non-API type, {@link JSONObject}, the concrete
+	 *          version of this type may change in a future release, however the
+	 *          method itself is API. Consumers of this API should ensure their
+	 *          {@link JSONObject} is loaded from the same bundle as this bundle.
+	 *          See https://github.com/eclipse-embed-cdt/eclipse-plugins/issues/453
+	 *          for the current status of this issue.
+	 */
 	public static JSONObject getPackageJson(IProject project) throws IOException, ParseException {
 
 		assert project != null;
