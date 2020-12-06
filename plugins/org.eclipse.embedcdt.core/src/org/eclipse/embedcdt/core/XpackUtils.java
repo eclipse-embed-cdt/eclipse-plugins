@@ -27,8 +27,7 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-
-import com.github.zafarkhaja.semver.Version;
+import org.eclipse.embedcdt.core.zafarkhaja.semver.Version;
 
 public class XpackUtils {
 

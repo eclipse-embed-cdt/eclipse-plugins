@@ -21,6 +21,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.core.Xml;
+import org.eclipse.embedcdt.core.zafarkhaja.semver.Version;
 import org.eclipse.embedcdt.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
@@ -28,8 +29,6 @@ import org.eclipse.embedcdt.packs.core.tree.PackNode;
 import org.eclipse.embedcdt.packs.core.tree.Type;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
-import com.github.zafarkhaja.semver.Version;
 
 public class PdscParserFull extends PdscParser {
 

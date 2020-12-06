@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.embedcdt.core.StringUtils;
+import org.eclipse.embedcdt.core.zafarkhaja.semver.Version;
 import org.eclipse.embedcdt.internal.packs.ui.Messages;
 import org.eclipse.embedcdt.packs.core.PackType;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
@@ -85,8 +86,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IServiceLocator;
-
-import com.github.zafarkhaja.semver.Version;
 
 public class PacksView extends ViewPart implements IDataManagerListener {
 

@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.List;
 
 import org.eclipse.embedcdt.core.Xml;
+import org.eclipse.embedcdt.core.zafarkhaja.semver.Version;
 import org.eclipse.embedcdt.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.data.DataUtils;
@@ -26,8 +27,6 @@ import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.Property;
 import org.eclipse.embedcdt.packs.core.tree.Type;
 import org.w3c.dom.Element;
-
-import com.github.zafarkhaja.semver.Version;
 
 public class PdscParserForContent extends PdscParser {
 

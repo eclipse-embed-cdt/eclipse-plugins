@@ -4,10 +4,14 @@ The semantic versioning code is included as source code from:
 
 - https://github.com/zafarkhaja/jsemver
 
+To avoid problems while re-exporting the packages 
+(as per https://github.com/eclipse-embed-cdt/eclipse-plugins/issues/453#issuecomment-739520632)
+they were renamed to the project name space.
+
 To compare versions, use:
 
 ```java
-import com.github.zafarkhaja.semver.Version;
+import org.eclipse.embedcdt.core.zafarkhaja.semver.Version;
 
 Version v1 = Version.valueOf("1.0.0-rc.1+build.1");
 Version v2 = Version.valueOf("1.3.7+build.2.b8f12d7");

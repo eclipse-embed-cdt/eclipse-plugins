@@ -15,6 +15,7 @@
 
 package org.eclipse.embedcdt.packs.core.data.cmsis;
 
+import org.eclipse.embedcdt.core.zafarkhaja.semver.Version;
 import org.eclipse.embedcdt.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.DataUtils;
@@ -22,8 +23,6 @@ import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.Property;
 import org.eclipse.embedcdt.packs.core.tree.Type;
-
-import com.github.zafarkhaja.semver.Version;
 
 public class PdscTreeParser {
 

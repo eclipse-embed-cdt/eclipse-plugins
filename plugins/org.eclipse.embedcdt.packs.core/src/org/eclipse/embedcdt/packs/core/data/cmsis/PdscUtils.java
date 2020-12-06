@@ -14,9 +14,8 @@
 
 package org.eclipse.embedcdt.packs.core.data.cmsis;
 
+import org.eclipse.embedcdt.core.zafarkhaja.semver.Version;
 import org.json.simple.JSONObject;
-
-import com.github.zafarkhaja.semver.Version;
 
 /**
  * Static class used to support the PDSC parsing.
