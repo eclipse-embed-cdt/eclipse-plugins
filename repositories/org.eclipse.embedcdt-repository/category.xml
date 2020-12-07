@@ -14,7 +14,7 @@
 -->
 
 <site>
-   <category-def name="org.eclipse.embedcdt.category" label="Embedded C/C++ Cross Development Tools (incubation)"/>
+   <category-def name="org.eclipse.embedcdt.category" label="Embedded C/C++ Cross Development Tools"/>
    <feature id="org.eclipse.embedcdt">
       <category name="org.eclipse.embedcdt.category"/>
    </feature>
@@ -63,7 +63,7 @@
    <feature id="org.eclipse.embedcdt.debug.gdbjtag.qemu">
       <category name="org.eclipse.embedcdt.category"/>
    </feature>
-   <category-def name="org.eclipse.embedcdt.category.source" label="Embedded C/C++ Cross Development Tools (incubation) Developer Resources"/>
+   <category-def name="org.eclipse.embedcdt.category.source" label="Embedded C/C++ Cross Development Tools Developer Resources"/>
    <feature id="org.eclipse.embedcdt.managedbuild.cross.arm.source">
       <category name="org.eclipse.embedcdt.category.source"/>
    </feature>
