@@ -28,5 +28,4 @@ Bundle-Localization: plugin
 Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.cross.ui
 Export-Package: org.eclipse.embedcdt.internal.managedbuild.cross.ui;x-internal:=true,
  org.eclipse.embedcdt.internal.managedbuild.cross.ui.preferences;x-internal:=true,
- org.eclipse.embedcdt.internal.managedbuild.cross.ui.properties;x-internal:=true,
- org.eclipse.embedcdt.managedbuild.cross.ui
+ org.eclipse.embedcdt.internal.managedbuild.cross.ui.properties;x-internal:=true
