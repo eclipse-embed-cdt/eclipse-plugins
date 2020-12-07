@@ -31,6 +31,7 @@ import org.eclipse.debug.ui.memory.IMemoryRenderingType;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.PeripheralDMContext;
 import org.eclipse.embedcdt.debug.gdbjtag.core.memory.PeripheralMemoryBlockExtension;
 import org.eclipse.embedcdt.debug.gdbjtag.core.memory.PeripheralMemoryBlockRetrieval;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Messages;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.preferences.PeripheralRendering;
 import org.eclipse.embedcdt.ui.EclipseUiUtils;

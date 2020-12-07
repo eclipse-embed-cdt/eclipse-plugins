@@ -36,7 +36,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.Xml;
 import org.eclipse.embedcdt.core.XpackUtils;
-import org.eclipse.embedcdt.packs.core.Activator;
+import org.eclipse.embedcdt.internal.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.PackType;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.cmsis.PdscGenericParser;

@@ -23,7 +23,6 @@ import org.eclipse.cdt.dsf.gdb.service.command.GDBControl_7_4;
 // import org.eclipse.cdt.dsf.gdb.service.command.GDBControl_7_7;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.IGdbServerBackendService;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.IGnuMcuDebuggerCommandsService;
@@ -31,6 +30,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.services.IPeripheralMemoryService
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.IPeripheralsService;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.PeripheralMemoryService;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.PeripheralsService;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 /**
  * Services factory intended to create the peripherals service.

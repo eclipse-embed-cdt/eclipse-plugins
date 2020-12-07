@@ -18,6 +18,7 @@ package org.eclipse.embedcdt.managedbuild.cross.arm.core;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IOption;
+import org.eclipse.embedcdt.internal.managedbuild.cross.arm.core.Activator;
 
 public class Option {
 

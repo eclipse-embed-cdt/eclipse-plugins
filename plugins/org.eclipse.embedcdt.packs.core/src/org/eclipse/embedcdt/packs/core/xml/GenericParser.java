@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.embedcdt.core.Xml;
-import org.eclipse.embedcdt.packs.core.Activator;
+import org.eclipse.embedcdt.internal.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;

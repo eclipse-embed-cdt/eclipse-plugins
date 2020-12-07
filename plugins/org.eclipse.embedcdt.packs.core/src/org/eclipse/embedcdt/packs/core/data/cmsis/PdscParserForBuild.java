@@ -19,7 +19,7 @@ import java.util.List;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.core.Xml;
 import org.eclipse.embedcdt.core.zafarkhaja.semver.Version;
-import org.eclipse.embedcdt.packs.core.Activator;
+import org.eclipse.embedcdt.internal.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.Type;

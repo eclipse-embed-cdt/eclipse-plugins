@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.embedcdt.templates.core.Activator;
+import org.eclipse.embedcdt.internal.templates.core.Activator;
 import org.osgi.framework.Bundle;
 
 public class SetPropertyToPluginResource extends ProcessRunner {

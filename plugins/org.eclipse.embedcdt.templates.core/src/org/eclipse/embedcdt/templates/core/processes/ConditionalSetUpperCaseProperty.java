@@ -21,7 +21,7 @@ import org.eclipse.cdt.core.templateengine.process.ProcessArgument;
 import org.eclipse.cdt.core.templateengine.process.ProcessFailureException;
 import org.eclipse.cdt.core.templateengine.process.ProcessRunner;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.embedcdt.templates.core.Activator;
+import org.eclipse.embedcdt.internal.templates.core.Activator;
 import org.eclipse.embedcdt.templates.core.Utils;
 
 public class ConditionalSetUpperCaseProperty extends ProcessRunner {

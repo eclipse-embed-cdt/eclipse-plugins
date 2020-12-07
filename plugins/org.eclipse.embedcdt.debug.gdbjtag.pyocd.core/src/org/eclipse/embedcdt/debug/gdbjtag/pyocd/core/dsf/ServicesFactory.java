@@ -22,7 +22,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuDebuggerCommandsService;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbServerBackend;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuServicesFactory;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator;
 
 public class ServicesFactory extends GnuMcuServicesFactory {
 

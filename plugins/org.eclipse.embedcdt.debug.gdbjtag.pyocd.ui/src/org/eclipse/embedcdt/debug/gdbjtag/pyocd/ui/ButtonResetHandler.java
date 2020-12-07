@@ -20,6 +20,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.Activator;
 
 // toolbar:org.eclipse.debug.ui.main.toolbar?after=additions
 

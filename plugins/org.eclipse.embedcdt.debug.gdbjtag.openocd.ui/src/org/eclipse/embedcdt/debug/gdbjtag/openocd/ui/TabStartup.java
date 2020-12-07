@@ -36,6 +36,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.Messages;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;

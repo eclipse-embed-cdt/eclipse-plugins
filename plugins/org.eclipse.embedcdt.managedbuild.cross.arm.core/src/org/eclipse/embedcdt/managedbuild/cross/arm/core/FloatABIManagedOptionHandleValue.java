@@ -22,6 +22,7 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.core.ManagedOptionValueHandler;
 import org.eclipse.cdt.managedbuilder.internal.core.FolderInfo;
+import org.eclipse.embedcdt.internal.managedbuild.cross.arm.core.Activator;
 
 @SuppressWarnings("restriction")
 public class FloatABIManagedOptionHandleValue extends ManagedOptionValueHandler {

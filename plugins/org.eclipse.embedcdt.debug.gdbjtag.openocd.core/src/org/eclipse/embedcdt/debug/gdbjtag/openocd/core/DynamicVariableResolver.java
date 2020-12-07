@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.core.Activator;
 
 // Resolves variables from persistent preferences.
 

@@ -34,11 +34,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.IGnuMcuDebuggerCommandsService;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.IPeripheralMemoryService;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.IPeripheralsService;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 

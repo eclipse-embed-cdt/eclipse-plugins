@@ -18,7 +18,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripherals;
 
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentation2;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationContext;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Messages;
 import org.eclipse.jface.resource.ImageDescriptor;
 

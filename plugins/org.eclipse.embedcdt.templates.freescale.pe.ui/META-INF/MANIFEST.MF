@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.templates.freescale.pe.ui;singleton:=true
 Bundle-Version: 2.0.0.qualifier
-Bundle-Activator: org.eclipse.embedcdt.templates.freescale.pe.ui.Activator
+Bundle-Activator: org.eclipse.embedcdt.internal.templates.freescale.pe.ui.Activator
 Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.0.0",
  org.eclipse.embedcdt.templates.core;bundle-version="3.0.0",
  org.eclipse.embedcdt.ui;bundle-version="6.0.0",
@@ -17,3 +17,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Automatic-Module-Name: org.eclipse.embedcdt.templates.freescale.pe.ui
+Export-Package: org.eclipse.embedcdt.internal.templates.freescale.pe.ui;x-internal:=true,
+ org.eclipse.embedcdt.templates.freescale.pe.ui,
+ org.eclipse.embedcdt.templates.freescale.pe.ui.processes

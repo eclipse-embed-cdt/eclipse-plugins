@@ -14,6 +14,7 @@
 
 package org.eclipse.embedcdt.templates.freescale.pe.ui;
 
+import org.eclipse.embedcdt.internal.templates.freescale.pe.ui.Activator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;

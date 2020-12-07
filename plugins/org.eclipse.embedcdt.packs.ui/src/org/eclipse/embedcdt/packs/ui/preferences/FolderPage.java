@@ -15,8 +15,8 @@
 
 package org.eclipse.embedcdt.packs.ui.preferences;
 
+import org.eclipse.embedcdt.internal.packs.ui.Activator;
 import org.eclipse.embedcdt.packs.core.Preferences;
-import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;

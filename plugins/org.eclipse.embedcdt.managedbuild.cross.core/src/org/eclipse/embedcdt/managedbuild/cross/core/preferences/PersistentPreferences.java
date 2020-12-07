@@ -16,7 +16,7 @@ package org.eclipse.embedcdt.managedbuild.cross.core.preferences;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.managedbuild.cross.core.Activator;
+import org.eclipse.embedcdt.internal.managedbuild.cross.core.Activator;
 
 public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences.PersistentPreferences {
 

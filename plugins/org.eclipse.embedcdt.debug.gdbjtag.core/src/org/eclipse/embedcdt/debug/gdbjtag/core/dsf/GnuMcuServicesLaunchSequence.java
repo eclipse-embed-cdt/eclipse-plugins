@@ -19,8 +19,8 @@ import org.eclipse.cdt.dsf.gdb.launching.GdbLaunch;
 import org.eclipse.cdt.dsf.gdb.launching.ServicesLaunchSequence;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.IGdbServerBackendService;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 /**
  * Insert the step of creating the GdbServerBackend before all other steps.

@@ -18,7 +18,7 @@ import java.io.File;
 
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.preferences.Discoverer;
-import org.eclipse.embedcdt.managedbuild.cross.core.Activator;
+import org.eclipse.embedcdt.internal.managedbuild.cross.core.Activator;
 
 public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.DefaultPreferences {
 

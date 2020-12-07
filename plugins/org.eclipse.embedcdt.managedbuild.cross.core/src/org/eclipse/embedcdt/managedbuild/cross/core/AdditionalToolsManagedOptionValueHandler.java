@@ -21,6 +21,7 @@ import org.eclipse.cdt.managedbuilder.core.ManagedOptionValueHandler;
 import org.eclipse.cdt.managedbuilder.internal.core.FolderInfo;
 import org.eclipse.cdt.managedbuilder.internal.core.MultiFolderInfo;
 import org.eclipse.cdt.managedbuilder.internal.core.ResourceConfiguration;
+import org.eclipse.embedcdt.internal.managedbuild.cross.core.Activator;
 
 @SuppressWarnings("restriction")
 public class AdditionalToolsManagedOptionValueHandler extends ManagedOptionValueHandler {

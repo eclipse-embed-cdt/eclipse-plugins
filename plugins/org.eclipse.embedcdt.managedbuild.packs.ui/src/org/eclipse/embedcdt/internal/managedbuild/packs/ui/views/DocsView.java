@@ -36,7 +36,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.embedcdt.core.CProjectPacksStorage;
 import org.eclipse.embedcdt.core.IDs;
-import org.eclipse.embedcdt.managedbuild.packs.ui.Activator;
+import org.eclipse.embedcdt.internal.managedbuild.packs.ui.Activator;
 import org.eclipse.embedcdt.packs.core.data.DataManager;
 import org.eclipse.embedcdt.packs.core.data.DataManagerEvent;
 import org.eclipse.embedcdt.packs.core.data.IDataManagerListener;

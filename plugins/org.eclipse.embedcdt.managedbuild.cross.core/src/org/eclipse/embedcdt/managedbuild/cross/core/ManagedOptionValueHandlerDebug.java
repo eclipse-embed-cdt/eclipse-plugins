@@ -22,6 +22,7 @@ import org.eclipse.cdt.managedbuilder.core.IResourceConfiguration;
 import org.eclipse.cdt.managedbuilder.core.ITool;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.core.ManagedOptionValueHandler;
+import org.eclipse.embedcdt.internal.managedbuild.cross.core.Activator;
 
 public class ManagedOptionValueHandlerDebug {
 

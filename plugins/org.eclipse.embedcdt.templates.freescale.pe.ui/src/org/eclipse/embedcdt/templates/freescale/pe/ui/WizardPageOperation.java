@@ -14,6 +14,8 @@
 
 package org.eclipse.embedcdt.templates.freescale.pe.ui;
 
+import org.eclipse.embedcdt.internal.templates.freescale.pe.ui.Activator;
+
 public class WizardPageOperation implements Runnable {
 
 	@Override

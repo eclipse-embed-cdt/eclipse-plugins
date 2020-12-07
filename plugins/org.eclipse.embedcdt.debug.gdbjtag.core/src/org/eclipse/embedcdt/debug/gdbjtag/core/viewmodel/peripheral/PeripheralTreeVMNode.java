@@ -24,13 +24,13 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IRegister;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IValue;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdClusterDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdFieldDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdObjectDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdPeripheralDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdRegisterDMNode;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 
 public abstract class PeripheralTreeVMNode implements IRegister, Comparable<PeripheralTreeVMNode> {

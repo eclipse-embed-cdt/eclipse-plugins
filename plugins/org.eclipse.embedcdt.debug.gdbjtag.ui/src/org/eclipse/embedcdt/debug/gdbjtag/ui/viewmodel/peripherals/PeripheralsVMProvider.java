@@ -25,8 +25,8 @@ import org.eclipse.cdt.dsf.ui.viewmodel.properties.IPropertiesUpdate;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentation;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentationFactory;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationContext;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripherals.PeripheralsColumnPresentation;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Activator;
 
 /**
  * Provide the column presentation and the model proxy strategy for the

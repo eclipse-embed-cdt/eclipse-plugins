@@ -18,11 +18,11 @@ import java.math.BigInteger;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.PeripheralValue;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdRegisterDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdUtils;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 /**
  * PeripheralRegister objects are used to represent peripheral registers or

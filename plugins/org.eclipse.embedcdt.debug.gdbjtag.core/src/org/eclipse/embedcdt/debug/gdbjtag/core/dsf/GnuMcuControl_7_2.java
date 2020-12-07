@@ -28,9 +28,9 @@ import org.eclipse.cdt.dsf.mi.service.command.CommandFactory;
 import org.eclipse.cdt.dsf.service.DsfServiceEventHandler;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.IGdbServerBackendService;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.IGdbServerBackendService.ServerBackendStateChangedEvent;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 public class GnuMcuControl_7_2 extends GDBControl_7_2 {
 

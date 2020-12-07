@@ -73,6 +73,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.StringUtils;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 @SuppressWarnings("restriction")
 public class DebugUtils {

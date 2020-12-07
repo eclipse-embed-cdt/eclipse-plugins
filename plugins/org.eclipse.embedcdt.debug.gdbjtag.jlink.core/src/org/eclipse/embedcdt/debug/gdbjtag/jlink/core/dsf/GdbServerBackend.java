@@ -34,11 +34,11 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuGdbServerBackend;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.SemihostingProcess;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.core.Activator;
 import org.osgi.framework.BundleContext;
 
 public class GdbServerBackend extends GnuMcuGdbServerBackend {

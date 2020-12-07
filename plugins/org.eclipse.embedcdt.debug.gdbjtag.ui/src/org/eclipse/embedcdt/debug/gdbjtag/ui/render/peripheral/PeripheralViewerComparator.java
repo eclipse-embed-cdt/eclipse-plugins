@@ -17,7 +17,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralRegisterFieldVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralTreeVMNode;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Activator;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;

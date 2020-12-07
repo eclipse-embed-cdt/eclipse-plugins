@@ -20,6 +20,7 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IOptionCommandGenerator;
 import org.eclipse.cdt.utils.cdtvariables.CdtVariableResolver;
 import org.eclipse.cdt.utils.cdtvariables.IVariableSubstitutor;
+import org.eclipse.embedcdt.internal.managedbuild.cross.core.Activator;
 
 public class LinkerScriptCommandGenerator implements IOptionCommandGenerator {
 

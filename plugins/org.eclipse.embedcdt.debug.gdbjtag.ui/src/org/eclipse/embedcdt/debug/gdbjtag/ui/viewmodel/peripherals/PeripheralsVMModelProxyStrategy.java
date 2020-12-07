@@ -20,8 +20,8 @@ import org.eclipse.cdt.dsf.ui.viewmodel.DefaultVMModelProxyStrategy;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.ICheckboxModelProxy;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationContext;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.PeripheralDMContext;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.MemoryBlockMonitor;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Activator;
 import org.eclipse.jface.viewers.TreePath;
 
 @SuppressWarnings("restriction")

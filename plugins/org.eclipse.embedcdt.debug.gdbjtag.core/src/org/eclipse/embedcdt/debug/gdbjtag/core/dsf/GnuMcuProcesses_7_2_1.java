@@ -38,7 +38,7 @@ import org.eclipse.cdt.dsf.mi.service.command.output.MIInfo;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 // Used to redefine the ProcessSequence, where the reset happens
 public class GnuMcuProcesses_7_2_1 extends GDBProcesses_7_2_1 {

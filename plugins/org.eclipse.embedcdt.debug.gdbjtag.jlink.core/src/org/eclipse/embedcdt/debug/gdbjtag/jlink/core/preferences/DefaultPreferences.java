@@ -16,7 +16,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences;
 
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.preferences.Discoverer;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.core.Activator;
 import org.osgi.service.prefs.BackingStoreException;
 
 public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.preferences.DefaultPreferences {

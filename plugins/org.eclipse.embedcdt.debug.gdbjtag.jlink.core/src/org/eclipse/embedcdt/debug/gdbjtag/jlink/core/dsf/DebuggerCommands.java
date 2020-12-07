@@ -25,9 +25,9 @@ import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuDebuggerCommandsService;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.core.Activator;
 import org.osgi.framework.BundleContext;
 
 public class DebuggerCommands extends GnuMcuDebuggerCommandsService {

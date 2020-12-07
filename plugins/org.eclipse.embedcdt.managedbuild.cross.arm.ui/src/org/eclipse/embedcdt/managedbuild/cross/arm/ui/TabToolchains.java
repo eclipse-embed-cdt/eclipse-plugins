@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.embedcdt.core.EclipseUtils;
+import org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.Activator;
 import org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.Messages;
 import org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.preferences.GlobalToolchainsPathsPreferencesPage;
 import org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.preferences.WorkspaceToolchainsPathsPreferencesPage;

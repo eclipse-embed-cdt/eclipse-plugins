@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.embedcdt.packs.core.Activator;
+import org.eclipse.embedcdt.internal.packs.core.Activator;
 
 /**
  * This factory proxy allows plug-ins that do not depend on the packs plug-in to

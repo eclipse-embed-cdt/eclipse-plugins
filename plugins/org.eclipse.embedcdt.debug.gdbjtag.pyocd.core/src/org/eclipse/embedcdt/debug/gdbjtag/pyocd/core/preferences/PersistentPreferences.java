@@ -16,7 +16,7 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences;
 
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator;
 
 public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences {
 

@@ -25,6 +25,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator;
+
 /**
  * Synthetic process (does not have a system process), used to get the
  * semihosting output from the J-Link GDB server.

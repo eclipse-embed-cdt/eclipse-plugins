@@ -36,6 +36,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Messages;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;

@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 
+import org.eclipse.embedcdt.internal.core.Activator;
+
 /**
  * A thread collecting lines containing a key from a reader into a string.
  */

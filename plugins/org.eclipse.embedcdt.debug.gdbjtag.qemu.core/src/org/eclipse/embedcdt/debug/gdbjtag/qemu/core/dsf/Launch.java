@@ -39,10 +39,10 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuLaunch;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.core.Activator;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuMcuLaunch {

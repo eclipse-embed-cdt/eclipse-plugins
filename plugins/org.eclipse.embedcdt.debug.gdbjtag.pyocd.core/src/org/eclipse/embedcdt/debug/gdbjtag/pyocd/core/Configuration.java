@@ -32,6 +32,7 @@ import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences.PreferenceConstants;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator;
 
 @SuppressWarnings("restriction")
 public class Configuration {

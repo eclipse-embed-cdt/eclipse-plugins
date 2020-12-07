@@ -16,6 +16,7 @@
 package org.eclipse.embedcdt.ui;
 
 import org.eclipse.embedcdt.core.EclipseUtils;
+import org.eclipse.embedcdt.internal.ui.Activator;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 

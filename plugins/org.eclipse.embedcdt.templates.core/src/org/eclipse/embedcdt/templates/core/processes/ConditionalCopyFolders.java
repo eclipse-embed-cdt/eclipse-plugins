@@ -36,7 +36,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.embedcdt.templates.core.Activator;
+import org.eclipse.embedcdt.internal.templates.core.Activator;
 import org.eclipse.embedcdt.templates.core.Utils;
 
 /**

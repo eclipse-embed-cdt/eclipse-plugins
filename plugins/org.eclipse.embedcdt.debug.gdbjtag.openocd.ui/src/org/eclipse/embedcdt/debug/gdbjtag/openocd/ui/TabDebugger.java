@@ -41,6 +41,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.Messages;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.preferences.GlobalMcuPage;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.preferences.WorkspaceMcuPage;

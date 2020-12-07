@@ -51,8 +51,8 @@ import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.AbstractGnuMcuLaunchConfigurationDelegate;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuServerServicesLaunchSequence;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Configuration;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator;
 
 /**
  * This class is referred in the plugin.xml as an

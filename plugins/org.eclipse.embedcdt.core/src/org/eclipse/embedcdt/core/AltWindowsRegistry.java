@@ -15,6 +15,8 @@
 
 package org.eclipse.embedcdt.core;
 
+import org.eclipse.embedcdt.internal.core.Activator;
+
 public class AltWindowsRegistry {
 
 	public static String query(String location, String key) {

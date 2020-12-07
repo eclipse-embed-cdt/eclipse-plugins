@@ -45,9 +45,9 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.EclipseUtils;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.IGdbServerBackendService;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 import org.osgi.framework.BundleContext;
 
 /**

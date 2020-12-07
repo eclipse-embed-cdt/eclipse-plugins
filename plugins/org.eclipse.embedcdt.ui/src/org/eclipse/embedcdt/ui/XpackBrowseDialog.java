@@ -15,6 +15,7 @@
 
 package org.eclipse.embedcdt.ui;
 
+import org.eclipse.embedcdt.internal.ui.Activator;
 import org.eclipse.embedcdt.internal.ui.Messages;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;

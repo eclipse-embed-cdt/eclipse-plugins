@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.managedbuild.cross.riscv.core;singleton:=true
 Bundle-Version: 3.0.0.qualifier
-Bundle-Activator: org.eclipse.embedcdt.managedbuild.cross.riscv.core.Activator
+Bundle-Activator: org.eclipse.embedcdt.internal.managedbuild.cross.riscv.core.Activator
 Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.0.0",
  org.eclipse.embedcdt.packs.core;bundle-version="3.0.0",
  org.eclipse.embedcdt.debug.core;bundle-version="2.0.0",
@@ -18,6 +18,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.managedbuild.cross.riscv.core,
+Export-Package: org.eclipse.embedcdt.internal.managedbuild.cross.riscv.core;x-internal:=true,
+ org.eclipse.embedcdt.managedbuild.cross.riscv.core,
  org.eclipse.embedcdt.managedbuild.cross.riscv.core.preferences
 Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.cross.riscv.core

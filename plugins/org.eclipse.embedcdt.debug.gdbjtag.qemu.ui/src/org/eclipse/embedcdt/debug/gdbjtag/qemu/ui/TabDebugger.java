@@ -43,6 +43,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Messages;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.preferences.GlobalMcuPage;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.preferences.WorkspaceMcuPage;

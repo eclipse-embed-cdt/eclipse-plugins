@@ -15,6 +15,7 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag.openocd.ui;
 
+import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.Activator;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;

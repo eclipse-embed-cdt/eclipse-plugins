@@ -85,9 +85,9 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuProcesses_7_2_1.ProcessStateChangedEvent;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 import org.osgi.framework.BundleContext;
 
 /**

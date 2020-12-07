@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.core;singleton:=true
 Bundle-Version: 6.0.0.qualifier
-Bundle-Activator: org.eclipse.embedcdt.core.Activator
+Bundle-Activator: org.eclipse.embedcdt.internal.core.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
@@ -59,6 +59,7 @@ Export-Package: org.eclipse.embedcdt.core,
    org.eclipse.embedcdt.templates.stm,
    org.eclipse.embedcdt.templates.stm.ui,
    org.eclipse.embedcdt.ui",
+ org.eclipse.embedcdt.internal.core;x-internal:=true,
  org.eclipse.embedcdt.core.liqp.exceptions;
   x-friends:="org.eclipse.embedcdt,
    org.eclipse.embedcdt.codered,

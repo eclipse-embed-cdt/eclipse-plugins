@@ -16,8 +16,8 @@
 package org.eclipse.embedcdt.packs.ui.views;
 
 import org.eclipse.core.runtime.Path;
+import org.eclipse.embedcdt.internal.packs.ui.Activator;
 import org.eclipse.embedcdt.packs.core.Preferences;
-import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.SWT;

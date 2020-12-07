@@ -15,6 +15,7 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag.qemu.ui;
 
+import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Activator;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;

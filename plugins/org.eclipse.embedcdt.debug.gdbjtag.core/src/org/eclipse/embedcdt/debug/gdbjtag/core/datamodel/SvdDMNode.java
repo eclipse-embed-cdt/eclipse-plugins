@@ -18,7 +18,7 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 
 public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> {

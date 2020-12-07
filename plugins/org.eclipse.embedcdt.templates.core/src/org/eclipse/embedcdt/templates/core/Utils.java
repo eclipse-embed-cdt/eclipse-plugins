@@ -15,6 +15,7 @@
 package org.eclipse.embedcdt.templates.core;
 
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.embedcdt.internal.templates.core.Activator;
 
 public class Utils {
 

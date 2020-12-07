@@ -27,7 +27,7 @@ import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 public class GnuMcuFinalLaunchSequence_7_2 extends GnuMcuFinalLaunchSequence {
 

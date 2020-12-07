@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.embedcdt.debug.core.data.ISVDPathManager;
 import org.eclipse.embedcdt.debug.core.data.ISVDPathManagerFactory;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 public class SVDPathManagerProxy implements ISVDPathManager {
 

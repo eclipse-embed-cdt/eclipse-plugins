@@ -36,6 +36,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.ui.Messages;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;

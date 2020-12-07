@@ -44,7 +44,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 /**
  * Common launcher, used to initialise the memory bloc retrieval used by the

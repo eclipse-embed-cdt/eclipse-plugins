@@ -19,7 +19,6 @@ package org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.embedcdt.managedbuild.cross.arm.ui.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {

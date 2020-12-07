@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.0.0",
  org.eclipse.osgi;bundle-version="3.16.0",
  org.eclipse.ui;bundle-version="3.118.0"
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.restart.ui.Activator
+Bundle-Activator: org.eclipse.embedcdt.internal.debug.gdbjtag.restart.ui.Activator
 Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.restart.ui
 Export-Package: org.eclipse.embedcdt.debug.gdbjtag.restart.ui,
- org.eclipse.embedcdt.debug.gdbjtag.restart.ui.action
+ org.eclipse.embedcdt.debug.gdbjtag.restart.ui.action,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.restart.ui;x-internal:=true

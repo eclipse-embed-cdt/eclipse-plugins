@@ -37,7 +37,6 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralGr
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralRegisterArrayVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralRegisterVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralTreeVMNode;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.ILinkToolTipListener;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.LinkToolTip;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralColumnInfo;
@@ -46,6 +45,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralEditing
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralFilterDialog;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralNameFilter;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralViewerComparator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.render.peripheral.PeripheralColumnLabelProvider;
 import org.eclipse.embedcdt.ui.SystemUIJob;
 import org.eclipse.jface.action.Action;

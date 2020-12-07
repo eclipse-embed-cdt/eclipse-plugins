@@ -19,7 +19,6 @@ package org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages {

@@ -29,6 +29,7 @@ import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.core.Activator;
 
 @SuppressWarnings("restriction")
 public class Configuration {

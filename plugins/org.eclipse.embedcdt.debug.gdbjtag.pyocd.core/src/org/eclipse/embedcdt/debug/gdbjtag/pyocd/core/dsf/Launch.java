@@ -41,10 +41,10 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.dsf.GnuMcuLaunch;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences.DefaultPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuMcuLaunch {

@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.INodeChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.NodeChangeEvent;
-import org.eclipse.embedcdt.debug.gdbjtag.openocd.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.core.Activator;
 import org.osgi.service.prefs.Preferences;
 
 /**

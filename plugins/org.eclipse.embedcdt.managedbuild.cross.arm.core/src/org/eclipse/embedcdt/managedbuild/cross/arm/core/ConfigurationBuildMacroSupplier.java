@@ -23,6 +23,7 @@ import org.eclipse.cdt.managedbuilder.internal.macros.BuildMacro;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacro;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.cdt.managedbuilder.macros.IConfigurationBuildMacroSupplier;
+import org.eclipse.embedcdt.internal.managedbuild.cross.arm.core.Activator;
 
 @SuppressWarnings("restriction")
 public class ConfigurationBuildMacroSupplier implements IConfigurationBuildMacroSupplier {

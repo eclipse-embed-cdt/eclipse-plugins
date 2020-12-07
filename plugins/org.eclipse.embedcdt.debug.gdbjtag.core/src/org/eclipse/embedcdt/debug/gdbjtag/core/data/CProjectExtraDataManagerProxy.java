@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.embedcdt.debug.core.data.ICProjectExtraDataManager;
 import org.eclipse.embedcdt.debug.core.data.ICProjectExtraDataManagerFactory;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager {
 

@@ -18,7 +18,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences;
 
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.preferences.Discoverer;
-import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator;
 
 public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.preferences.DefaultPreferences {
 

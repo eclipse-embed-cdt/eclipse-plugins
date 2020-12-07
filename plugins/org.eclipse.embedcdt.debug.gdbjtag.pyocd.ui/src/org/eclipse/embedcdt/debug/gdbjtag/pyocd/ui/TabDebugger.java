@@ -53,6 +53,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.PyOCD;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.PyOCD.Target;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.Messages;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.preferences.GlobalMcuPage;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.preferences.WorkspaceMcuPage;

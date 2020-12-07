@@ -23,8 +23,8 @@ import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IMemoryBlockRetrieval;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.memory.PeripheralMemoryBlockRetrieval;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 @SuppressWarnings("restriction")
 public class GdbMcuMemoryBlockRetrievalManager extends GdbMemoryBlockRetrievalManager {

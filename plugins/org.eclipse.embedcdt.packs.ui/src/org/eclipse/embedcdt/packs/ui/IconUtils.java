@@ -14,6 +14,7 @@
 
 package org.eclipse.embedcdt.packs.ui;
 
+import org.eclipse.embedcdt.internal.packs.ui.Activator;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.swt.graphics.Image;

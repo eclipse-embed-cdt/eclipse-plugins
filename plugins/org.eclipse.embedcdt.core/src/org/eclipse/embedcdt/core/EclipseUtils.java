@@ -40,6 +40,7 @@ import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.embedcdt.internal.core.Activator;
 
 /**
  * Various utilities that use Eclipse global classes, grouped together more like

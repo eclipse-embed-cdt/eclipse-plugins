@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.XpackUtils;
+import org.eclipse.embedcdt.internal.packs.core.Activator;
 
 /**
  * Class used to initialise default preference values.

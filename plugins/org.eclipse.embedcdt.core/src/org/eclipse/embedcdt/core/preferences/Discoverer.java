@@ -23,10 +23,10 @@ import java.util.List;
 import org.eclipse.cdt.utils.WindowsRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.embedcdt.core.Activator;
 import org.eclipse.embedcdt.core.AltWindowsRegistry;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.StringUtils;
+import org.eclipse.embedcdt.internal.core.Activator;
 
 /**
  * Helper class used by debuggers.

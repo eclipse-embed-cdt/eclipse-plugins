@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.cdt.ui.newui.AbstractCPropertyTab;
+import org.eclipse.embedcdt.internal.packs.ui.Activator;
 import org.eclipse.embedcdt.packs.core.data.Repos;
-import org.eclipse.embedcdt.packs.ui.Activator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;

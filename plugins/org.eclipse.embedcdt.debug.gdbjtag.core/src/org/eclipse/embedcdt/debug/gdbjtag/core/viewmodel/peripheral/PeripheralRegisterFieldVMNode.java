@@ -19,7 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.PeripheralValue;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdEnumeratedValueDMNode;
@@ -27,6 +26,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdEnumerationDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdFieldDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdObjectDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdUtils;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 
 public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {

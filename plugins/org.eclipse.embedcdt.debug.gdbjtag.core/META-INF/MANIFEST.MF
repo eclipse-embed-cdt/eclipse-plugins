@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag.core;singleton:=true
 Bundle-Version: 5.0.0.qualifier
-Bundle-Activator: org.eclipse.embedcdt.debug.gdbjtag.core.Activator
+Bundle-Activator: org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator
 Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.0.0",
  org.eclipse.embedcdt.debug.core;bundle-version="2.0.0",
  org.eclipse.embedcdt.packs.core;bundle-version="3.0.0",
@@ -29,7 +29,8 @@ Export-Package: org.eclipse.embedcdt.debug.gdbjtag.core,
  org.eclipse.embedcdt.debug.gdbjtag.core.preferences,
  org.eclipse.embedcdt.debug.gdbjtag.core.properties,
  org.eclipse.embedcdt.debug.gdbjtag.core.services,
- org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral
+ org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral,
+ org.eclipse.embedcdt.internal.debug.gdbjtag.core;x-internal:=true
 Import-Package: org.eclipse.embedcdt.packs.core.data.xcdl,
  org.eclipse.jface.preference
 Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.core

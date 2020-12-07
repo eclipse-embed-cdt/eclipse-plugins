@@ -18,7 +18,6 @@ package org.eclipse.embedcdt.internal.ui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.embedcdt.ui.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {

@@ -17,6 +17,7 @@
 
 package org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui;
 
+import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.Activator;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;

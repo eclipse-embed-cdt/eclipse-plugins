@@ -24,8 +24,8 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralRe
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralRegisterVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralTopVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralTreeVMNode;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral.PeripheralColumnInfo.ColumnType;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Activator;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;

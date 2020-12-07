@@ -19,7 +19,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.ui.Messages;
 import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;

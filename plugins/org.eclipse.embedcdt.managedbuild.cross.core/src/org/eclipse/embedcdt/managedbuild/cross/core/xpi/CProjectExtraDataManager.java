@@ -20,7 +20,7 @@ import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.embedcdt.core.CProjectPacksStorage;
 import org.eclipse.embedcdt.debug.core.data.ICProjectExtraDataManager;
-import org.eclipse.embedcdt.managedbuild.cross.core.Activator;
+import org.eclipse.embedcdt.internal.managedbuild.cross.core.Activator;
 
 public class CProjectExtraDataManager implements ICProjectExtraDataManager {
 

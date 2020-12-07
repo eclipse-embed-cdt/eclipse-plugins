@@ -56,7 +56,6 @@ import org.eclipse.debug.core.model.IMemoryBlockExtension;
 import org.eclipse.debug.core.model.IMemoryBlockRetrieval;
 import org.eclipse.debug.core.model.MemoryByte;
 import org.eclipse.embedcdt.core.SystemJob;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.PeripheralDMContext;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.PeripheralDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdPeripheralDMNode;
@@ -67,6 +66,7 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralRe
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralRegisterVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralTopVMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral.PeripheralTreeVMNode;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 import org.osgi.framework.Filter;
 
 @SuppressWarnings("restriction")

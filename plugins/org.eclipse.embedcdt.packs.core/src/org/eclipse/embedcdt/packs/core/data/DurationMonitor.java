@@ -16,7 +16,7 @@
 
 package org.eclipse.embedcdt.packs.core.data;
 
-import org.eclipse.embedcdt.packs.core.Activator;
+import org.eclipse.embedcdt.internal.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.Utils;
 

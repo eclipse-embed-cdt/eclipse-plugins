@@ -16,10 +16,10 @@ package org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral;
 
 import java.math.BigInteger;
 
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdPeripheralDMNode;
 import org.eclipse.embedcdt.debug.gdbjtag.core.memory.PeripheralMemoryBlockExtension;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 public class PeripheralTopVMNode extends PeripheralGroupVMNode {
 

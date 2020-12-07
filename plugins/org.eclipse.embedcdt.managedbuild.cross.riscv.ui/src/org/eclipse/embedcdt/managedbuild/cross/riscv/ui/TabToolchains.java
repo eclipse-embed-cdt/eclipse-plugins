@@ -38,6 +38,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.Activator;
 import org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.Messages;
 import org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.preferences.GlobalToolchainsPathsPreferencesPage;
 import org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.preferences.WorkspaceToolchainsPathsPreferencesPage;

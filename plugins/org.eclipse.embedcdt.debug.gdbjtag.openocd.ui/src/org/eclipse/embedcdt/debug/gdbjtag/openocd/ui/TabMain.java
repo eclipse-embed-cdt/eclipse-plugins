@@ -17,6 +17,7 @@
 package org.eclipse.embedcdt.debug.gdbjtag.openocd.ui;
 
 import org.eclipse.cdt.launch.ui.CMainTab2;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.openocd.ui.Activator;
 
 public class TabMain extends CMainTab2 {
 

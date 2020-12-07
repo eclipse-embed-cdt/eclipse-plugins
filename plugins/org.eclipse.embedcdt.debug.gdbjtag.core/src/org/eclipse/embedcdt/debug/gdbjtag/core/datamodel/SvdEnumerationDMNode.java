@@ -17,7 +17,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.packs.core.tree.AbstractTreePreOrderIterator;
 import org.eclipse.embedcdt.packs.core.tree.ITreeIterator;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;

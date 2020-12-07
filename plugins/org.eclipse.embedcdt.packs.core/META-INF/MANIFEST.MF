@@ -3,12 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.packs.core;singleton:=true
 Bundle-Version: 3.0.0.qualifier
-Bundle-Activator: org.eclipse.embedcdt.packs.core.Activator
+Bundle-Activator: org.eclipse.embedcdt.internal.packs.core.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.packs.core,
+Export-Package: org.eclipse.embedcdt.internal.packs.core;x-internal:=true,
+ org.eclipse.embedcdt.packs.core,
  org.eclipse.embedcdt.packs.core.data,
  org.eclipse.embedcdt.packs.core.data.cmsis,
  org.eclipse.embedcdt.packs.core.data.xcdl,

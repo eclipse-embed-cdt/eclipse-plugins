@@ -24,7 +24,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.embedcdt.templates.core.Activator;
+import org.eclipse.embedcdt.internal.templates.core.Activator;
 
 public class SetPropertyIfHasNature extends ProcessRunner {
 

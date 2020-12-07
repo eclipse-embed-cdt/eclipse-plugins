@@ -25,5 +25,5 @@ Export-Package: org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui;x-intern
  org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.properties;x-internal:=true,
  org.eclipse.embedcdt.managedbuild.cross.arm.ui,
  org.eclipse.embedcdt.managedbuild.cross.arm.ui.preferences
-Bundle-Activator: org.eclipse.embedcdt.managedbuild.cross.arm.ui.Activator
+Bundle-Activator: org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.Activator
 Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.cross.arm.ui

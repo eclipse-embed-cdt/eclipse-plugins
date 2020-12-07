@@ -17,10 +17,10 @@ package org.eclipse.embedcdt.internal.managedbuild.cross.ui.properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.embedcdt.internal.managedbuild.cross.ui.Activator;
 import org.eclipse.embedcdt.internal.managedbuild.cross.ui.Messages;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.managedbuild.cross.ui.Activator;
 import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;

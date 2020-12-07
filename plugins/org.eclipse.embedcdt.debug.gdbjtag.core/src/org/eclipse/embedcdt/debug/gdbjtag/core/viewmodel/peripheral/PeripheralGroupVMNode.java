@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IRegister;
 import org.eclipse.debug.core.model.IRegisterGroup;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdDMNode;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 
 /**
  * Register groups are a structuring method to group related registers in the

@@ -17,7 +17,7 @@ package org.eclipse.embedcdt.internal.debug.gdbjtag.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.embedcdt.debug.gdbjtag.core.preferences.PersistentPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.ui.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Messages;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.render.peripheral.PeripheralColumnLabelProvider;
 import org.eclipse.embedcdt.ui.ThemeColorFieldEditor;

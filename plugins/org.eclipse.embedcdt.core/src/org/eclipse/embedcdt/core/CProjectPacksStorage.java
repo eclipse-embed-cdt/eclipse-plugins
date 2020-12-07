@@ -24,6 +24,7 @@ import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.internal.core.Configuration;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.embedcdt.internal.core.Activator;
 
 @SuppressWarnings("restriction")
 public class CProjectPacksStorage {

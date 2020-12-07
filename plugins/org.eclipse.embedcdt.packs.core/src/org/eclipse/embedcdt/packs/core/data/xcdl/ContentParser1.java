@@ -18,7 +18,7 @@ package org.eclipse.embedcdt.packs.core.data.xcdl;
 import java.util.List;
 
 import org.eclipse.embedcdt.core.Xml;
-import org.eclipse.embedcdt.packs.core.Activator;
+import org.eclipse.embedcdt.internal.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.PackNode;

@@ -17,6 +17,7 @@
 package org.eclipse.embedcdt.debug.gdbjtag.qemu.ui;
 
 import org.eclipse.cdt.launch.ui.CMainTab2;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Activator;
 
 public class TabMain extends CMainTab2 {
 

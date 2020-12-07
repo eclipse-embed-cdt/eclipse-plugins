@@ -34,6 +34,7 @@ import org.eclipse.embedcdt.core.CProjectPacksStorage;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.JsonUtils;
 import org.eclipse.embedcdt.core.StringUtils;
+import org.eclipse.embedcdt.internal.managedbuild.packs.ui.Activator;
 import org.eclipse.embedcdt.internal.managedbuild.packs.ui.Messages;
 import org.eclipse.embedcdt.packs.core.PackType;
 import org.eclipse.embedcdt.packs.core.data.DataManager;

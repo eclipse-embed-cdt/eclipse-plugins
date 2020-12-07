@@ -19,7 +19,6 @@ package org.eclipse.embedcdt.internal.debug.gdbjtag.jlink.ui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.embedcdt.debug.gdbjtag.jlink.ui.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages {

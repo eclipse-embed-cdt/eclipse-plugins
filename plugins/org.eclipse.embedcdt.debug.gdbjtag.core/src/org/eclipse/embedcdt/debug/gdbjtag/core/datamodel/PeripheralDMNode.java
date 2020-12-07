@@ -17,7 +17,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.debug.core.model.IMemoryBlockExtension;
-import org.eclipse.embedcdt.debug.gdbjtag.core.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 
 /**
