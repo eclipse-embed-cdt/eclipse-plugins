@@ -8,7 +8,26 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.internal.ui;x-internal:=true,
+Export-Package: org.eclipse.embedcdt.internal.ui;
+  x-friends:="org.eclipse.embedcdt.codered.ui,
+   org.eclipse.embedcdt.debug.gdbjtag.jlink.ui,
+   org.eclipse.embedcdt.debug.gdbjtag.openocd.ui,
+   org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui,
+   org.eclipse.embedcdt.debug.gdbjtag.qemu.ui,
+   org.eclipse.embedcdt.debug.gdbjtag.restart.ui,
+   org.eclipse.embedcdt.debug.gdbjtag.ui,
+   org.eclipse.embedcdt.managedbuild.cross.arm.ui,
+   org.eclipse.embedcdt.managedbuild.cross.riscv.ui,
+   org.eclipse.embedcdt.managedbuild.cross.ui,
+   org.eclipse.embedcdt.managedbuild.packs.ui,
+   org.eclipse.embedcdt.packs.ui,
+   org.eclipse.embedcdt.templates.ad.ui,
+   org.eclipse.embedcdt.templates.cortexm.ui,
+   org.eclipse.embedcdt.templates.freescale.pe.ui,
+   org.eclipse.embedcdt.templates.freescale.ui,
+   org.eclipse.embedcdt.templates.sifive.ui,
+   org.eclipse.embedcdt.templates.stm.ui,
+   org.eclipse.embedcdt.ui",
  org.eclipse.embedcdt.internal.ui.preferences;x-internal:=true,
  org.eclipse.embedcdt.internal.ui.properties;x-internal:=true,
  org.eclipse.embedcdt.ui,

@@ -18,7 +18,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: org.eclipse.embedcdt.internal.managedbuild.cross.riscv.core;x-internal:=true,
+Export-Package: org.eclipse.embedcdt.internal.managedbuild.cross.riscv.core;x-friends:="org.eclipse.embedcdt.managedbuild.cross.riscv.ui",
  org.eclipse.embedcdt.managedbuild.cross.riscv.core,
  org.eclipse.embedcdt.managedbuild.cross.riscv.core.preferences
 Automatic-Module-Name: org.eclipse.embedcdt.managedbuild.cross.riscv.core

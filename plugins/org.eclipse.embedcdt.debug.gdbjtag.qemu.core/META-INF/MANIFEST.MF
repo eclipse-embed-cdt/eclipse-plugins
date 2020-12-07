@@ -20,5 +20,5 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.embedcdt.debug.gdbjtag.qemu.core,
  org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsf,
  org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences,
- org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.core;x-internal:=true
+ org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.core;x-friends:="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui"
 Automatic-Module-Name: org.eclipse.embedcdt.debug.gdbjtag.qemu.core
