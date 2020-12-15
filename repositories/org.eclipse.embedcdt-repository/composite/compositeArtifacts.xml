@@ -7,6 +7,6 @@
     <property name='p2.timestamp' value='1608058606601'/>
   </properties>
   <children size='1'>
-    <child location='../../releases/6.0.0'/>
+    <child location='../../releases/6.0.0/p2'/>
   </children>
 </repository>
