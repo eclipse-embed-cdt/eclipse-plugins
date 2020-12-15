@@ -6,6 +6,6 @@ These files are copied by the Jenkins `create-composite` job
 
 to
 
-- https://download.eclipse.org/embed-cdt/releases/6.0
+- https://download.eclipse.org/embed-cdt/updates/v6
 
 which will create a composite update site.
