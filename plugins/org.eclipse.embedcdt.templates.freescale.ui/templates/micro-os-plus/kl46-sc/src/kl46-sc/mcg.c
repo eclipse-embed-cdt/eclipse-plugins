@@ -147,7 +147,7 @@ int pll_init(int crystal_val, unsigned char hgo_val, unsigned char erefs_val, si
   // Wait for clock status bits to show clock source is ext ref clk
   for (i = 0 ; i < 2000 ; i++)
   {
-    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x2) break; // jump out early if CLKST shows EXT CLK slected before loop finishes
+    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x2) break; // jump out early if CLKST shows EXT CLK selected before loop finishes
   }
   if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) != 0x2) return 0x1A; // check EXT CLK is really selected and return with error if not
 
@@ -231,7 +231,7 @@ int pee_pbe(int crystal_val)
 // Wait for clock status bits to update 
   for (i = 0 ; i < 2000 ; i++)
   {
-    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x2) break; // jump out early if CLKST shows EXT CLK slected before loop finishes
+    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x2) break; // jump out early if CLKST shows EXT CLK selected before loop finishes
   }
   if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) != 0x2) return 0x1A; // check EXT CLK is really selected and return with error if not
 
@@ -573,7 +573,7 @@ int fbe_fei(int slow_irc_freq)
 // Wait for clock status bits to show clock source is ext ref clk
   for (i = 0 ; i < 2000 ; i++)
   {
-    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x0) break; // jump out early if CLKST shows EXT CLK slected before loop finishes
+    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x0) break; // jump out early if CLKST shows EXT CLK selected before loop finishes
   }
   if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) != 0x0) return 0x18; // check EXT CLK is really selected and return with error if not
 
@@ -686,7 +686,7 @@ int fei_fbe(int crystal_val, unsigned char hgo_val, unsigned char erefs_val)
 // Wait for clock status bits to show clock source is ext ref clk
   for (i = 0 ; i < 2000 ; i++)
   {
-    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x2) break; // jump out early if CLKST shows EXT CLK slected before loop finishes
+    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x2) break; // jump out early if CLKST shows EXT CLK selected before loop finishes
   }
   if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) != 0x2) return 0x1A; // check EXT CLK is really selected and return with error if not
  
@@ -761,7 +761,7 @@ int fee_fbe(int crystal_val)
 /// Wait for clock status bits to show clock source is ext ref clk
   for (i = 0 ; i < 2000 ; i++)
   {
-    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x2) break; // jump out early if CLKST shows EXT CLK slected before loop finishes
+    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x2) break; // jump out early if CLKST shows EXT CLK selected before loop finishes
   }
   if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) != 0x2) return 0x1A; // check EXT CLK is really selected and return with error if not
   
@@ -835,7 +835,7 @@ int fbe_fbi(int irc_freq, unsigned char irc_select)
 // Wait for clock status bits to update
   for (i = 0 ; i < 2000 ; i++)
   {
-    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x1) break; // jump out early if CLKST shows IRC slected before loop finishes
+    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x1) break; // jump out early if CLKST shows IRC selected before loop finishes
   }
   if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) != 0x1) return 0x19; // check IRC is really selected and return with error if not
   
@@ -948,7 +948,7 @@ int fbi_fbe(int crystal_val, unsigned char hgo_val, unsigned char erefs_val)
 // Wait for clock status bits to show clock source is ext ref clk
   for (i = 0 ; i < 2000 ; i++)
   {
-    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x2) break; // jump out early if CLKST shows EXT CLK slected before loop finishes
+    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x2) break; // jump out early if CLKST shows EXT CLK selected before loop finishes
   }
   if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) != 0x2) return 0x1A; // check EXT CLK is really selected and return with error if not
  
@@ -1225,7 +1225,7 @@ int fee_fbi(int irc_freq, unsigned char irc_select)
 // Wait for clock status bits to update
   for (i = 0 ; i < 2000 ; i++)
   {
-    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x1) break; // jump out early if CLKST shows IRC slected before loop finishes
+    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x1) break; // jump out early if CLKST shows IRC selected before loop finishes
   }
   if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) != 0x1) return 0x19; // check IRC is really selected and return with error if not
   
@@ -1291,7 +1291,7 @@ int fbi_fei(int slow_irc_freq)
 // Wait for clock status bits to show clock source is ext ref clk
   for (i = 0 ; i < 2000 ; i++)
   {
-    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x0) break; // jump out early if CLKST shows FLL slected before loop finishes
+    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x0) break; // jump out early if CLKST shows FLL selected before loop finishes
   }
   if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) != 0x0) return 0x18; // check FLL is really selected and return with error if not
 
@@ -1361,7 +1361,7 @@ int fei_fbi(int irc_freq, unsigned char irc_select)
 // Wait for clock status bits to update
   for (i = 0 ; i < 2000 ; i++)
   {
-    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x1) break; // jump out early if CLKST shows IRC slected before loop finishes
+    if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) == 0x1) break; // jump out early if CLKST shows IRC selected before loop finishes
   }
   if (((MCG_S & MCG_S_CLKST_MASK) >> MCG_S_CLKST_SHIFT) != 0x1) return 0x19; // check IRC is really selected and return with error if not
   
