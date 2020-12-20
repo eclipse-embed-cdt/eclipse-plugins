@@ -43,8 +43,8 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- https://download.eclipse.org/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202012080907.zip
-- https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/
+- https://download.eclipse.org/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202012080907.zip
+- https://download.eclipse.org/embed-cdt/releases/6.1.0/p2/
 
 Packages are published at:
 
@@ -97,7 +97,7 @@ page, click the
 [Milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/)
 button and add a
 [new](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/new/)
-milestone. As title, use the current version, like _v6.0.0_.
+milestone. As title, use the current version, like _v6.1.0_.
 
 ### Fix issues
 
@@ -185,14 +185,14 @@ page, click the
 [Create a new release](https://projects.eclipse.org/node/18638/create-release/)
 link in the right side bar.
 
-Name it like `6.0.0` (no v).
+Name it like `6.1.0` (no v).
 
 Click on Edit, The Basics; switch to Source mode
 
 Start with _Release candidate_ (Header 3).
 
 ```html
-<p>Version <strong>6.0.0</strong> is a major/new/maintenance release; if fixes XXX.</p>
+<p>Version <strong>6.1.0</strong> is a major/new/maintenance release; if fixes XXX.</p>
 
 <h3>Release candidate</h3>
 
@@ -282,7 +282,7 @@ In Eclipse:
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release
 candidate p2 URL (like
-`https://download.eclipse.org/embed-cdt/release-candidates/6.0.0-202012080907/p2/`
+`https://download.eclipse.org/embed-cdt/release-candidates/6.1.0-202012080907/p2/`
 and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**
@@ -291,7 +291,7 @@ and press Enter
 - Save
 
 ```bash
-git commit -m 'embedcdt: update for 6.0.0-202012080907'
+git commit -m 'embedcdt: update for 6.1.0-202012080907'
 git push ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build HEAD:refs/for/master
 ```
 
@@ -310,7 +310,7 @@ In about one hour it'll automatically rebuild the staging repo:
 
 Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
 use a subject like
-**Embed CDT v6.0.0-202012080907 release candidate**,
+**Embed CDT v6.1.0-202012080907 release candidate**,
 and pass a link to the release page.
 
 Beta testers can install the release candidate from:
@@ -323,7 +323,7 @@ Go to the release candidate folder
 
 - [https://download.eclipse.org/embed-cdt/release-candidates/](https://download.eclipse.org/embed-cdt/release-candidates/)
 
-Copy the tag and enter it in Git, like `v6.0.0-202011301954` (with `v`).
+Copy the tag and enter it in Git, like `v6.1.0-202011301954` (with `v`).
 
 ## Publish the final release
 
@@ -349,7 +349,7 @@ Both can be used in Eclipse to **Install New Software**.
 The public update URLs are:
 
 - https://download.eclipse.org/embed-cdt/updates/v6/
-- https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/
+- https://download.eclipse.org/embed-cdt/releases/6.1.0/p2/
 
 ### Update the Eclipse Marketplace records
 
@@ -383,7 +383,7 @@ and select the new release
 <p>To get exactly this version, <strong>Install New Software</strong> from:</p>
 
 <ul>
-	<li><a href="https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/">https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/</a></li>
+	<li><a href="https://download.eclipse.org/embed-cdt/releases/6.1.0/p2/">https://download.eclipse.org/embed-cdt/releases/6.1.0/p2/</a></li>
 </ul>
 
 <h3>Local install</h3>
@@ -391,20 +391,20 @@ and select the new release
 <p>For manual installs, the plug-ins are also available as regular archives, that can be downloaded locally and installed.</p>
 
 <ul>
-	<li><a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202012080907.zip">org.eclipse.embedcdt.repository-6.0.0-202012080907.zip</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202012080907.zip.sha">(SHA)</a></li>
+	<li><a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202012080907.zip">org.eclipse.embedcdt.repository-6.1.0-202012080907.zip</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202012080907.zip.sha">(SHA)</a></li>
 </ul>
 ```
 
 As links for the latest two, open https://download.eclipse.org/embed-cdt/releases/
 and get something like:
 
-- https://download.eclipse.org/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202012080907.zip
-- https://download.eclipse.org/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202012080907.zip.sha
+- https://download.eclipse.org/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202012080907.zip
+- https://download.eclipse.org/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202012080907.zip.sha
 
 Update the URLs to use the download redirect:
 
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202012080907.zip
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.0.0/org.eclipse.embedcdt.repository-6.0.0-202012080907.zip.sha
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202012080907.zip
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202012080907.zip.sha
 
 Remove the _Pre-release_ top header.
 
@@ -429,7 +429,7 @@ In Eclipse:
 - select **Mapped Repository**
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release p2 URL
-(like `https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/`
+(like `https://download.eclipse.org/embed-cdt/releases/6.1.0/p2/`
 and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**
@@ -437,7 +437,7 @@ and press Enter
 - select the Aggregation and **Validate**
 
 ```bash
-git commit -m 'embedcdt: update for 6.0.0'
+git commit -m 'embedcdt: update for 6.1.0'
 git push ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build HEAD:refs/for/master
 ```
 
@@ -510,12 +510,12 @@ available from:
 
 ## Add Git tag
 
-Add a tag like `v6.0.0` (with `v`).
+Add a tag like `v6.1.0` (with `v`).
 
 ### Announce release
 
 Announce the release to the **embed-cdt-dev@eclipse.org** list;
-use a subject like **Embed CDT v6.0.0 released**, and
+use a subject like **Embed CDT v6.1.0 released**, and
 pass a link to the release page.
 
 Beta testers can install the pre-release from:
@@ -526,6 +526,6 @@ Beta testers can install the pre-release from:
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@embedCDT` account, enter a message like
-  **Embed CDT v6.0.0 released** and on the next line
+  **Embed CDT v6.1.0 released** and on the next line
   paste the link to the release
 - click the Tweet button
