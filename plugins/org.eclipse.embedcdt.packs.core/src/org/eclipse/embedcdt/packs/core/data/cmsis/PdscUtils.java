@@ -15,14 +15,13 @@
 package org.eclipse.embedcdt.packs.core.data.cmsis;
 
 import org.eclipse.embedcdt.core.zafarkhaja.semver.Version;
-import org.json.simple.JSONObject;
 
 /**
  * Static class used to support the PDSC parsing.
  */
 public class PdscUtils {
 
-	private static int highestMinorForOne = 6;
+	private static int highestMinorForOne = 7;
 
 	/**
 	 * Validate the schema version.
