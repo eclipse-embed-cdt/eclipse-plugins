@@ -14,6 +14,8 @@
 
 package org.eclipse.embedcdt.packs.core.data.cmsis;
 
+import java.util.Arrays;
+
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.Property;
@@ -177,13 +179,33 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		if (node.hasChildren()) {
 			for (Leaf child : ((Node) node).getChildren()) {
-				processDevicePropertiesGroup(child, deviceNode);
+				if (child.isType("variant")) {
+					processVariantNode(child, deviceNode); 
+				} else {
+					processDevicePropertiesGroup(child, deviceNode);
+				}
 			}
 		}
 
 		if (fCount == saveCount) {
 			fCount++; // If there were no variants, count this device
 		}
+	}
+	
+	private void processVariantNode(Leaf node, Node parent) {
+		// Required
+		String variantName = node.getProperty("Dvariant");
+
+		Node variantNode = Node.addUniqueChild(parent, Type.VARIANT, variantName);
+		if (node.hasChildren()) {
+			for (Leaf child : ((Node) node).getChildren()) {
+				if (child.isType("feature")) {
+					processFeatureNode(child, variantNode);
+				}
+			}
+		}
+		
+		fCount++;
 	}
 
 	private void processDevicePropertiesGroup(Leaf node, Node parent) {
@@ -365,8 +387,17 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		// String name = el.getAttribute("name").trim();
 		// String Pname = el.getAttribute("Pname").trim();
 
-		if ("XTAL".equals(featureType)) {
-			parent.putNonEmptyProperty(Property.CLOCK, featureN);
+		if (!featureN.isEmpty()) {
+			String packages[] = new String[]{"QFP", "QFN", "BGA", "SOP", "DIP"};
+			if (Arrays.asList(packages).contains(featureType)) {
+				parent.putNonEmptyProperty(Property.CHIP_PACKAGE, featureType);
+				parent.putNonEmptyProperty(Property.CHIP_PINS, featureN);
+			} else if ("PackageOther".equals(featureType)) {
+				parent.putNonEmptyProperty(Property.CHIP_PACKAGE, "other");
+				parent.putNonEmptyProperty(Property.CHIP_PINS, featureN);
+			} else if ("XTAL".equals(featureType)) {
+				parent.putNonEmptyProperty(Property.CLOCK, featureN);
+			}
 		}
 	}
 

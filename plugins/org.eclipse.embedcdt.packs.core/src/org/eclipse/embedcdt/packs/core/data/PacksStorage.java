@@ -45,7 +45,8 @@ public class PacksStorage {
 	public static final String CONTENT_XML_VERSION = "1.1";
 
 	public static final String INSTALLED_DEVICES_FILE_NAME = ".installed_devices_boards_books.xml";
-
+	public static final String INSTALLED_DEVICES_XML_VERSION = "1.2";
+	
 	private static IPath fgFolderPath = null;
 
 	private final static int TIME_OUT = 60 * 000;

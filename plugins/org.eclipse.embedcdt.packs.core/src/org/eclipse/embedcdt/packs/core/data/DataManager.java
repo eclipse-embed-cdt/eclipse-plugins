@@ -41,6 +41,8 @@ import org.eclipse.embedcdt.packs.core.PackType;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.cmsis.PdscGenericParser;
 import org.eclipse.embedcdt.packs.core.data.cmsis.PdscTreeParserForBuild;
+import org.eclipse.embedcdt.packs.core.data.xcdl.InstalledDevicesParser;
+import org.eclipse.embedcdt.packs.core.data.xcdl.InstalledDevicesSerialiser;
 import org.eclipse.embedcdt.packs.core.jstree.JsNode;
 import org.eclipse.embedcdt.packs.core.tree.AbstractTreePreOrderIterator;
 import org.eclipse.embedcdt.packs.core.tree.ITreeIterator;
@@ -823,13 +825,13 @@ public class DataManager implements IPacksDataManager {
 
 				// If the cached file exists, try to use it
 				rootNode = loadCachedInstalledObjectsForBuild(devicesFile);
-				// However, it may fail
+				// However, it may fail if the version does not match.
 			}
 
 		} catch (IOException e1) {
 			;
 		}
-
+		
 		if (rootNode != null) {
 			ITreeIterator packNodes = new AbstractTreePreOrderIterator() {
 
@@ -883,7 +885,7 @@ public class DataManager implements IPacksDataManager {
 
 				fOut.println("Writing cache file \"" + devicesFile + "\".");
 				// Save cached file for future use
-				GenericSerialiser serialiser = new GenericSerialiser();
+				GenericSerialiser serialiser = new InstalledDevicesSerialiser();
 				try {
 					serialiser.serialise(rootNode, devicesFile);
 				} catch (IOException e) {
@@ -1315,7 +1317,7 @@ public class DataManager implements IPacksDataManager {
 		try {
 			// Parse the cached file
 			Document document = Xml.parseFile(file);
-			GenericParser parser = new GenericParser();
+			GenericParser parser = new InstalledDevicesParser();
 			node = parser.parse(document);
 		} catch (SAXParseException e) {
 			String msg = e.getMessage() + ", file: " + file.getName() + ", line: " + e.getLineNumber() + ", column: "
@@ -1526,7 +1528,7 @@ public class DataManager implements IPacksDataManager {
 
 			@Override
 			public boolean isIterable(Leaf node) {
-				if (node.isType(Type.DEVICE)) {
+				if (node.isType(Type.DEVICE) || node.isType(Type.VARIANT)) {
 					return true;
 				}
 				return false;
@@ -1534,7 +1536,7 @@ public class DataManager implements IPacksDataManager {
 
 			@Override
 			public boolean isLeaf(Leaf node) {
-				if (node.isType(Type.DEVICE) || node.isType(Type.BOARDS_SUBTREE)) {
+				if (node.isType(Type.VARIANT) || node.isType(Type.BOARDS_SUBTREE)) {
 					return true;
 				}
 				return false;
