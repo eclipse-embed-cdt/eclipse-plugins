@@ -17,15 +17,20 @@
 package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -51,6 +56,7 @@ import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.IPacksDataManager;
 import org.eclipse.embedcdt.packs.core.data.JsonGenericParser;
 import org.eclipse.embedcdt.packs.core.data.PacksDataManagerFactoryProxy;
+import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.data.SvdGenericParser;
 import org.eclipse.embedcdt.packs.core.data.SvdJsGenericParser;
 import org.eclipse.embedcdt.packs.core.data.XmlJsGenericParser;
@@ -402,14 +408,13 @@ public class SvdUtils {
 	public static Leaf getTree(IPath path) throws CoreException {
 
 		assert path != null;
-
+		
 		IConsoleStream out = Activator.getInstance().getConsoleOutput();
 		try {
 
-			out.println("Parsing SVD file \"" + path.toOSString() + "\"...");
-
 			File file = path.toFile();
 			if (file == null) {
+				out.println("Parsing SVD file \"" + path.toOSString() + "\"...");
 				throw new IOException(path + " File object null.");
 			}
 
@@ -419,13 +424,64 @@ public class SvdUtils {
 			reader.read(chars);
 			reader.close();
 			String str = "";
-			// If the file starts with the Unicode BOM (0xEF,0xBB,0xBF),
-			// the first char must be skipped.
 			if (chars[0] == '\ufeff') {
 				str = (new String(Arrays.copyOfRange(chars, 1, chars.length - 1))).trim();
 			} else {
 				str = (new String(chars)).trim();
 			}
+			
+			IPath actualPath = path;
+			if (str.startsWith("PK")) {
+				out.println("Decompressing zipped SVD file \"" + path.toOSString() + "\"...");
+
+				// This is the signature of ZIP files.
+				ZipInputStream zipInput;
+				zipInput = new ZipInputStream(new FileInputStream(file));
+				// Get the zipped file list entry
+				ZipEntry zipEntry = zipInput.getNextEntry();
+				while (zipEntry != null) {
+					if (!zipEntry.isDirectory()) {
+						String fileName = zipEntry.getName();
+						
+						File outFile = PacksStorage.getCachedFileObject(fileName);
+						if (!outFile.getParentFile().exists()) {
+							outFile.getParentFile().mkdirs();
+						}
+						out.println("Writing \"" + outFile + "\"...");
+
+						OutputStream output = new FileOutputStream(outFile);
+
+						byte[] buf = new byte[1024];
+						int bytesRead;
+						while ((bytesRead = zipInput.read(buf)) > 0) {
+								output.write(buf, 0, bytesRead);
+						}
+						output.close();
+						actualPath = new Path(outFile.getAbsolutePath());
+						break;						
+					}
+					zipEntry = zipInput.getNextEntry();
+				}
+				zipInput.closeEntry();
+				zipInput.close();
+				
+				file = actualPath.toFile();
+				reader = new FileReader(file);
+				chars = new char[10];
+				reader.read(chars);
+				reader.close();
+				
+				str = " ";
+				if (chars[0] == '\ufeff') {
+					str = (new String(Arrays.copyOfRange(chars, 1, chars.length - 1))).trim();
+				} else {
+					str = (new String(chars)).trim();
+				}
+			}
+			
+			out.println("Parsing SVD file \"" + actualPath.toOSString() + "\"...");
+			// If the file starts with the Unicode BOM (0xEF,0xBB,0xBF),
+			// the first char must be skipped.
 
 			if (str.startsWith("<?xml ")) {
 				Document document = Xml.parseFile(file);
@@ -446,7 +502,7 @@ public class SvdUtils {
 				JsonGenericParser jsonParser = new XsvdGenericParser();
 				return jsonParser.parse(json);
 			} else {
-				String serr = "File format does not look like XML or JSON.";
+				String serr = "File format does not look like XML, JSON or ZIP";
 				Activator.log(serr);
 				throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, serr));
 			}

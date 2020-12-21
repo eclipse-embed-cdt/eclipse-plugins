@@ -17,6 +17,7 @@ package org.eclipse.embedcdt.core;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +39,14 @@ public class Xml {
 
 	public static Document parseFile(File file) throws ParserConfigurationException, SAXException, IOException {
 
-		InputSource inputSource = new InputSource(new FileInputStream(file));
+		InputStream inputStream = new FileInputStream(file);
+
+		return parseInputStream(inputStream);
+	}
+
+	public static Document parseInputStream(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
+
+		InputSource inputSource = new InputSource(inputStream);
 
 		DocumentBuilder xml = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document document = xml.parse(inputSource);
