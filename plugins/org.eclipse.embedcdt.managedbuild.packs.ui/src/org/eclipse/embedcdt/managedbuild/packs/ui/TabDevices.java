@@ -310,6 +310,19 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 						// Ignore not number
 					}
 				}
+				
+				String chipPackage = node.getProperty(Property.CHIP_PACKAGE);
+				if (chipPackage.length() > 0 && ! "other".equals(chipPackage)) {
+					if (summary.length() > 0) {
+						summary += ", ";
+					}
+					summary += chipPackage;
+					
+					String chipPins = node.getProperty(Property.CHIP_PINS);
+					if (chipPins.length() > 0) {
+						summary += chipPins;
+					}
+				}
 			}
 
 			int ramKB = 0;
@@ -613,7 +626,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 		Node node = (Node) element;
 
-		if (!node.isType(Type.DEVICE)) {
+		if (!node.isType(Type.DEVICE) && !node.isType(Type.VARIANT)) {
 			// Do not allow selections for other nodes than devices
 			fDevicesTree.setSelection(StructuredSelection.EMPTY);
 			return;
