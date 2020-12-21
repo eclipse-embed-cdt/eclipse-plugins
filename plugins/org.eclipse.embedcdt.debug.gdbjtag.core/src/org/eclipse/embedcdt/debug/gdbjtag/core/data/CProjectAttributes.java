@@ -59,6 +59,16 @@ public class CProjectAttributes {
 		return atttributeValue;
 	}
 
+	public static String getCmsisDeviceVariantName(ILaunchConfiguration configuration) {
+
+		String variantName = getCmsisAttribute(configuration, CProjectPacksStorage.CMSIS_DEVICE_VARIANT_NAME);
+		if (!variantName.isEmpty()) {
+			return variantName;
+		}
+
+		return getCmsisDeviceName(configuration);
+	}
+
 	public static String getCmsisDeviceName(ILaunchConfiguration configuration) {
 
 		return getCmsisAttribute(configuration, CProjectPacksStorage.CMSIS_DEVICE_NAME);
