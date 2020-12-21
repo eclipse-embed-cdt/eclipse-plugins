@@ -827,6 +827,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				packType = st.getOption(CProjectPacksStorage.PACK_TYPE);
 
 				String deviceId = "";
+				String variantId = "";
 				String coreName = "";
 				String boardId = "";
 				String boardSupplierName = "";
@@ -835,6 +836,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 				if (packType == null || PackType.CMSIS.equals(packType)) {
 					packType = PackType.CMSIS;
+					variantId = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_VARIANT_NAME, "");
 					deviceId = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_NAME, "");
 					deviceSupplierId = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID, "");
 
@@ -843,6 +845,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 					boardId = st.getOption(CProjectPacksStorage.CMSIS_BOARD_NAME, "");
 					boardSupplierName = st.getOption(CProjectPacksStorage.CMSIS_BOARD_VENDOR_NAME, "");
 				} else if (PackType.XPACK_XCDL.equals(packType)) {
+					variantId = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_VARIANT_NAME, "");
 					deviceId = st.getOption(CProjectPacksStorage.DEVICE_KEY, "");
 					deviceSupplierId = st.getOption(CProjectPacksStorage.DEVICE_VENDOR_ID, "");
 
@@ -861,6 +864,10 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 						JSONObject packageJson = XcdlUtils.getPackageJson(project);
 
 						packType = PackType.XPACK_XCDL;
+						if (variantId.isEmpty()) {
+							variantId = (String) JsonUtils.get(packageJson, "config.xcdl.device.variant.id", "");
+							mustUpdate = true;
+						}
 						if (deviceId.isEmpty()) {
 							deviceId = (String) JsonUtils.get(packageJson, "config.xcdl.device.id", "");
 							mustUpdate = true;
@@ -890,7 +897,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				boolean wasSelected = false;
 
 				if (!boardId.isEmpty() && (!boardSupplierId.isEmpty() || !boardSupplierName.isEmpty())
-						&& !deviceId.isEmpty() && !deviceSupplierId.isEmpty()) {
+						&& !variantId.isEmpty() && !deviceId.isEmpty() && !deviceSupplierId.isEmpty()) {
 
 					// First try to select the device below board.
 					Leaf board;
@@ -906,7 +913,14 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 							} else {
 								name = child.getName();
 							}
-							if (child.isType(Type.DEVICE) && deviceId.equals(name)
+							if (child.isType(Type.DEVICE) && variantId.equals(name)
+									&& deviceSupplierId.equals(child.getProperty(Property.VENDOR_ID))) {
+
+								fDevicesTree.reveal(child);
+								fDevicesTree.setSelection(new StructuredSelection(child), true);
+								wasSelected = true;
+								break;
+							} else if (child.isType(Type.DEVICE) && deviceId.equals(name)
 									&& deviceSupplierId.equals(child.getProperty(Property.VENDOR_ID))) {
 
 								fDevicesTree.reveal(child);
@@ -920,7 +934,14 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 				if (!wasSelected) {
 					// Was not selected by the board, try device.
-					if (!deviceId.isEmpty() && !deviceSupplierId.isEmpty()) {
+					if (!variantId.isEmpty() && !deviceSupplierId.isEmpty()) {
+
+						Leaf device = fDataManager.findInstalledDevice(packType, deviceSupplierId, variantId, config);
+						if (device != null) {
+							fDevicesTree.setSelection(new StructuredSelection(device), true);
+							wasSelected = true;
+						}
+					} else if (!deviceId.isEmpty() && !deviceSupplierId.isEmpty()) {
 
 						Leaf device = fDataManager.findInstalledDevice(packType, deviceSupplierId, deviceId, config);
 						if (device != null) {
@@ -930,7 +951,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 					}
 				}
 
-				if (!deviceId.isEmpty()) {
+				if (!variantId.isEmpty()) {
+					fDeviceLabel.setText(variantId);
+				} else if (!deviceId.isEmpty()) {
 					fDeviceLabel.setText(deviceId);
 				}
 
@@ -993,7 +1016,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				String packType = null;
 				Leaf node = fSelectedDeviceNode;
 				while (node != null) {
-					if (node.isType(Type.DEVICE)) {
+					if (node.isType(Type.VARIANT)) {
+						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_VARIANT_NAME, node.getName());
+					} else if (node.isType(Type.DEVICE)) {
 						packType = node.getProperty(Property.PACK_TYPE, PackType.CMSIS);
 						if (PackType.CMSIS.equals(packType)) {
 							st.setOption(CProjectPacksStorage.CMSIS_DEVICE_NAME, node.getName());
