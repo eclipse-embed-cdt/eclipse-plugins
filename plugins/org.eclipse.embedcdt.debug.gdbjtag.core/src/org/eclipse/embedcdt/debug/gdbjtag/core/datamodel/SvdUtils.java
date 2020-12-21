@@ -216,6 +216,7 @@ public class SvdUtils {
 		Map<String, String> propertiesMap = dataManager.getExtraProperties(config);
 		if (propertiesMap != null && !propertiesMap.isEmpty()) {
 			packType = propertiesMap.get(CProjectPacksStorage.PACK_TYPE);
+			// At this point the variant is not relevant, the device is enough.
 			if (packType == null || PackType.CMSIS.equals(packType)) {
 				deviceVendorId = propertiesMap.get(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID);
 				deviceId = propertiesMap.get(CProjectPacksStorage.CMSIS_DEVICE_NAME);

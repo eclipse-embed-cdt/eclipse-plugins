@@ -603,6 +603,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 			st = new CProjectPacksStorage(fConfig);
 
 			String deviceVendorId = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID);
+			// Here the variant id is not relevant, the device is enough.
 			String deviceName = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_NAME);
 
 			String boardVendorName = st.getOption(CProjectPacksStorage.CMSIS_BOARD_VENDOR_NAME);
