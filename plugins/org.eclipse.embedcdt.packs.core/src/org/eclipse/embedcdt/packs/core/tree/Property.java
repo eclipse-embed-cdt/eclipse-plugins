@@ -37,6 +37,8 @@ public class Property {
 	// public static final String BOARD_NAME = "board.name";
 	public static final String BOARD_REVISION = "board.revision";
 	public static final String CATEGORY = "category";
+	public static final String CHIP_PACKAGE = "chip.package";
+	public static final String CHIP_PINS = "chip.pins";
 	public static final String CLOCK = "clock";
 	public static final String COMPILER_HEADERS = "compilerHeaders";
 	public static final String COMPILER_DEFINES = "compilerDefines";
