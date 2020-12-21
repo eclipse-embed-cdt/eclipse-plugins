@@ -1223,7 +1223,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE, stringDefault));
 
 				// If the project has assigned a device name, use it
-				stringDefault = CProjectAttributes.getCmsisDeviceName(configuration);
+				stringDefault = CProjectAttributes.getCmsisDeviceVariantName(configuration);
 				fSavedCmsisDeviceName = stringDefault;
 
 				// Device name
@@ -1940,7 +1940,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			defaultString = fPersistentPreferences.getGdbServerExecutable();
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE, defaultString);
 
-			String sharedName = CProjectAttributes.getCmsisDeviceName(configuration);
+			String sharedName = CProjectAttributes.getCmsisDeviceVariantName(configuration);
 			if (sharedName == null || sharedName.isEmpty()) {
 				sharedName = fPersistentPreferences.getFlashDeviceName();
 			}
