@@ -155,10 +155,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private static final int COLUMN_PAD = 30;
 
 	private static class Msgs {
-		public static final String INVALID_PYOCD_EXECUTABLE = "pyOCD gdbserver not found where specified";
-		public static final String INVALID_GDBSERVER_PORT = "pyOCD gdbserver port not specified";
-		public static final String INVALID_TELNET_PORT = "pyOCD telnet port not specified";
-		public static final String INVALID_GDBCLIENT_EXECUTABLE = "gdb client path is not valid";
+		public static final String INVALID_PYOCD_EXECUTABLE = "DebuggerTab.invalid_pyocd_executable";
+		public static final String INVALID_GDBSERVER_PORT = "DebuggerTab.invalid_gdbserver_port";
+		public static final String INVALID_TELNET_PORT = "DebuggerTab.invalid_telnet_port";
+		public static final String INVALID_GDBCLIENT_EXECUTABLE = "DebuggerTab.invalid_gdbclient_executable";
 	}
 	// ------------------------------------------------------------------------
 
@@ -881,7 +881,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.TabDebugger.updateActualpath() \"" + fullCommand + "\"");
 		}
-		fGdbServerPathLabel.setText(fullCommand);
+		if (fullCommand == null) {
+			fGdbServerPathLabel.setText("");
+		} else {
+			fGdbServerPathLabel.setText(fullCommand);
+		}
 	}
 
 	private void updateGdbClientActualPath() {
@@ -891,7 +895,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.TabDebugger.updateGdbClientActualPath() \"" + fullCommand + "\"");
 		}
-		fGdbClientPathLabel.setText(fullCommand);
+		if (fullCommand == null) {
+			fGdbClientPathLabel.setText("");
+		} else {
+			fGdbClientPathLabel.setText(fullCommand);
+		}
 	}
 
 	private void doStartGdbServerChanged() {
@@ -905,11 +913,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fGdbServerGdbPort.setEnabled(enabled);
 		fGdbServerTelnetPort.setEnabled(enabled);
+		fGdbServerProbeId.setEnabled(enabled);
 		fGdbServerBusSpeed.setEnabled(enabled);
 		fGdbServerOverrideTarget.setEnabled(enabled);
 		fGdbServerTargetName.setEnabled(enabled && fGdbServerOverrideTarget.getSelection());
 		fGdbServerHaltAtHardFault.setEnabled(enabled);
 		fGdbServerStepIntoInterrupts.setEnabled(enabled);
+		fGdbServerEnableSemihosting.setEnabled(enabled);
+		fGdbServerUseGdbSyscallsForSemihosting.setEnabled(enabled);
 		fGdbServerFlashMode.setEnabled(enabled);
 		fGdbServerFlashFastVerify.setEnabled(enabled);
 
@@ -939,7 +950,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	 */
 	private String getPyOCDExecutablePath() {
 		String path = Configuration.getGdbServerCommand(fConfiguration, fGdbServerExecutable.getText());
-		if (path.isEmpty()) {
+		if (path == null || path.isEmpty()) {
+			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
 			return null;
 		}
 
@@ -1733,7 +1745,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	 */
 	private void registerError(String msg) {
 		if (fErrors.isEmpty()) {
-			setErrorMessage(msg);
+			setErrorMessage(Messages.getString(msg));
 		}
 		fErrors.add(msg);
 	}
@@ -1748,7 +1760,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			if (fErrors.isEmpty()) {
 				setErrorMessage(null);
 			} else {
-				setErrorMessage(fErrors.iterator().next());
+				setErrorMessage(Messages.getString(fErrors.iterator().next()));
 			}
 		}
 	}
