@@ -186,7 +186,7 @@ public class PyOCD {
 
 	public static List<Board> getBoards(String pyOCDPath) {
 
-		JSONObject output = getJsonOutput(pyOCDPath, "--list");
+		JSONObject output = getJsonOutput(pyOCDPath, "--probes");
 		// System.out.printf("pyOCD boards = %s\n", output);
 
 		if (!checkOutput(output)) {
@@ -228,7 +228,7 @@ public class PyOCD {
 
 	public static List<Target> getTargets(String pyOCDPath) {
 
-		JSONObject output = getJsonOutput(pyOCDPath, "--list-targets");
+		JSONObject output = getJsonOutput(pyOCDPath, "--targets");
 		// System.out.printf("pyOCD targets = %s\n", output);
 
 		if (!checkOutput(output)) {
@@ -288,7 +288,7 @@ public class PyOCD {
 
 		String[] cmdArray = new String[3];
 		cmdArray[0] = pyOCDPath;
-		cmdArray[1] = "--json";
+		cmdArray[1] = "json";
 		cmdArray[2] = listArg;
 
 		final Process process;

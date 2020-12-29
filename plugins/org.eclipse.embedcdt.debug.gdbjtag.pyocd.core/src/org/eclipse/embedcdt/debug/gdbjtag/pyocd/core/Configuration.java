@@ -19,12 +19,17 @@ package org.eclipse.embedcdt.debug.gdbjtag.pyocd.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
+import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
+import org.eclipse.cdt.dsf.gdb.launching.LaunchUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.EclipseUtils;
@@ -38,6 +43,41 @@ import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator;
 public class Configuration {
 
 	// ------------------------------------------------------------------------
+	
+	public static String getSymbolsFileName(ILaunchConfiguration config) {
+		try {
+			ICProject cproject = LaunchUtils.getCProject(config);
+			IPath programPath = LaunchUtils.verifyProgramPath(config, cproject);
+			if (programPath == null) {
+				return null;
+			}
+
+			String symbolsFileName = null;
+			if (config.hasAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)
+					&& config.getAttribute(
+							IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+							IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS)) {
+				if (programPath != null) {
+					symbolsFileName = programPath.toOSString();
+				}
+			} else {
+				symbolsFileName = config.getAttribute(
+						IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
+						IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
+				if (!symbolsFileName.isEmpty()) {
+					symbolsFileName = DebugUtils.resolveAll(symbolsFileName,
+							config.getAttributes());
+				} else {
+					symbolsFileName = null;
+				}
+			}
+			
+			return symbolsFileName;
+		}
+		catch (CoreException e) {
+			return null;
+		}
+	}
 
 	public static String getGdbServerCommand(ILaunchConfiguration configuration, String executable) {
 
@@ -83,6 +123,12 @@ public class Configuration {
 
 			lst.add(executable);
 
+			// gdbserver subcommand
+			lst.add("gdbserver");
+			
+			// disable waiting for a board to be connected
+			lst.add("--no-wait");
+
 			// GDB port
 			lst.add("--port");
 			lst.add(Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
@@ -97,7 +143,7 @@ public class Configuration {
 			String boardId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
 					DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 			if (!boardId.isEmpty()) {
-				lst.add("--board");
+				lst.add("--uid");
 				lst.add(boardId);
 			}
 
@@ -115,15 +161,15 @@ public class Configuration {
 					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT)));
 
 			// Halt at hard fault
-			if (!configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
+			if (configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
 					DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT)) {
-				lst.add("--nobreak");
+				lst.add("-Ch");
 			}
 
 			// Step into interrupts
 			if (configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
 					DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT)) {
-				lst.add("--step-int");
+				lst.add("--Ostep_into_interrupt");
 			}
 
 			// Flash mode
@@ -131,18 +177,19 @@ public class Configuration {
 					DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
 			switch (flashMode) {
 			case PreferenceConstants.AUTO_ERASE:
+				lst.add("--erase=auto");
 				break;
 			case PreferenceConstants.CHIP_ERASE:
-				lst.add("--chip_erase");
+				lst.add("--erase=chip");
 				break;
 			case PreferenceConstants.SECTOR_ERASE:
-				lst.add("--sector_erase");
+				lst.add("--erase=sector");
 				break;
 			}
 
 			if (configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
 					DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT)) {
-				lst.add("--fast_program");
+				lst.add("--trust-crc");
 			}
 
 			// Semihosting
@@ -153,7 +200,14 @@ public class Configuration {
 
 			if (configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
 					DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT)) {
-				lst.add("--gdb-syscall");
+				lst.add("--Osemihost_use_syscalls");
+			}
+			
+			// ELF file
+			String symbolsFilePath = getSymbolsFileName(configuration);
+			if (symbolsFilePath != null) {
+				lst.add("--elf");
+				lst.add(symbolsFilePath);
 			}
 
 			// Other
