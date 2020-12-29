@@ -128,6 +128,9 @@ public class Configuration {
 			// disable waiting for a board to be connected
 			lst.add("--no-wait");
 
+			lst.add("-j");
+			lst.add(DebugUtils.getProjectOsPath(configuration).toOSString());
+			
 			// GDB port
 			lst.add("--port");
 			lst.add(Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
