@@ -68,9 +68,6 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 
 	public static final boolean UPDATE_THREAD_LIST_DEFAULT = false;
 
-	public static final boolean DO_FIRST_RESET_DEFAULT = false;
-	public static final String FIRST_RESET_TYPE_DEFAULT = "default";
-
 	public static final boolean DO_DEBUG_IN_RAM_DEFAULT = false;
 
 	public static final boolean DO_SECOND_RESET_DEFAULT = true;
@@ -86,7 +83,6 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 
 	// Debugger commands
 	public static final String GDB_CLIENT_OTHER_COMMANDS_DEFAULT = "set mem inaccessible-by-default off\n";
-	public static final String DO_FIRST_RESET_COMMAND = "monitor reset ";
 	public static final String HALT_COMMAND = "monitor halt";
 	public static final String DO_SECOND_RESET_COMMAND = "monitor reset ";
 	public static final String DO_CONTINUE_COMMAND = "continue";

@@ -78,9 +78,6 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 	// ------------------------------------------------------------------------
 
 	// TabStartup
-	public static final String DO_FIRST_RESET = PREFIX + ".doFirstReset"; //$NON-NLS-1$
-	public static final String FIRST_RESET_TYPE = PREFIX + ".firstResetType"; //$NON-NLS-1$
-
 	public static final String OTHER_INIT_COMMANDS = PREFIX + ".otherInitCommands"; //$NON-NLS-1$
 
 	public static final String DO_DEBUG_IN_RAM = PREFIX + ".doDebugInRam"; //$NON-NLS-1$
