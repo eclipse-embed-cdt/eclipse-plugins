@@ -28,7 +28,6 @@
 package org.eclipse.embedcdt.debug.gdbjtag.pyocd.ui;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,17 +35,23 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagImages;
+import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.embedcdt.core.EclipseUtils;
+import org.eclipse.embedcdt.debug.gdbjtag.core.ImmediateDataRequestMonitor;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.Configuration;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.ConfigurationAttributes;
 import org.eclipse.embedcdt.debug.gdbjtag.pyocd.core.PyOCD;
@@ -58,6 +63,7 @@ import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.Messages;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.preferences.GlobalMcuPage;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.preferences.WorkspaceMcuPage;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.ui.properties.ProjectMcuPage;
+import org.eclipse.embedcdt.ui.SystemUIJob;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -94,8 +100,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	/** The launch configuration this GUI is showing/modifying */
 	private ILaunchConfiguration fConfiguration;
 
-	private List<PyOCD.Board> fBoards;
-	private String fSelectedBoardId;
+	private List<PyOCD.Probe> fProbes;
+	private String fSelectedProbeId;
+	private boolean fProbeIdListHasUnavailableItem; //!< Whether the probes list includes an item for the probe in the config that is not currently connected.
+	private String fProbeIdListUnavailableId; //!< Probe ID for the unavailable item.
 	private Map<String, PyOCD.Target> fTargetsByPartNumber; //!< Maps part number (user friendly name) to target object.
 	private Map<String, PyOCD.Target> fTargetsByName; //!< Maps target name to target object.
 
@@ -111,8 +119,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Text fTargetIpAddress;
 	private Text fTargetPortNumber;
 
-	private Combo fGdbServerBoardId;
-	private Button fGdbServerRefreshBoards;
+	private Combo fGdbServerProbeId;
+	private Button fGdbServerRefreshProbes;
 
 	private Text fGdbServerGdbPort;
 	private Text fGdbServerTelnetPort;
@@ -147,6 +155,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private DefaultPreferences fDefaultPreferences;
 	private PersistentPreferences fPersistentPreferences;
+	
+	private AtomicBoolean fOutstandingProbesLoad = new AtomicBoolean(false);
+	private AtomicBoolean fOutstandingTargetsLoad = new AtomicBoolean(false);
+	private String fPyocdPathForOutstandingProbesLoad;
+	private String fPyocdPathForOutstandingTargetsLoad;
+	private RequestMonitor fOutstandingProbesLoadMonitor;
+	private RequestMonitor fOutstandingTargetsLoadMonitor;
+	
+	private AtomicBoolean fIsActive = new AtomicBoolean(false);
 
 	/**
 	 * Where widgets in a row are rendered in columns, the amount of padding (in
@@ -155,10 +172,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private static final int COLUMN_PAD = 30;
 
 	private static class Msgs {
-		public static final String INVALID_PYOCD_EXECUTABLE = "pyOCD gdbserver not found where specified";
-		public static final String INVALID_GDBSERVER_PORT = "pyOCD gdbserver port not specified";
-		public static final String INVALID_TELNET_PORT = "pyOCD telnet port not specified";
-		public static final String INVALID_GDBCLIENT_EXECUTABLE = "gdb client path is not valid";
+		public static final String LOADING_DATA = "DebuggerTab.loading_data_from_pyocd";
+		public static final String INVALID_PYOCD_EXECUTABLE = "DebuggerTab.invalid_pyocd_executable";
+		public static final String OLD_PYOCD_EXECUTABLE = "DebuggerTab.old_pyocd_executable";
+		public static final String PROBES_FAILURE_PARSING_PYOCD_OUTPUT = "DebuggerTab.probes_failure_parsing_output";
+		public static final String PROBES_FAILURE_INVOKING_PYOCD = "DebuggerTab.probes_failure_invoking_pyocd";
+		public static final String PROBES_PYOCD_TIMEOUT = "DebuggerTab.probes_pyocd_timeout";
+		public static final String TARGETS_FAILURE_PARSING_PYOCD_OUTPUT = "DebuggerTab.targets_failure_parsing_output";
+		public static final String TARGETS_FAILURE_INVOKING_PYOCD = "DebuggerTab.targets_failure_invoking_pyocd";
+		public static final String TARGETS_PYOCD_TIMEOUT = "DebuggerTab.targets_pyocd_timeout";
+		public static final String INVALID_GDBSERVER_PORT = "DebuggerTab.invalid_gdbserver_port";
+		public static final String INVALID_TELNET_PORT = "DebuggerTab.invalid_telnet_port";
+		public static final String INVALID_GDBCLIENT_EXECUTABLE = "DebuggerTab.invalid_gdbclient_executable";
 	}
 	// ------------------------------------------------------------------------
 
@@ -410,19 +435,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerBoardId_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerBoardId_ToolTipText"));
+			label.setText(Messages.getString("DebuggerTab.gdbServerProbeId_Label"));
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerProbeId_ToolTipText"));
 
 			Composite local = createHorizontalLayout(comp, 2, 1);
 			{
-				fGdbServerBoardId = new Combo(local, SWT.DROP_DOWN | SWT.READ_ONLY);
+				fGdbServerProbeId = new Combo(local, SWT.DROP_DOWN | SWT.READ_ONLY);
 				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-				fGdbServerBoardId.setLayoutData(gd);
-				fGdbServerBoardId.setItems(new String[] {});
-				fGdbServerBoardId.select(0);
+				fGdbServerProbeId.setLayoutData(gd);
+				fGdbServerProbeId.setItems(new String[] {});
+				fGdbServerProbeId.select(0);
 
-				fGdbServerRefreshBoards = new Button(local, SWT.NONE);
-				fGdbServerRefreshBoards.setText(Messages.getString("DebuggerTab.gdbServerRefreshBoards_Label"));
+				fGdbServerRefreshProbes = new Button(local, SWT.NONE);
+				fGdbServerRefreshProbes.setText(Messages.getString("DebuggerTab.gdbServerRefreshProbes_Label"));
 			}
 		}
 
@@ -578,11 +603,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				if (fConfiguration != null) {
-					updateBoards();
+					updateProbes();
 					updateTargets();
 				}
-				scheduleUpdateJob(); // provides much better performance for
-										// Text listeners
+
 				updateGdbServerActualPath();
 			}
 		});
@@ -642,18 +666,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		fGdbServerBoardId.addSelectionListener(new SelectionAdapter() {
+		fGdbServerProbeId.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				boardSelected(((Combo) e.widget).getSelectionIndex());
+				probeWasSelected(((Combo) e.widget).getSelectionIndex());
 				scheduleUpdateJob();
 			}
 		});
 
-		fGdbServerRefreshBoards.addSelectionListener(new SelectionAdapter() {
+		fGdbServerRefreshProbes.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateBoards();
+				updateProbes();
 			}
 		});
 
@@ -876,22 +900,34 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private void updateGdbServerActualPath() {
 
-		assert (fConfiguration != null);
+		if (fConfiguration == null) {
+			return;
+		}
 		String fullCommand = Configuration.getGdbServerCommand(fConfiguration, fGdbServerExecutable.getText());
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.TabDebugger.updateActualpath() \"" + fullCommand + "\"");
 		}
-		fGdbServerPathLabel.setText(fullCommand);
+		if (fullCommand == null) {
+			fGdbServerPathLabel.setText("");
+		} else {
+			fGdbServerPathLabel.setText(fullCommand);
+		}
 	}
 
 	private void updateGdbClientActualPath() {
 
-		assert (fConfiguration != null);
+		if (fConfiguration == null) {
+			return;
+		}
 		String fullCommand = Configuration.getGdbClientCommand(fConfiguration, fGdbClientExecutable.getText());
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.TabDebugger.updateGdbClientActualPath() \"" + fullCommand + "\"");
 		}
-		fGdbClientPathLabel.setText(fullCommand);
+		if (fullCommand == null) {
+			fGdbClientPathLabel.setText("");
+		} else {
+			fGdbClientPathLabel.setText(fullCommand);
+		}
 	}
 
 	private void doStartGdbServerChanged() {
@@ -905,11 +941,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fGdbServerGdbPort.setEnabled(enabled);
 		fGdbServerTelnetPort.setEnabled(enabled);
+		fGdbServerProbeId.setEnabled(enabled);
 		fGdbServerBusSpeed.setEnabled(enabled);
 		fGdbServerOverrideTarget.setEnabled(enabled);
 		fGdbServerTargetName.setEnabled(enabled && fGdbServerOverrideTarget.getSelection());
 		fGdbServerHaltAtHardFault.setEnabled(enabled);
 		fGdbServerStepIntoInterrupts.setEnabled(enabled);
+		fGdbServerEnableSemihosting.setEnabled(enabled);
+		fGdbServerUseGdbSyscallsForSemihosting.setEnabled(enabled);
 		fGdbServerFlashMode.setEnabled(enabled);
 		fGdbServerFlashFastVerify.setEnabled(enabled);
 
@@ -938,8 +977,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	 *         (if it's in PATH)
 	 */
 	private String getPyOCDExecutablePath() {
+		// Clear errors first.
+		deregisterError(Msgs.INVALID_PYOCD_EXECUTABLE);
+		deregisterError(Msgs.OLD_PYOCD_EXECUTABLE);
+		
 		String path = Configuration.getGdbServerCommand(fConfiguration, fGdbServerExecutable.getText());
-		if (path.isEmpty()) {
+		if (path == null || path.isEmpty()) {
+			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
 			return null;
 		}
 
@@ -949,44 +993,31 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// Validate path.
 
-		// First check using the most efficient means: see if the file
-		// exists. If it does, that's good enough.
+		// First check if the file is a directory.
 		File file = new File(path);
 		if (!file.exists()) {
-			// Support pyOCD being in PATH and specified sans path (issue#
-			// 102)
-			try {
-				Process process = Runtime.getRuntime().exec(path + " --version");
-				// If no exception, then it's an executable in PATH
-				try {
-					process.waitFor();
-				} catch (InterruptedException e) {
-					// No harm, no foul
-				}
-			} catch (IOException e) {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.printf("pyOCD path is invalid\n");
-				}
-				return null;
-			}
-		} else if (file.isDirectory()) {
+			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
+			return null;
+		}
+		else if (file.isDirectory()) {
 			// TODO: Use java.nio.Files when we move to Java 7 to also check
 			// that file is executable
 			if (Activator.getInstance().isDebugging()) {
 				System.out.printf("pyOCD path is invalid\n");
 			}
+			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
 			return null;
 		}
 
 		return path;
 	}
 
-	private int indexForBoardId(String boardId) {
-		// Search for a matching board.
-		if (fBoards != null) {
+	private int indexForProbeId(String probeId) {
+		// Search for a matching probe.
+		if (fProbes != null) {
 			int index = 0;
-			for (PyOCD.Board b : fBoards) {
-				if (b.fUniqueId.equals(boardId)) {
+			for (PyOCD.Probe b : fProbes) {
+				if (b.fUniqueId.equals(probeId)) {
 					return index;
 				}
 				index += 1;
@@ -995,18 +1026,32 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		return -1;
 	}
 
-	private void boardSelected(int index) {
-		PyOCD.Board selectedBoard = fBoards.get(index);
-		fSelectedBoardId = selectedBoard.fUniqueId;
+	private void probeWasSelected(int index) {
+		if (fProbeIdListHasUnavailableItem) {
+			if (index == 0) {
+				fSelectedProbeId = fProbeIdListUnavailableId;
+				return;
+			}
+			else {
+				index -= 1;
+			}
+		}
+		PyOCD.Probe selectedProbe = fProbes.get(index);
+		fSelectedProbeId = selectedProbe.fUniqueId;
 	}
 
-	private void selectActiveBoard() {
-		// Get current board ID.
-		int index = indexForBoardId(fSelectedBoardId);
+	private void selectActiveProbe() {
+		// Get current probe ID.
+		int index = indexForProbeId(fSelectedProbeId);
 		if (index != -1) {
-			fGdbServerBoardId.select(index);
+			if (fProbeIdListHasUnavailableItem) {
+				index += 1;
+			}
+			
+			fGdbServerProbeId.select(index);
 		} else {
-
+			assert(fProbeIdListHasUnavailableItem);
+			fGdbServerProbeId.select(0);
 		}
 	}
 	
@@ -1029,85 +1074,292 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		}
 	}
+	
+	private void clearPyocdErrors(boolean isProbe) {
+		if (isProbe) {
+			deregisterError(Msgs.PROBES_FAILURE_PARSING_PYOCD_OUTPUT);
+			deregisterError(Msgs.PROBES_FAILURE_INVOKING_PYOCD);
+			deregisterError(Msgs.PROBES_PYOCD_TIMEOUT);
+		}
+		else {
+			deregisterError(Msgs.TARGETS_FAILURE_PARSING_PYOCD_OUTPUT);
+			deregisterError(Msgs.TARGETS_FAILURE_INVOKING_PYOCD);
+			deregisterError(Msgs.TARGETS_PYOCD_TIMEOUT);
+		}
+	}
+	
+	private void setPyocdError(IStatus status, boolean isProbe) {
+		if (isProbe) {
+			switch (status.getCode()) {
+				case PyOCD.Errors.ERROR_INVALID_JSON_FORMAT:
+				case PyOCD.Errors.ERROR_PARSING_OUTPUT:
+					registerError(Msgs.PROBES_FAILURE_PARSING_PYOCD_OUTPUT);
+					break;
+				case PyOCD.Errors.ERROR_TIMEOUT:
+					registerError(Msgs.PROBES_PYOCD_TIMEOUT);
+					break;
+				case PyOCD.Errors.ERROR_RUNNING_PYOCD:
+				default:
+					registerError(Msgs.PROBES_FAILURE_INVOKING_PYOCD);
+					break;
+			}
+		}
+		else {
+			switch (status.getCode()) {
+			case PyOCD.Errors.ERROR_INVALID_JSON_FORMAT:
+			case PyOCD.Errors.ERROR_PARSING_OUTPUT:
+				registerError(Msgs.TARGETS_FAILURE_PARSING_PYOCD_OUTPUT);
+				break;
+			case PyOCD.Errors.ERROR_TIMEOUT:
+				registerError(Msgs.TARGETS_PYOCD_TIMEOUT);
+				break;
+			case PyOCD.Errors.ERROR_RUNNING_PYOCD:
+			default:
+				registerError(Msgs.TARGETS_FAILURE_INVOKING_PYOCD);
+				break;
+		}
+		}
+	}
+	
+	private void updatePyocdLoadingMessage() {
+		if (fOutstandingProbesLoad.getAcquire() || fOutstandingTargetsLoad.getAcquire()) {
+			setMessage(Messages.getString(Msgs.LOADING_DATA));
+		}
+		else {
+			setMessage(null);
+		}
+		scheduleUpdateJob();
+		
+	}
 
-	private void updateBoards() {
+	private void updateProbes() {
 		String path = getPyOCDExecutablePath();
 		if (path != null) {
-			deregisterError(Msgs.INVALID_PYOCD_EXECUTABLE);
-			List<PyOCD.Board> boards = PyOCD.getBoards(path);
-			if (boards == null) {
-				boards = new ArrayList<PyOCD.Board>();
-			}
-			if (Activator.getInstance().isDebugging()) {
-				System.out.printf("board = %s\n", boards);
-			}
-
-			Collections.sort(boards, PyOCD.Board.COMPARATOR);
-
-			fBoards = boards;
-
-			final ArrayList<String> itemList = new ArrayList<String>();
-
-			for (PyOCD.Board board : boards) {
-				String desc = board.fProductName;
-				if (!board.fProductName.startsWith(board.fVendorName)) {
-					desc = board.fVendorName + " " + board.fProductName;
+			if (fOutstandingProbesLoad.getAcquire()) {
+				// If the pyocd path is the same as for the currently running call to pyocd, then
+				// ignore the update request.
+				if (path.equals(fPyocdPathForOutstandingProbesLoad)) {
+					if (Activator.getInstance().isDebugging()) {
+						System.out.printf("skipping probes load due to outstanding load\n");
+					}
+					return;
 				}
-				itemList.add(String.format("%s - %s (%s)", board.fName, desc, board.fUniqueId));
+				
+				// Handle the case where the pyocd executable path has changed before an async call
+				// to get probes from pyocd finished.
+				fOutstandingProbesLoadMonitor.cancel();
+				
+				// FIXME potential race from here to when the fPyocdPathForOutstandingProbesLoad and
+				// fOutstandingProbesLoadMonitor are updated.
 			}
 
-			String[] items = itemList.toArray(new String[itemList.size()]);
+			fOutstandingProbesLoad.setRelease(true);
+			
+			// Save this pyocd path.
+			fPyocdPathForOutstandingProbesLoad = path;
+			
+			updatePyocdLoadingMessage();
+			
+			var monitor = new ImmediateDataRequestMonitor<List<PyOCD.Probe>>() {
+						@Override
+						protected void handleCompleted() {
+							fOutstandingProbesLoad.setRelease(false);
+							fOutstandingProbesLoadMonitor = null;
 
-			fGdbServerBoardId.setItems(items);
+							if (!fIsActive.getAcquire()) {
+								if (Activator.getInstance().isDebugging()) {
+									System.out.printf("(probes) bailing on updating debugger tab because it's no longer active\n");
+								}
+								return;
+							}
+						
+							ArrayList<String> itemList = new ArrayList<String>();
+							
+							IStatus status = getStatus();
+							final boolean isOK = status.isOK();
+							if (!isOK) {
+								if (Activator.getInstance().isDebugging()) {
+									System.out.printf("error getting probes from pyocd: %s\n", status.toString());
+								}
+								setPyocdError(getStatus(), false);
+								fProbes = new ArrayList<PyOCD.Probe>();
+							}
+							else {
+								clearPyocdErrors(true);
+								setMessage(null);
+								
+								List<PyOCD.Probe> probes = getData();
+								assert(probes != null);
+								
+								if (Activator.getInstance().isDebugging()) {
+									System.out.printf("probes = %s\n", probes);
+								}
+	
+								Collections.sort(probes, PyOCD.Probe.DESCRIPTION_COMPARATOR);
+	
+								fProbes = probes;
+								
+								// Figure out if the selected probe is connected. This also handles the case where
+								// no selected probe is stored in the launch config (fSelectedProbeId is empty).
+								int currentProbeIndex = indexForProbeId(fSelectedProbeId);
+								if (currentProbeIndex == -1) {
+									fProbeIdListHasUnavailableItem = true;
+									fProbeIdListUnavailableId = fSelectedProbeId;
+									
+									// The message shown in the menu depends on whether the selected probe ID is
+									// empty (no selection) or not (valid selection but probe isn't available).
+									if (fSelectedProbeId.isEmpty()) {
+										itemList.add(Messages.getString("DebuggerTab.gdbServerSelectProbe"));
+									}
+									else {
+										itemList.add(String.format(
+												Messages.getString("DebuggerTab.gdbServerUnconnectedProbe"),
+												fSelectedProbeId));
+									}
+								}
+								else {
+									fProbeIdListHasUnavailableItem = false;
+								}
+	
+								for (PyOCD.Probe probe : probes) {
+									itemList.add(probe.getDescription());
+								}
+							}
 
-			selectActiveBoard();
-		} else {
-			fGdbServerBoardId.setItems(new String[] {});
-			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
+							final String[] items = itemList.toArray(new String[itemList.size()]);
+
+							SystemUIJob updateJob = new SystemUIJob("update probes") {
+								@Override
+								public IStatus runInUIThread(IProgressMonitor monitor) {
+									fGdbServerProbeId.setItems(items);
+
+									selectActiveProbe();
+									
+									updatePyocdLoadingMessage();
+									
+									return Status.OK_STATUS;
+								}
+							};
+							updateJob.schedule();
+						}
+					};
+			fOutstandingProbesLoadMonitor = monitor;
+			PyOCD.getInstance().getProbes(path, monitor);
+		}
+		else {
+			fGdbServerProbeId.setItems(new String[] {});
+			fProbes = new ArrayList<PyOCD.Probe>();
 		}
 	}
 
 	private void updateTargets() {
 		String path = getPyOCDExecutablePath();
 		if (path != null) {
-			deregisterError(Msgs.INVALID_PYOCD_EXECUTABLE);
-
-			List<PyOCD.Target> targets = PyOCD.getTargets(path);
-			if (targets == null) {
-				targets = new ArrayList<PyOCD.Target>();
+			if (fOutstandingTargetsLoad.getAcquire()) {
+				// If the pyocd path is the same as for the currently running call to pyocd, then
+				// ignore the update request.
+				if (path.equals(fPyocdPathForOutstandingTargetsLoad)) {
+					if (Activator.getInstance().isDebugging()) {
+						System.out.printf("skipping targets load due to outstanding load\n");
+					}
+					return;
+				}
+				
+				// Handle the case where the pyocd executable path has changed before an async call
+				// to get targets from pyocd finished.
+				fOutstandingTargetsLoadMonitor.cancel();
+				
+				// FIXME potential race from here to when the fPyocdPathForOutstandingTargetsLoad and
+				// fOutstandingTargetsLoadMonitor are updated.
 			}
-			if (Activator.getInstance().isDebugging()) {
-				System.out.printf("target = %s\n", targets);
-			}
-
-			Collections.sort(targets, PyOCD.Target.COMPARATOR);
 			
-			// Create maps to go between target part number and name.
-			fTargetsByPartNumber = new HashMap<>();
-			fTargetsByName = new HashMap<>();
+			fOutstandingTargetsLoad.setRelease(true);
+			
+			// Save this pyocd path.
+			fPyocdPathForOutstandingTargetsLoad = path;
+			
+			updatePyocdLoadingMessage();
+			
+			var monitor = new ImmediateDataRequestMonitor<List<PyOCD.Target>>() {
+						@Override
+						protected void handleCompleted() {
+							fOutstandingTargetsLoad.setRelease(false);
+							fOutstandingTargetsLoadMonitor = null;
 
-			final ArrayList<String> itemList = new ArrayList<String>();
-			for (PyOCD.Target target : targets) {
-				itemList.add(String.format("%s", target.fPartNumber));
-				fTargetsByPartNumber.put(target.fPartNumber, target);
-				fTargetsByName.put(target.fName, target);
-			}
-			String[] items = itemList.toArray(new String[itemList.size()]);
+							if (!fIsActive.getAcquire()) {
+								if (Activator.getInstance().isDebugging()) {
+									System.out.printf("(targets) bailing on updating debugger tab because it's no longer active\n");
+								}
+								return;
+							}
+							
+							ArrayList<String> itemList = new ArrayList<String>();
+							
+							// Create maps to go between target part number and name.
+							fTargetsByPartNumber = new HashMap<>();
+							fTargetsByName = new HashMap<>();
+							
+							IStatus status = getStatus();
+							final boolean isOK = status.isOK();
+							if (!isOK) {
+								if (Activator.getInstance().isDebugging()) {
+									System.out.printf("error getting targets from pyocd: %s\n", status.toString());
+								}
+								setPyocdError(getStatus(), false);
+							}
+							else {
+								clearPyocdErrors(false);
+								setMessage(null);
+							
+								List<PyOCD.Target> targets = getData();
+								assert(targets != null);
+								
+								if (Activator.getInstance().isDebugging()) {
+									System.out.printf("target = %s\n", targets);
+								}
+	
+								Collections.sort(targets, PyOCD.Target.PART_NUMBER_COMPARATOR);
+								
+								for (PyOCD.Target target : targets) {
+									itemList.add(String.format("%s", target.getFullPartName()));
+									fTargetsByPartNumber.put(target.fPartNumber, target);
+									fTargetsByName.put(target.fName, target);
+								}
+							}
+							final String[] itemsToUpdate = itemList.toArray(new String[itemList.size()]);
 
-			fGdbServerTargetName.setItems(items);
+							SystemUIJob updateJob = new SystemUIJob("update targets") {
+								@Override
+								public IStatus runInUIThread(IProgressMonitor monitor) {
+									fGdbServerTargetName.setItems(itemsToUpdate);
 
-			// Select current target from config.
-			selectActiveTarget();
+									// Select current target from config.
+									selectActiveTarget();
+									
+									scheduleUpdateJob();
+									
+									updatePyocdLoadingMessage();									
+									
+									return Status.OK_STATUS;
+								}
+							};
+							updateJob.schedule();
+						}
+					};
+			fOutstandingTargetsLoadMonitor = monitor;
+			PyOCD.getInstance().getTargets(path, monitor);
 		} else {
 			// Clear combobox and show error
 			fGdbServerTargetName.setItems(new String[] {});
-			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
+			fTargetsByPartNumber = new HashMap<>();
+			fTargetsByName = new HashMap<>();
 		}
 	}
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
-
+		fIsActive.setRelease(true);
+		
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.TabDebugger.initializeFrom() " + configuration.getName());
 		}
@@ -1139,10 +1391,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 								DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
-				// Board ID
-				fSelectedBoardId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+				// Probe ID
+				fSelectedProbeId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
 						DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
-				selectActiveBoard();
+				// active probe will be selected after updateProbes() runs.
 
 				// Target override
 				fGdbServerOverrideTarget
@@ -1239,16 +1491,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fTargetPortNumber.setText(portString);
 			}
 
+			// Force thread update
+			{
+				boolean updateThreadsOnSuspend = configuration.getAttribute(
+						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
+						DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
+				fUpdateThreadlistOnSuspend.setSelection(updateThreadsOnSuspend);
+			}
+			
 			doStartGdbServerChanged();
 			overrideTargetChanged();
-			updateBoards();
+			updateProbes();
 			updateTargets();
-
-			// Force thread update
-			boolean updateThreadsOnSuspend = configuration.getAttribute(
-					IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
-					DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
-			fUpdateThreadlistOnSuspend.setSelection(updateThreadsOnSuspend);
 
 		} catch (CoreException e) {
 			Activator.log(e.getStatus());
@@ -1260,6 +1514,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	}
 
 	public void initializeFromDefaults() {
+		fIsActive.setRelease(true);
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.TabDebugger.initializeFromDefaults()");
@@ -1346,7 +1601,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		doStartGdbServerChanged();
 		overrideTargetChanged();
-		updateBoards();
+		updateProbes();
 		updateTargets();
 
 		// Force thread update
@@ -1380,6 +1635,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// Do nothing. Override is necessary to avoid heavy unnecessary Apply
 		// (see super implementation)
 	}
+	
+	@Override
+	public void dispose() {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.dispose()");
+		}
+		fIsActive.setRelease(false);
+	}
 
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
@@ -1387,17 +1650,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			System.out.println("pyocd.TabDebugger.isValid() " + launchConfig.getName());
 		}
 
-		setMessage(null);
+		if (!(fOutstandingProbesLoad.getAcquire() || fOutstandingTargetsLoad.getAcquire())) {
+			setMessage(null);
+		}
 
 		boolean result = true;
 
 		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
-			String path = getPyOCDExecutablePath();
-			if (path == null) {
-				registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
-			}
-			else {
-				deregisterError(Msgs.INVALID_PYOCD_EXECUTABLE);
+			// Quick check if the field is filled in. getPyOCDExecutablePath() will handle showing an error.
+			if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty()) {
+				result = false;
 			}
 
 			if (fGdbServerGdbPort != null && fGdbServerGdbPort.getText().trim().isEmpty()) {
@@ -1492,28 +1754,31 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				Activator.log("empty fGdbServerTelnetPort");
 			}
 
-			// Board ID
-			if (fSelectedBoardId != null) {
-				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID, fSelectedBoardId);
+			// Probe ID
+			if (fSelectedProbeId != null) {
+				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID, fSelectedProbeId);
 			}
 
 			// Target override
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
 					fGdbServerOverrideTarget.getSelection());
 
-			String targetPartNumber = fGdbServerTargetName.getText().trim();
-			String targetName = "";
-			if (!targetPartNumber.isEmpty()) {
-				Target target = fTargetsByPartNumber.get(targetPartNumber);
-				if (target != null) {
-					targetName = target.fName;
+			// Target type. Only save into the config if a valid targets list has been loaded.
+			if (fTargetsByPartNumber != null) {
+				String targetPartNumber = fGdbServerTargetName.getText().trim();
+				String targetName = "";
+				if (!targetPartNumber.isEmpty()) {
+					Target target = fTargetsByPartNumber.get(targetPartNumber);
+					if (target != null) {
+						targetName = target.fName;
+					}
+					else {
+						// If the user enters a target name that we can't find, just use as-is.
+						targetName = targetPartNumber;
+					}
 				}
-				else {
-					// If the user enters a target name that we can't find, just use as-is.
-					targetName = targetPartNumber;
-				}
+				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME, targetName);
 			}
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME, targetName);
 
 			// Misc options
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
@@ -1652,7 +1917,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 					DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
 
-			// Board ID
+			// Probe ID
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
 					DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 
@@ -1733,7 +1998,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	 */
 	private void registerError(String msg) {
 		if (fErrors.isEmpty()) {
-			setErrorMessage(msg);
+			setErrorMessage(Messages.getString(msg));
 		}
 		fErrors.add(msg);
 	}
@@ -1748,7 +2013,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			if (fErrors.isEmpty()) {
 				setErrorMessage(null);
 			} else {
-				setErrorMessage(fErrors.iterator().next());
+				setErrorMessage(Messages.getString(fErrors.iterator().next()));
 			}
 		}
 	}

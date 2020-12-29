@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015 Liviu Ionescu.
- * Copyright (c) 2015-2016 Chris Reed.
+ * Copyright (c) 2015-2020 Chris Reed.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -34,7 +34,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 
 	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${pyocd_path}/${pyocd_executable}";
 
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "pyocd-gdbserver";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "pyocd";
 	protected static final String GDB_CLIENT_EXECUTABLE_DEFAULT = "${cross_prefix}gdb${cross_suffix}";
 
 	// ------------------------------------------------------------------------
@@ -51,7 +51,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 	public static final String GDB_SERVER_TARGET_NAME_DEFAULT = ""; //$NON-NLS-1$
 	public static final boolean GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT = true;
 	public static final boolean GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT = false;
-	public static final int GDB_SERVER_FLASH_MODE_DEFAULT = PreferenceConstants.AUTO_ERASE;
+	public static final int GDB_SERVER_FLASH_MODE_DEFAULT = PreferenceConstants.SECTOR_ERASE;
 	public static final boolean GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT = false;
 	public static final boolean GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT = true;
 	public static final boolean GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT = false;
@@ -68,8 +68,8 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 
 	public static final boolean UPDATE_THREAD_LIST_DEFAULT = false;
 
-	public static final boolean DO_FIRST_RESET_DEFAULT = true;
-	public static final String FIRST_RESET_TYPE_DEFAULT = "init";
+	public static final boolean DO_FIRST_RESET_DEFAULT = false;
+	public static final String FIRST_RESET_TYPE_DEFAULT = "default";
 
 	public static final boolean ENABLE_SEMIHOSTING_DEFAULT = true;
 
