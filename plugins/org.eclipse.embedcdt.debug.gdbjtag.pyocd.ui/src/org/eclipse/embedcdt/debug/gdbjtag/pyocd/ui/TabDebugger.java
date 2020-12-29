@@ -1433,9 +1433,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT));
 
 				// Semihosting
+				booleanDefault = fPersistentPreferences.getPyOCDEnableSemihosting();
 				fGdbServerEnableSemihosting
 						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
-								DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT));
+								booleanDefault));
 
 				fGdbServerUseGdbSyscallsForSemihosting
 						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
@@ -1804,8 +1805,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					fGdbServerFlashFastVerify.getSelection());
 
 			// Semihosting
+			booleanValue = fGdbServerEnableSemihosting.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
-					fGdbServerEnableSemihosting.getSelection());
+					booleanValue);
+			fPersistentPreferences.putPyOCDEnableSemihosting(booleanValue);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
 					fGdbServerUseGdbSyscallsForSemihosting.getSelection());
@@ -1959,8 +1962,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT);
 
 			// Semihosting
+			defaultBoolean = fPersistentPreferences.getPyOCDEnableSemihosting();
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
-					DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT);
+					defaultBoolean);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
 					DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT);

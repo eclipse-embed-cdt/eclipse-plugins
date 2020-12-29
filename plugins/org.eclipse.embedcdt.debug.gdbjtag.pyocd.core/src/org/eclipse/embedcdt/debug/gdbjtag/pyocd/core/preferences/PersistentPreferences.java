@@ -177,7 +177,7 @@ public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.co
 	public boolean getPyOCDEnableSemihosting() {
 
 		return Boolean.valueOf(getString(GDB_PYOCD_ENABLE_SEMIHOSTING,
-				Boolean.toString(DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)));
+				Boolean.toString(DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT)));
 	}
 
 	public void putPyOCDEnableSemihosting(boolean value) {

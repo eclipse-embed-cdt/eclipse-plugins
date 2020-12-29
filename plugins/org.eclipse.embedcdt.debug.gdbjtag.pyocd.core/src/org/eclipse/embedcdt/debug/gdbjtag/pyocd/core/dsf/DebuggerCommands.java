@@ -132,12 +132,6 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 		}
 		DebugUtils.addMultiLine(otherInits, commandsList);
 
-		if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_SEMIHOSTING,
-				DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)) {
-			String commandStr = DefaultPreferences.ENABLE_SEMIHOSTING_COMMAND;
-			commandsList.add(commandStr);
-		}
-
 		return Status.OK_STATUS;
 	}
 

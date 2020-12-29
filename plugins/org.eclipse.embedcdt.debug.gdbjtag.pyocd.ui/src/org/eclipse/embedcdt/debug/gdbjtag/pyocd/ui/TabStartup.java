@@ -84,8 +84,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private Text fSecondResetType;
 	private Label fSecondResetWarning;
 
-	private Button fEnableSemihosting;
-
 	private Button fLoadExecutable;
 	private Text fImageFileName;
 	private Button fImageFileBrowseWs;
@@ -267,20 +265,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			fInitCommands.setLayoutData(gd);
 		}
 
-		{
-			Composite local = new Composite(comp, SWT.NONE);
-			GridLayout layout = new GridLayout();
-			layout.numColumns = 1;
-			layout.marginHeight = 0;
-			layout.marginWidth = 0;
-			local.setLayout(layout);
-			// local.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-			fEnableSemihosting = new Button(local, SWT.CHECK);
-			fEnableSemihosting.setText(Messages.getString("StartupTab.enableSemihosting_Text"));
-			fEnableSemihosting.setToolTipText(Messages.getString("StartupTab.enableSemihosting_ToolTipText"));
-		}
-
 		// Actions
 		fDoFirstReset.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -301,13 +285,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		fFirstResetType.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fInitCommands.addModifyListener(scheduleUpdateJobModifyListener);
-
-		fEnableSemihosting.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				scheduleUpdateJob();
-			}
-		});
 	}
 
 	private void doFirstResetChanged() {
@@ -886,11 +863,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fFirstResetType
 						.setText(configuration.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE, stringDefault));
 
-				// Enable semihosting
-				booleanDefault = fPersistentPreferences.getPyOCDEnableSemihosting();
-				fEnableSemihosting.setSelection(
-						configuration.getAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanDefault));
-
 				// Other commands
 				stringDefault = fPersistentPreferences.getPyOCDInitOther();
 				fInitCommands.setText(
@@ -1011,9 +983,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Reset type
 			fFirstResetType.setText(DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
 
-			// Enable semihosting
-			fEnableSemihosting.setSelection(DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT);
-
 			// Other commands
 			fInitCommands.setText(DefaultPreferences.OTHER_INIT_COMMANDS_DEFAULT);
 		}
@@ -1116,11 +1085,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			stringValue = fInitCommands.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
 			fPersistentPreferences.putPyOCDInitOther(stringValue);
-
-			// Enable semihosting
-			booleanValue = fEnableSemihosting.getSelection();
-			configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
-			fPersistentPreferences.putPyOCDEnableSemihosting(booleanValue);
 		}
 
 		// Load Symbols & Image...
@@ -1199,9 +1163,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		defaultString = fPersistentPreferences.getPyOCDInitialResetType();
 		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE, defaultString);
-
-		defaultBoolean = fPersistentPreferences.getPyOCDEnableSemihosting();
-		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, defaultBoolean);
 
 		defaultString = fPersistentPreferences.getPyOCDInitOther();
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, defaultString);
