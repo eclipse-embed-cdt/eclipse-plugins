@@ -62,7 +62,7 @@ import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator;
  *
  *
  */
-@SuppressWarnings("restriction")
+@SuppressWarnings({ "restriction", "deprecation" })
 public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurationDelegate {
 
 	// ------------------------------------------------------------------------
