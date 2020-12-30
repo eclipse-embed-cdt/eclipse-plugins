@@ -127,6 +127,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Button fGdbServerOverrideTarget;
 	private Combo fGdbServerTargetName;
+	private Label fGdbServerDefaultTargetName;
 
 	private Combo fGdbServerBusSpeed;
 	
@@ -165,6 +166,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private String fPyocdPathForOutstandingTargetsLoad;
 	private RequestMonitor fOutstandingProbesLoadMonitor;
 	private RequestMonitor fOutstandingTargetsLoadMonitor;
+	private boolean fNeedsDefaultTargetNameRefresh = false;
 
 	/**
 	 * Where widgets in a row are rendered in columns, the amount of padding (in
@@ -451,6 +453,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerRefreshProbes.setText(Messages.getString("DebuggerTab.gdbServerRefreshProbes_Label"));
 			}
 		}
+		
+		{
+			Label label = new Label(comp, SWT.NONE);
+			label.setText(Messages.getString("DebuggerTab.gdbServerDefaultTargetType_Label"));
+			
+			fGdbServerDefaultTargetName = new Label(comp, SWT.NONE);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			fGdbServerDefaultTargetName.setLayoutData(gd);
+			fGdbServerDefaultTargetName.setToolTipText(
+					Messages.getString("DebuggerTab.gdbServerDefaultTargetType_ToolTipText"));
+		}
 
 		{
 			fGdbServerOverrideTarget = new Button(comp, SWT.CHECK);
@@ -461,10 +475,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbServerOverrideTarget.setLayoutData(gd);
 
 			fGdbServerTargetName = new Combo(comp, SWT.DROP_DOWN);
-			gd = new GridData();
-			gd.widthHint = 360;
+			gd = new GridData(GridData.FILL_HORIZONTAL);
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbServerTargetName.setLayoutData(gd);
+			fGdbServerTargetName.setToolTipText(
+					Messages.getString("DebuggerTab.gdbServerTargetName_ToolTipText"));
 		}
 
 		{
@@ -1082,6 +1097,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		return -1;
 	}
 
+	private void updateDefaultTargetName(int index) {
+		String targetName = fProbes.get(index).fTargetName;
+		// Note that fTargetsByName may be null or empty if targets have not been read from pyocd yet.
+		if (fTargetsByName != null) {
+			Target target = fTargetsByName.get(targetName);
+			if (target != null) {
+				fGdbServerDefaultTargetName.setText(getFormattedTargetName(target));
+				return;
+			}
+		}
+		fNeedsDefaultTargetNameRefresh = true;
+	}
+
 	private void probeWasSelected(int index) {
 		if (fProbeIdListHasUnavailableItem) {
 			if (index == 0) {
@@ -1094,6 +1122,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 		PyOCD.Probe selectedProbe = fProbes.get(index);
 		fSelectedProbeId = selectedProbe.fUniqueId;
+		updateDefaultTargetName(index);
 	}
 
 	private void selectActiveProbe() {
@@ -1105,10 +1134,30 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 			
 			fGdbServerProbeId.select(index);
+			
+			updateDefaultTargetName(index);
 		} else {
 			assert(fProbeIdListHasUnavailableItem);
 			fGdbServerProbeId.select(0);
 		}
+	}
+	
+	private String getFormattedTargetName(PyOCD.Target target) {
+		StringBuilder builder = new StringBuilder(target.fVendor);
+		
+		for (String family : target.fFamilies) {
+			builder.append(" > ");
+			builder.append(family);
+		}
+		
+		builder.append(" > ");
+		builder.append(target.fPartNumber);
+		
+		builder.append(" (");
+		builder.append(target.fName);
+		builder.append(")");
+		
+		return builder.toString();
 	}
 	
 	private void selectActiveTarget() {
@@ -1119,7 +1168,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT);
 				Target target = fTargetsByName.get(configTargetName);
 				if (target != null) {
-					fGdbServerTargetName.setText(target.fPartNumber);
+					fGdbServerTargetName.setText(getFormattedTargetName(target));
 				}
 				else {
 					// Support arbitrary target names entered by the user.
@@ -1385,8 +1434,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								Collections.sort(targets, PyOCD.Target.PART_NUMBER_COMPARATOR);
 								
 								for (PyOCD.Target target : targets) {
-									itemList.add(String.format("%s", target.getFullPartName()));
-									fTargetsByPartNumber.put(target.fPartNumber, target);
+									String formattedPartNumber = getFormattedTargetName(target);
+									itemList.add(formattedPartNumber);
+									fTargetsByPartNumber.put(formattedPartNumber, target);
 									fTargetsByName.put(target.fName, target);
 								}
 							}
@@ -1409,6 +1459,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 									selectActiveTarget();
 									
 									scheduleUpdateJob();
+									if (fNeedsDefaultTargetNameRefresh) {
+										selectActiveProbe();
+									}
 									
 									updatePyocdLoadingMessage();									
 									
