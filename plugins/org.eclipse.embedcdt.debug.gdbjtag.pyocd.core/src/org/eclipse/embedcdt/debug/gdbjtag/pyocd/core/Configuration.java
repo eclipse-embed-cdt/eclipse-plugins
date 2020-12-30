@@ -189,10 +189,10 @@ public class Configuration {
 				break;
 			}
 
-			if (configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
-					DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT)) {
-				lst.add("--trust-crc");
-			}
+			// Smart flash
+			boolean boolValue = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_SMART_FLASH,
+					DefaultPreferences.GDB_SERVER_SMART_FLASH_DEFAULT);
+			lst.add("-Osmart_flash=" + (boolValue ? "1" : "0"));
 
 			// Semihosting
 			if (configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,

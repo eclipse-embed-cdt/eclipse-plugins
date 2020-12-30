@@ -56,7 +56,7 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 
 	public static final String GDB_SERVER_FLASH_MODE = PREFIX + ".gdbServerFlashMode"; //$NON-NLS-1$
 
-	public static final String GDB_SERVER_FLASH_FAST_VERIFY = PREFIX + ".gdbServerFlashFastVerify"; //$NON-NLS-1$
+	public static final String GDB_SERVER_SMART_FLASH = PREFIX + ".gdbServerSmartFlash"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_ENABLE_SEMIHOSTING = PREFIX + ".gdbServerEnableSemihosting"; //$NON-NLS-1$
 

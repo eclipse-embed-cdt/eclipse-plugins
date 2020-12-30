@@ -134,7 +134,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button fGdbServerStepIntoInterrupts;
 
 	private Combo fGdbServerFlashMode;
-	private Button fGdbServerFlashFastVerify;
+	private Button fGdbServerSmartFlash;
 
 	private Button fGdbServerEnableSemihosting;
 	private Button fGdbServerUseGdbSyscallsForSemihosting;
@@ -502,15 +502,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					});
 			fGdbServerFlashMode.select(0);
 
-			fGdbServerFlashFastVerify = new Button(comp, SWT.CHECK);
-			fGdbServerFlashFastVerify.setText(Messages.getString("DebuggerTab.gdbServerFlashFastVerify_Label"));
-			fGdbServerFlashFastVerify
-					.setToolTipText(Messages.getString("DebuggerTab.gdbServerFlashFastVerify_ToolTipText"));
+			fGdbServerSmartFlash = new Button(comp, SWT.CHECK);
+			fGdbServerSmartFlash.setText(Messages.getString("DebuggerTab.gdbServerSmartFlash_Label"));
+			fGdbServerSmartFlash
+					.setToolTipText(Messages.getString("DebuggerTab.gdbServerSmartFlash_ToolTipText"));
 			gd = new GridData();
 
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 2;
 			gd.horizontalIndent = COLUMN_PAD;
-			fGdbServerFlashFastVerify.setLayoutData(gd);
+			fGdbServerSmartFlash.setLayoutData(gd);
 		}
 
 		// Composite for next four checkboxes. Will render using two columns
@@ -702,7 +702,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fGdbServerFlashMode.addModifyListener(scheduleUpdateJobModifyListener);
 
-		fGdbServerFlashFastVerify.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+		fGdbServerSmartFlash.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 
 		fGdbServerEnableSemihosting.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 
@@ -951,7 +951,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerEnableSemihosting.setEnabled(enabled);
 		fGdbServerUseGdbSyscallsForSemihosting.setEnabled(enabled);
 		fGdbServerFlashMode.setEnabled(enabled);
-		fGdbServerFlashFastVerify.setEnabled(enabled);
+		fGdbServerSmartFlash.setEnabled(enabled);
 
 		fDoGdbServerAllocateConsole.setEnabled(enabled);
 		fDoGdbServerAllocateSemihostingConsole.setEnabled(enabled);
@@ -1431,9 +1431,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerFlashMode.select(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 						DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT));
 
-				fGdbServerFlashFastVerify
-						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
-								DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT));
+				fGdbServerSmartFlash
+						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_SMART_FLASH,
+								DefaultPreferences.GDB_SERVER_SMART_FLASH_DEFAULT));
 
 				// Semihosting
 				booleanDefault = fPersistentPreferences.getPyOCDEnableSemihosting();
@@ -1566,7 +1566,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// Flash
 			fGdbServerFlashMode.select(DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
 
-			fGdbServerFlashFastVerify.setSelection(DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT);
+			fGdbServerSmartFlash.setSelection(DefaultPreferences.GDB_SERVER_SMART_FLASH_DEFAULT);
 
 			// Semihosting
 			fGdbServerEnableSemihosting.setSelection(DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT);
@@ -1804,8 +1804,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 					fGdbServerFlashMode.getSelectionIndex());
 
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
-					fGdbServerFlashFastVerify.getSelection());
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_SMART_FLASH,
+					fGdbServerSmartFlash.getSelection());
 
 			// Semihosting
 			booleanValue = fGdbServerEnableSemihosting.getSelection();
@@ -1961,8 +1961,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 					DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
 
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
-					DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT);
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_SMART_FLASH,
+					DefaultPreferences.GDB_SERVER_SMART_FLASH_DEFAULT);
 
 			// Semihosting
 			defaultBoolean = fPersistentPreferences.getPyOCDEnableSemihosting();

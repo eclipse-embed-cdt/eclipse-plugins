@@ -52,7 +52,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 	public static final boolean GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT = true;
 	public static final boolean GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT = false;
 	public static final int GDB_SERVER_FLASH_MODE_DEFAULT = PreferenceConstants.FlashMode.SECTOR_ERASE;
-	public static final boolean GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT = false;
+	public static final boolean GDB_SERVER_SMART_FLASH_DEFAULT = true;
 	public static final boolean GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT = true;
 	public static final boolean GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT = false;
 	public static final String GDB_SERVER_LOG_DEFAULT = ""; //$NON-NLS-1$
