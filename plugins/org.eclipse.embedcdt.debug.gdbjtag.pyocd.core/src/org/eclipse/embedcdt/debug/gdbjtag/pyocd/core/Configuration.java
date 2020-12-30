@@ -178,13 +178,13 @@ public class Configuration {
 			int flashMode = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 					DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
 			switch (flashMode) {
-			case PreferenceConstants.AUTO_ERASE:
+			case PreferenceConstants.FlashMode.AUTO_ERASE:
 				lst.add("--erase=auto");
 				break;
-			case PreferenceConstants.CHIP_ERASE:
+			case PreferenceConstants.FlashMode.CHIP_ERASE:
 				lst.add("--erase=chip");
 				break;
-			case PreferenceConstants.SECTOR_ERASE:
+			case PreferenceConstants.FlashMode.SECTOR_ERASE:
 				lst.add("--erase=sector");
 				break;
 			}

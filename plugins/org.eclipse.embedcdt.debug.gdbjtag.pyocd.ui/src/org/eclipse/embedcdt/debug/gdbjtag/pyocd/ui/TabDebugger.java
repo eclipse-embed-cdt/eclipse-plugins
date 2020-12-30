@@ -494,9 +494,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd = new GridData();
 			gd.widthHint = 120;
 			fGdbServerFlashMode.setLayoutData(gd);
-			fGdbServerFlashMode.setItems(new String[] { Messages.getString("DebuggerTab.gdbServerFlashMode.AutoErase"),
+			// Note: the index of these items must match the PreferenceConstants.FlashMode constants.
+			fGdbServerFlashMode.setItems(new String[] {
+					Messages.getString("DebuggerTab.gdbServerFlashMode.AutoErase"),
 					Messages.getString("DebuggerTab.gdbServerFlashMode.ChipErase"),
-					Messages.getString("DebuggerTab.gdbServerFlashMode.SectorErase"), });
+					Messages.getString("DebuggerTab.gdbServerFlashMode.SectorErase"),
+					});
 			fGdbServerFlashMode.select(0);
 
 			fGdbServerFlashFastVerify = new Button(comp, SWT.CHECK);
