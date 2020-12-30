@@ -102,7 +102,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private List<PyOCD.Probe> fProbes;
 	private String fSelectedProbeId;
-	private boolean fProbeIdListHasUnavailableItem; //!< Whether the probes list includes an item for the probe in the config that is not currently connected.
+	//! Whether the probes list includes an item for the probe in the config that is not currently connected.
+	private boolean fProbeIdListHasUnavailableItem;
 	private String fProbeIdListUnavailableId; //!< Probe ID for the unavailable item.
 	private Map<String, PyOCD.Target> fTargetsByPartNumber; //!< Maps part number (user friendly name) to target object.
 	private Map<String, PyOCD.Target> fTargetsByName; //!< Maps target name to target object.
@@ -1339,7 +1340,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 									// Check again to make sure we haven't been disposed.
 									if (getControl().isDisposed()) {
 										if (Activator.getInstance().isDebugging()) {
-											System.out.printf("(probes, from UI job) bailing on updating debugger tab because it has been disposed\n");
+											System.out.printf("(probes, from UI job) bailing on updating debugger tab '"
+													+ "because it has been disposed\n");
 										}
 										return Status.OK_STATUS;
 									}
@@ -1401,7 +1403,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 							if (getControl().isDisposed()) {
 								if (Activator.getInstance().isDebugging()) {
-									System.out.printf("(targets) bailing on updating debugger tab because it has been disposed\n");
+									System.out.printf("(targets) bailing on updating debugger tab because it "
+											+ "has been disposed\n");
 								}
 								return;
 							}
@@ -1448,7 +1451,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 									// Check again to make sure we haven't been disposed.
 									if (getControl().isDisposed()) {
 										if (Activator.getInstance().isDebugging()) {
-											System.out.printf("(targets, from UI job) bailing on updating debugger tab because it has been disposed\n");
+											System.out.printf("(targets, from UI job) bailing on updating "
+													+ "debugger tab because it has been disposed\n");
 										}
 										return Status.OK_STATUS;
 									}
