@@ -1084,20 +1084,25 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		return path;
 	}
 
-	private int indexForProbeId(String probeId) {
+	private int indexForProbeIdInList(List<PyOCD.Probe> probeList, String probeId) {
 		// Search for a matching probe.
-		if (fProbes != null) {
+		if (probeList != null) {
 			int index = 0;
-			for (PyOCD.Probe b : fProbes) {
+			for (PyOCD.Probe b : probeList) {
 				if (b.fUniqueId.equals(probeId)) {
 					return index;
 				}
 				index += 1;
 			}
+			
 		}
 		return -1;
 	}
 
+	private int indexForProbeId(String probeId) {
+		return indexForProbeIdInList(fProbes, probeId);
+	}
+	
 	private void updateDefaultTargetName(int index) {
 		String targetName = fProbes.get(index).fTargetName;
 		// Note that fTargetsByName may be null or empty if targets have not been read from pyocd yet.
@@ -1281,6 +1286,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						
 							ArrayList<String> itemList = new ArrayList<String>();
 							
+							final List<PyOCD.Probe> probes = getData();
+							
 							IStatus status = getStatus();
 							final boolean isOK = status.isOK();
 							if (!isOK) {
@@ -1293,21 +1300,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							else {
 								clearPyocdErrors(true);
 								setMessage(null);
-								
-								List<PyOCD.Probe> probes = getData();
+
 								assert(probes != null);
-								
+
 								if (Activator.getInstance().isDebugging()) {
 									System.out.printf("probes = %s\n", probes);
 								}
 	
 								Collections.sort(probes, PyOCD.Probe.DESCRIPTION_COMPARATOR);
-	
-								fProbes = probes;
 								
 								// Figure out if the selected probe is connected. This also handles the case where
 								// no selected probe is stored in the launch config (fSelectedProbeId is empty).
-								int currentProbeIndex = indexForProbeId(fSelectedProbeId);
+								int currentProbeIndex = indexForProbeIdInList(probes, fSelectedProbeId);
 								if (currentProbeIndex == -1) {
 									fProbeIdListHasUnavailableItem = true;
 									fProbeIdListUnavailableId = fSelectedProbeId;
@@ -1347,6 +1351,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 									}
 									
 									fGdbServerProbeId.setItems(items);
+									
+									fProbes = probes;
 
 									selectActiveProbe();
 									
@@ -1412,8 +1418,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							ArrayList<String> itemList = new ArrayList<String>();
 							
 							// Create maps to go between target part number and name.
-							fTargetsByPartNumber = new HashMap<>();
-							fTargetsByName = new HashMap<>();
+							final var newTargetsByPartNumber = new HashMap<String, PyOCD.Target>();
+							final var newTargetsByName = new HashMap<String, PyOCD.Target>();
 							
 							IStatus status = getStatus();
 							final boolean isOK = status.isOK();
@@ -1439,8 +1445,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								for (PyOCD.Target target : targets) {
 									String formattedPartNumber = getFormattedTargetName(target);
 									itemList.add(formattedPartNumber);
-									fTargetsByPartNumber.put(formattedPartNumber, target);
-									fTargetsByName.put(target.fName, target);
+									newTargetsByPartNumber.put(formattedPartNumber, target);
+									newTargetsByName.put(target.fName, target);
 								}
 							}
 							final String[] itemsToUpdate = itemList.toArray(new String[itemList.size()]);
@@ -1458,6 +1464,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 									}
 									
 									fGdbServerTargetName.setItems(itemsToUpdate);
+									
+									fTargetsByPartNumber = newTargetsByPartNumber;
+									fTargetsByName = newTargetsByName;
 
 									// Select current target from config.
 									selectActiveTarget();
