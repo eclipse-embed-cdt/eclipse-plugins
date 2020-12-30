@@ -1299,7 +1299,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							}
 							else {
 								clearPyocdErrors(true);
-								setMessage(null);
 
 								assert(probes != null);
 
@@ -1355,8 +1354,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 									fProbes = probes;
 
 									selectActiveProbe();
-									
-									updatePyocdLoadingMessage();
+
+									updatePyocdLoadingMessage();									
+									scheduleUpdateJob();
 									
 									return Status.OK_STATUS;
 								}
@@ -1431,7 +1431,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							}
 							else {
 								clearPyocdErrors(false);
-								setMessage(null);
 							
 								List<PyOCD.Target> targets = getData();
 								assert(targets != null);
@@ -1471,12 +1470,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 									// Select current target from config.
 									selectActiveTarget();
 									
-									scheduleUpdateJob();
 									if (fNeedsDefaultTargetNameRefresh) {
 										selectActiveProbe();
 									}
 									
 									updatePyocdLoadingMessage();									
+									scheduleUpdateJob();
 									
 									return Status.OK_STATUS;
 								}
