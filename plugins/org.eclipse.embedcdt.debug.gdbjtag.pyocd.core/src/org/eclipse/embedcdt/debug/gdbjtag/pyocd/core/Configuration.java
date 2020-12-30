@@ -142,7 +142,7 @@ public class Configuration {
 					DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
 			// Board ID
-			String boardId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+			String boardId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_PROBE_ID,
 					DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 			if (!boardId.isEmpty()) {
 				lst.add("--uid");

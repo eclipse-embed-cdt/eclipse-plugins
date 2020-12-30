@@ -40,7 +40,7 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 
 	public static final String GDB_SERVER_TELNET_PORT_NUMBER = PREFIX + ".gdbServerTelnetPortNumber"; //$NON-NLS-1$
 
-	public static final String GDB_SERVER_BOARD_ID = PREFIX + ".gdbServerBoardId"; //$NON-NLS-1$
+	public static final String GDB_SERVER_PROBE_ID = PREFIX + ".gdbServerBoardId"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_BOARD_NAME = PREFIX + ".gdbServerBoardName"; //$NON-NLS-1$
 

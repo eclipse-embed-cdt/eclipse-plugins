@@ -1407,7 +1407,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
 				// Probe ID
-				fSelectedProbeId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+				fSelectedProbeId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_PROBE_ID,
 						DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 				// active probe will be selected after updateProbes() runs.
 
@@ -1769,7 +1769,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			// Probe ID
 			if (fSelectedProbeId != null) {
-				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID, fSelectedProbeId);
+				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_PROBE_ID, fSelectedProbeId);
 			}
 
 			// Target override
@@ -1933,7 +1933,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
 
 			// Probe ID
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_PROBE_ID,
 					DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_NAME,
