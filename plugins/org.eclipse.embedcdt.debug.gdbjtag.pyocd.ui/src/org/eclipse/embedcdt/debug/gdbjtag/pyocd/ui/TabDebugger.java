@@ -129,6 +129,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Combo fGdbServerTargetName;
 
 	private Combo fGdbServerBusSpeed;
+	
+	private Combo fGdbServerConnectMode;
+	private Combo fGdbServerResetType;
 
 	private Button fGdbServerHaltAtHardFault;
 	private Button fGdbServerStepIntoInterrupts;
@@ -485,6 +488,52 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
+			label.setText(Messages.getString("DebuggerTab.gdbServerConnectMode_Label")); //$NON-NLS-1$
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerConnectMode_ToolTipText"));
+			GridData gd = new GridData();
+			label.setLayoutData(gd);
+
+			fGdbServerConnectMode = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
+			gd = new GridData();
+			gd.widthHint = 120;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			fGdbServerConnectMode.setLayoutData(gd);
+			// Note: the index of these items must match the PreferenceConstants.ConnectMode constants.
+			fGdbServerConnectMode.setItems(new String[] {
+					Messages.getString("DebuggerTab.gdbServerConnectMode.Halt"),
+					Messages.getString("DebuggerTab.gdbServerConnectMode.PreReset"),
+					Messages.getString("DebuggerTab.gdbServerConnectMode.UnderReset"),
+					Messages.getString("DebuggerTab.gdbServerConnectMode.Attach"),
+					});
+			fGdbServerConnectMode.select(0);
+		}
+
+		{
+			Label label = new Label(comp, SWT.NONE);
+			label.setText(Messages.getString("DebuggerTab.gdbServerResetType_Label")); //$NON-NLS-1$
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerResetType_ToolTipText"));
+			GridData gd = new GridData();
+			label.setLayoutData(gd);
+
+			fGdbServerResetType = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
+			gd = new GridData();
+			gd.widthHint = 120;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			fGdbServerResetType.setLayoutData(gd);
+			// Note: the index of these items must match the PreferenceConstants.ResetType constants.
+			fGdbServerResetType.setItems(new String[] {
+					Messages.getString("DebuggerTab.gdbServerResetType.Default"),
+					Messages.getString("DebuggerTab.gdbServerResetType.Hardware"),
+					Messages.getString("DebuggerTab.gdbServerResetType.SoftwareDefault"),
+					Messages.getString("DebuggerTab.gdbServerResetType.SoftwareSysResetReq"),
+					Messages.getString("DebuggerTab.gdbServerResetType.SoftwareVectReset"),
+					Messages.getString("DebuggerTab.gdbServerResetType.SoftwareEmulated"),
+					});
+			fGdbServerResetType.select(0);
+		}
+
+		{
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbServerFlashMode_Label")); //$NON-NLS-1$
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerFlashMode_ToolTipText"));
 			GridData gd = new GridData();
@@ -695,6 +744,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerBusSpeed.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fGdbServerTargetName.addModifyListener(scheduleUpdateJobModifyListener);
+
+		fGdbServerConnectMode.addModifyListener(scheduleUpdateJobModifyListener);
+
+		fGdbServerResetType.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fGdbServerHaltAtHardFault.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 
@@ -946,6 +999,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerBusSpeed.setEnabled(enabled);
 		fGdbServerOverrideTarget.setEnabled(enabled);
 		fGdbServerTargetName.setEnabled(enabled && fGdbServerOverrideTarget.getSelection());
+		fGdbServerConnectMode.setEnabled(enabled);
+		fGdbServerResetType.setEnabled(enabled);
 		fGdbServerHaltAtHardFault.setEnabled(enabled);
 		fGdbServerStepIntoInterrupts.setEnabled(enabled);
 		fGdbServerEnableSemihosting.setEnabled(enabled);
@@ -1417,6 +1472,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT));
 
 				fGdbServerTargetName.setText(""); // will be updated with updateTargets() call below. 
+				
+				// Connect mode
+				fGdbServerConnectMode.select(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_CONNECT_MODE,
+						DefaultPreferences.GDB_SERVER_CONNECT_MODE_DEFAULT));
+				
+				// Reset type
+				fGdbServerResetType.select(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_RESET_TYPE,
+						DefaultPreferences.GDB_SERVER_RESET_TYPE_DEFAULT));
 
 				// Misc options
 				fGdbServerHaltAtHardFault
@@ -1557,6 +1620,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbServerOverrideTarget.setSelection(DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT);
 
 			fGdbServerTargetName.setText(DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT);
+			
+			// Connect mode
+			fGdbServerConnectMode.select(DefaultPreferences.GDB_SERVER_CONNECT_MODE_DEFAULT);
+			
+			// Reset type
+			fGdbServerResetType.select(DefaultPreferences.GDB_SERVER_RESET_TYPE_DEFAULT);
 
 			// Misc options
 			fGdbServerHaltAtHardFault.setSelection(DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT);
@@ -1793,6 +1862,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME, targetName);
 			}
 
+			// Connect mode
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_CONNECT_MODE,
+					fGdbServerConnectMode.getSelectionIndex());
+
+			// Reset type
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_RESET_TYPE,
+					fGdbServerResetType.getSelectionIndex());
+
 			// Misc options
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
 					fGdbServerHaltAtHardFault.getSelection());
@@ -1949,6 +2026,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
 					DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT);
+
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_CONNECT_MODE,
+					DefaultPreferences.GDB_SERVER_CONNECT_MODE_DEFAULT);
+
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_RESET_TYPE,
+					DefaultPreferences.GDB_SERVER_RESET_TYPE_DEFAULT);
 
 			// Misc options
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,

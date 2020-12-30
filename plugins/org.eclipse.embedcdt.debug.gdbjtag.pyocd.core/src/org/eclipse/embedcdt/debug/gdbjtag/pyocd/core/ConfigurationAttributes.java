@@ -50,6 +50,10 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 
 	public static final String GDB_SERVER_TARGET_NAME = PREFIX + ".gdbServerTargetName"; //$NON-NLS-1$
 
+	public static final String GDB_SERVER_CONNECT_MODE = PREFIX + ".gdbServerConnectMode"; //$NON-NLS-1$
+
+	public static final String GDB_SERVER_RESET_TYPE = PREFIX + ".gdbServerResetType"; //$NON-NLS-1$
+
 	public static final String GDB_SERVER_HALT_AT_HARD_FAULT = PREFIX + ".gdbServerHaltAtHardFault"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_STEP_INTO_INTERRUPTS = PREFIX + ".gdbServerStepIntoInterrutps"; //$NON-NLS-1$

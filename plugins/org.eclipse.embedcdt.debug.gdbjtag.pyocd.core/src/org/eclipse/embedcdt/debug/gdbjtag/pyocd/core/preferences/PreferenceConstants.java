@@ -26,5 +26,20 @@ public interface PreferenceConstants {
 		public static final int SECTOR_ERASE = 2;
 		public static final int FAST_PROGRAM = 3;
 	}
+	
+	public static final class ConnectMode {
+		public static final int HALT = 0;
+		public static final int PRE_RESET = 1;
+		public static final int UNDER_RESET = 2;
+		public static final int ATTACH = 3;
+	}
 
+	public static final class ResetType {
+		public static final int DEFAULT = 0;
+		public static final int HARDWARE = 1;
+		public static final int SOFTWARE_DEFAULT = 2;
+		public static final int SOFTWARE_SYSRESETREQ = 3;
+		public static final int SOFTWARE_VECTRESET = 4;
+		public static final int SOFTWARE_EMULATED = 5;
+	}
 }

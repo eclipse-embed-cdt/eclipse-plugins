@@ -161,6 +161,48 @@ public class Configuration {
 			lst.add("--frequency");
 			lst.add(Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
 					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT)));
+			
+			// Connect mode
+			int connectMode = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_CONNECT_MODE,
+					DefaultPreferences.GDB_SERVER_CONNECT_MODE_DEFAULT);
+			switch (connectMode) {
+			case PreferenceConstants.ConnectMode.HALT:
+				lst.add("--connect=halt");
+				break;
+			case PreferenceConstants.ConnectMode.PRE_RESET:
+				lst.add("--connect=pre-reset");
+				break;
+			case PreferenceConstants.ConnectMode.UNDER_RESET:
+				lst.add("--connect=under-reset");
+				break;
+			case PreferenceConstants.ConnectMode.ATTACH:
+				lst.add("--connect=attach");
+				break;
+			}
+			
+			// Reset type
+			int resetType = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_RESET_TYPE,
+					DefaultPreferences.GDB_SERVER_RESET_TYPE_DEFAULT);
+			switch (resetType) {
+			case PreferenceConstants.ResetType.DEFAULT:
+				lst.add("-Oreset_type=default");
+				break;
+			case PreferenceConstants.ResetType.HARDWARE:
+				lst.add("-Oreset_type=hw");
+				break;
+			case PreferenceConstants.ResetType.SOFTWARE_DEFAULT:
+				lst.add("-Oreset_type=sw");
+				break;
+			case PreferenceConstants.ResetType.SOFTWARE_SYSRESETREQ:
+				lst.add("-Oreset_type=sw_sysresetreq");
+				break;
+			case PreferenceConstants.ResetType.SOFTWARE_VECTRESET:
+				lst.add("-Oreset_type=sw_vectreset");
+				break;
+			case PreferenceConstants.ResetType.SOFTWARE_EMULATED:
+				lst.add("-Oreset_type=sw_emulated");
+				break;
+			}
 
 			// Halt at hard fault
 			if (configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,

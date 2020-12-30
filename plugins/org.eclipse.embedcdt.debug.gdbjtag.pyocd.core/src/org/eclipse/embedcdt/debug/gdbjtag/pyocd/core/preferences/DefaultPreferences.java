@@ -49,6 +49,8 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 	public static final int GDB_SERVER_BUS_SPEED_DEFAULT = 1000000;
 	public static final boolean GDB_SERVER_OVERRIDE_TARGET_DEFAULT = false;
 	public static final String GDB_SERVER_TARGET_NAME_DEFAULT = ""; //$NON-NLS-1$
+	public static final int GDB_SERVER_CONNECT_MODE_DEFAULT = PreferenceConstants.ConnectMode.HALT;
+	public static final int GDB_SERVER_RESET_TYPE_DEFAULT = PreferenceConstants.ResetType.DEFAULT;
 	public static final boolean GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT = true;
 	public static final boolean GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT = false;
 	public static final int GDB_SERVER_FLASH_MODE_DEFAULT = PreferenceConstants.FlashMode.SECTOR_ERASE;
