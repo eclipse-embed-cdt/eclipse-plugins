@@ -445,6 +445,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			Composite local = createHorizontalLayout(comp, 2, 1);
 			{
 				fGdbServerProbeId = new Combo(local, SWT.DROP_DOWN | SWT.READ_ONLY);
+				fGdbServerProbeId.setToolTipText(Messages.getString("DebuggerTab.gdbServerProbeId_ToolTipText"));
 				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				fGdbServerProbeId.setLayoutData(gd);
 				fGdbServerProbeId.setItems(new String[] {});
@@ -489,8 +490,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerBusSpeed_ToolTipText"));
 
 			fGdbServerBusSpeed = new Combo(comp, SWT.DROP_DOWN);
+			fGdbServerBusSpeed.setToolTipText(Messages.getString("DebuggerTab.gdbServerBusSpeed_ToolTipText"));
 			GridData gd = new GridData();
-			gd.widthHint = 120;
+			gd.widthHint = 200;
 			fGdbServerBusSpeed.setLayoutData(gd);
 			fGdbServerBusSpeed.setItems(new String[] { "1000000", "2000000", "8000000", "12000000" });
 			fGdbServerBusSpeed.select(0);
@@ -510,8 +512,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setLayoutData(gd);
 
 			fGdbServerConnectMode = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
+			fGdbServerConnectMode.setToolTipText(Messages.getString("DebuggerTab.gdbServerConnectMode_ToolTipText"));
 			gd = new GridData();
-			gd.widthHint = 120;
+			gd.widthHint = 200;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbServerConnectMode.setLayoutData(gd);
 			// Note: the index of these items must match the PreferenceConstants.ConnectMode constants.
@@ -532,8 +535,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setLayoutData(gd);
 
 			fGdbServerResetType = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
+			fGdbServerResetType.setToolTipText(Messages.getString("DebuggerTab.gdbServerResetType_ToolTipText"));
 			gd = new GridData();
-			gd.widthHint = 120;
+			gd.widthHint = 200;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbServerResetType.setLayoutData(gd);
 			// Note: the index of these items must match the PreferenceConstants.ResetType constants.
@@ -556,8 +560,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setLayoutData(gd);
 
 			fGdbServerFlashMode = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
+			fGdbServerFlashMode.setToolTipText(Messages.getString("DebuggerTab.gdbServerFlashMode_ToolTipText"));
 			gd = new GridData();
-			gd.widthHint = 120;
+			gd.widthHint = 200;
 			fGdbServerFlashMode.setLayoutData(gd);
 			// Note: the index of these items must match the PreferenceConstants.FlashMode constants.
 			fGdbServerFlashMode.setItems(new String[] {
@@ -632,6 +637,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setLayoutData(gd);
 
 			fGdbServerOtherOptions = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
+			fGdbServerOtherOptions.setToolTipText(Messages.getString("DebuggerTab.gdbServerOther_ToolTipText"));
 			gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 			gd.heightHint = 60;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
