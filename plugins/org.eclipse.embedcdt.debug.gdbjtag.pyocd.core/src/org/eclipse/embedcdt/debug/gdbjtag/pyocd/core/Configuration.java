@@ -273,7 +273,7 @@ public class Configuration {
 		// Added as a marker, it is displayed if the configuration was processed
 		// properly.
 		lst.add("-c");
-		lst.add("echo \"Started by GNU MCU Eclipse\"");
+		lst.add("echo \"" + getGdbServerStartedMessage() + "\"");
 
 		return lst.toArray(new String[0]);
 	}
@@ -412,6 +412,10 @@ public class Configuration {
 		return getDoStartGdbServer(config)
 				&& config.getAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
 						DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
+	}
+	
+	public static String getGdbServerStartedMessage() {
+		return "Started by Eclipse Embedded CDT"; 
 	}
 
 	// ------------------------------------------------------------------------
