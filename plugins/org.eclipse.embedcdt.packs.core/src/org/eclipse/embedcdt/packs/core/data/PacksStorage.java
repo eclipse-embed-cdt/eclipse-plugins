@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -46,7 +46,7 @@ public class PacksStorage {
 
 	public static final String INSTALLED_DEVICES_FILE_NAME = ".installed_devices_boards_books.xml";
 	public static final String INSTALLED_DEVICES_XML_VERSION = "1.2";
-	
+
 	private static IPath fgFolderPath = null;
 
 	private final static int TIME_OUT = 60 * 000;
@@ -101,7 +101,8 @@ public class PacksStorage {
 	// to store packages
 	public static String getFolderPathString() throws IOException {
 
-		String folderPath = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, Preferences.PACKS_CMSIS_FOLDER_PATH, null, null);
+		String folderPath = Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
+				Preferences.PACKS_CMSIS_FOLDER_PATH, null, null);
 		if (folderPath == null) {
 			throw new IOException("Missing folder path.");
 		}
@@ -158,7 +159,7 @@ public class PacksStorage {
 							"Size of \"" + packName + "\" retrieved from cache is " + String.valueOf(sz) + " bytes.");
 					return sz;
 				} catch (NumberFormatException e) {
-					; // Fall through to get actual file size.
+					// Fall through to get actual file size.
 				}
 			}
 		}
@@ -200,8 +201,7 @@ public class PacksStorage {
 					// System.out.println("Redirect to URL : " + newUrl);
 				} else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
 					httpURLConnection.disconnect();
-					throw new FileNotFoundException(
-							"File \"" + url + "\" not found (" + responseCode + ").");
+					throw new FileNotFoundException("File \"" + url + "\" not found (" + responseCode + ").");
 				} else {
 					httpURLConnection.disconnect();
 					throw new FileNotFoundException("Failed to open connection, response code " + responseCode);

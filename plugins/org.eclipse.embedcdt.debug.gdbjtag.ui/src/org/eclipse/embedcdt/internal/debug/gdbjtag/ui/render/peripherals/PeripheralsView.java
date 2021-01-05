@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
@@ -45,13 +45,14 @@ public class PeripheralsView extends VariablesView implements IMemoryBlockListen
 
 	// ------------------------------------------------------------------------
 
-  // Note: also refered in the codered perspective.
+	// Note: also refered in the codered perspective.
 	public final static String ID = "org.eclipse.embedcdt.internal.debug.gdbjtag.ui.views.PeripheralsView";
-	
+
 	public final static String PRESENTATION_CONTEXT_ID = "PeripheralsView";
 
 	private UIJob fRefreshUIjob = new SystemUIJob(PeripheralsView.class.getSimpleName() + "#refreshUIjob") {
 
+		@Override
 		public IStatus runInUIThread(IProgressMonitor pm) {
 
 			Viewer viewer = getViewer();
@@ -74,13 +75,15 @@ public class PeripheralsView extends VariablesView implements IMemoryBlockListen
 			System.out.println("PeripheralsView()");
 		}
 
-		fMemoryBlocks = new HashSet<PeripheralMemoryBlockExtension>();
+		fMemoryBlocks = new HashSet<>();
 	}
 
+	@Override
 	protected String getPresentationContextId() {
 		return PRESENTATION_CONTEXT_ID;
 	}
 
+	@Override
 	protected int getViewerStyle() {
 		return SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.TITLE | SWT.VIRTUAL | SWT.FULL_SELECTION;
 	}
@@ -243,13 +246,15 @@ public class PeripheralsView extends VariablesView implements IMemoryBlockListen
 	// ------------------------------------------------------------------------
 
 	private void initStates(IMemento memento) {
-		;
+
 	}
 
+	@Override
 	public void saveState(IMemento memento) {
 		super.saveState(memento);
 	}
 
+	@Override
 	public void saveViewerState(IMemento memento) {
 		super.saveViewerState(memento);
 	}

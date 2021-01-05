@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -37,8 +37,8 @@ import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.Xml;
 import org.eclipse.embedcdt.core.XpackUtils;
 import org.eclipse.embedcdt.internal.packs.core.Activator;
-import org.eclipse.embedcdt.packs.core.PackType;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
+import org.eclipse.embedcdt.packs.core.PackType;
 import org.eclipse.embedcdt.packs.core.data.cmsis.PdscGenericParser;
 import org.eclipse.embedcdt.packs.core.data.cmsis.PdscTreeParserForBuild;
 import org.eclipse.embedcdt.packs.core.data.xcdl.InstalledDevicesParser;
@@ -62,13 +62,13 @@ import org.xml.sax.SAXParseException;
 
 /**
  * This singleton class manages all data structures related to packs.
- * 
+ *
  * It uses two kind of data:
  * <ul>
  * <li>a summary of ALL existing pack versions
  * <li>full information only on INSTALLED pack versions.
  * </ul>
- * 
+ *
  * The main function to access the summary data is:
  * <ul>
  * <li>getRepositoriesTree()
@@ -84,7 +84,7 @@ import org.xml.sax.SAXParseException;
  * <li>findPackLatest()
  * <li>getInstalledPacksLatestVersionsList()
  * </ul>
- * 
+ *
  * To access detailed data from installed packages, specific functions are
  * available:
  * <ul>
@@ -147,17 +147,17 @@ public class DataManager implements IPacksDataManager {
 		fConfigObjectsForBuild = null;
 		fInstalledConfig = null;
 
-		fListeners = new ArrayList<IDataManagerListener>();
+		fListeners = new ArrayList<>();
 		fParsedPdsc = null;
 
 		fRepositoriesTree = null;
 		fInstalledPacksLatestVersionsList = null;
 		fPacksVersionsList = null;
-		fPacksVersionsMap = new TreeMap<String, Map<String, PackNode>>();
-		fPacksMap = new TreeMap<String, PackNode>();
+		fPacksVersionsMap = new TreeMap<>();
+		fPacksMap = new TreeMap<>();
 
-		fInstalledDevicesMap = new TreeMap<String, Leaf>();
-		fInstalledBoardsMap = new TreeMap<String, Leaf>();
+		fInstalledDevicesMap = new TreeMap<>();
+		fInstalledBoardsMap = new TreeMap<>();
 		// fDevicesMap = new TreeMap<String, PackNode>();
 
 	}
@@ -237,6 +237,7 @@ public class DataManager implements IPacksDataManager {
 		fInstalledPacksLatestVersionsList = null;
 	}
 
+	@Override
 	public Node getRepositoriesTree() {
 
 		return getRepositoriesTree(new DurationMonitor());
@@ -251,6 +252,7 @@ public class DataManager implements IPacksDataManager {
 		assert dm != null;
 		dm.displayTimeAndRun(new Runnable() {
 
+			@Override
 			public void run() {
 				loadCachedReposContent(dm);
 			}
@@ -260,7 +262,7 @@ public class DataManager implements IPacksDataManager {
 
 	/**
 	 * Get a list of all existing package versions.
-	 * 
+	 *
 	 * @return a list of version nodes.
 	 */
 	private List<PackNode> getPacksVersionsList(DurationMonitor dm) {
@@ -277,7 +279,7 @@ public class DataManager implements IPacksDataManager {
 
 	/**
 	 * Find a given package version.
-	 * 
+	 *
 	 * @param vendorName
 	 *            a string with the package vendor name (for example Arm).
 	 * @param packName
@@ -304,12 +306,12 @@ public class DataManager implements IPacksDataManager {
 		}
 
 		// May return null
-		return (PackNode) versionsMap.get(version);
+		return versionsMap.get(version);
 	}
 
 	/**
 	 * Find the latest version of a package.
-	 * 
+	 *
 	 * @param vendorName
 	 *            a string with the package vendor name (for example Arm).
 	 * @param packName
@@ -347,7 +349,7 @@ public class DataManager implements IPacksDataManager {
 	/**
 	 * Construct an internal representation of the map key, inspired from CMSIS Pack
 	 * examples.
-	 * 
+	 *
 	 * @param packType
 	 *            a string with the pack type (from PackTypes)
 	 * @param vendorName
@@ -365,7 +367,7 @@ public class DataManager implements IPacksDataManager {
 	/**
 	 * Load cached content with updated values, for example after a full packs
 	 * update.
-	 * 
+	 *
 	 * Set the following field members:
 	 * <ul>
 	 * <li>fRepositoriesTree
@@ -407,7 +409,7 @@ public class DataManager implements IPacksDataManager {
 	private void preparePacksMaps() {
 
 		// Group versions by [packType::vendor::package] in a Map
-		Map<String, Map<String, PackNode>> packsVersionsMap = new TreeMap<String, Map<String, PackNode>>();
+		Map<String, Map<String, PackNode>> packsVersionsMap = new TreeMap<>();
 		for (PackNode versionNode : fPacksVersionsList) {
 			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
 			String packName = versionNode.getProperty(Property.PACK_NAME);
@@ -416,7 +418,7 @@ public class DataManager implements IPacksDataManager {
 			Map<String, PackNode> versionMap;
 			versionMap = packsVersionsMap.get(key);
 			if (versionMap == null) {
-				versionMap = new TreeMap<String, PackNode>();
+				versionMap = new TreeMap<>();
 				packsVersionsMap.put(key, versionMap);
 			}
 
@@ -425,7 +427,7 @@ public class DataManager implements IPacksDataManager {
 		fPacksVersionsMap = packsVersionsMap;
 
 		// Group packages by [vendor::package] in a Map
-		Map<String, PackNode> packsMap = new TreeMap<String, PackNode>();
+		Map<String, PackNode> packsMap = new TreeMap<>();
 		for (PackNode versionNode : fPacksVersionsList) {
 			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
 			String packName = versionNode.getProperty(Property.PACK_NAME);
@@ -522,7 +524,7 @@ public class DataManager implements IPacksDataManager {
 					count++;
 				}
 			} catch (Exception e) {
-				;
+
 			}
 
 		}
@@ -544,7 +546,7 @@ public class DataManager implements IPacksDataManager {
 
 	/**
 	 * Filter all available versions and return only the latest installed ones.
-	 * 
+	 *
 	 * @return a list of version nodes.
 	 */
 	public List<PackNode> getInstalledPacksLatestVersionsList() {
@@ -559,7 +561,7 @@ public class DataManager implements IPacksDataManager {
 		}
 
 		// Filter installed packages
-		Set<PackNode> installedPackages = new HashSet<PackNode>();
+		Set<PackNode> installedPackages = new HashSet<>();
 		List<PackNode> packsVersionsList = getPacksVersionsList(dm);
 		if (packsVersionsList != null) {
 			for (PackNode versionNode : packsVersionsList) {
@@ -570,7 +572,7 @@ public class DataManager implements IPacksDataManager {
 
 			// Filter only the latest versions (first installed in children
 			// list)
-			List<PackNode> installedLatestVersions = new LinkedList<PackNode>();
+			List<PackNode> installedLatestVersions = new LinkedList<>();
 			for (PackNode packNode : installedPackages) {
 				List<Leaf> children = packNode.getChildren();
 				for (Leaf node : children) {
@@ -593,7 +595,7 @@ public class DataManager implements IPacksDataManager {
 	 * Get the tree version equivalent with the full PDSC file.
 	 * <p>
 	 * If the file is not already in, load it and contribute to the map.
-	 * 
+	 *
 	 * @return a tree starting with node "package", or null if error.
 	 */
 	public Node getParsedPdscTree(String pdscName, String version) {
@@ -610,7 +612,7 @@ public class DataManager implements IPacksDataManager {
 				return node;
 			}
 		} else {
-			fParsedPdsc = new HashMap<String, Node>();
+			fParsedPdsc = new HashMap<>();
 		}
 
 		File file = null;
@@ -641,6 +643,7 @@ public class DataManager implements IPacksDataManager {
 		assert dm != null;
 		dm.displayTimeAndRun(new Runnable() {
 
+			@Override
 			public void run() {
 				Node node = parsePdscFile(finalFile, dm);
 				if (node != null) {
@@ -657,7 +660,7 @@ public class DataManager implements IPacksDataManager {
 	 * <p>
 	 * The tree reflects 100% the content in the original file, just that it is
 	 * easier to store and further parse.
-	 * 
+	 *
 	 * @return a tree starting with node "package".
 	 */
 	private Node parsePdscFile(File file, DurationMonitor dm) {
@@ -749,7 +752,7 @@ public class DataManager implements IPacksDataManager {
 				devicesFile.delete();
 			}
 		} catch (IOException e) {
-			;
+
 		}
 
 		fInstalledDevicesMap.clear();
@@ -758,11 +761,12 @@ public class DataManager implements IPacksDataManager {
 	/**
 	 * Get the devices from all installed packs, to be used by the device selection
 	 * properties page in project settings page.
-	 * 
+	 *
 	 * @return a tree of nodes, with Devices/Boards, Vendors, Family, Subfamily,
 	 *         Device, or null.
 	 */
 	// @Override
+	@Override
 	public Node getInstalledObjectsForBuild(IConfiguration config) {
 
 		return getInstalledObjectsForBuild(config, new DurationMonitor());
@@ -786,6 +790,7 @@ public class DataManager implements IPacksDataManager {
 				assert dm != null;
 				dm.displayTimeAndRun(new Runnable() {
 
+					@Override
 					public void run() {
 						fInstalledObjectsForBuild = loadInstalledObjectsForBuild(config, dm);
 					}
@@ -809,7 +814,7 @@ public class DataManager implements IPacksDataManager {
 	/**
 	 * Load from the cached file or recreate the tree with the installed objects
 	 * (devices/boards/books).
-	 * 
+	 *
 	 * @return a tree with device/boards, or null.
 	 */
 	private Node loadInstalledObjectsForBuild(IConfiguration config, DurationMonitor dm) {
@@ -829,9 +834,9 @@ public class DataManager implements IPacksDataManager {
 			}
 
 		} catch (IOException e1) {
-			;
+
 		}
-		
+
 		if (rootNode != null) {
 			ITreeIterator packNodes = new AbstractTreePreOrderIterator() {
 
@@ -980,7 +985,7 @@ public class DataManager implements IPacksDataManager {
 	private String[] getArrayValues(Node node) {
 		assert node != null;
 
-		List<String> list = new LinkedList<String>();
+		List<String> list = new LinkedList<>();
 
 		if (node.hasChildren()) {
 			for (Leaf child : node.getChildren()) {
@@ -1023,7 +1028,7 @@ public class DataManager implements IPacksDataManager {
 
 		Node vendor = (Node) rootDevices.findChild(Type.VENDOR, supplierName);
 		if (vendor == null) {
-			vendor = Node.addNewChild((Node) rootDevices, Type.VENDOR);
+			vendor = Node.addNewChild(rootDevices, Type.VENDOR);
 			vendor.setName(supplierName);
 			vendor.putProperty(Property.VENDOR_ID, supplierId);
 		}
@@ -1298,7 +1303,7 @@ public class DataManager implements IPacksDataManager {
 
 	/**
 	 * Load the cached file with the installed objects.
-	 * 
+	 *
 	 * @param file
 	 *            the cached xml file
 	 * @return a tree with the parsed content of the file, or null if error.
@@ -1340,7 +1345,7 @@ public class DataManager implements IPacksDataManager {
 	 * (devices/boards/books).
 	 * <p>
 	 * It uses the cached PDSC trees; if not there, parse the PDSC files.
-	 * 
+	 *
 	 * @return a tree or null if error.
 	 */
 	private Node parseInstalledPackagesForBuild(DurationMonitor dm) {
@@ -1488,6 +1493,7 @@ public class DataManager implements IPacksDataManager {
 
 					dm.displayTimeAndRun(new Runnable() {
 
+						@Override
 						public void run() {
 							Node xcdlRoot = parseXcdlFile(xcdlFile, dm);
 							// Warning, multiple ROOT nodes, one for each file.
@@ -1509,6 +1515,7 @@ public class DataManager implements IPacksDataManager {
 		return null;
 	}
 
+	@Override
 	public Leaf findInstalledDevice(String packType, String deviceSupplierId, String deviceId, IConfiguration config) {
 
 		return findInstalledDevice(packType, deviceSupplierId, deviceId, config, new DurationMonitor());
@@ -1584,6 +1591,7 @@ public class DataManager implements IPacksDataManager {
 		return null; // Not found
 	}
 
+	@Override
 	public Leaf findInstalledBoard(String packType, String boardSupplierId, String boardSupplierName, String boardId,
 			IConfiguration config) {
 		return findInstalledBoard(packType, boardSupplierId, boardSupplierName, boardId, config, new DurationMonitor());
@@ -1665,7 +1673,7 @@ public class DataManager implements IPacksDataManager {
 	/**
 	 * Try to get a property from the current node or from parent nodes, up to a
 	 * node of given type (exclusively).
-	 * 
+	 *
 	 * @param node
 	 *            a leaf node where to start the search
 	 * @param name
@@ -1690,6 +1698,7 @@ public class DataManager implements IPacksDataManager {
 		return "";
 	}
 
+	@Override
 	public String getCmsisDestinationFolder(Leaf node) {
 
 		return getCmsisDestinationFolder(node, new DurationMonitor());
@@ -1826,12 +1835,13 @@ public class DataManager implements IPacksDataManager {
 	/**
 	 * Get the list of files referring to CMSIS Core (Arm headers and vendor headers
 	 * and source files), for the given device and compiler.
-	 * 
+	 *
 	 * @param deviceName
 	 * @param compiler
 	 * @return a tree of nodes, CMSIS/Vendor, files.
 	 */
 	// @Override
+	@Override
 	public Node getCmsisCoreFiles(String deviceName, String compiler) {
 		// TODO Auto-generated method stub
 		return null;
@@ -1841,11 +1851,12 @@ public class DataManager implements IPacksDataManager {
 	/**
 	 * Get the register details (address and bit fields) for display/modify in the
 	 * debug perspective.
-	 * 
+	 *
 	 * @param deviceName
 	 * @return (to be defined)
 	 */
 	// @Override
+	@Override
 	public Node getRegisterDetailsForDebug(String deviceName) {
 		// TODO Auto-generated method stub
 		return null;

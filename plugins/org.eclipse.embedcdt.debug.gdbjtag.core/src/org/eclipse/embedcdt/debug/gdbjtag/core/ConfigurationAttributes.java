@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -30,6 +30,6 @@ public interface ConfigurationAttributes {
 
 	// TabSvd
 	public static final String ATTR_JTAG_DEVICE = "org.eclipse.cdt.debug.gdbjtag.core.jtagDevice"; //$NON-NLS-1$
-	
+
 	// ------------------------------------------------------------------------
 }

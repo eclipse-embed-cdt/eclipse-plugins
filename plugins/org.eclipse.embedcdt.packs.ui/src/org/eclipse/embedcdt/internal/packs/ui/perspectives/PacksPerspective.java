@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -45,6 +45,7 @@ public class PacksPerspective implements IPerspectiveFactory {
 		// System.out.println("PacksPerspective()");
 	}
 
+	@Override
 	public void createInitialLayout(IPageLayout factory) {
 
 		// System.out.println("PacksPerspective.createInitialLayout()");
@@ -84,8 +85,7 @@ public class PacksPerspective implements IPerspectiveFactory {
 		// topRight.addView(PackagesView.ID);
 
 		// Leave 20% for the editor
-		fFactory.addView(PacksView.ID, IPageLayout.TOP, 0.8f,
-				fFactory.getEditorArea());
+		fFactory.addView(PacksView.ID, IPageLayout.TOP, 0.8f, fFactory.getEditorArea());
 
 		// factory.addFastView("org.eclipse.team.ccvs.ui.RepositoriesView",0.50f);
 		// //NON-NLS-1

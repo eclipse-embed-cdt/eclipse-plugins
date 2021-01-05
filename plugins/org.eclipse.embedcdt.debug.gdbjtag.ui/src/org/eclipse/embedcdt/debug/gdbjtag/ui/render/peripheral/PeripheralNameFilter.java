@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
@@ -56,7 +56,7 @@ public class PeripheralNameFilter extends ViewerFilter {
 			}
 
 			// Comparison performed as upper text
-			if (qualifiedName.toUpperCase().contains((CharSequence) fFilterText)) {
+			if (qualifiedName.toUpperCase().contains(fFilterText)) {
 				// Registers & fields are visible only if they
 				// match the filter
 				return true;

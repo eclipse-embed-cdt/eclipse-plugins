@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -28,7 +28,7 @@ public interface IGnuMcuDebuggerCommandsService {
 	/**
 	 * This step is part of the GROUP_TOP_LEVEL. Cannot use the IGDBJtagDevice
 	 * object, it is not available at this moment.
-	 * 
+	 *
 	 * @param attributes
 	 * @param commandsList
 	 * @return Status.OK_STATUS or an IStatus object if error.
@@ -55,7 +55,7 @@ public interface IGnuMcuDebuggerCommandsService {
 
 	/**
 	 * Used by both FinalLaunchSequence & RestartProcessSequence.
-	 * 
+	 *
 	 * @param attributes
 	 * @param doReset
 	 * @param programPath

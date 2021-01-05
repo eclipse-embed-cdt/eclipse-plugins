@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -35,6 +35,7 @@ import org.eclipse.embedcdt.internal.packs.core.Activator;
  */
 public class PreferencesInitializer extends AbstractPreferenceInitializer {
 
+	@Override
 	public void initializeDefaultPreferences() {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -100,7 +101,8 @@ public class PreferencesInitializer extends AbstractPreferenceInitializer {
 		node.put(Preferences.PACKS_CMSIS_MACRO_NAME, Preferences.DEFAULT_CMSIS_MACRO_NAME);
 
 		// Read back the actual value.
-		String folderPath = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, Preferences.PACKS_CMSIS_FOLDER_PATH, packagesPath.toOSString(), null);
+		String folderPath = Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
+				Preferences.PACKS_CMSIS_FOLDER_PATH, packagesPath.toOSString(), null);
 
 		File packagesFolder = new File(folderPath);
 		if (!packagesFolder.exists()) {

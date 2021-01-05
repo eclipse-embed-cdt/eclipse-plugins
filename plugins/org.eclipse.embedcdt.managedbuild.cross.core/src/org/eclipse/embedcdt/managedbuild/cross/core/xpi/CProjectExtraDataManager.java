@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -54,7 +54,7 @@ public class CProjectExtraDataManager implements ICProjectExtraDataManager {
 			CProjectPacksStorage storage = new CProjectPacksStorage(config);
 			return storage.getOptions();
 		} catch (CoreException e) {
-			;
+
 		}
 		return null; // No extra properties
 	}

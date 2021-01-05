@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -44,7 +44,8 @@ public class Xml {
 		return parseInputStream(inputStream);
 	}
 
-	public static Document parseInputStream(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
+	public static Document parseInputStream(InputStream inputStream)
+			throws ParserConfigurationException, SAXException, IOException {
 
 		InputSource inputSource = new InputSource(inputStream);
 
@@ -80,7 +81,7 @@ public class Xml {
 
 	/**
 	 * Get the list of all direct children elements.
-	 * 
+	 *
 	 * @param el
 	 * @return a list of elements.
 	 */
@@ -92,7 +93,7 @@ public class Xml {
 
 	/**
 	 * Get the list of direct children elements with the given name.
-	 * 
+	 *
 	 * @param el
 	 * @param name
 	 * @return a list of elements.
@@ -102,7 +103,7 @@ public class Xml {
 		NodeList nodeList = el.getChildNodes();
 
 		// Allocate exactly the number of children
-		List<Element> list = new ArrayList<Element>(nodeList.getLength());
+		List<Element> list = new ArrayList<>(nodeList.getLength());
 
 		for (int i = 0; i < nodeList.getLength(); ++i) {
 			Node node = nodeList.item(i);
@@ -118,7 +119,7 @@ public class Xml {
 
 	/**
 	 * Get the text content of an element.
-	 * 
+	 *
 	 * @param el
 	 * @return a trimmed string, even an empty one.
 	 */
@@ -164,7 +165,7 @@ public class Xml {
 
 	public static List<String> getAttributesNames(Element el) {
 
-		List<String> list = new LinkedList<String>();
+		List<String> list = new LinkedList<>();
 
 		NamedNodeMap attribs = el.getAttributes();
 		for (int i = 0; i < attribs.getLength(); ++i) {
@@ -177,7 +178,7 @@ public class Xml {
 
 	public static List<String> getAttributesNames(Element el, String sa[]) {
 
-		List<String> list = new LinkedList<String>();
+		List<String> list = new LinkedList<>();
 
 		NamedNodeMap attribs = el.getAttributes();
 		for (int i = 0; i < attribs.getLength(); ++i) {
@@ -185,7 +186,7 @@ public class Xml {
 			list.add(name);
 		}
 
-		List<String> listOut = new LinkedList<String>();
+		List<String> listOut = new LinkedList<>();
 		for (String s : sa) {
 			if (list.contains(s)) {
 				list.remove(s);
@@ -198,7 +199,7 @@ public class Xml {
 
 	/**
 	 * Escape characters that are not allowed in XML.
-	 * 
+	 *
 	 * @param value
 	 *            a string to be escaped
 	 * @return the escaped string
@@ -217,7 +218,7 @@ public class Xml {
 	/**
 	 * If the string contains line separators, split the string in lines, trim each
 	 * line and then join everything back to a single string.
-	 * 
+	 *
 	 * @param str
 	 *            a string that might span multiple lines.
 	 * @return a string with lines joined, or the original string.

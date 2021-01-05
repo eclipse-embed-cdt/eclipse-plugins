@@ -92,6 +92,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 		// initialisations.
 		super.initialize(new RequestMonitor(getExecutor(), rm) {
 
+			@Override
 			protected void handleSuccess() {
 				doInitialize(rm);
 			}
@@ -185,6 +186,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 		return commandLineArray;
 	}
 
+	@Override
 	public String getServerCommandName() {
 
 		String[] commandLineArray = getServerCommandLineArray();
@@ -201,6 +203,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 		return fGdbServerLaunchTimeout;
 	}
 
+	@Override
 	public String getServerName() {
 		return "pyOCD GDB Server";
 	}
@@ -217,19 +220,23 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 		return "Terminating " + getSemihostingName() + " Semihosting Process";
 	}
 
+	@Override
 	public boolean canMatchStdOut() {
 		return false;
 	}
 
+	@Override
 	public boolean canMatchStdErr() {
 		return true;
 	}
 
+	@Override
 	public boolean matchStdOutExpectedPattern(String line) {
 		String message = Configuration.getGdbServerStartedMessage();
 		return (line.indexOf(message) >= 0);
 	}
 
+	@Override
 	public boolean matchStdErrExpectedPattern(String line) {
 		String message = Configuration.getGdbServerStartedMessage();
 		return (line.indexOf(message) >= 0);

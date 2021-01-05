@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -70,7 +70,7 @@ public class Configuration {
 
 	public static String[] getGdbServerCommandLineArray(ILaunchConfiguration configuration) {
 
-		List<String> lst = new ArrayList<String>();
+		List<String> lst = new ArrayList<>();
 
 		try {
 			DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
@@ -201,7 +201,7 @@ public class Configuration {
 
 	public static String[] getGdbClientCommandLineArray(ILaunchConfiguration configuration) {
 
-		List<String> lst = new ArrayList<String>();
+		List<String> lst = new ArrayList<>();
 
 		String executable = getGdbClientCommand(configuration, null);
 		if (executable == null || executable.isEmpty())

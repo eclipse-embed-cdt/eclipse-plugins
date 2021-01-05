@@ -11,8 +11,8 @@
  * Contributors:
  *     QNX Software Systems - Initial API and implementation
  *     Andy Jin - Hardware debugging UI improvements, bug 229946
- *     Anna Dushistova (MontaVista) - bug 241279 
- *              - Hardware Debugging: Host name or ip address not saving in 
+ *     Anna Dushistova (MontaVista) - bug 241279
+ *              - Hardware Debugging: Host name or ip address not saving in
  *                the debug configuration
  *     Andy Jin (QNX) - Added DSF debugging, bug 248593
  *     Bruce Griffith, Sage Electronic Engineering, LLC - bug 305943
@@ -819,7 +819,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	/**
 	 * Get the project name associated to this launch configuration.
-	 * 
+	 *
 	 * @param configuration
 	 * @return a String with the project name, or empty.
 	 */
@@ -832,7 +832,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						(String) null);
 				fProjectName = str.replace(' ', '_');
 			} catch (CoreException e) {
-				;
+
 			}
 		}
 
@@ -1066,7 +1066,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#getId()
 	 */
 	@Override

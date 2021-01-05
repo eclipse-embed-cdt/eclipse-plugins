@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral;
@@ -56,7 +56,7 @@ public class PeripheralGroupVMNode extends PeripheralTreeVMNode implements IRegi
 		if (child instanceof PeripheralRegisterVMNode) {
 
 			if (fRegisters == null)
-				fRegisters = new ArrayList<PeripheralRegisterVMNode>();
+				fRegisters = new ArrayList<>();
 
 			// Update list of child registers.
 			fRegisters.add((PeripheralRegisterVMNode) child);
@@ -72,7 +72,7 @@ public class PeripheralGroupVMNode extends PeripheralTreeVMNode implements IRegi
 	}
 
 	public void update(String str) {
-		;
+
 	}
 
 	// ------------------------------------------------------------------------

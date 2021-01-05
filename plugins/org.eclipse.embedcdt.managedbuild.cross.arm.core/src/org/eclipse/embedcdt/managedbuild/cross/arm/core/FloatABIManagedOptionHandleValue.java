@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -31,10 +31,11 @@ public class FloatABIManagedOptionHandleValue extends ManagedOptionValueHandler 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.cdt.managedbuilder.core.IManagedOptionValueHandler#
 	 * handleValue (IConfiguration,IToolChain,IOption,String,int)
 	 */
+	@Override
 	@SuppressWarnings("unused")
 	public boolean handleValue(IBuildObject configuration, IHoldsOptions holder, IOption option, String extraArgument,
 			int event) {

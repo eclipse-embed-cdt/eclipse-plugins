@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
@@ -91,7 +91,7 @@ public class SvdObjectDMNode {
 
 	/**
 	 * Get the original SVD node, in the generic tree.
-	 * 
+	 *
 	 * @return a generic tree node.
 	 */
 	public Leaf getNode() {
@@ -100,7 +100,7 @@ public class SvdObjectDMNode {
 
 	/**
 	 * Get name. Mandatory, cannot be derived.
-	 * 
+	 *
 	 * @return a short (usually upper case) string.
 	 */
 	public String getName() {
@@ -119,7 +119,7 @@ public class SvdObjectDMNode {
 
 	/**
 	 * Check if the node is derived from another node.
-	 * 
+	 *
 	 * @return true if derived.
 	 */
 	public boolean isDerived() {
@@ -128,7 +128,7 @@ public class SvdObjectDMNode {
 
 	/**
 	 * Get the node that this node is derived from.
-	 * 
+	 *
 	 * @return the derived from node, or null if not derived or not found.
 	 */
 	public Leaf getDerivedFromNode() {
@@ -148,7 +148,7 @@ public class SvdObjectDMNode {
 
 	/**
 	 * Get the default display name.
-	 * 
+	 *
 	 * @return a string.
 	 */
 	public String getDisplayName() {
@@ -165,7 +165,7 @@ public class SvdObjectDMNode {
 	 * trimmed.
 	 * <p>
 	 * If not present, the derived from node description is returned.
-	 * 
+	 *
 	 * @return a string with the field description, possibly empty.
 	 */
 	public String getDescription() {
@@ -190,7 +190,7 @@ public class SvdObjectDMNode {
 
 	/**
 	 * Get the cluster, register, field children nodes.
-	 * 
+	 *
 	 * @return an array of nodes.
 	 */
 	public SvdObjectDMNode[] getChildren() {
@@ -216,7 +216,7 @@ public class SvdObjectDMNode {
 
 	/**
 	 * To be redefined by nodes that have children.
-	 * 
+	 *
 	 * @return an array of nodes or null if no children.
 	 */
 	protected SvdObjectDMNode[] prepareChildren(Leaf node) {
@@ -225,7 +225,7 @@ public class SvdObjectDMNode {
 
 	/**
 	 * Get a property from the local node or from derivedFrom node.
-	 * 
+	 *
 	 * @param name
 	 *            a string with the property name.
 	 * @param defaultValue
@@ -251,7 +251,7 @@ public class SvdObjectDMNode {
 
 	/**
 	 * Get a property from the local node or from derivedFrom node.
-	 * 
+	 *
 	 * @param name
 	 *            a string with the property name.
 	 * @return a string with the property value, possibly empty.
@@ -263,7 +263,7 @@ public class SvdObjectDMNode {
 	/**
 	 * Get a property from the local node or from derivedFrom node, or from the
 	 * parent node.
-	 * 
+	 *
 	 * @param name
 	 *            a string with the property name.
 	 * @param defaultValue
@@ -304,7 +304,7 @@ public class SvdObjectDMNode {
 	/**
 	 * Get a property from the local node or from derivedFrom node, or from the
 	 * parent node.
-	 * 
+	 *
 	 * @param name
 	 *            a string with the property name.
 	 * @return a string with the property value or empty if not found.

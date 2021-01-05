@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -95,12 +95,14 @@ public class UpdatePacksHandler extends AbstractHandler {
 	 * the command has been executed, so extract the needed information from the
 	 * application context.
 	 */
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		window = HandlerUtil.getActiveWorkbenchWindow(event);
 		IRunnableContext context = window.getWorkbench().getProgressService();
 		try {
 			context.run(true, true, new IRunnableWithProgress() {
+				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					myRun(monitor);
 				}
@@ -153,7 +155,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 				if (Repos.CMSIS_PACK_TYPE.equals(type)) {
 
 					// String[] { url, name, version }
-					List<String[]> list = new LinkedList<String[]>();
+					List<String[]> list = new LinkedList<>();
 
 					// collect all pdsc references in this site
 					readCmsisIndex(indexUrl, list);
@@ -305,13 +307,14 @@ public class UpdatePacksHandler extends AbstractHandler {
 				if (!cachedFile.exists()) {
 
 					// If local file does not exist, create it
-					int ret = org.eclipse.embedcdt.packs.ui.Utils.copyFileWithShell(sourceUrl, cachedFile, fOut, null, window.getShell(),
-							ignoreError);
+					int ret = org.eclipse.embedcdt.packs.ui.Utils.copyFileWithShell(sourceUrl, cachedFile, fOut, null,
+							window.getShell(), ignoreError);
 					if (ret == 0) {
 
 						DataUtils.reportInfo("File " + pdscName + " version " + pdscVersion + " cached locally.");
 					} else {
-						fOut.println(DataUtils.reportWarning("Missing \"" + cachedFile + "\", ignored by user request."));
+						fOut.println(
+								DataUtils.reportWarning("Missing \"" + cachedFile + "\", ignored by user request."));
 						if (ret == 3) {
 							ignoreError = true;
 						}

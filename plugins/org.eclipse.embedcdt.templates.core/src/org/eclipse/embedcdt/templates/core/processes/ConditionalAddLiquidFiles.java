@@ -60,12 +60,12 @@ public class ConditionalAddLiquidFiles extends ProcessRunner {
 		String condition = null;
 
 		Map<String, String> valueStore = template.getValueStore();
-		Map<String, Object> liquidMap = new HashMap<String, Object>();
+		Map<String, Object> liquidMap = new HashMap<>();
 		// Use all definitions in the store, including from other plug-ins.
 		liquidMap.putAll(valueStore);
 		liquidMap.put("language", valueStore.get("fileExtension"));
-		
-		Calendar now = Calendar.getInstance();   // Gets the current date and time
+
+		Calendar now = Calendar.getInstance(); // Gets the current date and time
 		int year = now.get(Calendar.YEAR);
 		liquidMap.put("year", Integer.toString(year));
 		liquidMap.put("authorName", "<your-name-here>");
@@ -135,8 +135,7 @@ public class ConditionalAddLiquidFiles extends ProcessRunner {
 				try {
 					// The option simplifies usage, by automatically stripping spaces around tags;
 					// All previous \n are preserved; the first next \n is stripped.
-					ParseSettings liqSettings = new ParseSettings.Builder().withStripSpaceAroundTags(false)
-							.build();
+					ParseSettings liqSettings = new ParseSettings.Builder().withStripSpaceAroundTags(false).build();
 					Template liqTemplate = Template.parse(fileContents, liqSettings);
 					String liqRendered = liqTemplate.render(liquidMap);
 					// System.out.println(liqRendered);

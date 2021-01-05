@@ -22,10 +22,10 @@ import java.util.Collection;
 /**
  * A class to manage an array of objects. Elements can be only strings or
  * JsNodes.
- * 
+ *
  * DO NOT add or remove elements via direct access via getElements(), to avoid
  * dangling references to parent objects.
- * 
+ *
  * @author ilg
  */
 
@@ -38,16 +38,16 @@ public class JsArray extends JsNode {
 
 	public JsArray() {
 		// Linked list, to preserve the order.
-		fElements = new ArrayList<Object>();
+		fElements = new ArrayList<>();
 
-		fChildren = new ArrayList<JsNode>();
+		fChildren = new ArrayList<>();
 	}
 
 	public JsArray(int initialSize) {
 		// Linked list, to preserve the order.
-		fElements = new ArrayList<Object>(initialSize);
+		fElements = new ArrayList<>(initialSize);
 
-		fChildren = new ArrayList<JsNode>();
+		fChildren = new ArrayList<>();
 	}
 
 	public ArrayList<Object> getElements() {
@@ -156,6 +156,7 @@ public class JsArray extends JsNode {
 		}
 	}
 
+	@Override
 	public String toString() {
 		String str = "[ ";
 		boolean first = true;

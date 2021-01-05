@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
  *     Liviu Ionescu - UI part extraction.
  *******************************************************************************/
@@ -140,7 +140,7 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider implement
 				try {
 					hasChanged = node.hasValueChanged();
 				} catch (DebugException e) {
-					;
+
 				}
 			}
 

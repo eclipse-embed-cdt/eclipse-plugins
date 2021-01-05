@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral;
@@ -116,14 +116,14 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 
 	/**
 	 * Register the given node as child of the current node.
-	 * 
+	 *
 	 * @param child
 	 *            the node to be registered.
 	 */
 	protected void addChild(PeripheralTreeVMNode child) {
 
 		if (fChildren == null) {
-			fChildren = new ArrayList<PeripheralTreeVMNode>();
+			fChildren = new ArrayList<>();
 		}
 		fChildren.add(child);
 	}
@@ -134,7 +134,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	/**
 	 * Get the children nodes. If the node has not children, return an empty array,
 	 * not null.
-	 * 
+	 *
 	 * @return an array of children nodes.
 	 */
 	public Object[] getChildren() {
@@ -152,7 +152,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 
 	/**
 	 * Get the node parent. All nodes, except the root node, have a parent node.
-	 * 
+	 *
 	 * @return a node or null, if root.
 	 */
 	public Object getParent() {
@@ -162,7 +162,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	/**
 	 * Lazy load implementation, prepares the list of children nodes only when
 	 * needed.
-	 * 
+	 *
 	 * @return true if the node actually has children.
 	 */
 	public boolean hasChildren() {
@@ -216,12 +216,12 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 
 	@Override
 	public void setValue(String expression) throws DebugException {
-		;
+
 	}
 
 	@Override
 	public void setValue(IValue value) throws DebugException {
-		;
+
 	}
 
 	@Override
@@ -304,7 +304,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 
 	/**
 	 * Compute the cumulated offset, up to the peripheral node.
-	 * 
+	 *
 	 * @return a big integer.
 	 */
 	public BigInteger getPeripheralBigAddressOffset() {
@@ -328,7 +328,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	/**
 	 * Compute the absolute address of the node, by adding the total offset to the
 	 * peripheral base.
-	 * 
+	 *
 	 * @return a big integer with the absolute address.
 	 */
 	public BigInteger getBigAbsoluteAddress() {
@@ -352,21 +352,21 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	/**
 	 * Get a string defining the current element. To be used only to prefix
 	 * tool-tips, for decision making, use the isXXX() test functions.
-	 * 
+	 *
 	 * @return a string, possibly empty.
 	 */
 	public abstract String getDisplayNodeType();
 
 	/**
 	 * Get the name of the icon file used for the node icon.
-	 * 
+	 *
 	 * @return a string.
 	 */
 	public abstract String getImageName();
 
 	/**
 	 * Get the access string.
-	 * 
+	 *
 	 * @return a string, possibly empty.
 	 */
 	public String getAccess() {
@@ -376,7 +376,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	/**
 	 * Get the read action string. A non-empty string means the peripheral/field
 	 * should not be read, since this will trigger some clean/set action.
-	 * 
+	 *
 	 * @return a string, possibly empty.
 	 */
 	public String getReadAction() {
@@ -385,7 +385,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 
 	/**
 	 * Test if the element is write only.
-	 * 
+	 *
 	 * @return true if write only.
 	 */
 	public boolean isWriteOnly() {
@@ -398,7 +398,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 
 	/**
 	 * Test if the element can be read.
-	 * 
+	 *
 	 * @return true if readable.
 	 */
 	public boolean isReadAllowed() {
@@ -411,7 +411,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 
 	/**
 	 * Get the string with the node address as to be displayed.
-	 * 
+	 *
 	 * @return a string or null;
 	 */
 	public String getDisplayAddress() {
@@ -475,7 +475,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 		}
 
 		// If not, start by creating the list.
-		fChildren = new ArrayList<PeripheralTreeVMNode>();
+		fChildren = new ArrayList<>();
 
 		// Get the array of actual children from each node implementation.
 		SvdObjectDMNode[] svdChildren = fDMNode.getChildren();
@@ -489,9 +489,9 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 			 * automatically register as children of the current node.
 			 */
 			if (child.isArray()) {
-				processArray((SvdDMNode) child);
+				processArray(child);
 			} else if (child.isRepetition()) {
-				processRepetitions((SvdDMNode) child);
+				processRepetitions(child);
 			} else {
 				// Simple case, a single element.
 				if (child instanceof SvdClusterDMNode) {
@@ -589,7 +589,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	/**
 	 * For array elements, substitute the %s with the actual index; for repetitions,
 	 * substitute with the generated value.
-	 * 
+	 *
 	 * @param str
 	 *            a string, must be a valid C variable name.
 	 */
@@ -607,7 +607,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	/**
 	 * Inform node when content changed. If really changed, set the fading level to
 	 * 3.
-	 * 
+	 *
 	 * @param hasChanged
 	 */
 	public void setChanged(boolean hasChanged) {

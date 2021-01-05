@@ -183,7 +183,7 @@ public class Launch extends GnuMcuLaunch {
 			Process serverProc = getDsfExecutor().submit(new Callable<Process>() {
 				@Override
 				public Process call() throws CoreException {
-					GdbServerBackend backend = (GdbServerBackend) fTracker.getService(GdbServerBackend.class);
+					GdbServerBackend backend = fTracker.getService(GdbServerBackend.class);
 					if (backend != null) {
 						return backend.getServerProcess();
 					}
@@ -195,7 +195,7 @@ public class Launch extends GnuMcuLaunch {
 			// the overrideable process factory to allow others to override.
 			// First set attribute to specify we want to create the gdb process.
 			// Bug 210366
-			Map<String, String> attributes = new HashMap<String, String>();
+			Map<String, String> attributes = new HashMap<>();
 			if (serverProc != null) {
 				newProcess = DebugPlugin.newProcess(this, serverProc, label, attributes);
 			}
@@ -219,7 +219,7 @@ public class Launch extends GnuMcuLaunch {
 			Process serverProc = getDsfExecutor().submit(new Callable<Process>() {
 				@Override
 				public Process call() throws CoreException {
-					GdbServerBackend backend = (GdbServerBackend) fTracker.getService(GdbServerBackend.class);
+					GdbServerBackend backend = fTracker.getService(GdbServerBackend.class);
 					if (backend != null) {
 						return backend.getSemihostingProcess();
 					}
@@ -231,7 +231,7 @@ public class Launch extends GnuMcuLaunch {
 			// the overrideable process factory to allow others to override.
 			// First set attribute to specify we want to create the gdb process.
 			// Bug 210366
-			Map<String, String> attributes = new HashMap<String, String>();
+			Map<String, String> attributes = new HashMap<>();
 
 			// Not necessary, to simplify process factory
 			// attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,

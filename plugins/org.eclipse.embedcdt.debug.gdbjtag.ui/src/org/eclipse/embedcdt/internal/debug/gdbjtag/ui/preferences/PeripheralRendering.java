@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
@@ -25,7 +25,6 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.model.IMemoryBlock;
-import org.eclipse.debug.core.model.IMemoryBlockExtension;
 import org.eclipse.debug.core.model.MemoryByte;
 import org.eclipse.debug.ui.memory.AbstractTableRendering;
 import org.eclipse.debug.ui.memory.IMemoryRendering;
@@ -49,7 +48,6 @@ import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.Activator;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.ui.render.peripheral.PeripheralColumnLabelProvider;
 import org.eclipse.embedcdt.ui.SystemUIJob;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -58,12 +56,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.jface.viewers.CellLabelProvider;
-import org.eclipse.jface.viewers.ColumnLayoutData;
-import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -81,11 +74,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.PluginActionContributionItem;
 import org.eclipse.ui.progress.UIJob;
@@ -127,6 +118,7 @@ public class PeripheralRendering extends AbstractTableRendering
 
 		fRefreshJob = new SystemUIJob(String.valueOf(getClass().getSimpleName()) + "#refresh") {
 
+			@Override
 			public IStatus runInUIThread(IProgressMonitor pm) {
 				if (!fPeripheralViewer.getTree().isDisposed()) {
 					refresh();
@@ -174,18 +166,17 @@ public class PeripheralRendering extends AbstractTableRendering
 		fPeripheralViewer = new TreeViewer(composite, SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 		Control control = fPeripheralViewer.getControl();
 		TreeColumnLayout treeColumnLayout = new TreeColumnLayout();
-		composite.setLayout((Layout) treeColumnLayout);
-		control.setLayoutData((Object) new GridData(1808));
+		composite.setLayout(treeColumnLayout);
+		control.setLayoutData(new GridData(1808));
 		fPeripheralViewer.setAutoExpandLevel(-1);
 		Tree tree = fPeripheralViewer.getTree();
 
-		fPeripheralViewer.setContentProvider(
-				(IContentProvider) new PeripheralContentProvider(fMemoryBlock.getPeripheralRegisterGroup()));
+		fPeripheralViewer.setContentProvider(new PeripheralContentProvider(fMemoryBlock.getPeripheralRegisterGroup()));
 
 		fComparator = new PeripheralViewerComparator();
 		fPeripheralViewer.setComparator(fComparator);
 
-		LinkToolTip.enableFor((ColumnViewer) fPeripheralViewer, SWT.ICON_INFORMATION, (ILinkToolTipListener) this);
+		LinkToolTip.enableFor(fPeripheralViewer, SWT.ICON_INFORMATION, this);
 
 		for (int i = 0; i < PeripheralRendering.fgColumnInfo.length; ++i) {
 
@@ -198,18 +189,17 @@ public class PeripheralRendering extends AbstractTableRendering
 			treeColumn.setResizable(true);
 			treeColumn.setMoveable(true);
 
-			treeColumnLayout.setColumnData((Widget) treeColumn,
-					(ColumnLayoutData) new ColumnWeightData(PeripheralRendering.fgColumnInfo[i].weight,
-							PeripheralRendering.fgColumnInfo[i].weight * 5, true));
+			treeColumnLayout.setColumnData(treeColumn, new ColumnWeightData(PeripheralRendering.fgColumnInfo[i].weight,
+					PeripheralRendering.fgColumnInfo[i].weight * 5, true));
 
 			// Set column label provider
-			treeViewerColumn.setLabelProvider((CellLabelProvider) new PeripheralColumnLabelProvider(fPeripheralViewer,
-					(IMemoryBlockExtension) fMemoryBlock, PeripheralRendering.fgColumnInfo[i].type));
+			treeViewerColumn.setLabelProvider(new PeripheralColumnLabelProvider(fPeripheralViewer, fMemoryBlock,
+					PeripheralRendering.fgColumnInfo[i].type));
 
 			if (PeripheralRendering.fgColumnInfo[i].type == PeripheralColumnInfo.ColumnType.VALUE) {
 
 				// For VALUE columns, add editing support
-				treeViewerColumn.setEditingSupport((EditingSupport) new PeripheralEditingSupport(fPeripheralViewer));
+				treeViewerColumn.setEditingSupport(new PeripheralEditingSupport(fPeripheralViewer));
 			}
 			if (PeripheralRendering.fgColumnInfo[i].sortable) {
 				// Add a selection listener to make sortable
@@ -220,7 +210,7 @@ public class PeripheralRendering extends AbstractTableRendering
 		tree.setLinesVisible(true);
 		tree.setHeaderVisible(true);
 
-		fPeripheralViewer.setInput((Object) getMemoryBlock());
+		fPeripheralViewer.setInput(getMemoryBlock());
 		performExpandAction(true);
 
 		createPopupMenu(control);
@@ -228,12 +218,13 @@ public class PeripheralRendering extends AbstractTableRendering
 
 		IMenuListener menuListener = new IMenuListener() {
 
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenu(manager);
 			}
 		};
 
-		addPopupMenu((IMenuListener) menuListener);
+		addPopupMenu(menuListener);
 		addDebugEventListener();
 		addToSyncService();
 		trackTreeSelectionChanges();
@@ -265,25 +256,25 @@ public class PeripheralRendering extends AbstractTableRendering
 		IMemoryRenderingSynchronizationService synchronizationService = getMemoryRenderingContainer()
 				.getMemoryRenderingSite().getSynchronizationService();
 		if (synchronizationService != null) {
-			synchronizationService.addPropertyChangeListener((IPropertyChangeListener) this,
-					new String[] { PROPERTY_SELECTED_ADDRESS });
+			synchronizationService.addPropertyChangeListener(this, new String[] { PROPERTY_SELECTED_ADDRESS });
 		}
 	}
 
 	private void addDebugEventListener() {
-		DebugPlugin.getDefault().addDebugEventListener((IDebugEventSetListener) this);
+		DebugPlugin.getDefault().addDebugEventListener(this);
 	}
 
 	private void removeDebugEventListener() {
-		DebugPlugin.getDefault().removeDebugEventListener((IDebugEventSetListener) this);
+		DebugPlugin.getDefault().removeDebugEventListener(this);
 	}
 
 	// ------------------------------------------------------------------------
 
 	private void trackTreeSelectionChanges() {
 
-		fPeripheralViewer.addSelectionChangedListener((ISelectionChangedListener) new ISelectionChangedListener() {
+		fPeripheralViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(SelectionChangedEvent selectionChangedEvent) {
 
 				if (selectionChangedEvent.getSelection() instanceof IStructuredSelection) {
@@ -313,24 +304,23 @@ public class PeripheralRendering extends AbstractTableRendering
 	@Override
 	public void activated() {
 		if (fContainer.getMemoryRenderingSite().getSynchronizationService() != null) {
-			fContainer.getMemoryRenderingSite().getSynchronizationService()
-					.setSynchronizationProvider((IMemoryRendering) this);
+			fContainer.getMemoryRenderingSite().getSynchronizationService().setSynchronizationProvider(this);
 		}
 	}
 
 	@Override
 	public void deactivated() {
-		;
+
 	}
 
 	@Override
 	public void becomesHidden() {
-		;
+
 	}
 
 	@Override
 	public void becomesVisible() {
-		;
+
 	}
 
 	private void handleSelectedAddressChanged(BigInteger bigInteger) {
@@ -341,7 +331,7 @@ public class PeripheralRendering extends AbstractTableRendering
 		Object selection = findSelection(bigInteger);
 		if (selection != null) {
 			StructuredSelection structuredSelection = new StructuredSelection(selection);
-			fPeripheralViewer.setSelection((ISelection) structuredSelection);
+			fPeripheralViewer.setSelection(structuredSelection);
 			Object element = structuredSelection.getFirstElement();
 			if (element != null) {
 				fPeripheralViewer.reveal(element);
@@ -356,8 +346,8 @@ public class PeripheralRendering extends AbstractTableRendering
 				if (peripheralRegister.isField()) {
 					peripheralRegister = (PeripheralRegisterVMNode) peripheralRegister.getParent();
 				}
-				PropertyChangeEvent propertyChangeEvent = new PropertyChangeEvent((Object) this,
-						PROPERTY_SELECTED_ADDRESS, (Object) null, peripheralRegister.getBigAbsoluteAddress());
+				PropertyChangeEvent propertyChangeEvent = new PropertyChangeEvent(this, PROPERTY_SELECTED_ADDRESS,
+						(Object) null, peripheralRegister.getBigAbsoluteAddress());
 				firePropertyChangedEvent(propertyChangeEvent);
 			} catch (Exception e) {
 			}
@@ -399,6 +389,7 @@ public class PeripheralRendering extends AbstractTableRendering
 		{
 			fCollapseRegistersAction = new Action() {
 
+				@Override
 				public void run() {
 					performExpandAction(true);
 				}
@@ -411,6 +402,7 @@ public class PeripheralRendering extends AbstractTableRendering
 		{
 			fShowFieldsAction = new Action() {
 
+				@Override
 				public void run() {
 					performExpandAction(false);
 				}
@@ -424,6 +416,7 @@ public class PeripheralRendering extends AbstractTableRendering
 		{
 			fRefreshMenuAction = new Action() {
 
+				@Override
 				public void run() {
 					refresh();
 				}
@@ -437,6 +430,7 @@ public class PeripheralRendering extends AbstractTableRendering
 		{
 			fAddFilterAction = new Action() {
 
+				@Override
 				public void run() {
 					performAddFilterAction();
 				}
@@ -448,6 +442,7 @@ public class PeripheralRendering extends AbstractTableRendering
 		{
 			fRemoveFilterAction = new Action() {
 
+				@Override
 				public void run() {
 					performRemoveFilterAction();
 				}
@@ -459,6 +454,7 @@ public class PeripheralRendering extends AbstractTableRendering
 		{
 			fForceReadAction = new Action() {
 
+				@Override
 				public void run() {
 					performForceReadAction();
 				}
@@ -571,13 +567,13 @@ public class PeripheralRendering extends AbstractTableRendering
 			menuManager.remove(itemToRemove);
 		}
 
-		menuManager.add((IContributionItem) new Separator());
-		menuManager.add((IAction) fRefreshMenuAction);
-		menuManager.add((IAction) fAddFilterAction);
-		menuManager.add((IAction) fRemoveFilterAction);
-		menuManager.add((IContributionItem) new Separator());
-		menuManager.add((IAction) fCollapseRegistersAction);
-		menuManager.add((IAction) fShowFieldsAction);
+		menuManager.add(new Separator());
+		menuManager.add(fRefreshMenuAction);
+		menuManager.add(fAddFilterAction);
+		menuManager.add(fRemoveFilterAction);
+		menuManager.add(new Separator());
+		menuManager.add(fCollapseRegistersAction);
+		menuManager.add(fShowFieldsAction);
 		boolean hasForceRead = false;
 		Object object = getSelection();
 		if (object instanceof PeripheralRegisterVMNode
@@ -585,8 +581,8 @@ public class PeripheralRendering extends AbstractTableRendering
 			hasForceRead = peripheralRegister.hasReadAction();
 		}
 		if (hasForceRead) {
-			menuManager.add((IContributionItem) new Separator());
-			menuManager.add((IAction) fForceReadAction);
+			menuManager.add(new Separator());
+			menuManager.add(fForceReadAction);
 		}
 	}
 
@@ -602,7 +598,7 @@ public class PeripheralRendering extends AbstractTableRendering
 
 	@Override
 	public void linkSelected(String link) {
-		;
+
 	}
 
 	// ------------------------------------------------------------------------

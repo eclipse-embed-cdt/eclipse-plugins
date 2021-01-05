@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Liviu Ionescu - UI part extraction.
@@ -190,6 +190,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 	/**
 	 * This is a callback that will allow us to create the viewer and initialise it.
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 
 		// System.out.println("DocsView.createPartControl()");
@@ -228,6 +229,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 		contributeToActionBars();
 	}
 
+	@Override
 	public void dispose() {
 
 		super.dispose();
@@ -342,22 +344,22 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 
 			@Override
 			public void partBroughtToTop(IWorkbenchPart part) {
-				;
+
 			}
 
 			@Override
 			public void partClosed(IWorkbenchPart part) {
-				;
+
 			}
 
 			@Override
 			public void partDeactivated(IWorkbenchPart part) {
-				;
+
 			}
 
 			@Override
 			public void partOpened(IWorkbenchPart part) {
-				;
+
 			}
 		};
 
@@ -383,7 +385,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 				}
 			}
 		} catch (CoreException e) {
-			;
+
 		}
 
 		return newConfig;
@@ -405,6 +407,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 	private void makeActions() {
 
 		fDoubleClickAction = new Action() {
+			@Override
 			public void run() {
 
 				ISelection selection = fViewer.getSelection();
@@ -420,6 +423,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 		};
 
 		fRightClickOpen = new Action() {
+			@Override
 			public void run() {
 
 				ISelection selection = fViewer.getSelection();
@@ -443,6 +447,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				DocsView.this.fillContextMenu(manager);
 			}
@@ -459,7 +464,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		; // none
+		// none
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
@@ -476,6 +481,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 	private void hookDoubleClickAction() {
 
 		fViewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				fDoubleClickAction.run();
 			}
@@ -485,6 +491,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+	@Override
 	public void setFocus() {
 		fViewer.getControl().setFocus();
 	}
@@ -518,6 +525,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 		}
 	}
 
+	@Override
 	public String toString() {
 		return "DocsView";
 	}
@@ -573,7 +581,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 
 		} else if (DataManagerEvent.Type.UPDATE_VERSIONS.equals(type)) {
 
-			final Map<String, Leaf> updatedMap = new HashMap<String, Leaf>();
+			final Map<String, Leaf> updatedMap = new HashMap<>();
 			// updateDevicesTree(updatedMap);
 
 			Display.getDefault().asyncExec(new Runnable() {
@@ -635,7 +643,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 				}
 			}
 		} catch (CoreException e) {
-			;
+
 		}
 
 		if (!devicesRoot.hasChildren()) {

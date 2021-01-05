@@ -51,14 +51,14 @@ import org.eclipse.embedcdt.internal.core.Activator;
  * <li>ManagedBuildManager</li>
  * <li>ImmediateExecutor</li>
  * </ul>
- * 
+ *
  * Other interesting places to search for utility functions are:
  * <ul>
  * <li>Plugin</li>
  * </ul>
  *
  * For debugging, use
- * 
+ *
  * <pre>
  * private static final boolean DEBUG_TWO =
  *     ExamplesPlugin.getDefault().isDebugging() &&
@@ -68,7 +68,7 @@ import org.eclipse.embedcdt.internal.core.Activator;
  *  if (DEBUG_TWO)
  *     System.out.println("Debug statement two.");
  * </pre>
- * 
+ *
  * This will test two properties like
  * <ul>
  * <li>org.eclipse.faq.examples/debug=true</li>
@@ -80,7 +80,7 @@ import org.eclipse.embedcdt.internal.core.Activator;
  * See also the <a href=
  * "https://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility"
  * >Eclipse Wiki</a>.
- * 
+ *
  */
 public class EclipseUtils {
 
@@ -110,7 +110,7 @@ public class EclipseUtils {
 
 	/**
 	 * Get a short string to identify the OS Family.
-	 * 
+	 *
 	 * @return a String, one of "windows", "linux", "osx", "other".
 	 */
 	static public String getOsFamily() {
@@ -128,7 +128,7 @@ public class EclipseUtils {
 
 	/**
 	 * Get a platform specific key, where %s is replaced by the os family.
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
@@ -143,7 +143,7 @@ public class EclipseUtils {
 
 	/**
 	 * Get the separator used to compose PATHs.
-	 * 
+	 *
 	 * @return a string.
 	 */
 	static public String getPathSeparator() {
@@ -159,7 +159,7 @@ public class EclipseUtils {
 
 	/**
 	 * Find the project with the given project name.
-	 * 
+	 *
 	 * @param name
 	 *            a string with the project name
 	 * @return the project or null, if not found
@@ -171,7 +171,7 @@ public class EclipseUtils {
 
 	/**
 	 * Find the project associated with the given configuration.
-	 * 
+	 *
 	 * @param configuration
 	 * @return the project or null, if not found.
 	 */
@@ -194,7 +194,7 @@ public class EclipseUtils {
 	/**
 	 * Search the given scopes and return the non empty trimmed string or the
 	 * default.
-	 * 
+	 *
 	 * @param pluginId
 	 *            a string with the plugin id.
 	 * @param key
@@ -240,7 +240,7 @@ public class EclipseUtils {
 
 	/**
 	 * Compute a maximum array of scopes where to search for.
-	 * 
+	 *
 	 * @param project
 	 *            the IProject reference to the project, possibly null.
 	 * @return an array of IScopeContext.
@@ -262,7 +262,7 @@ public class EclipseUtils {
 
 	/**
 	 * Search all scopes and return the non empty trimmed string or the default.
-	 * 
+	 *
 	 * @param pluginId
 	 *            a string with the plugin id.
 	 * @param key
@@ -284,7 +284,7 @@ public class EclipseUtils {
 	/**
 	 * Get the variable value. The variables are accessible in the Run/Debug ->
 	 * String Substitution preferences page.
-	 * 
+	 *
 	 * @param name
 	 *            a String with the variable name.
 	 * @return a String with the variable value, or null if not found.
@@ -307,7 +307,7 @@ public class EclipseUtils {
 	/**
 	 * Set a variable value. The variables are accessible in the Run/Debug -> String
 	 * Substitution preferences page.
-	 * 
+	 *
 	 * @param name
 	 *            a String with the variable name.
 	 * @param value
@@ -329,10 +329,10 @@ public class EclipseUtils {
 	/**
 	 * Set a variable value. The variables are accessible in the Run/Debug -> String
 	 * Substitution preferences page.
-	 * 
+	 *
 	 * If the variable does not exist, it is created. Unfortunately the 'Contributed
 	 * By' field is not filled in.
-	 * 
+	 *
 	 * @param name
 	 *            a String with the variable name.
 	 * @param description
@@ -366,7 +366,7 @@ public class EclipseUtils {
 
 	/**
 	 * Get the configuration of a project.
-	 * 
+	 *
 	 * @param project
 	 * @return array of configurations or null.
 	 */
@@ -381,7 +381,7 @@ public class EclipseUtils {
 			return null;
 		}
 
-		List<IConfiguration> list = new LinkedList<IConfiguration>();
+		List<IConfiguration> list = new LinkedList<>();
 
 		for (int i = 0; i < cfgs.length; ++i) {
 			// System.out.println(cfgs[i].getName());
@@ -409,7 +409,7 @@ public class EclipseUtils {
 	/**
 	 * Get the build configuration associated with the debug launch configuration,
 	 * if defined in the first tab.
-	 * 
+	 *
 	 * @param config
 	 *            a debug launch configuration.
 	 * @return the build configuration, or null if not found or not defined.

@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -56,7 +56,7 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 			Activator.log("Extension point " + EXTENSION_POINT_ID + " not found");
 			return;
 		}
-		
+
 		IExtension[] extensions = extensionPoint.getExtensions();
 		if (extensions.length == 0) {
 			Activator.log("Extension point " + EXTENSION_POINT_ID + " has no extensions");

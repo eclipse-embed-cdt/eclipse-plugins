@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Alexander Fedorov (ArSysOp) - initial API and implementation.
  *     Liviu Ionescu - UI part extraction.
@@ -16,17 +16,17 @@
 package org.eclipse.embedcdt.packs.core;
 
 /**
- * 
+ *
  * Provides access to console streams.
- * 
+ *
  * @since 3.0
  */
 public interface IConsolesFactory {
-	
+
 	/**
-	 * 
+	 *
 	 * @return an output stream
 	 */
 	IConsoleStream output();
-	
+
 }

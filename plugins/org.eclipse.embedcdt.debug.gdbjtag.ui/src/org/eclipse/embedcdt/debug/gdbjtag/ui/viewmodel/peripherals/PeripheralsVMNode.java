@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
@@ -100,6 +100,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 		}
 	}
 
+	@Override
 	protected IDMVMContext createVMContext(IDMContext context) {
 		return new PeripheralsVMContext(context);
 	}
@@ -156,6 +157,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 		try {
 			getSession().getExecutor().execute(new DsfRunnable() {
 
+				@Override
 				public void run() {
 					updatePropertiesInSessionThread(updates);
 				}
@@ -218,11 +220,11 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 		}
 
 		DsfServicesTracker tracker = getServicesTracker();
-		IPeripheralsService peripheralsService = (IPeripheralsService) tracker.getService(IPeripheralsService.class);
+		IPeripheralsService peripheralsService = tracker.getService(IPeripheralsService.class);
 		// System.out.println("got service " + peripheralsService);
 
-		final IRunControl.IContainerDMContext containerDMContext = (IRunControl.IContainerDMContext) findDmcInPath(
-				update.getViewerInput(), update.getElementPath(), IRunControl.IContainerDMContext.class);
+		final IRunControl.IContainerDMContext containerDMContext = findDmcInPath(update.getViewerInput(),
+				update.getElementPath(), IRunControl.IContainerDMContext.class);
 
 		if ((peripheralsService == null) || (containerDMContext == null)) {
 			// Leave the view empty. This also happens after closing the
@@ -249,10 +251,11 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 		peripheralsService.getPeripherals(containerDMContext,
 				new ViewerDataRequestMonitor<IPeripheralDMContext[]>(executor, update) {
 
+					@Override
 					public void handleCompleted() {
 
 						if (isSuccess()) {
-							fPeripherals = (IDMContext[]) getData();
+							fPeripherals = getData();
 							fillUpdateWithVMCs(update, fPeripherals);
 
 							addPersistentPeripherals(containerDMContext);
@@ -268,7 +271,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 
 	/**
 	 * Add memory monitors for persistent peripherals.
-	 * 
+	 *
 	 * @param containerDMContext
 	 */
 	private void addPersistentPeripherals(final IRunControl.IContainerDMContext containerDMContext) {
@@ -277,7 +280,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 			System.out.println("PeripheralsVMNode.addPersistentPeripherals()");
 		}
 
-		final List<String> persistentPeripherals = new ArrayList<String>();
+		final List<String> persistentPeripherals = new ArrayList<>();
 
 		Object object = containerDMContext.getAdapter(PeripheralMemoryBlockRetrieval.class);
 		if (object instanceof PeripheralMemoryBlockRetrieval) {
@@ -295,8 +298,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 			public void run() {
 
 				IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-				IMemoryBlockRetrieval retrieval = (IMemoryBlockRetrieval) containerDMContext
-						.getAdapter(PeripheralMemoryBlockRetrieval.class);
+				IMemoryBlockRetrieval retrieval = containerDMContext.getAdapter(PeripheralMemoryBlockRetrieval.class);
 
 				for (String peripheralName : persistentPeripherals) {
 					for (int i = 0; i < fPeripherals.length; ++i) {
@@ -328,8 +330,8 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 
 		for (final IPropertiesUpdate update : updates) {
 
-			IPeripheralDMContext peripheralDMContext = (IPeripheralDMContext) findDmcInPath(update.getViewerInput(),
-					update.getElementPath(), IPeripheralDMContext.class);
+			IPeripheralDMContext peripheralDMContext = findDmcInPath(update.getViewerInput(), update.getElementPath(),
+					IPeripheralDMContext.class);
 
 			if (peripheralDMContext == null) {
 				handleFailedUpdate(update);
@@ -348,7 +350,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 	/**
 	 * Create the label provider, that will assign content to the table columns
 	 * from the properties of the node.
-	 * 
+	 *
 	 * @return the label provider.
 	 */
 	protected IElementLabelProvider createLabelProvider() {
@@ -407,7 +409,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 
 	/**
 	 * Fill-in the view node properties from a data view context.
-	 * 
+	 *
 	 * @param update
 	 *            the properties object.
 	 * @param context
@@ -427,7 +429,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 	/**
 	 * Tell if the peripheral should be displayed as checked, by testing if the
 	 * peripheral is shown in the memory monitor window.
-	 * 
+	 *
 	 * @param treePath
 	 *            the peripheral path.
 	 * @param presentationContext
@@ -456,6 +458,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public String toString() {
 		return "PeripheralsVMNode(" + getSession().getId() + ")";
 	}

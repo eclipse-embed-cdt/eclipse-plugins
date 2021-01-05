@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -25,7 +25,7 @@ public class InstalledDevicesParser extends GenericParser {
 		super();
 
 	}
-	
+
 	@Override
 	public void checkSchemaVersion(String schemaVersion) throws DocumentParseException {
 

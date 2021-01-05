@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Alexander Fedorov (ArSysOp) - initial API and implementation.
  *     Liviu Ionescu - UI part extraction.
@@ -22,7 +22,7 @@ import org.osgi.service.component.annotations.Component;
 
 @Component
 public final class MessageConsoles implements IConsolesFactory {
-	
+
 	private IConsoleStream stream;
 
 	@Override

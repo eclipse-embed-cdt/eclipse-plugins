@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Ningareddy Modase - initial implementation.
  *     Liviu Ionescu - Arm version.
@@ -40,7 +40,7 @@ public abstract class DebugCommandActionDelegate implements IWorkbenchWindowActi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
 	 */
 	@Override
@@ -50,7 +50,7 @@ public abstract class DebugCommandActionDelegate implements IWorkbenchWindowActi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.IActionDelegate2#init(org.eclipse.jface.action.IAction)
 	 */
@@ -61,7 +61,7 @@ public abstract class DebugCommandActionDelegate implements IWorkbenchWindowActi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.
 	 * IWorkbenchWindow)
 	 */
@@ -72,7 +72,7 @@ public abstract class DebugCommandActionDelegate implements IWorkbenchWindowActi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	@Override
@@ -82,7 +82,7 @@ public abstract class DebugCommandActionDelegate implements IWorkbenchWindowActi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.IActionDelegate2#runWithEvent(org.eclipse.jface.action
 	 * .IAction, org.eclipse.swt.widgets.Event)
@@ -94,7 +94,7 @@ public abstract class DebugCommandActionDelegate implements IWorkbenchWindowActi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action
 	 * .IAction, org.eclipse.jface.viewers.ISelection)

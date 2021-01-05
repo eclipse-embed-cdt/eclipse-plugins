@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
@@ -108,6 +108,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 		// Used in scheduleUpdatePeripheralRendering()
 		fUpdatePeripheralRenderingJob = new SystemJob("Update peripheral rendering") {
 
+			@Override
 			protected IStatus run(IProgressMonitor pm) {
 				if (fPeripheralTop == null)
 					return Status.OK_STATUS;
@@ -126,8 +127,8 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 						System.out.println(
 								"PeripheralMemoryBlockExtension " + fBlockDisplayName + " fireDebugEventSet(changed)");
 					}
-					DebugPlugin.getDefault().fireDebugEventSet(
-							new DebugEvent[] { new DebugEvent((Object) PeripheralMemoryBlockExtension.this,
+					DebugPlugin.getDefault()
+							.fireDebugEventSet(new DebugEvent[] { new DebugEvent(PeripheralMemoryBlockExtension.this,
 									DebugEvent.CHANGE, DebugEvent.CONTENT) });
 				} catch (NullPointerException e) {
 					// Added because of an error report, but obvious no cause
@@ -140,7 +141,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 		};
 
 		fPeripheralDMContext = peripheralDMContext;
-		fConnections = new ArrayList<Object>();
+		fConnections = new ArrayList<>();
 
 		fRetrieval = memoryBlockRetrieval;
 		fMemoryDMContext = memoryDMContext;
@@ -160,20 +161,19 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 			@Override
 			protected void execute(DataRequestMonitor rm) {
 
-				fCommandControl = (ICommandControl) tracker.getService((Class<ICommandControl>) ICommandControl.class);
+				fCommandControl = tracker.getService(ICommandControl.class);
 
-				CommandFactory commandFactory = ((IMICommandControl) tracker
-						.getService((Class<IMICommandControl>) IMICommandControl.class)).getCommandFactory();
+				CommandFactory commandFactory = tracker.getService(IMICommandControl.class).getCommandFactory();
 				if (commandFactory instanceof GnuMcuCommandFactory) {
 					fCommandFactory = (GnuMcuCommandFactory) commandFactory;
 					fPeripheralDMNode = peripheralDMContext.getPeripheralInstance();
-					fPeripheralDMNode.setMemoryBlock((IMemoryBlockExtension) PeripheralMemoryBlockExtension.this);
+					fPeripheralDMNode.setMemoryBlock(PeripheralMemoryBlockExtension.this);
 				} else {
 					Activator.log("Error: unknown command factory:" + commandFactory.getClass().getSimpleName());
 				}
 
 				// Get the memory service.
-				fMemoryService = (IPeripheralMemoryService) tracker.getService(IPeripheralMemoryService.class);
+				fMemoryService = tracker.getService(IPeripheralMemoryService.class);
 
 				if (fMemoryService == null) {
 					Activator.log("Error: cannot get IPeripheralMemoryService");
@@ -190,9 +190,9 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 				System.out.println("memory service data initialised");
 			}
 		} catch (InterruptedException e) {
-			;
+
 		} catch (ExecutionException e) {
-			;
+
 		}
 
 		// Decide what size is the address
@@ -248,13 +248,12 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 	private void addDebugEventListeners() {
 
 		try {
-			fRetrieval.getExecutor().execute((Runnable) new Runnable() {
+			fRetrieval.getExecutor().execute(new Runnable() {
 
 				@Override
 				public void run() {
 					// Also add this memory block to the session notifier
-					fRetrieval.getSession().addServiceEventListener((Object) PeripheralMemoryBlockExtension.this,
-							(Filter) null);
+					fRetrieval.getSession().addServiceEventListener(PeripheralMemoryBlockExtension.this, (Filter) null);
 				}
 			});
 		} catch (RejectedExecutionException e) {
@@ -268,14 +267,14 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 	private void removeDebugEventListeners() {
 
 		// Remove this memory block from the global notifier
-		DebugPlugin.getDefault().removeDebugEventListener((IDebugEventSetListener) this);
+		DebugPlugin.getDefault().removeDebugEventListener(this);
 		try {
-			fRetrieval.getExecutor().execute((Runnable) new Runnable() {
+			fRetrieval.getExecutor().execute(new Runnable() {
 
 				@Override
 				public void run() {
 					// Also remove this memory block from the session notifier
-					fRetrieval.getSession().removeServiceEventListener((Object) PeripheralMemoryBlockExtension.this);
+					fRetrieval.getSession().removeServiceEventListener(PeripheralMemoryBlockExtension.this);
 				}
 			});
 		} catch (RejectedExecutionException e) {
@@ -285,7 +284,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 
 	/**
 	 * DSF events are directed here.
-	 * 
+	 *
 	 * @param event
 	 */
 	@DsfServiceEventHandler
@@ -295,7 +294,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 			System.out.println("PeripheralMemoryBlockExtension.eventDispatched(IMemoryChangedEvent) "
 					+ fBlockDisplayName + " " + event);
 		}
-		if (((IMemory.IMemoryDMContext) event.getDMContext()).equals(fMemoryDMContext)) {
+		if (event.getDMContext().equals(fMemoryDMContext)) {
 			IAddress[] addresses = event.getAddresses();
 			for (int i = 0; i < addresses.length; ++i) {
 				handleMemoryChange(addresses[i].getValue());
@@ -384,12 +383,12 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 	 * For unions, the registers may overlap.
 	 * <p>
 	 * Each region has a list of registers stored in the region.
-	 * 
+	 *
 	 * @return the list.
 	 */
 	private List<PeripheralMemoryRegion> createRegionsList() {
 
-		List<PeripheralMemoryRegion> list = new LinkedList<PeripheralMemoryRegion>();
+		List<PeripheralMemoryRegion> list = new LinkedList<>();
 
 		// Get all registers of the peripheral, in svd definition order.
 		collectRegistersRecursive(fPeripheralTop, list);
@@ -399,7 +398,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 		Arrays.sort(array);
 
 		// Create an empty list of regions.
-		list = new LinkedList<PeripheralMemoryRegion>();
+		list = new LinkedList<>();
 
 		for (int i = 0; i < array.length;) {
 
@@ -432,7 +431,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 	 * Contribute to the peripheral memory map the registers that can be read.
 	 * <p>
 	 * For peripheral and cluster node, descend the hierarchy.
-	 * 
+	 *
 	 * @param node
 	 *            the current PeripheralTreeVMNode.
 	 * @param list
@@ -493,7 +492,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 
 		for (final PeripheralMemoryRegion region : fReadableMemoryRegions) {
 
-			DataRequestMonitor<MemoryByte[]> drm = new DataRequestMonitor<MemoryByte[]>(executor, countingRm) {
+			DataRequestMonitor<MemoryByte[]> drm = new DataRequestMonitor<>(executor, countingRm) {
 
 				@Override
 				protected void handleCompleted() {
@@ -530,9 +529,9 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 		try {
 			query.get();
 		} catch (InterruptedException e) {
-			;
+
 		} catch (ExecutionException e) {
-			;
+
 		}
 
 		if (fReadableMemoryRegions == null) {
@@ -569,7 +568,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 	/**
 	 * Convert the big value to a fixed size byte array, using the device
 	 * endianness.
-	 * 
+	 *
 	 * @param value
 	 *            the BigInteger value.
 	 * @param sizeBytes
@@ -598,7 +597,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 	/**
 	 * Convert the special byte array to a BigInteger, using the device
 	 * endianness.
-	 * 
+	 *
 	 * @param bytes
 	 * @return
 	 */
@@ -629,7 +628,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 	/**
 	 * Write a peripheral register to the device. The peripheral address is
 	 * retrieved from the peripheral group node.
-	 * 
+	 *
 	 * @param offset
 	 *            the register address offset from the peripheral absolute
 	 *            address.
@@ -658,16 +657,16 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 		try {
 			query.get();
 		} catch (InterruptedException e) {
-			;
+
 		} catch (ExecutionException e) {
-			;
+
 		}
 	}
 
 	/**
 	 * Read a peripheral register from the device. The peripheral address is
 	 * retrieved from the peripheral group node.
-	 * 
+	 *
 	 * @param offset
 	 *            the register address offset from the peripheral absolute
 	 *            address.
@@ -677,7 +676,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 	 */
 	public BigInteger readPeripheralRegister(final long offset, final int sizeBytes) {
 
-		Query<MemoryByte[]> query = new Query<MemoryByte[]>() {
+		Query<MemoryByte[]> query = new Query<>() {
 
 			@Override
 			protected void execute(DataRequestMonitor<MemoryByte[]> drm) {
@@ -701,9 +700,9 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 			// System.out.println(" @ 0x" + String.format("%X", offset));
 			value = prepareBigIntegerFromByteArray(bytes);
 		} catch (InterruptedException e) {
-			;
+
 		} catch (ExecutionException e) {
-			;
+
 		}
 
 		return value;
@@ -753,7 +752,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 
 	@Override
 	public void setValue(long offset, byte[] bytes) throws DebugException {
-		;
+
 	}
 
 	// Contributed by IDebugElement
@@ -817,7 +816,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 
 	@Override
 	public void setBaseAddress(BigInteger address) throws DebugException {
-		;
+
 	}
 
 	@Override
@@ -844,17 +843,17 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 
 	@Override
 	public void setValue(BigInteger offset, byte[] bytes) throws DebugException {
-		;
+
 	}
 
 	@Override
 	public void connect(Object client) {
-		;
+
 	}
 
 	@Override
 	public void disconnect(Object client) {
-		;
+
 	}
 
 	@Override
@@ -892,12 +891,12 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 
 	@Override
 	public void setUpdatePolicy(String id) {
-		;
+
 	}
 
 	@Override
 	public void clearCache() {
-		;
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -914,6 +913,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public String toString() {
 		return "[" + getClass().getSimpleName() + " " + getExpression() + "]";
 	}

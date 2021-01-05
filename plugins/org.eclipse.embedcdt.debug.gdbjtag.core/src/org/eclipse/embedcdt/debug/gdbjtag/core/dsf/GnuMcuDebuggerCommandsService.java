@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -72,6 +72,7 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public void initialize(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -80,6 +81,7 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 
 		super.initialize(new RequestMonitor(getExecutor(), rm) {
 
+			@Override
 			protected void handleSuccess() {
 				doInitialize(rm);
 			}
@@ -139,6 +141,7 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public IStatus addGnuMcuSelectRemoteCommands(List<String> commandsList) {
 
 		String remoteTcpHost = DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IP_ADDRESS,
@@ -286,6 +289,7 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 		return Status.OK_STATUS;
 	}
 
+	@Override
 	public IStatus addSetPcCommands(List<String> commandsList) {
 
 		if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SET_PC_REGISTER,
@@ -302,6 +306,7 @@ public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
 		return Status.OK_STATUS;
 	}
 
+	@Override
 	public IStatus addStopAtCommands(List<String> commandsList) {
 
 		// This code is also used to start run configurations.

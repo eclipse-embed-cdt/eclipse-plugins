@@ -56,6 +56,7 @@ public abstract class AbstractActivator extends Plugin {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 
 		if (isDebugging()) {
@@ -64,6 +65,7 @@ public abstract class AbstractActivator extends Plugin {
 		super.start(context);
 	}
 
+	@Override
 	public void stop(BundleContext context) throws Exception {
 
 		super.stop(context);
@@ -74,6 +76,7 @@ public abstract class AbstractActivator extends Plugin {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public boolean isDebugging() {
 
 		return fIsDebugging;

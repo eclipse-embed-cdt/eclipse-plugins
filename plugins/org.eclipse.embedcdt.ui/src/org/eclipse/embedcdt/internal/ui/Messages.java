@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Liviu Ionescu - UI part extraction.
@@ -29,7 +29,7 @@ public class Messages extends NLS {
 	public static String McuPropertiesPage_description;
 	public static String McuPreferencesPage_description;
 	public static String XpackBrowseDialog_Label_text;
-	
+
 	// ------------------------------------------------------------------------
 
 	static {

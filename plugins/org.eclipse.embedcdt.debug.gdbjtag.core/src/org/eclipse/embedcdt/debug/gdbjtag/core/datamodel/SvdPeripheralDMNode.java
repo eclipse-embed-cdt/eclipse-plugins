@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
@@ -90,7 +90,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 		// System.out.println("prepareChildren(" + node.getName() +
 		// ")");
 
-		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();
+		List<SvdObjectDMNode> list = new LinkedList<>();
 
 		Leaf group = ((Node) node).findChild("registers");
 		if (group != null && group.hasChildren()) {
@@ -130,7 +130,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	/**
 	 * Enumerate all peripherals of the same device and find the derived from node.
 	 * The name is taken from the derivedFrom attribute.
-	 * 
+	 *
 	 * @return a peripheral node, or null if not found.
 	 */
 	@Override
@@ -202,7 +202,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 
 	/**
 	 * Get peripheral block length.
-	 * 
+	 *
 	 * @return a big integer value with the length in bytes, or null if not found.
 	 */
 	@Override
@@ -224,7 +224,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 
 	/**
 	 * Get the size element from inside the first addressBlock.
-	 * 
+	 *
 	 * @param node
 	 *            a tree node with addressBlock.
 	 * @return the size node or null if not found.
@@ -254,9 +254,10 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	 * accepted.
 	 * <p>
 	 * To support 64-bit addresses, use BigInteger objects.
-	 * 
+	 *
 	 * @return a big integer.
 	 */
+	@Override
 	public BigInteger getBigAbsoluteAddress() {
 
 		if (fBigAbsoluteAddress == null) {
@@ -269,7 +270,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	 * Get the address formatted as a fixed size hex string.
 	 * <p>
 	 * Also used as peripheral ID.
-	 * 
+	 *
 	 * @return a string with the "%08X" formatted value.
 	 */
 	public String getHexAddress() {
@@ -283,7 +284,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 
 	/**
 	 * Get the original address value from the SVD file. Mandatory, not derived.
-	 * 
+	 *
 	 * @return a string with the address, usually a hex number.
 	 */
 	public String getBaseAddress() {
@@ -293,7 +294,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	/**
 	 * Check if the peripheral is a Cortex-M system peripheral, i.e. has an address
 	 * higher then 0xE0000000.
-	 * 
+	 *
 	 * @return true if the peripheral is a system peripheral.
 	 */
 	public boolean isSystem() {
@@ -312,7 +313,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 
 	/**
 	 * Get group name.
-	 * 
+	 *
 	 * @return a string, possibly empty.
 	 */
 	public String getGroupName() {
@@ -325,7 +326,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 
 	/**
 	 * Get version string.
-	 * 
+	 *
 	 * @return a string, possibly empty.
 	 */
 	public String getVersion() {

@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -84,6 +84,7 @@ public class GdbBackend extends GnuMcuGdbBackend {
 	 * Overridden to get the full command line, including all options, from the
 	 * JLink configuration.
 	 */
+	@Override
 	protected String[] getGDBCommandLineArray() {
 		String[] commandLineArray = Configuration.getGdbClientCommandLineArray(fLaunchConfiguration);
 
@@ -110,7 +111,7 @@ public class GdbBackend extends GnuMcuGdbBackend {
 	/**
 	 * Overridden to also try getProjectOsPath(), if getGDBWorkingDirectory() is
 	 * not defined.
-	 * 
+	 *
 	 * May return null.
 	 */
 	@Override

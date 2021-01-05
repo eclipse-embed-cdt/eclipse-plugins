@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
 public class JsonJsGenericParser {
 
 	public JsonJsGenericParser() {
-		;
+
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class JsonJsGenericParser {
 	 */
 	public JsObject parse(JSONObject json) {
 
-		return (JsObject)parseRecursive(json);
+		return (JsObject) parseRecursive(json);
 	}
 
 	/**
@@ -72,13 +72,13 @@ public class JsonJsGenericParser {
 		if (json instanceof JSONObject) {
 			JsObject node = new JsObject();
 			// Objects enumerate their properties.
-			for (Object key : ((JSONObject)json).keySet()) {
-				Object value = parseRecursive(((JSONObject)json).get(key));
+			for (Object key : ((JSONObject) json).keySet()) {
+				Object value = parseRecursive(((JSONObject) json).get(key));
 				if (value instanceof String) {
-					node.putProperty(key.toString(), (String)value);
+					node.putProperty(key.toString(), (String) value);
 				} else if (value instanceof JsNode) {
 					// Objects and arrays know their key name.
-					node.putProperty(key.toString(), (JsNode)value);
+					node.putProperty(key.toString(), (JsNode) value);
 				}
 			}
 			return node;
@@ -88,7 +88,7 @@ public class JsonJsGenericParser {
 			for (Object arrValue : (JSONArray) json) {
 				Object value = parseRecursive(arrValue);
 				if (value instanceof JsNode) {
-					node.add((JsNode)value);
+					node.add((JsNode) value);
 				} else if (value instanceof String) {
 					node.add((String) value);
 				}

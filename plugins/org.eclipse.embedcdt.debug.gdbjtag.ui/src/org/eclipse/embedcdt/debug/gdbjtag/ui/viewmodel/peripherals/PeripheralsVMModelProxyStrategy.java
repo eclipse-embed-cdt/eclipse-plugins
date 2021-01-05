@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
@@ -60,7 +60,8 @@ public class PeripheralsVMModelProxyStrategy extends DefaultVMModelProxyStrategy
 			PeripheralsVMNode.PeripheralsVMContext peripheralVMContext = (PeripheralsVMNode.PeripheralsVMContext) segment;
 			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) peripheralVMContext.getDMContext();
 			peripheralDMContext.setChecked(checked);
-			MemoryBlockMonitor.getInstance().displayPeripheralMonitor(context.getWindow(), peripheralDMContext, peripheralDMContext.isChecked());
+			MemoryBlockMonitor.getInstance().displayPeripheralMonitor(context.getWindow(), peripheralDMContext,
+					peripheralDMContext.isChecked());
 			return checked;
 		}
 		return false;

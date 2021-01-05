@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral;
@@ -66,7 +66,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 	public String[] getEnumerationComboItems() {
 		SvdEnumerationDMNode enumeration = ((SvdFieldDMNode) fDMNode).getWriteEnumerationDMNode();
 
-		List<String> list = new LinkedList<String>();
+		List<String> list = new LinkedList<>();
 		if (enumeration != null) {
 			SvdObjectDMNode children[] = enumeration.getChildren();
 			for (int i = 0; i < children.length; ++i) {
@@ -84,7 +84,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 	/**
 	 * Try to find the current field value in the list of possible enumeration combo
 	 * selections.
-	 * 
+	 *
 	 * @return an Integer with the index, or null if not found.
 	 */
 	public Integer getEnumerationComboIndex() {
@@ -93,7 +93,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 			return ((SvdFieldDMNode) fDMNode).findEnumeratedComboIndex((PeripheralValue) getValue());
 
 		} catch (DebugException e) {
-			;
+
 		}
 
 		// Match not found.
@@ -197,7 +197,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 
 	/**
 	 * Update the current field after the parent changed.
-	 * 
+	 *
 	 * @return true if the field value changed.
 	 */
 	public void updateFieldValueFromParent() {
@@ -239,9 +239,10 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 
 	/**
 	 * Get the value to be displayed for the reset value, possibly with mask.
-	 * 
+	 *
 	 * @return a string or null if no value is available.
 	 */
+	@Override
 	public String getDisplayResetValue() {
 
 		if (fDMNode instanceof SvdFieldDMNode) {

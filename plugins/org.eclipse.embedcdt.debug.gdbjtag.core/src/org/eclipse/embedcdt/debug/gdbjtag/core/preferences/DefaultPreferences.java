@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Liviu Ionescu - UI part extraction.
@@ -41,7 +41,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 
 	/**
 	 * Get an OS specific path.
-	 * 
+	 *
 	 * @return string. May be empty or null.
 	 */
 	public String getSearchPathOs() {
@@ -85,7 +85,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 	}
 
 	/**
-	 * 
+	 *
 	 * @param subFolder
 	 *            may be null, usually "bin".
 	 * @param executableName

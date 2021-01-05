@@ -68,7 +68,7 @@ public class Configuration {
 
 	public static String[] getGdbServerCommandLineArray(ILaunchConfiguration configuration) {
 
-		List<String> lst = new ArrayList<String>();
+		List<String> lst = new ArrayList<>();
 
 		try {
 			if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
@@ -158,7 +158,7 @@ public class Configuration {
 
 	public static String[] getGdbClientCommandLineArray(ILaunchConfiguration configuration) {
 
-		List<String> lst = new ArrayList<String>();
+		List<String> lst = new ArrayList<>();
 
 		String executable = getGdbClientCommand(configuration, null);
 		if (executable == null || executable.isEmpty())

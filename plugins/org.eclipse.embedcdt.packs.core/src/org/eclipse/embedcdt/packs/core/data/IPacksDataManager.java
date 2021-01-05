@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -42,7 +42,7 @@ public interface IPacksDataManager {
 	public Node getRegisterDetailsForDebug(String deviceName);
 
 	/**
-	 * 
+	 *
 	 * @param node
 	 * @return
 	 */
@@ -51,7 +51,7 @@ public interface IPacksDataManager {
 	/**
 	 * Find a device in the tree of installed boards & devices. Also use the local
 	 * project definitions.
-	 * 
+	 *
 	 * @param packType
 	 *            a string with the package type
 	 * @param deviceSupplierId
@@ -67,7 +67,7 @@ public interface IPacksDataManager {
 	/**
 	 * Find a board in the tree of installed boards & devices. Also use the local
 	 * project definitions.
-	 * 
+	 *
 	 * @param packType
 	 *            a string with the package type
 	 * @param boardSupplierId
@@ -87,7 +87,7 @@ public interface IPacksDataManager {
 	 * Get the absolute path of a SVD file associated with the given device.
 	 * <p>
 	 * For unsupported devices, this should return null.
-	 * 
+	 *
 	 * @param packType
 	 *            a string with the package type
 	 * @param deviceSupplierId

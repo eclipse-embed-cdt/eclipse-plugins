@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.viewmodel.peripheral;
@@ -160,7 +160,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 	 * Update the current value and related children values.
 	 * <p>
 	 * If the new value is different from the previous value, the dirty flag is set.
-	 * 
+	 *
 	 * @param newValue
 	 *            the new value.
 	 * @return true if the value changed.
@@ -199,7 +199,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 	 * <p>
 	 * The bit mask is computed as ((1&lt;&lt;width)-1) and it looks like 0x1, 0x3,
 	 * 0x7...
-	 * 
+	 *
 	 * @return a BigInteger with some right side bits set.
 	 */
 	protected BigInteger getBitMask() {
@@ -261,7 +261,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 
 	/**
 	 * Get the value to be displayed for the reset value, possibly with mask.
-	 * 
+	 *
 	 * @return a string or null if no value is available.
 	 */
 	public String getDisplayResetValue() {

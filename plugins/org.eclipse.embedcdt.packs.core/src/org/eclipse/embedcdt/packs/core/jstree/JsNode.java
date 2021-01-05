@@ -21,10 +21,10 @@ import java.util.Collection;
 /**
  * Base class for all nodes in a JS tree. It keeps track of parent nodes. When
  * used as a JsObject property, remember the property name.
- * 
+ *
  * The parent reference is automatically set when adding object properties or
  * array elements.
- * 
+ *
  * @author ilg
  */
 
@@ -47,7 +47,7 @@ public abstract class JsNode {
 
 	/**
 	 * Set the node parent; available only in derived classes.
-	 * 
+	 *
 	 * @param parent
 	 *            a reference to an existing node; cannot be null.
 	 */
@@ -62,7 +62,7 @@ public abstract class JsNode {
 	/**
 	 * Set the property name used by the parent to refer to this object. Array
 	 * elements do not have this value.
-	 * 
+	 *
 	 * @param propertyName
 	 *            a string.
 	 */
@@ -73,7 +73,7 @@ public abstract class JsNode {
 
 	/**
 	 * Check if the parent object has the desired property name.
-	 * 
+	 *
 	 * @param propertyName
 	 *            a string with the desired key; cannot be null.
 	 * @return true if the object has a parent and it has the key.

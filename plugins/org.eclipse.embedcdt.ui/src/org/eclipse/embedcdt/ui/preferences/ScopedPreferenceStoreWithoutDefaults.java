@@ -35,7 +35,7 @@ public class ScopedPreferenceStoreWithoutDefaults extends ScopedPreferenceStore 
 	/**
 	 * An internal routine to get values from scopes, except defaults. The
 	 * difference is in the false in getPreferenceNodes().
-	 * 
+	 *
 	 * @param key
 	 * @return a string value or null if not found.
 	 */

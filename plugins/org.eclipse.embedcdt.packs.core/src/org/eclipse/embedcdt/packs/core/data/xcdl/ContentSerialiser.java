@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -29,7 +29,7 @@ public class ContentSerialiser extends GenericSerialiser {
 
 		super();
 
-		fMap = new TreeMap<String, ElementOptions>();
+		fMap = new TreeMap<>();
 	}
 
 	@Override

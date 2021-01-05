@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -47,11 +47,14 @@ public class FolderPage extends FieldEditorPreferencePage implements IWorkbenchP
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
-		addField(new DirectoryFieldEditor(Preferences.PACKS_CMSIS_FOLDER_PATH, "&CMSIS Packs folder:", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(Preferences.PACKS_CMSIS_FOLDER_PATH, "&CMSIS Packs folder:",
+				getFieldEditorParent()));
 		addField(new StringFieldEditor(Preferences.PACKS_CMSIS_MACRO_NAME, "&Macro name:", getFieldEditorParent()));
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 		// System.out.println("PreferencePage.init()");
 	}

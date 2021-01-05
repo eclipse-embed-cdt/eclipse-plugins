@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
@@ -84,6 +84,7 @@ public class PeripheralMemoryBlockRetrieval extends DsfMemoryBlockRetrieval {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public void initialize(final IMemoryDMContext memoryCtx) {
 		super.initialize(memoryCtx);
 	}
@@ -105,10 +106,10 @@ public class PeripheralMemoryBlockRetrieval extends DsfMemoryBlockRetrieval {
 					fPersistentPeripherals = parsePeripheralsMemento(memento);
 				}
 			} catch (CoreException e) {
-				;
+
 			}
 			if (fPersistentPeripherals == null) {
-				fPersistentPeripherals = new ArrayList<String>();
+				fPersistentPeripherals = new ArrayList<>();
 			}
 		}
 		return fPersistentPeripherals;
@@ -125,17 +126,16 @@ public class PeripheralMemoryBlockRetrieval extends DsfMemoryBlockRetrieval {
 			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) context;
 			IMemory.IMemoryDMContext memoryDMContext = null;
 			IDMContext dmContext = null;
-			if (context instanceof IAdaptable && (dmContext = (IDMContext) ((IAdaptable) context)
-					.getAdapter((Class<IDMContext>) IDMContext.class)) != null) {
+			if (context instanceof IAdaptable
+					&& (dmContext = ((IAdaptable) context).getAdapter(IDMContext.class)) != null) {
 
-				memoryDMContext = (IMemory.IMemoryDMContext) DMContexts.getAncestorOfType((IDMContext) dmContext,
-						(Class<IMemory.IMemoryDMContext>) IMemory.IMemoryDMContext.class);
+				memoryDMContext = DMContexts.getAncestorOfType(dmContext, IMemory.IMemoryDMContext.class);
 			}
 			if (memoryDMContext == null) {
 				return null;
 			}
-			memoryBlockExtension = new PeripheralMemoryBlockExtension((DsfMemoryBlockRetrieval) this, memoryDMContext,
-					getModelId(), peripheralDMContext);
+			memoryBlockExtension = new PeripheralMemoryBlockExtension(this, memoryDMContext, getModelId(),
+					peripheralDMContext);
 		}
 
 		if (memoryBlockExtension != null) {
@@ -173,6 +173,7 @@ public class PeripheralMemoryBlockRetrieval extends DsfMemoryBlockRetrieval {
 		// saveMemoryBlocks();
 	}
 
+	@Override
 	public void saveMemoryBlocks() {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -225,7 +226,7 @@ public class PeripheralMemoryBlockRetrieval extends DsfMemoryBlockRetrieval {
 	 * object (blocks currently registered with the platform's
 	 * IMemoryBlockManager). We will be expected to recreate the blocks in
 	 * {@link #createBlocksFromConfiguration(IMemoryDMContext, String)}.
-	 * 
+	 *
 	 * @return a string memento
 	 * @throws CoreException
 	 */
@@ -256,7 +257,7 @@ public class PeripheralMemoryBlockRetrieval extends DsfMemoryBlockRetrieval {
 
 	/**
 	 * Parse the list of peripherals in an existing memento.
-	 * 
+	 *
 	 * @param memento
 	 *            a string containing the memento xml.
 	 * @return a list of peripheral names.
@@ -271,7 +272,7 @@ public class PeripheralMemoryBlockRetrieval extends DsfMemoryBlockRetrieval {
 			throw new CoreException(status);
 		}
 
-		List<String> peripherals = new ArrayList<String>();
+		List<String> peripherals = new ArrayList<>();
 		NodeList expressionList = root.getChildNodes();
 		int length = expressionList.getLength();
 		for (int i = 0; i < length; ++i) {

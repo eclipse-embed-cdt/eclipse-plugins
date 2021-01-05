@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -94,7 +94,7 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		// Initialise the list with the base class' steps
 		// We need to create a list that we can modify, which is why we
 		// create our own ArrayList.
-		List<String> orderList = new ArrayList<String>(Arrays.asList(super.getExecutionOrder(group)));
+		List<String> orderList = new ArrayList<>(Arrays.asList(super.getExecutionOrder(group)));
 
 		if (GROUP_TOP_LEVEL.equals(group)) {
 
@@ -137,8 +137,8 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	public void stepCreatePeripheralService(RequestMonitor rm) {
 
 		GdbLaunch launch = ((GdbLaunch) this.fSession.getModelAdapter(ILaunch.class));
-		IPeripheralsService service = (IPeripheralsService) launch.getServiceFactory()
-				.createService(IPeripheralsService.class, launch.getSession(), new Object[0]);
+		IPeripheralsService service = launch.getServiceFactory().createService(IPeripheralsService.class,
+				launch.getSession(), new Object[0]);
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("GnuMcuFinalLaunchSequence.stepCreatePeripheralService() " + service);
 		}
@@ -154,8 +154,8 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	public void stepCreatePeripheralMemoryService(RequestMonitor rm) {
 
 		GdbLaunch launch = ((GdbLaunch) this.fSession.getModelAdapter(ILaunch.class));
-		IPeripheralMemoryService service = (IPeripheralMemoryService) launch.getServiceFactory()
-				.createService(IPeripheralMemoryService.class, launch.getSession(), launch.getLaunchConfiguration());
+		IPeripheralMemoryService service = launch.getServiceFactory().createService(IPeripheralMemoryService.class,
+				launch.getSession(), launch.getLaunchConfiguration());
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("GnuMcuFinalLaunchSequence.stepCreatePeripheralMemoryService() " + service);
 		}
@@ -191,6 +191,7 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	// ------------------------------------------------------------------------
 
 	// This function is used to capture the private objects
+	@Override
 	@Execute
 	public void stepInitializeFinalLaunchSequence(RequestMonitor rm) {
 
@@ -234,6 +235,7 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		super.stepInitializeFinalLaunchSequence(rm);
 	}
 
+	@Override
 	@Execute
 	public void stepInitializeJTAGFinalLaunchSequence(RequestMonitor rm) {
 
@@ -254,7 +256,7 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	/**
 	 * These steps are part of the GROUP_TOP_LEVEL.
-	 * 
+	 *
 	 * [stepInitializeFinalLaunchSequence, stepSetEnvironmentDirectory,
 	 * stepSetBreakpointPending, stepEnablePrettyPrinting, stepSetPrintObject,
 	 * stepSetCharset, stepSourceGDBInitFile,
@@ -263,10 +265,11 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	 * stepDataModelInitializationComplete, stepCleanup]
 	 */
 
+	@Override
 	@Execute
 	public void stepSourceGDBInitFile(final RequestMonitor rm) {
 
-		final List<String> commandsList = new ArrayList<String>();
+		final List<String> commandsList = new ArrayList<>();
 
 		IStatus status = fDebuggerCommands.addGdbInitCommandsCommands(commandsList);
 		if (!status.isOK()) {
@@ -277,6 +280,7 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 		super.stepSourceGDBInitFile(new RequestMonitor(getExecutor(), rm) {
 
+			@Override
 			protected void handleSuccess() {
 				queueCommands(commandsList, rm);
 			}
@@ -287,7 +291,7 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	/**
 	 * These steps are part of the GROUP_JTAG.
-	 * 
+	 *
 	 * [stepInitializeJTAGFinalLaunchSequence, stepRetrieveJTAGDevice,
 	 * stepLoadSymbols, stepConnectToTarget, stepResetBoard, stepDelayStartup,
 	 * stepHaltBoard, stepUserInitCommands, stepLoadImage, stepUpdateContainer,
@@ -299,6 +303,7 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	/**
 	 * Retrieve the IGDBJtagDevice instance
 	 */
+	@Override
 	@Execute
 	public void stepRetrieveJTAGDevice(final RequestMonitor rm) {
 		Exception exception = null;
@@ -338,10 +343,11 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	@Execute
 	public void stepConnectToTarget(final RequestMonitor rm) {
 
-		List<String> commandsList = new ArrayList<String>();
+		List<String> commandsList = new ArrayList<>();
 
 		IStatus status = fDebuggerCommands.addGnuMcuSelectRemoteCommands(commandsList);
 		if (!status.isOK()) {
@@ -356,7 +362,7 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	@Execute
 	public void stepGnuMcuReset(RequestMonitor rm) {
 
-		List<String> commandsList = new ArrayList<String>();
+		List<String> commandsList = new ArrayList<>();
 
 		IStatus status = fDebuggerCommands.addGnuMcuResetCommands(commandsList);
 		if (!status.isOK()) {
@@ -371,7 +377,7 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	@Execute
 	public void stepGnuMcuStart(RequestMonitor rm) {
 
-		List<String> commandsList = new ArrayList<String>();
+		List<String> commandsList = new ArrayList<>();
 
 		IStatus status = fDebuggerCommands.addGnuMcuStartCommands(commandsList);
 		if (!status.isOK()) {
@@ -385,6 +391,7 @@ public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	@Execute
 	public void stepStartTrackingBreakpoints(final RequestMonitor rm) {
 		if (fMode.equals(ILaunchManager.DEBUG_MODE)) {

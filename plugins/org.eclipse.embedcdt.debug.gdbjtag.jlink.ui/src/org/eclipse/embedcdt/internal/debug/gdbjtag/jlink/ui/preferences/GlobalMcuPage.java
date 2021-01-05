@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Liviu Ionescu - UI part extraction.
@@ -85,8 +85,8 @@ public class GlobalMcuPage extends FieldEditorPreferencePage implements IWorkben
 	@Override
 	protected void createFieldEditors() {
 
-		FieldEditor executable = new StringFieldEditor(PersistentPreferences.EXECUTABLE_NAME, Messages.McuPage_executable_label,
-				getFieldEditorParent());
+		FieldEditor executable = new StringFieldEditor(PersistentPreferences.EXECUTABLE_NAME,
+				Messages.McuPage_executable_label, getFieldEditorParent());
 		addField(executable);
 
 		boolean isStrict = fPersistentPreferences.getFolderStrict();

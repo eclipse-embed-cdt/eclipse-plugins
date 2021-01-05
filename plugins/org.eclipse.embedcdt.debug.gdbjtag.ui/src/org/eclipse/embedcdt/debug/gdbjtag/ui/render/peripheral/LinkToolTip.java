@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
@@ -49,6 +49,7 @@ public class LinkToolTip extends ColumnViewerToolTipSupport {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	protected Composite createToolTipContentArea(Event event, Composite parent) {
 
 		Composite composite = new Composite(parent, 0);
@@ -69,6 +70,7 @@ public class LinkToolTip extends ColumnViewerToolTipSupport {
 
 		link.addListener(SWT.Selection, new Listener() {
 
+			@Override
 			public void handleEvent(Event event) {
 				if (fListener != null)
 					fListener.linkSelected(event.text);
@@ -78,6 +80,7 @@ public class LinkToolTip extends ColumnViewerToolTipSupport {
 		return composite;
 	}
 
+	@Override
 	public boolean isHideOnMouseDown() {
 		return false;
 	}

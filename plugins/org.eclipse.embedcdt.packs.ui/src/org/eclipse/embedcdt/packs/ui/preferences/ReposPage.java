@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Liviu Ionescu - UI part extraction.
@@ -279,6 +279,7 @@ public class ReposPage extends PreferencePage implements IWorkbenchPreferencePag
 		// System.out.println("SitesPage.init()");
 	}
 
+	@Override
 	protected void performDefaults() {
 
 		// System.out.println("SitesPage.performDefaults()");

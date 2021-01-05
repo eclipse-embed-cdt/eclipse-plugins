@@ -59,23 +59,23 @@ public class Activator extends AbstractActivator {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
 
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 	}
 
 	// ------------------------------------------------------------------------
 
-
 	public IConsoleStream getConsoleOutput() {
 		return org.eclipse.embedcdt.internal.packs.core.Activator.getInstance().getConsoleOutput();
 	}
 
 	// ------------------------------------------------------------------------
-
 
 	public PersistentPreferences getPersistentPreferences() {
 		if (fPersistentPreferences == null) {

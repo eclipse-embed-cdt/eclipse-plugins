@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
@@ -55,7 +55,7 @@ public class SvdClusterDMNode extends SvdDMNode {
 		// System.out.println("prepareChildren(" + node.getName() +
 		// ")");
 
-		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();
+		List<SvdObjectDMNode> list = new LinkedList<>();
 		for (Leaf child : ((Node) node).getChildren()) {
 
 			// Keep only <register> and <cluster> nodes

@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -37,7 +37,7 @@ public interface ICProjectExtraDataManager {
 	 * Devices tab, contributed by the packs feature.
 	 * <p>
 	 * For projects managed by other plug-ins, this should return null.
-	 * 
+	 *
 	 * @param config
 	 *            a C/C++ configuration.
 	 * @return the map of property/value pairs, or null.

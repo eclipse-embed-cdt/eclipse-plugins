@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Marc Khouzam (Ericsson) - initial API and implementation
  *     Liviu Ionescu - Arm version
@@ -165,10 +165,9 @@ public class GnuMcuProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 							}
 
 							// Does nothing on terminate, just exit.
-							fCommandControl.queueCommand(
-									fCommandFactory
-											// .createMIGDBExit
-											.createMIInterpreterExecConsoleKill((IMIContainerDMContext) getData()),
+							fCommandControl.queueCommand(fCommandFactory
+									// .createMIGDBExit
+									.createMIInterpreterExecConsoleKill((IMIContainerDMContext) getData()),
 									new ImmediateDataRequestMonitor<MIInfo>(rm) {
 										@Override
 										protected void handleSuccess() {

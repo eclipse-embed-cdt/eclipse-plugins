@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
@@ -27,7 +27,7 @@ public class SvdEnumeratedValueDMNode extends SvdObjectDMNode {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The enumeration value or an empty string, for default.
 	 */
 	public String getValue() {
@@ -74,7 +74,7 @@ public class SvdEnumeratedValueDMNode extends SvdObjectDMNode {
 				return true;
 			}
 		} catch (NumberFormatException e) {
-			;
+
 		}
 
 		return false;

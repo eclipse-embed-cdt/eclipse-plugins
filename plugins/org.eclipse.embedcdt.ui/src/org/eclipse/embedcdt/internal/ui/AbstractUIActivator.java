@@ -62,6 +62,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 
 		if (isDebugging()) {
@@ -71,6 +72,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
 	}
 
+	@Override
 	public void stop(BundleContext context) throws Exception {
 
 		super.stop(context);
@@ -81,6 +83,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public boolean isDebugging() {
 
 		return fIsDebugging;

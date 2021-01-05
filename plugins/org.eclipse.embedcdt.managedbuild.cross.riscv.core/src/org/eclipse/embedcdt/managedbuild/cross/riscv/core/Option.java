@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Liviu Ionescu - UI part extraction.
@@ -47,7 +47,7 @@ public class Option {
 	public static final String OPTION_TARGET_ALIGN = OPTION_TARGET + "align";
 	public static final String OPTION_TARGET_SAVERESTORE = OPTION_TARGET + "saverestore";
 	public static final String OPTION_TARGET_MEMCPY = OPTION_TARGET + "memcpy";
-	
+
 	// Deprecated since 2019-01-01
 	public static final String OPTION_TARGET_PLT = OPTION_TARGET + "plt";
 	public static final String OPTION_TARGET_FDIV = OPTION_TARGET + "fdiv";

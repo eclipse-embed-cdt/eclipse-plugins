@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -56,6 +56,7 @@ public abstract class GnuMcuServicesFactory extends GdbDebugServicesFactory {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <V> V createService(Class<V> clazz, DsfSession session, Object... optionalArguments) {
 

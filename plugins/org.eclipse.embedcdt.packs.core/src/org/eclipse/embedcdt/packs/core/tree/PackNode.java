@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -78,7 +78,7 @@ public class PackNode extends Node {
 	}
 
 	public List<Selector> getSelectorsByType(String type) {
-		List<Selector> list = new LinkedList<Selector>();
+		List<Selector> list = new LinkedList<>();
 		if (fSelectors != null) {
 			for (Selector condition : fSelectors) {
 				if (condition.getType().equals(type)) {
@@ -95,7 +95,7 @@ public class PackNode extends Node {
 		assert (selector != null);
 
 		if (fSelectors == null) {
-			fSelectors = new LinkedList<Selector>();
+			fSelectors = new LinkedList<>();
 		} else {
 
 			// Check if not already in

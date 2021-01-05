@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -40,10 +40,10 @@ import org.eclipse.cdt.managedbuilder.internal.core.Option;
  * values, thereby circumventing the bug.<br>
  * <br>
  * This workaround does not support extension adjustment options.
- * 
- * 
+ *
+ *
  * @author mariopi
- * 
+ *
  */
 @SuppressWarnings("restriction")
 public class OptionApplicabilityWorkaround implements IOptionApplicability {
@@ -108,7 +108,7 @@ public class OptionApplicabilityWorkaround implements IOptionApplicability {
 	/**
 	 * Searches for an option in an IConfiguration. The toolchain options are
 	 * scanned first, then the individual tools.
-	 * 
+	 *
 	 * @param config
 	 *            the configuration in which the option must be searched.
 	 * @param optionId
@@ -142,7 +142,7 @@ public class OptionApplicabilityWorkaround implements IOptionApplicability {
 	/**
 	 * Extracts a resource info from a build object. If no resource info can be
 	 * found, it returns null.
-	 * 
+	 *
 	 * @param configuration
 	 * @return
 	 */

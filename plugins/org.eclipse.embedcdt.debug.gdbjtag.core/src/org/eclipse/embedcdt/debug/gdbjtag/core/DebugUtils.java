@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -87,7 +87,7 @@ public class DebugUtils {
 			return getLaunchEnvironmentWithoutProject();
 
 		// Environment variables and inherited vars
-		HashMap<String, String> envMap = new HashMap<String, String>();
+		HashMap<String, String> envMap = new HashMap<>();
 		IEnvironmentVariable[] vars = CCorePlugin.getDefault().getBuildEnvironmentManager().getVariables(cfg, true);
 		for (IEnvironmentVariable var : vars)
 			envMap.put(var.getName(), var.getValue());
@@ -111,7 +111,7 @@ public class DebugUtils {
 		}
 
 		// Turn it into an envp format
-		List<String> strings = new ArrayList<String>(envMap.size());
+		List<String> strings = new ArrayList<>(envMap.size());
 		for (Entry<String, String> entry : envMap.entrySet()) {
 			StringBuffer buffer = new StringBuffer(entry.getKey());
 			buffer.append('=').append(entry.getValue());
@@ -124,7 +124,7 @@ public class DebugUtils {
 	/**
 	 * Get environment from workspace. Useful when project-less launching when there
 	 * is no environment available from the configuration.
-	 * 
+	 *
 	 * @return String [] of environment variables in variable=value format.
 	 * @throws CoreException
 	 */
@@ -135,7 +135,7 @@ public class DebugUtils {
 		if (null != envVarMergedCollection) {
 			EnvVarDescriptor envVars[] = envVarMergedCollection.toArray(false);
 			if (envVars != null) {
-				List<String> strings = new ArrayList<String>();
+				List<String> strings = new ArrayList<>();
 				for (int i = 0; i < envVars.length; i++) {
 					IEnvironmentVariable resolved = EnvironmentVariableManager.getDefault()
 							.calculateResolvedVariable(envVars[i], contextInfo);
@@ -178,7 +178,7 @@ public class DebugUtils {
 	/**
 	 * Gets working directory from either the location of the project, or if
 	 * project-less launching, from the location of the executable.
-	 * 
+	 *
 	 * @param configuration
 	 * @return Working directory
 	 * @throws CoreException
@@ -242,7 +242,7 @@ public class DebugUtils {
 			ICdtVariableManager manager = CCorePlugin.getDefault().getCdtVariableManager();
 			value = manager.resolveValue(value, "", " ", cfgDescription); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (CdtVariableException e) {
-			;
+
 		}
 
 		try {
@@ -250,7 +250,7 @@ public class DebugUtils {
 					cfgDescription.getProjectDescription().getProject());
 			value = substitutor.performStringSubstitution(value);
 		} catch (CoreException e) {
-			;
+
 		}
 		return value;
 	}
@@ -263,14 +263,14 @@ public class DebugUtils {
 			value = VariablesPlugin.getDefault().getStringVariableManager().performStringSubstitution(value, false)
 					.trim();
 		} catch (CoreException e) {
-			;
+
 		}
 		return value;
 	}
 
 	/**
 	 * Split a string into separate lines and add them to the list.
-	 * 
+	 *
 	 * @param multiLine
 	 *            a string.
 	 * @param commandsList
@@ -420,7 +420,7 @@ public class DebugUtils {
 	/**
 	 * Test if the launch configuration is already started. Enumerate all launches
 	 * and check by name and non terminated status.
-	 * 
+	 *
 	 * @param configuration
 	 * @return true if already present.
 	 */
@@ -443,7 +443,7 @@ public class DebugUtils {
 	/**
 	 * Check if the launch configuration is already started and throw a
 	 * CoreException.
-	 * 
+	 *
 	 * @param configuration
 	 * @throws CoreException
 	 */
@@ -459,7 +459,7 @@ public class DebugUtils {
 
 	/**
 	 * Execute an external process.
-	 * 
+	 *
 	 * @param commandLineArray
 	 *            a String array with the comman line.
 	 * @param environ
@@ -493,7 +493,7 @@ public class DebugUtils {
 
 	/**
 	 * Execute an external process.
-	 * 
+	 *
 	 * @param commandLineArray
 	 *            a String array with the comman line.
 	 * @param environ
@@ -524,9 +524,9 @@ public class DebugUtils {
 
 	/**
 	 * Best effort to get a current working directory.
-	 * 
+	 *
 	 * The first part is an exact copy of GDBBackend.getGDBWorkingDirectory().
-	 * 
+	 *
 	 * @param launchConfiguration
 	 * @return
 	 * @throws CoreException
@@ -598,7 +598,7 @@ public class DebugUtils {
 	/**
 	 * Queue a list of string commands to the executor. Ignore empty lines or
 	 * comments
-	 * 
+	 *
 	 * @param commands
 	 *            a list of strings.
 	 * @param rm
@@ -624,7 +624,7 @@ public class DebugUtils {
 					continue; // ignore empty lines and comments
 				}
 				// System.out.println("queueCommand('" + s + "')");
-				control.queueCommand(new CLICommand<MIInfo>(control.getContext(), s),
+				control.queueCommand(new CLICommand<>(control.getContext(), s),
 						new DataRequestMonitor<MIInfo>(executor, crm));
 			}
 
@@ -636,7 +636,7 @@ public class DebugUtils {
 	/**
 	 * Compares two version numbers. Returns -1, 0, or 1 if v1 is less than, equal
 	 * to, or greater than v2, respectively.
-	 * 
+	 *
 	 * @param v1
 	 *            The first version
 	 * @param v2

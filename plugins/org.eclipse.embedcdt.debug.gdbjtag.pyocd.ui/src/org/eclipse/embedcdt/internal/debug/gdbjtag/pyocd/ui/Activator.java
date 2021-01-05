@@ -57,10 +57,12 @@ public class Activator extends AbstractUIActivator {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
 
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 	}
@@ -72,9 +74,9 @@ public class Activator extends AbstractUIActivator {
 	}
 
 	public PersistentPreferences getPersistentPreferences() {
-		return org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator.getInstance().getPersistentPreferences();
+		return org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator.getInstance()
+				.getPersistentPreferences();
 	}
-
 
 	// ------------------------------------------------------------------------
 }

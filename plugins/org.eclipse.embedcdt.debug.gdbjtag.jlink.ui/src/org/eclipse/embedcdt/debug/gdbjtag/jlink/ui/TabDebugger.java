@@ -11,8 +11,8 @@
  * Contributors:
  *     QNX Software Systems - Initial API and implementation
  *     Andy Jin - Hardware debugging UI improvements, bug 229946
- *     Anna Dushistova (MontaVista) - bug 241279 
- *              - Hardware Debugging: Host name or ip address not saving in 
+ *     Anna Dushistova (MontaVista) - bug 241279
+ *              - Hardware Debugging: Host name or ip address not saving in
  *                the debug configuration
  *     Andy Jin (QNX) - Added DSF debugging, bug 248593
  *     Bruce Griffith, Sage Electronic Engineering, LLC - bug 305943
@@ -1168,7 +1168,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerLogBrowse.setEnabled(enabled);
 
 		// [#312]
-		// Temporarily disable it, the logic to detect when 
+		// Temporarily disable it, the logic to detect when
 		// the server is ready needs the console.
 		// fDoGdbServerAllocateConsole.setEnabled(enabled);
 		fDoGdbServerAllocateConsole.setEnabled(false);
@@ -1602,7 +1602,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#getId()
 	 */
 	@Override

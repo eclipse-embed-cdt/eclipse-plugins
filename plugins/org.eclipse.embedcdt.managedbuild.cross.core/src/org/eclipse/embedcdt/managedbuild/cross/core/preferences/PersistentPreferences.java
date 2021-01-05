@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -69,7 +69,7 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 
 	/**
 	 * Get the last used toolchain name.
-	 * 
+	 *
 	 * @return a trimmed string, possibly empty.
 	 */
 	public String getToolchainName() {
@@ -85,7 +85,7 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	/**
 	 * Store the toolchain name in the Workspace/Eclipse scope. Used in the
 	 * project wizard, to maintain global persistence.
-	 * 
+	 *
 	 * @param toolchainName
 	 *            a string.
 	 */
@@ -104,7 +104,7 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 
 	/**
 	 * Get the toolchain path for a given toolchain name.
-	 * 
+	 *
 	 * @param toolchainName
 	 * @return a string, possibly empty.
 	 */
@@ -126,7 +126,7 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	/**
 	 * Store the toolchain path in the Workspace/Eclipse scope. Used in the
 	 * project wizard, to maintain global persistency.
-	 * 
+	 *
 	 * @param toolchainName
 	 * @param path
 	 */
@@ -138,7 +138,7 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	/**
 	 * Store the toolchain path in the Project scope. Used in
 	 * EnvironmentVariableSupplier to copy path from old storage to new storage.
-	 * 
+	 *
 	 * @param toolchainName
 	 * @param path
 	 * @param project
@@ -180,7 +180,7 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	/**
 	 * Get the build tools path. Search all possible scopes. The definition is
 	 * common to all build plug-ins.
-	 * 
+	 *
 	 * @return a string, possibly empty.
 	 */
 	public String getBuildToolsPath(IProject project) {

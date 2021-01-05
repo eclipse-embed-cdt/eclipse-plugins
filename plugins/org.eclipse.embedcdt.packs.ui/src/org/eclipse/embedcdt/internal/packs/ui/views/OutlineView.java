@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -102,13 +102,13 @@ public class OutlineView extends ViewPart {
 					try {
 						fPackageAbsolutePath = PacksStorage.getFolderPath().append(folder);
 					} catch (IOException e) {
-						;
+
 					}
 				}
 			}
 		}
 
-	};
+	}
 
 	// ------------------------------------------------------------------------
 
@@ -135,7 +135,7 @@ public class OutlineView extends ViewPart {
 			try {
 				name = node.getName().toLowerCase();
 			} catch (Exception e) {
-				;
+
 			}
 
 			if (Type.FAMILY.equals(type) || Type.SUBFAMILY.equals(type) || Type.DEVICE.equals(type)
@@ -241,6 +241,7 @@ public class OutlineView extends ViewPart {
 
 	class NameComparator extends ViewerComparator {
 
+		@Override
 		public int compare(Viewer viewer, Object e1, Object e2) {
 			// Always in order
 			return 1;
@@ -403,6 +404,7 @@ public class OutlineView extends ViewPart {
 		getSite().getPage().addPostSelectionListener(fPageSelectionListener);
 	}
 
+	@Override
 	public void dispose() {
 
 		super.dispose();
@@ -418,7 +420,7 @@ public class OutlineView extends ViewPart {
 
 	/**
 	 * Called when selection in the CMSIS Packs view changes.
-	 * 
+	 *
 	 * @param part
 	 *            the Packs view.
 	 * @param selection
@@ -464,7 +466,7 @@ public class OutlineView extends ViewPart {
 
 				} else if (node.isType(Type.EXAMPLE)) {
 
-					Node versionNode = (Node) node.getParent();
+					Node versionNode = node.getParent();
 
 					if (versionNode.isBooleanProperty(Property.INSTALLED)) {
 
@@ -482,7 +484,7 @@ public class OutlineView extends ViewPart {
 
 	/**
 	 * Parse the node outline.
-	 * 
+	 *
 	 * @param versionNode
 	 * @return
 	 */
@@ -491,8 +493,8 @@ public class OutlineView extends ViewPart {
 		// If the version node is installed, get outline
 		IProgressService progressService = PlatformUI.getWorkbench().getProgressService();
 		try {
-			ICoreRunnable runnable = new ParsePdscRunnable("Parse Outline", (PackNode) versionNode);
-			progressService.busyCursorWhile(m-> {
+			ICoreRunnable runnable = new ParsePdscRunnable("Parse Outline", versionNode);
+			progressService.busyCursorWhile(m -> {
 				try {
 					runnable.run(m);
 				} catch (CoreException e) {
@@ -510,6 +512,7 @@ public class OutlineView extends ViewPart {
 	private void makeActions() {
 
 		fExpandAll = new Action() {
+			@Override
 			public void run() {
 				fViewer.expandAll();
 			}
@@ -520,6 +523,7 @@ public class OutlineView extends ViewPart {
 		fExpandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/expandall.png"));
 
 		fCollapseAll = new Action() {
+			@Override
 			public void run() {
 				fViewer.collapseAll();
 			}
@@ -531,6 +535,7 @@ public class OutlineView extends ViewPart {
 				.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/collapseall.png"));
 
 		fOpenWithText = new Action() {
+			@Override
 			public void run() {
 				if (Activator.getInstance().isDebugging()) {
 					System.out.println("openWithText");
@@ -551,6 +556,7 @@ public class OutlineView extends ViewPart {
 		fOpenWithText.setEnabled(false);
 
 		fOpenWithSystem = new Action() {
+			@Override
 			public void run() {
 				if (Activator.getInstance().isDebugging()) {
 					System.out.println("openWithSystem");
@@ -572,6 +578,7 @@ public class OutlineView extends ViewPart {
 		fOpenWithSystem.setEnabled(false);
 
 		fDoubleClickAction = new Action() {
+			@Override
 			public void run() {
 				ISelection selection = fViewer.getSelection();
 				Object obj = ((IStructuredSelection) selection).getFirstElement();
@@ -592,6 +599,7 @@ public class OutlineView extends ViewPart {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				OutlineView.this.fillContextMenu(manager);
 			}
@@ -603,6 +611,7 @@ public class OutlineView extends ViewPart {
 
 	private void hookDoubleClickAction() {
 		fViewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				fDoubleClickAction.run();
 			}
@@ -659,7 +668,7 @@ public class OutlineView extends ViewPart {
 				EclipseUiUtils.openExternalFile(fPackageAbsolutePath.append(relativeFile));
 
 			} else if ("include".equals(category) || "library".equals(category)) {
-				; // ignore folders
+				// ignore folders
 			} else {
 				Activator.log("File " + node + "  " + category + " ignored");
 			}
@@ -749,7 +758,7 @@ public class OutlineView extends ViewPart {
 			String vendorName = node.getProperty(Property.VENDOR_NAME);
 			String packName = node.getName();
 
-			input = (Node) fDataManager.findPackLatest(vendorName, packName);
+			input = fDataManager.findPackLatest(vendorName, packName);
 
 		} else if (node.isType(Type.VERSION)) {
 
@@ -757,7 +766,7 @@ public class OutlineView extends ViewPart {
 			String packName = node.getProperty(Property.PACK_NAME);
 			String versionName = node.getName();
 
-			input = (Node) fDataManager.findCmsisPackVersion(vendorName, packName, versionName);
+			input = fDataManager.findCmsisPackVersion(vendorName, packName, versionName);
 		}
 
 		assert (input != null);

@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -77,7 +77,7 @@ public class PacksFilter extends ViewerFilter {
 		}
 
 		List<Selector> selectors = ((PackNode) node).getSelectors();
-		List<Selector> filteredSelectors = new LinkedList<Selector>();
+		List<Selector> filteredSelectors = new LinkedList<>();
 		for (Selector selector : selectors) {
 			if (fSelectorType.equals(selector.getType())) {
 				filteredSelectors.add(selector);

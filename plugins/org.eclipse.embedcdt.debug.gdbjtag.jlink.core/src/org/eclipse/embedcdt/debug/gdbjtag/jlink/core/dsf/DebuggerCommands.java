@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -81,8 +81,8 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			return status;
 		}
 
-		boolean doConnectToRunning = DebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING, DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
+		boolean doConnectToRunning = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+				DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
 
 		if (!doConnectToRunning) {
 			if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,

@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -20,7 +20,7 @@ public class Selector {
 		public static final String DEVICEFAMILY = "devicefamily";
 		public static final String BOARD = "board";
 		public static final String KEYWORD = "keyword";
-	};
+	}
 
 	public static final String DEVICEFAMILY_TYPE = "devicefamily";
 	public static final String BOARD_TYPE = "board";
@@ -91,10 +91,12 @@ public class Selector {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return fType + ":" + fValue;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 
 		if (!(obj instanceof Selector))

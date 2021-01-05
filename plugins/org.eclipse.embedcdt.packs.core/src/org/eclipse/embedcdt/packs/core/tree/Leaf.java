@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -182,7 +182,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 	/**
 	 * Add a property with string value.
-	 * 
+	 *
 	 * @param name
 	 * @param value
 	 * @return the previous value associated with name, or null if there was no
@@ -193,7 +193,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		if (fProperties == null) {
 			// Linked (slightly more inefficient) to preserve order.
 			// TODO: document why the order is required.
-			fProperties = new LinkedHashMap<String, String>();
+			fProperties = new LinkedHashMap<>();
 		}
 
 		return fProperties.put(name, value.trim());
@@ -201,7 +201,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 	/**
 	 * Add the property only if the value has content.
-	 * 
+	 *
 	 * @param name
 	 * @param value
 	 * @return
@@ -248,7 +248,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 	/**
 	 * Get property.
-	 * 
+	 *
 	 * @param name
 	 *            a string with the property name.
 	 * @return a string with the value of the property, or an empty string if not
@@ -314,6 +314,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	}
 
 	// Required by the sorter, don't mess with it. (???)
+	@Override
 	public String toString() {
 		String str = "[" + getType();
 		if (hasProperties()) {

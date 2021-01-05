@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -54,7 +54,7 @@ import org.osgi.framework.BundleContext;
 
 /**
  * More or less a duplicate of GDBMemory from CDT 8.3, but without any cache.
- * 
+ *
  */
 public class PeripheralMemoryService extends MIMemory implements IPeripheralMemoryService {
 
@@ -120,9 +120,8 @@ public class PeripheralMemoryService extends MIMemory implements IPeripheralMemo
 
 		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle().getBundleContext(), fSession.getId());
 
-		ICommandControlService commandControlService = (ICommandControlService) fTracker
-				.getService(ICommandControlService.class);
-		IMIProcesses processes = (IMIProcesses) fTracker.getService(IMIProcesses.class);
+		ICommandControlService commandControlService = fTracker.getService(ICommandControlService.class);
+		IMIProcesses processes = fTracker.getService(IMIProcesses.class);
 		if ((commandControlService != null) && (processes != null)) {
 
 			// Create memory context from process context.
@@ -294,7 +293,7 @@ public class PeripheralMemoryService extends MIMemory implements IPeripheralMemo
 		}
 
 		private Step[] prepareSteps() {
-			ArrayList<Step> stepsList = new ArrayList<Step>();
+			ArrayList<Step> stepsList = new ArrayList<>();
 
 			// if (fAddressSizes.get(fMemContext) == null) {
 			if (fAddressSize == null) {
