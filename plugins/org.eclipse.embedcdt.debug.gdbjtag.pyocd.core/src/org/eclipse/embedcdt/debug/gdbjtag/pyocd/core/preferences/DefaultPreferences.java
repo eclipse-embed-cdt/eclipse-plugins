@@ -49,10 +49,12 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 	public static final int GDB_SERVER_BUS_SPEED_DEFAULT = 1000000;
 	public static final boolean GDB_SERVER_OVERRIDE_TARGET_DEFAULT = false;
 	public static final String GDB_SERVER_TARGET_NAME_DEFAULT = ""; //$NON-NLS-1$
+	public static final int GDB_SERVER_CONNECT_MODE_DEFAULT = PreferenceConstants.ConnectMode.HALT;
+	public static final int GDB_SERVER_RESET_TYPE_DEFAULT = PreferenceConstants.ResetType.DEFAULT;
 	public static final boolean GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT = true;
 	public static final boolean GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT = false;
-	public static final int GDB_SERVER_FLASH_MODE_DEFAULT = PreferenceConstants.SECTOR_ERASE;
-	public static final boolean GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT = false;
+	public static final int GDB_SERVER_FLASH_MODE_DEFAULT = PreferenceConstants.FlashMode.SECTOR_ERASE;
+	public static final boolean GDB_SERVER_SMART_FLASH_DEFAULT = true;
 	public static final boolean GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT = true;
 	public static final boolean GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT = false;
 	public static final String GDB_SERVER_LOG_DEFAULT = ""; //$NON-NLS-1$
@@ -67,11 +69,6 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 	public static final int REMOTE_PORT_NUMBER_DEFAULT = GDB_SERVER_GDB_PORT_NUMBER_DEFAULT;
 
 	public static final boolean UPDATE_THREAD_LIST_DEFAULT = false;
-
-	public static final boolean DO_FIRST_RESET_DEFAULT = false;
-	public static final String FIRST_RESET_TYPE_DEFAULT = "default";
-
-	public static final boolean ENABLE_SEMIHOSTING_DEFAULT = true;
 
 	public static final boolean DO_DEBUG_IN_RAM_DEFAULT = false;
 
@@ -88,9 +85,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 
 	// Debugger commands
 	public static final String GDB_CLIENT_OTHER_COMMANDS_DEFAULT = "set mem inaccessible-by-default off\n";
-	public static final String DO_FIRST_RESET_COMMAND = "monitor reset ";
 	public static final String HALT_COMMAND = "monitor halt";
-	public static final String ENABLE_SEMIHOSTING_COMMAND = "monitor arm semihosting enable";
 	public static final String DO_SECOND_RESET_COMMAND = "monitor reset ";
 	public static final String DO_CONTINUE_COMMAND = "continue";
 	public static final String OTHER_INIT_COMMANDS_DEFAULT = "";

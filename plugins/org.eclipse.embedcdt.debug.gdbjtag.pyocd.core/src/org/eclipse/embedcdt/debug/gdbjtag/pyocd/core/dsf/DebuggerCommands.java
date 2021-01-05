@@ -109,20 +109,6 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 	@Override
 	public IStatus addFirstResetCommands(List<String> commandsList) {
 
-		if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_FIRST_RESET,
-				DefaultPreferences.DO_FIRST_RESET_DEFAULT)) {
-
-			String commandStr = DefaultPreferences.DO_FIRST_RESET_COMMAND;
-			String resetType = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.FIRST_RESET_TYPE,
-					DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
-			commandsList.add(commandStr + resetType);
-
-			// Although the manual claims that reset always does a
-			// halt, better issue it explicitly
-			commandStr = DefaultPreferences.HALT_COMMAND;
-			commandsList.add(commandStr);
-		}
-
 		String otherInits = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_INIT_COMMANDS,
 				DefaultPreferences.OTHER_INIT_COMMANDS_DEFAULT).trim();
 
@@ -131,12 +117,6 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			otherInits = StringUtils.duplicateBackslashes(otherInits);
 		}
 		DebugUtils.addMultiLine(otherInits, commandsList);
-
-		if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_SEMIHOSTING,
-				DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)) {
-			String commandStr = DefaultPreferences.ENABLE_SEMIHOSTING_COMMAND;
-			commandsList.add(commandStr);
-		}
 
 		return Status.OK_STATUS;
 	}

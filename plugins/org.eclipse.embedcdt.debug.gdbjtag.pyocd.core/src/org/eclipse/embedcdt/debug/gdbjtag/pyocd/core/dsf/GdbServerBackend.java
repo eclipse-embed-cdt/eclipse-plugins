@@ -225,12 +225,14 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 		return true;
 	}
 
-	public boolean matchStdErrExpectedPattern(String line) {
-		if (line.indexOf("Started by GNU ARM Eclipse") >= 0 || line.indexOf("Started by GNU MCU Eclipse") >= 0) {
-			return true;
-		}
+	public boolean matchStdOutExpectedPattern(String line) {
+		String message = Configuration.getGdbServerStartedMessage();
+		return (line.indexOf(message) >= 0);
+	}
 
-		return false;
+	public boolean matchStdErrExpectedPattern(String line) {
+		String message = Configuration.getGdbServerStartedMessage();
+		return (line.indexOf(message) >= 0);
 	}
 
 	/**

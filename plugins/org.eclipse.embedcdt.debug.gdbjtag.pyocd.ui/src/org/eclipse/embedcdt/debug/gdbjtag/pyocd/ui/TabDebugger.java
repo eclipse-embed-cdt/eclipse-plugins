@@ -102,7 +102,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private List<PyOCD.Probe> fProbes;
 	private String fSelectedProbeId;
-	private boolean fProbeIdListHasUnavailableItem; //!< Whether the probes list includes an item for the probe in the config that is not currently connected.
+	//! Whether the probes list includes an item for the probe in the config that is not currently connected.
+	private boolean fProbeIdListHasUnavailableItem;
 	private String fProbeIdListUnavailableId; //!< Probe ID for the unavailable item.
 	private Map<String, PyOCD.Target> fTargetsByPartNumber; //!< Maps part number (user friendly name) to target object.
 	private Map<String, PyOCD.Target> fTargetsByName; //!< Maps target name to target object.
@@ -127,14 +128,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Button fGdbServerOverrideTarget;
 	private Combo fGdbServerTargetName;
+	private Label fGdbServerDefaultTargetName;
 
 	private Combo fGdbServerBusSpeed;
+	
+	private Combo fGdbServerConnectMode;
+	private Combo fGdbServerResetType;
 
 	private Button fGdbServerHaltAtHardFault;
 	private Button fGdbServerStepIntoInterrupts;
 
 	private Combo fGdbServerFlashMode;
-	private Button fGdbServerFlashFastVerify;
+	private Button fGdbServerSmartFlash;
 
 	private Button fGdbServerEnableSemihosting;
 	private Button fGdbServerUseGdbSyscallsForSemihosting;
@@ -162,6 +167,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private String fPyocdPathForOutstandingTargetsLoad;
 	private RequestMonitor fOutstandingProbesLoadMonitor;
 	private RequestMonitor fOutstandingTargetsLoadMonitor;
+	private boolean fNeedsDefaultTargetNameRefresh = false;
 
 	/**
 	 * Where widgets in a row are rendered in columns, the amount of padding (in
@@ -439,6 +445,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			Composite local = createHorizontalLayout(comp, 2, 1);
 			{
 				fGdbServerProbeId = new Combo(local, SWT.DROP_DOWN | SWT.READ_ONLY);
+				fGdbServerProbeId.setToolTipText(Messages.getString("DebuggerTab.gdbServerProbeId_ToolTipText"));
 				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				fGdbServerProbeId.setLayoutData(gd);
 				fGdbServerProbeId.setItems(new String[] {});
@@ -447,6 +454,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerRefreshProbes = new Button(local, SWT.NONE);
 				fGdbServerRefreshProbes.setText(Messages.getString("DebuggerTab.gdbServerRefreshProbes_Label"));
 			}
+		}
+		
+		{
+			Label label = new Label(comp, SWT.NONE);
+			label.setText(Messages.getString("DebuggerTab.gdbServerDefaultTargetType_Label"));
+			
+			fGdbServerDefaultTargetName = new Label(comp, SWT.NONE);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			fGdbServerDefaultTargetName.setLayoutData(gd);
+			fGdbServerDefaultTargetName.setToolTipText(
+					Messages.getString("DebuggerTab.gdbServerDefaultTargetType_ToolTipText"));
 		}
 
 		{
@@ -458,10 +477,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbServerOverrideTarget.setLayoutData(gd);
 
 			fGdbServerTargetName = new Combo(comp, SWT.DROP_DOWN);
-			gd = new GridData();
-			gd.widthHint = 360;
+			gd = new GridData(GridData.FILL_HORIZONTAL);
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbServerTargetName.setLayoutData(gd);
+			fGdbServerTargetName.setToolTipText(
+					Messages.getString("DebuggerTab.gdbServerTargetName_ToolTipText"));
 		}
 
 		{
@@ -470,8 +490,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerBusSpeed_ToolTipText"));
 
 			fGdbServerBusSpeed = new Combo(comp, SWT.DROP_DOWN);
+			fGdbServerBusSpeed.setToolTipText(Messages.getString("DebuggerTab.gdbServerBusSpeed_ToolTipText"));
 			GridData gd = new GridData();
-			gd.widthHint = 120;
+			gd.widthHint = 200;
 			fGdbServerBusSpeed.setLayoutData(gd);
 			fGdbServerBusSpeed.setItems(new String[] { "1000000", "2000000", "8000000", "12000000" });
 			fGdbServerBusSpeed.select(0);
@@ -485,29 +506,81 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
+			label.setText(Messages.getString("DebuggerTab.gdbServerConnectMode_Label")); //$NON-NLS-1$
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerConnectMode_ToolTipText"));
+			GridData gd = new GridData();
+			label.setLayoutData(gd);
+
+			fGdbServerConnectMode = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
+			fGdbServerConnectMode.setToolTipText(Messages.getString("DebuggerTab.gdbServerConnectMode_ToolTipText"));
+			gd = new GridData();
+			gd.widthHint = 200;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			fGdbServerConnectMode.setLayoutData(gd);
+			// Note: the index of these items must match the PreferenceConstants.ConnectMode constants.
+			fGdbServerConnectMode.setItems(new String[] {
+					Messages.getString("DebuggerTab.gdbServerConnectMode.Halt"),
+					Messages.getString("DebuggerTab.gdbServerConnectMode.PreReset"),
+					Messages.getString("DebuggerTab.gdbServerConnectMode.UnderReset"),
+					Messages.getString("DebuggerTab.gdbServerConnectMode.Attach"),
+					});
+			fGdbServerConnectMode.select(0);
+		}
+
+		{
+			Label label = new Label(comp, SWT.NONE);
+			label.setText(Messages.getString("DebuggerTab.gdbServerResetType_Label")); //$NON-NLS-1$
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerResetType_ToolTipText"));
+			GridData gd = new GridData();
+			label.setLayoutData(gd);
+
+			fGdbServerResetType = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
+			fGdbServerResetType.setToolTipText(Messages.getString("DebuggerTab.gdbServerResetType_ToolTipText"));
+			gd = new GridData();
+			gd.widthHint = 200;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			fGdbServerResetType.setLayoutData(gd);
+			// Note: the index of these items must match the PreferenceConstants.ResetType constants.
+			fGdbServerResetType.setItems(new String[] {
+					Messages.getString("DebuggerTab.gdbServerResetType.Default"),
+					Messages.getString("DebuggerTab.gdbServerResetType.Hardware"),
+					Messages.getString("DebuggerTab.gdbServerResetType.SoftwareDefault"),
+					Messages.getString("DebuggerTab.gdbServerResetType.SoftwareSysResetReq"),
+					Messages.getString("DebuggerTab.gdbServerResetType.SoftwareVectReset"),
+					Messages.getString("DebuggerTab.gdbServerResetType.SoftwareEmulated"),
+					});
+			fGdbServerResetType.select(0);
+		}
+
+		{
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbServerFlashMode_Label")); //$NON-NLS-1$
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerFlashMode_ToolTipText"));
 			GridData gd = new GridData();
 			label.setLayoutData(gd);
 
 			fGdbServerFlashMode = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
+			fGdbServerFlashMode.setToolTipText(Messages.getString("DebuggerTab.gdbServerFlashMode_ToolTipText"));
 			gd = new GridData();
-			gd.widthHint = 120;
+			gd.widthHint = 200;
 			fGdbServerFlashMode.setLayoutData(gd);
-			fGdbServerFlashMode.setItems(new String[] { Messages.getString("DebuggerTab.gdbServerFlashMode.AutoErase"),
+			// Note: the index of these items must match the PreferenceConstants.FlashMode constants.
+			fGdbServerFlashMode.setItems(new String[] {
+					Messages.getString("DebuggerTab.gdbServerFlashMode.AutoErase"),
 					Messages.getString("DebuggerTab.gdbServerFlashMode.ChipErase"),
-					Messages.getString("DebuggerTab.gdbServerFlashMode.SectorErase"), });
+					Messages.getString("DebuggerTab.gdbServerFlashMode.SectorErase"),
+					});
 			fGdbServerFlashMode.select(0);
 
-			fGdbServerFlashFastVerify = new Button(comp, SWT.CHECK);
-			fGdbServerFlashFastVerify.setText(Messages.getString("DebuggerTab.gdbServerFlashFastVerify_Label"));
-			fGdbServerFlashFastVerify
-					.setToolTipText(Messages.getString("DebuggerTab.gdbServerFlashFastVerify_ToolTipText"));
+			fGdbServerSmartFlash = new Button(comp, SWT.CHECK);
+			fGdbServerSmartFlash.setText(Messages.getString("DebuggerTab.gdbServerSmartFlash_Label"));
+			fGdbServerSmartFlash
+					.setToolTipText(Messages.getString("DebuggerTab.gdbServerSmartFlash_ToolTipText"));
 			gd = new GridData();
 
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 2;
 			gd.horizontalIndent = COLUMN_PAD;
-			fGdbServerFlashFastVerify.setLayoutData(gd);
+			fGdbServerSmartFlash.setLayoutData(gd);
 		}
 
 		// Composite for next four checkboxes. Will render using two columns
@@ -564,6 +637,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setLayoutData(gd);
 
 			fGdbServerOtherOptions = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
+			fGdbServerOtherOptions.setToolTipText(Messages.getString("DebuggerTab.gdbServerOther_ToolTipText"));
 			gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 			gd.heightHint = 60;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
@@ -693,13 +767,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fGdbServerTargetName.addModifyListener(scheduleUpdateJobModifyListener);
 
+		fGdbServerConnectMode.addModifyListener(scheduleUpdateJobModifyListener);
+
+		fGdbServerResetType.addModifyListener(scheduleUpdateJobModifyListener);
+
 		fGdbServerHaltAtHardFault.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 
 		fGdbServerStepIntoInterrupts.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 
 		fGdbServerFlashMode.addModifyListener(scheduleUpdateJobModifyListener);
 
-		fGdbServerFlashFastVerify.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+		fGdbServerSmartFlash.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 
 		fGdbServerEnableSemihosting.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 
@@ -943,12 +1021,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerBusSpeed.setEnabled(enabled);
 		fGdbServerOverrideTarget.setEnabled(enabled);
 		fGdbServerTargetName.setEnabled(enabled && fGdbServerOverrideTarget.getSelection());
+		fGdbServerConnectMode.setEnabled(enabled);
+		fGdbServerResetType.setEnabled(enabled);
 		fGdbServerHaltAtHardFault.setEnabled(enabled);
 		fGdbServerStepIntoInterrupts.setEnabled(enabled);
 		fGdbServerEnableSemihosting.setEnabled(enabled);
 		fGdbServerUseGdbSyscallsForSemihosting.setEnabled(enabled);
 		fGdbServerFlashMode.setEnabled(enabled);
-		fGdbServerFlashFastVerify.setEnabled(enabled);
+		fGdbServerSmartFlash.setEnabled(enabled);
 
 		fDoGdbServerAllocateConsole.setEnabled(enabled);
 		fDoGdbServerAllocateSemihostingConsole.setEnabled(enabled);
@@ -1010,18 +1090,36 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		return path;
 	}
 
-	private int indexForProbeId(String probeId) {
+	private int indexForProbeIdInList(List<PyOCD.Probe> probeList, String probeId) {
 		// Search for a matching probe.
-		if (fProbes != null) {
+		if (probeList != null) {
 			int index = 0;
-			for (PyOCD.Probe b : fProbes) {
+			for (PyOCD.Probe b : probeList) {
 				if (b.fUniqueId.equals(probeId)) {
 					return index;
 				}
 				index += 1;
 			}
+			
 		}
 		return -1;
+	}
+
+	private int indexForProbeId(String probeId) {
+		return indexForProbeIdInList(fProbes, probeId);
+	}
+	
+	private void updateDefaultTargetName(int index) {
+		String targetName = fProbes.get(index).fTargetName;
+		// Note that fTargetsByName may be null or empty if targets have not been read from pyocd yet.
+		if (fTargetsByName != null) {
+			Target target = fTargetsByName.get(targetName);
+			if (target != null) {
+				fGdbServerDefaultTargetName.setText(getFormattedTargetName(target));
+				return;
+			}
+		}
+		fNeedsDefaultTargetNameRefresh = true;
 	}
 
 	private void probeWasSelected(int index) {
@@ -1036,6 +1134,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 		PyOCD.Probe selectedProbe = fProbes.get(index);
 		fSelectedProbeId = selectedProbe.fUniqueId;
+		updateDefaultTargetName(index);
 	}
 
 	private void selectActiveProbe() {
@@ -1047,10 +1146,30 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 			
 			fGdbServerProbeId.select(index);
+			
+			updateDefaultTargetName(index);
 		} else {
 			assert(fProbeIdListHasUnavailableItem);
 			fGdbServerProbeId.select(0);
 		}
+	}
+	
+	private String getFormattedTargetName(PyOCD.Target target) {
+		StringBuilder builder = new StringBuilder(target.fVendor);
+		
+		for (String family : target.fFamilies) {
+			builder.append(" > ");
+			builder.append(family);
+		}
+		
+		builder.append(" > ");
+		builder.append(target.fPartNumber);
+		
+		builder.append(" (");
+		builder.append(target.fName);
+		builder.append(")");
+		
+		return builder.toString();
 	}
 	
 	private void selectActiveTarget() {
@@ -1061,7 +1180,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT);
 				Target target = fTargetsByName.get(configTargetName);
 				if (target != null) {
-					fGdbServerTargetName.setText(target.fPartNumber);
+					fGdbServerTargetName.setText(getFormattedTargetName(target));
 				}
 				else {
 					// Support arbitrary target names entered by the user.
@@ -1173,6 +1292,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						
 							ArrayList<String> itemList = new ArrayList<String>();
 							
+							final List<PyOCD.Probe> probes = getData();
+							
 							IStatus status = getStatus();
 							final boolean isOK = status.isOK();
 							if (!isOK) {
@@ -1184,22 +1305,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							}
 							else {
 								clearPyocdErrors(true);
-								setMessage(null);
-								
-								List<PyOCD.Probe> probes = getData();
+
 								assert(probes != null);
-								
+
 								if (Activator.getInstance().isDebugging()) {
 									System.out.printf("probes = %s\n", probes);
 								}
 	
 								Collections.sort(probes, PyOCD.Probe.DESCRIPTION_COMPARATOR);
-	
-								fProbes = probes;
 								
 								// Figure out if the selected probe is connected. This also handles the case where
 								// no selected probe is stored in the launch config (fSelectedProbeId is empty).
-								int currentProbeIndex = indexForProbeId(fSelectedProbeId);
+								int currentProbeIndex = indexForProbeIdInList(probes, fSelectedProbeId);
 								if (currentProbeIndex == -1) {
 									fProbeIdListHasUnavailableItem = true;
 									fProbeIdListUnavailableId = fSelectedProbeId;
@@ -1232,16 +1349,20 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 									// Check again to make sure we haven't been disposed.
 									if (getControl().isDisposed()) {
 										if (Activator.getInstance().isDebugging()) {
-											System.out.printf("(probes, from UI job) bailing on updating debugger tab because it has been disposed\n");
+											System.out.printf("(probes, from UI job) bailing on updating debugger tab '"
+													+ "because it has been disposed\n");
 										}
 										return Status.OK_STATUS;
 									}
 									
 									fGdbServerProbeId.setItems(items);
+									
+									fProbes = probes;
 
 									selectActiveProbe();
-									
-									updatePyocdLoadingMessage();
+
+									updatePyocdLoadingMessage();									
+									scheduleUpdateJob();
 									
 									return Status.OK_STATUS;
 								}
@@ -1294,7 +1415,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 							if (getControl().isDisposed()) {
 								if (Activator.getInstance().isDebugging()) {
-									System.out.printf("(targets) bailing on updating debugger tab because it has been disposed\n");
+									System.out.printf("(targets) bailing on updating debugger tab because it "
+											+ "has been disposed\n");
 								}
 								return;
 							}
@@ -1302,8 +1424,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							ArrayList<String> itemList = new ArrayList<String>();
 							
 							// Create maps to go between target part number and name.
-							fTargetsByPartNumber = new HashMap<>();
-							fTargetsByName = new HashMap<>();
+							final var newTargetsByPartNumber = new HashMap<String, PyOCD.Target>();
+							final var newTargetsByName = new HashMap<String, PyOCD.Target>();
 							
 							IStatus status = getStatus();
 							final boolean isOK = status.isOK();
@@ -1315,7 +1437,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							}
 							else {
 								clearPyocdErrors(false);
-								setMessage(null);
 							
 								List<PyOCD.Target> targets = getData();
 								assert(targets != null);
@@ -1327,9 +1448,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								Collections.sort(targets, PyOCD.Target.PART_NUMBER_COMPARATOR);
 								
 								for (PyOCD.Target target : targets) {
-									itemList.add(String.format("%s", target.getFullPartName()));
-									fTargetsByPartNumber.put(target.fPartNumber, target);
-									fTargetsByName.put(target.fName, target);
+									String formattedPartNumber = getFormattedTargetName(target);
+									itemList.add(formattedPartNumber);
+									newTargetsByPartNumber.put(formattedPartNumber, target);
+									newTargetsByName.put(target.fName, target);
 								}
 							}
 							final String[] itemsToUpdate = itemList.toArray(new String[itemList.size()]);
@@ -1340,19 +1462,26 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 									// Check again to make sure we haven't been disposed.
 									if (getControl().isDisposed()) {
 										if (Activator.getInstance().isDebugging()) {
-											System.out.printf("(targets, from UI job) bailing on updating debugger tab because it has been disposed\n");
+											System.out.printf("(targets, from UI job) bailing on updating "
+													+ "debugger tab because it has been disposed\n");
 										}
 										return Status.OK_STATUS;
 									}
 									
 									fGdbServerTargetName.setItems(itemsToUpdate);
+									
+									fTargetsByPartNumber = newTargetsByPartNumber;
+									fTargetsByName = newTargetsByName;
 
 									// Select current target from config.
 									selectActiveTarget();
 									
-									scheduleUpdateJob();
+									if (fNeedsDefaultTargetNameRefresh) {
+										selectActiveProbe();
+									}
 									
 									updatePyocdLoadingMessage();									
+									scheduleUpdateJob();
 									
 									return Status.OK_STATUS;
 								}
@@ -1404,7 +1533,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
 				// Probe ID
-				fSelectedProbeId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+				fSelectedProbeId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_PROBE_ID,
 						DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 				// active probe will be selected after updateProbes() runs.
 
@@ -1414,6 +1543,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT));
 
 				fGdbServerTargetName.setText(""); // will be updated with updateTargets() call below. 
+				
+				// Connect mode
+				fGdbServerConnectMode.select(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_CONNECT_MODE,
+						DefaultPreferences.GDB_SERVER_CONNECT_MODE_DEFAULT));
+				
+				// Reset type
+				fGdbServerResetType.select(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_RESET_TYPE,
+						DefaultPreferences.GDB_SERVER_RESET_TYPE_DEFAULT));
 
 				// Misc options
 				fGdbServerHaltAtHardFault
@@ -1428,14 +1565,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerFlashMode.select(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 						DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT));
 
-				fGdbServerFlashFastVerify
-						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
-								DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT));
+				fGdbServerSmartFlash
+						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_SMART_FLASH,
+								DefaultPreferences.GDB_SERVER_SMART_FLASH_DEFAULT));
 
 				// Semihosting
+				booleanDefault = fPersistentPreferences.getPyOCDEnableSemihosting();
 				fGdbServerEnableSemihosting
 						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
-								DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT));
+								booleanDefault));
 
 				fGdbServerUseGdbSyscallsForSemihosting
 						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
@@ -1553,6 +1691,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbServerOverrideTarget.setSelection(DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT);
 
 			fGdbServerTargetName.setText(DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT);
+			
+			// Connect mode
+			fGdbServerConnectMode.select(DefaultPreferences.GDB_SERVER_CONNECT_MODE_DEFAULT);
+			
+			// Reset type
+			fGdbServerResetType.select(DefaultPreferences.GDB_SERVER_RESET_TYPE_DEFAULT);
 
 			// Misc options
 			fGdbServerHaltAtHardFault.setSelection(DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT);
@@ -1562,7 +1706,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// Flash
 			fGdbServerFlashMode.select(DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
 
-			fGdbServerFlashFastVerify.setSelection(DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT);
+			fGdbServerSmartFlash.setSelection(DefaultPreferences.GDB_SERVER_SMART_FLASH_DEFAULT);
 
 			// Semihosting
 			fGdbServerEnableSemihosting.setSelection(DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT);
@@ -1765,7 +1909,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			// Probe ID
 			if (fSelectedProbeId != null) {
-				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID, fSelectedProbeId);
+				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_PROBE_ID, fSelectedProbeId);
 			}
 
 			// Target override
@@ -1789,6 +1933,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME, targetName);
 			}
 
+			// Connect mode
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_CONNECT_MODE,
+					fGdbServerConnectMode.getSelectionIndex());
+
+			// Reset type
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_RESET_TYPE,
+					fGdbServerResetType.getSelectionIndex());
+
 			// Misc options
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
 					fGdbServerHaltAtHardFault.getSelection());
@@ -1800,12 +1952,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 					fGdbServerFlashMode.getSelectionIndex());
 
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
-					fGdbServerFlashFastVerify.getSelection());
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_SMART_FLASH,
+					fGdbServerSmartFlash.getSelection());
 
 			// Semihosting
+			booleanValue = fGdbServerEnableSemihosting.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
-					fGdbServerEnableSemihosting.getSelection());
+					booleanValue);
+			fPersistentPreferences.putPyOCDEnableSemihosting(booleanValue);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
 					fGdbServerUseGdbSyscallsForSemihosting.getSelection());
@@ -1927,7 +2081,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
 
 			// Probe ID
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_PROBE_ID,
 					DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_NAME,
@@ -1944,6 +2098,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
 					DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT);
 
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_CONNECT_MODE,
+					DefaultPreferences.GDB_SERVER_CONNECT_MODE_DEFAULT);
+
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_RESET_TYPE,
+					DefaultPreferences.GDB_SERVER_RESET_TYPE_DEFAULT);
+
 			// Misc options
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
 					DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT);
@@ -1955,12 +2115,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 					DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
 
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
-					DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT);
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_SMART_FLASH,
+					DefaultPreferences.GDB_SERVER_SMART_FLASH_DEFAULT);
 
 			// Semihosting
+			defaultBoolean = fPersistentPreferences.getPyOCDEnableSemihosting();
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
-					DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT);
+					defaultBoolean);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
 					DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT);

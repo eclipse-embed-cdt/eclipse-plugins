@@ -128,6 +128,9 @@ public class Configuration {
 			// disable waiting for a board to be connected
 			lst.add("--no-wait");
 
+			lst.add("-j");
+			lst.add(DebugUtils.getProjectOsPath(configuration).toOSString());
+			
 			// GDB port
 			lst.add("--port");
 			lst.add(Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
@@ -139,7 +142,7 @@ public class Configuration {
 					DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
 			// Board ID
-			String boardId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+			String boardId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_PROBE_ID,
 					DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 			if (!boardId.isEmpty()) {
 				lst.add("--uid");
@@ -158,6 +161,48 @@ public class Configuration {
 			lst.add("--frequency");
 			lst.add(Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
 					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT)));
+			
+			// Connect mode
+			int connectMode = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_CONNECT_MODE,
+					DefaultPreferences.GDB_SERVER_CONNECT_MODE_DEFAULT);
+			switch (connectMode) {
+			case PreferenceConstants.ConnectMode.HALT:
+				lst.add("--connect=halt");
+				break;
+			case PreferenceConstants.ConnectMode.PRE_RESET:
+				lst.add("--connect=pre-reset");
+				break;
+			case PreferenceConstants.ConnectMode.UNDER_RESET:
+				lst.add("--connect=under-reset");
+				break;
+			case PreferenceConstants.ConnectMode.ATTACH:
+				lst.add("--connect=attach");
+				break;
+			}
+			
+			// Reset type
+			int resetType = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_RESET_TYPE,
+					DefaultPreferences.GDB_SERVER_RESET_TYPE_DEFAULT);
+			switch (resetType) {
+			case PreferenceConstants.ResetType.DEFAULT:
+				lst.add("-Oreset_type=default");
+				break;
+			case PreferenceConstants.ResetType.HARDWARE:
+				lst.add("-Oreset_type=hw");
+				break;
+			case PreferenceConstants.ResetType.SOFTWARE_DEFAULT:
+				lst.add("-Oreset_type=sw");
+				break;
+			case PreferenceConstants.ResetType.SOFTWARE_SYSRESETREQ:
+				lst.add("-Oreset_type=sw_sysresetreq");
+				break;
+			case PreferenceConstants.ResetType.SOFTWARE_VECTRESET:
+				lst.add("-Oreset_type=sw_vectreset");
+				break;
+			case PreferenceConstants.ResetType.SOFTWARE_EMULATED:
+				lst.add("-Oreset_type=sw_emulated");
+				break;
+			}
 
 			// Halt at hard fault
 			if (configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
@@ -175,21 +220,21 @@ public class Configuration {
 			int flashMode = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 					DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
 			switch (flashMode) {
-			case PreferenceConstants.AUTO_ERASE:
+			case PreferenceConstants.FlashMode.AUTO_ERASE:
 				lst.add("--erase=auto");
 				break;
-			case PreferenceConstants.CHIP_ERASE:
+			case PreferenceConstants.FlashMode.CHIP_ERASE:
 				lst.add("--erase=chip");
 				break;
-			case PreferenceConstants.SECTOR_ERASE:
+			case PreferenceConstants.FlashMode.SECTOR_ERASE:
 				lst.add("--erase=sector");
 				break;
 			}
 
-			if (configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
-					DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT)) {
-				lst.add("--trust-crc");
-			}
+			// Smart flash
+			boolean boolValue = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_SMART_FLASH,
+					DefaultPreferences.GDB_SERVER_SMART_FLASH_DEFAULT);
+			lst.add("-Osmart_flash=" + (boolValue ? "1" : "0"));
 
 			// Semihosting
 			if (configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
@@ -228,7 +273,7 @@ public class Configuration {
 		// Added as a marker, it is displayed if the configuration was processed
 		// properly.
 		lst.add("-c");
-		lst.add("echo \"Started by GNU MCU Eclipse\"");
+		lst.add("echo \"" + getGdbServerStartedMessage() + "\"");
 
 		return lst.toArray(new String[0]);
 	}
@@ -367,6 +412,10 @@ public class Configuration {
 		return getDoStartGdbServer(config)
 				&& config.getAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
 						DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
+	}
+	
+	public static String getGdbServerStartedMessage() {
+		return "Started by Eclipse Embedded CDT"; 
 	}
 
 	// ------------------------------------------------------------------------

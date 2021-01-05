@@ -40,7 +40,7 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 
 	public static final String GDB_SERVER_TELNET_PORT_NUMBER = PREFIX + ".gdbServerTelnetPortNumber"; //$NON-NLS-1$
 
-	public static final String GDB_SERVER_BOARD_ID = PREFIX + ".gdbServerBoardId"; //$NON-NLS-1$
+	public static final String GDB_SERVER_PROBE_ID = PREFIX + ".gdbServerBoardId"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_BOARD_NAME = PREFIX + ".gdbServerBoardName"; //$NON-NLS-1$
 
@@ -50,13 +50,17 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 
 	public static final String GDB_SERVER_TARGET_NAME = PREFIX + ".gdbServerTargetName"; //$NON-NLS-1$
 
+	public static final String GDB_SERVER_CONNECT_MODE = PREFIX + ".gdbServerConnectMode"; //$NON-NLS-1$
+
+	public static final String GDB_SERVER_RESET_TYPE = PREFIX + ".gdbServerResetType"; //$NON-NLS-1$
+
 	public static final String GDB_SERVER_HALT_AT_HARD_FAULT = PREFIX + ".gdbServerHaltAtHardFault"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_STEP_INTO_INTERRUPTS = PREFIX + ".gdbServerStepIntoInterrutps"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_FLASH_MODE = PREFIX + ".gdbServerFlashMode"; //$NON-NLS-1$
 
-	public static final String GDB_SERVER_FLASH_FAST_VERIFY = PREFIX + ".gdbServerFlashFastVerify"; //$NON-NLS-1$
+	public static final String GDB_SERVER_SMART_FLASH = PREFIX + ".gdbServerSmartFlash"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_ENABLE_SEMIHOSTING = PREFIX + ".gdbServerEnableSemihosting"; //$NON-NLS-1$
 
@@ -78,11 +82,6 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 	// ------------------------------------------------------------------------
 
 	// TabStartup
-	public static final String DO_FIRST_RESET = PREFIX + ".doFirstReset"; //$NON-NLS-1$
-	public static final String FIRST_RESET_TYPE = PREFIX + ".firstResetType"; //$NON-NLS-1$
-
-	public static final String ENABLE_SEMIHOSTING = PREFIX + ".enableSemihosting"; //$NON-NLS-1$
-
 	public static final String OTHER_INIT_COMMANDS = PREFIX + ".otherInitCommands"; //$NON-NLS-1$
 
 	public static final String DO_DEBUG_IN_RAM = PREFIX + ".doDebugInRam"; //$NON-NLS-1$

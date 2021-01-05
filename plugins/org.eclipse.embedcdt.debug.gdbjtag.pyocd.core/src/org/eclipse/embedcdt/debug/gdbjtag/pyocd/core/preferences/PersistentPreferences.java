@@ -150,34 +150,11 @@ public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.co
 		putWorkspaceString(GDB_CLIENT_COMMANDS, value);
 	}
 
-	// ----- pyOCD do initial reset -----------------------------------------
-	public boolean getPyOCDDoInitialReset() {
-
-		return Boolean.valueOf(
-				getString(GDB_PYOCD_DO_INITIAL_RESET, Boolean.toString(DefaultPreferences.DO_FIRST_RESET_DEFAULT)));
-	}
-
-	public void putPyOCDDoInitialReset(boolean value) {
-
-		putWorkspaceString(GDB_PYOCD_DO_INITIAL_RESET, Boolean.toString(value));
-	}
-
-	// ----- pyOCD initial reset type ---------------------------------------
-	public String getPyOCDInitialResetType() {
-
-		return getString(GDB_PYOCD_INITIAL_RESET_TYPE, DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
-	}
-
-	public void putPyOCDInitialResetType(String value) {
-
-		putWorkspaceString(GDB_PYOCD_INITIAL_RESET_TYPE, value);
-	}
-
 	// ----- pyOCD enable semihosting ---------------------------------------
 	public boolean getPyOCDEnableSemihosting() {
 
 		return Boolean.valueOf(getString(GDB_PYOCD_ENABLE_SEMIHOSTING,
-				Boolean.toString(DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)));
+				Boolean.toString(DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT)));
 	}
 
 	public void putPyOCDEnableSemihosting(boolean value) {
