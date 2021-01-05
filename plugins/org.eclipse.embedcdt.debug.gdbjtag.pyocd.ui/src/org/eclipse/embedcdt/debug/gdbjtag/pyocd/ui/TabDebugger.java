@@ -162,8 +162,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private String fPyocdPathForOutstandingTargetsLoad;
 	private RequestMonitor fOutstandingProbesLoadMonitor;
 	private RequestMonitor fOutstandingTargetsLoadMonitor;
-	
-	private AtomicBoolean fIsActive = new AtomicBoolean(false);
 
 	/**
 	 * Where widgets in a row are rendered in columns, the amount of padding (in
@@ -1166,9 +1164,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							fOutstandingProbesLoad.setRelease(false);
 							fOutstandingProbesLoadMonitor = null;
 
-							if (!fIsActive.getAcquire()) {
+							if (getControl().isDisposed()) {
 								if (Activator.getInstance().isDebugging()) {
-									System.out.printf("(probes) bailing on updating debugger tab because it's no longer active\n");
+									System.out.printf("(probes) bailing on updating debugger tab because it has been disposed\n");
 								}
 								return;
 							}
@@ -1231,6 +1229,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							SystemUIJob updateJob = new SystemUIJob("update probes") {
 								@Override
 								public IStatus runInUIThread(IProgressMonitor monitor) {
+									// Check again to make sure we haven't been disposed.
+									if (getControl().isDisposed()) {
+										if (Activator.getInstance().isDebugging()) {
+											System.out.printf("(probes, from UI job) bailing on updating debugger tab because it has been disposed\n");
+										}
+										return Status.OK_STATUS;
+									}
+									
 									fGdbServerProbeId.setItems(items);
 
 									selectActiveProbe();
@@ -1286,9 +1292,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							fOutstandingTargetsLoad.setRelease(false);
 							fOutstandingTargetsLoadMonitor = null;
 
-							if (!fIsActive.getAcquire()) {
+							if (getControl().isDisposed()) {
 								if (Activator.getInstance().isDebugging()) {
-									System.out.printf("(targets) bailing on updating debugger tab because it's no longer active\n");
+									System.out.printf("(targets) bailing on updating debugger tab because it has been disposed\n");
 								}
 								return;
 							}
@@ -1331,6 +1337,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							SystemUIJob updateJob = new SystemUIJob("update targets") {
 								@Override
 								public IStatus runInUIThread(IProgressMonitor monitor) {
+									// Check again to make sure we haven't been disposed.
+									if (getControl().isDisposed()) {
+										if (Activator.getInstance().isDebugging()) {
+											System.out.printf("(targets, from UI job) bailing on updating debugger tab because it has been disposed\n");
+										}
+										return Status.OK_STATUS;
+									}
+									
 									fGdbServerTargetName.setItems(itemsToUpdate);
 
 									// Select current target from config.
@@ -1358,8 +1372,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
-		fIsActive.setRelease(true);
-		
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.TabDebugger.initializeFrom() " + configuration.getName());
 		}
@@ -1514,8 +1526,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	}
 
 	public void initializeFromDefaults() {
-		fIsActive.setRelease(true);
-
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.TabDebugger.initializeFromDefaults()");
 		}
@@ -1641,7 +1651,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.TabDebugger.dispose()");
 		}
-		fIsActive.setRelease(false);
 	}
 
 	@Override
