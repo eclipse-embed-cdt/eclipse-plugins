@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -66,6 +66,7 @@ public class XpackDirectoryNotStrictFieldEditor extends DirectoryNotStrictFieldE
 		super.adjustForNumColumns(numColumns - 1);
 	}
 
+	@Override
 	protected void doFillIntoGrid(Composite parent, int numColumns) {
 		super.doFillIntoGrid(parent, numColumns - 1);
 

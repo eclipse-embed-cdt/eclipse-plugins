@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -30,7 +30,7 @@ import org.eclipse.embedcdt.internal.core.Activator;
 
 /**
  * Helper class used by debuggers.
- * 
+ *
  */
 public class Discoverer {
 
@@ -44,7 +44,7 @@ public class Discoverer {
 	/**
 	 * Find where the executable might have been installed. The returned path is
 	 * known to be an existing folder.
-	 * 
+	 *
 	 * @param executableName
 	 * @param searchPath
 	 *            a string with a sequence of folders.
@@ -58,7 +58,7 @@ public class Discoverer {
 		if (resolvedPath == null || resolvedPath.isEmpty()) {
 			return null;
 		}
-		
+
 		if (EclipseUtils.isWindows()) {
 			resolvedPath = StringUtils.duplicateBackslashes(resolvedPath);
 		}
@@ -89,7 +89,7 @@ public class Discoverer {
 	/**
 	 * Get key value from registry and validate the executable. The returned
 	 * path is known to be an existing folder.
-	 * 
+	 *
 	 * @param executableName
 	 * @param subFolder
 	 *            a String, usually "bin", or null.
@@ -142,7 +142,7 @@ public class Discoverer {
 	/**
 	 * Get the value of a registry key. It first tests the current user key,
 	 * then the local machine key.
-	 * 
+	 *
 	 * @param registry
 	 * @param prefix
 	 * @param registrySubKey
@@ -177,9 +177,9 @@ public class Discoverer {
 	/**
 	 * Return the last (in lexicographical order) folder that contain
 	 * "bin/executable". If not found, the folder itself is checked.
-	 * 
+	 *
 	 * The returned path includes the ending /bin.
-	 * 
+	 *
 	 * @param folder
 	 * @param binFolder
 	 *            a String, usually "bin", or null.
@@ -194,7 +194,7 @@ public class Discoverer {
 			System.out.println("Discoverer.getLastExecutable(\"" + folderPath + "\", \"" + executableName + "\")");
 		}
 
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		File folder = folderPath.toFile();
 		if (!folder.isDirectory()) {
 			// System.out.println(folder + " not a folder");

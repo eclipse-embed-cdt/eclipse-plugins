@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -146,6 +146,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 	 * This is a callback that will allow us to create the viewer and initialise
 	 * it.
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 
 		// System.out.println("BoardsView.createPartControl()");
@@ -177,6 +178,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 		contributeToActionBars();
 	}
 
+	@Override
 	public void dispose() {
 
 		super.dispose();
@@ -202,6 +204,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				BoardsView.this.fillContextMenu(manager);
 			}
@@ -242,6 +245,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 
 		fRemoveFilters = new Action() {
 
+			@Override
 			public void run() {
 				// Empty selection
 				fViewer.setSelection(null);
@@ -256,6 +260,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 		// -----
 		fExpandAll = new Action() {
 
+			@Override
 			public void run() {
 				fViewer.expandAll();
 			}
@@ -267,6 +272,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 
 		fCollapseAll = new Action() {
 
+			@Override
 			public void run() {
 				fViewer.collapseAll();
 			}
@@ -285,6 +291,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+	@Override
 	public void setFocus() {
 		fViewer.getControl().setFocus();
 	}
@@ -323,6 +330,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return "BoardsView";
 	}
@@ -365,7 +373,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 			//
 		} else if (DataManagerEvent.Type.UPDATE_VERSIONS.equals(type)) {
 
-			final Map<String, Leaf> updatedMap = new HashMap<String, Leaf>();
+			final Map<String, Leaf> updatedMap = new HashMap<>();
 			updateBoardsTree(updatedMap);
 
 			Display.getDefault().asyncExec(new Runnable() {
@@ -394,6 +402,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 
 			(new DurationMonitor()).displayTimeAndRun(new Runnable() {
 
+				@Override
 				public void run() {
 					fOut.println("Collecting boards...");
 

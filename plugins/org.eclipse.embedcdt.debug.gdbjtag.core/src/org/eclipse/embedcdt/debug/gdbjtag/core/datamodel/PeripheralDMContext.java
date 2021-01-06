@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
@@ -24,7 +24,7 @@ import org.eclipse.cdt.dsf.service.DsfSession;
 /**
  * Peripheral data context, represents a handle to a chunk of data in the Data
  * Model.
- * 
+ *
  */
 public class PeripheralDMContext extends AbstractDMContext
 		implements IPeripheralDMContext, Comparable<IPeripheralDMContext> {

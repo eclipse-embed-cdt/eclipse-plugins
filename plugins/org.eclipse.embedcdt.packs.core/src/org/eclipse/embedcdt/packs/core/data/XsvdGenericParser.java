@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.packs.core.data;
@@ -17,14 +17,15 @@ package org.eclipse.embedcdt.packs.core.data;
 public class XsvdGenericParser extends JsonGenericParser {
 
 	public XsvdGenericParser() {
-		;
+
 	}
 
 	/**
 	 * Identify properties that are collections.
-	 * 
+	 *
 	 * @return the type of the children nodes or null if not collection.
 	 */
+	@Override
 	public String isCollection(String name) {
 		if ("device".equals(name)) {
 			// Return the same name, this means no intermediate node.

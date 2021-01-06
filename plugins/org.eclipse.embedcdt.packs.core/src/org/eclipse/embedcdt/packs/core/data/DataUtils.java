@@ -126,8 +126,8 @@ public class DataUtils {
 		}
 	}
 
-	public static void copyFile(File sourceFile, File destinationFile, IConsoleStream out,
-			IProgressMonitor monitor) throws IOException {
+	public static void copyFile(File sourceFile, File destinationFile, IConsoleStream out, IProgressMonitor monitor)
+			throws IOException {
 
 		if (out != null) {
 			int size = (int) sourceFile.length();

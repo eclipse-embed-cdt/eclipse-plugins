@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Doug Schaefer - initial API and implementation
  *     Marc-Andre Laperle - Moved to an operation for a custom wizard page
@@ -46,6 +46,7 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
 		if (Activator.getInstance().isDebugging()) {

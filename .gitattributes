@@ -4,3 +4,48 @@ ilg/gnuarmeclipse/templates/cortexm/templates/*/ linguist-vendored
 ilg/gnuarmeclipse/templates/freescale/templates/*/ linguist-vendored
 ilg/gnuarmeclipse/templates/freescale.pe/templates/*/ linguist-vendored
 ilg/gnuarmeclipse/templates/stm/templates/*/ linguist-vendored
+
+# Lines below that have remove trailing whitespace in the comment on the previous
+# lines will have trailing whitespace removed by scripts/style/do_remove_trailing_whitespace.sh
+
+# Lines below that file permission +x in the comment on the previous
+# lines will execute permission set by scripts/style/do_fix_file_permissions.sh
+
+*.c text
+.classpath text
+# file permission +x
+*.command text
+*.cpp text
+*.exsd text
+*.gif binary
+.gitattributes text
+.gitignore text
+.gitmodules text
+*.h text
+*.html text
+*.inf text
+*.ini text
+ISSUE_TEMPLATE text
+*.jar binary
+# remove trailing whitespace
+*.java text
+*.Jenkinsfile text
+*.ld text
+LICENSE text
+*.mappings text
+*.md text
+# remove trailing whitespace
+*.MF text
+.options text
+*.options text
+*.png binary
+*.prefs text
+.project text
+# remove trailing whitespace
+*.properties text
+*.sed text
+# file permission +x
+*.sh text
+*.txt text
+*.xml text
+*.yml text

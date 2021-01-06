@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -55,7 +55,7 @@ public class GnuMcuFinalLaunchSequence_7_2 extends GnuMcuFinalLaunchSequence {
 		// Initialise the list with the base class' steps
 		// We need to create a list that we can modify, which is why we
 		// create our own ArrayList.
-		List<String> orderList = new ArrayList<String>(Arrays.asList(super.getExecutionOrder(group)));
+		List<String> orderList = new ArrayList<>(Arrays.asList(super.getExecutionOrder(group)));
 
 		if (GROUP_JTAG.equals(group)) {
 

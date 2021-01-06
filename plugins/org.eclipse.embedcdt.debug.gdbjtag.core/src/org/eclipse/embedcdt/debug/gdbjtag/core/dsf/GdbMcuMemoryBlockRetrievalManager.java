@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -35,7 +35,7 @@ public class GdbMcuMemoryBlockRetrievalManager extends GdbMemoryBlockRetrievalMa
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.cdt.dsf.debug.internal.provisional.model.
 	 * MemoryBlockRetrievalManager#createMemoryBlockRetrieval(java.lang.String,
 	 * org.eclipse.debug.core.ILaunchConfiguration,
@@ -55,6 +55,7 @@ public class GdbMcuMemoryBlockRetrievalManager extends GdbMemoryBlockRetrievalMa
 		return memRetrieval;
 	}
 
+	@Override
 	@DsfServiceEventHandler
 	public void eventDispatched(IStartedDMEvent event) {
 

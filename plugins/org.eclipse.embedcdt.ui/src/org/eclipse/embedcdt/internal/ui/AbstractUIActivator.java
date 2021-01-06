@@ -29,7 +29,6 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  *
- * @noinstantiate This class is not intended to be instantiated by clients.
  * @noextend This class is not intended to be subclassed by clients.
  * @noreference This class is not intended to be referenced by clients.
  */
@@ -63,6 +62,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 
 		if (isDebugging()) {
@@ -72,6 +72,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
 	}
 
+	@Override
 	public void stop(BundleContext context) throws Exception {
 
 		super.stop(context);
@@ -82,6 +83,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public boolean isDebugging() {
 
 		return fIsDebugging;

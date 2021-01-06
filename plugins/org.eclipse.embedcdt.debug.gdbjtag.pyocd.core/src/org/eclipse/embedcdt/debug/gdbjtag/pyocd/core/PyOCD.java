@@ -76,7 +76,7 @@ public class PyOCD {
 
 	// 60 second timeout for calling pyocd.
 	public static final long PYOCD_TIMEOUT_MS = 60000;
-	
+
 	public static final class Errors {
 		public static final int ERROR_PARSING_OUTPUT = 1;
 		public static final int ERROR_RUNNING_PYOCD = 2;
@@ -86,11 +86,11 @@ public class PyOCD {
 
 	private static PyOCD fInstance;
 	private DefaultDsfExecutor fExecutor;
-	
+
 	static {
 		fInstance = new PyOCD();
 	}
-	
+
 	public static PyOCD getInstance() {
 		return fInstance;
 	}
@@ -105,15 +105,15 @@ public class PyOCD {
 		public final String fProductName;
 		public final String fTargetName;
 		public final String fUniqueId;
-		
+
 		//! The board name pyocd returns if the probe doesn't report that it is associated with a board.
 		public static final String GENERIC_BOARD_NAME = "generic";
-		
+
 		//! The board name pyocd returns if the probe reports a board ID but pyocd doesn't recognize it.
 		public static final String UNKNOWN_BOARD_NAME = "Unknown Board";
 
 		public static final Comparator DESCRIPTION_COMPARATOR = new Comparator();
-		
+
 		Probe(String board, String vendor, String product, String target, String uid) {
 			fBoardName = board;
 			fVendorName = vendor;
@@ -121,7 +121,7 @@ public class PyOCD {
 			fTargetName = target;
 			fUniqueId = uid;
 		}
-		
+
 		/**
 		 * Return the combined vendor and product name.
 		 *
@@ -131,12 +131,11 @@ public class PyOCD {
 		public String getName() {
 			if (fProductName.startsWith(fVendorName)) {
 				return fProductName;
-			}
-			else {
+			} else {
 				return fVendorName + " " + fProductName;
 			}
 		}
-		
+
 		/**
 		 * Return a description of the probe.
 		 */
@@ -145,16 +144,16 @@ public class PyOCD {
 			// it is associated with a board.
 			if (fBoardName.equalsIgnoreCase(GENERIC_BOARD_NAME) || fBoardName.equalsIgnoreCase(UNKNOWN_BOARD_NAME)) {
 				return String.format("%s (%s)", getName(), fUniqueId);
-			}
-			else {
+			} else {
 				return String.format("%s – %s (%s)", fBoardName, getName(), fUniqueId);
-			}			
+			}
 		}
 
 		/**
 		 * Comparator to sort boards by description.
 		 */
 		private static class Comparator implements java.util.Comparator<Probe> {
+			@Override
 			public int compare(Probe o1, Probe o2) {
 				return o1.getDescription().compareTo(o2.getDescription());
 			}
@@ -178,19 +177,18 @@ public class PyOCD {
 
 		public static final NameComparator NAME_COMPARATOR = new NameComparator();
 		public static final PartNumberComparator PART_NUMBER_COMPARATOR = new PartNumberComparator();
-		
+
 		Target(String name, String vendor, String part, String[] families) {
 			fName = name;
 			fVendor = vendor;
 			fPartNumber = part;
 			fFamilies = families;
 		}
-		
+
 		public String getFullPartName() {
 			if (fVendor != null) {
 				return fVendor + " " + fPartNumber;
-			}
-			else {
+			} else {
 				return fPartNumber;
 			}
 		}
@@ -199,6 +197,7 @@ public class PyOCD {
 		 * Comparator to sort targets by name.
 		 */
 		public static class NameComparator implements java.util.Comparator<Target> {
+			@Override
 			public int compare(Target o1, Target o2) {
 				return o1.fName.compareTo(o2.fName);
 			}
@@ -208,6 +207,7 @@ public class PyOCD {
 		 * Comparator to sort targets by part number.
 		 */
 		public static class PartNumberComparator implements java.util.Comparator<Target> {
+			@Override
 			public int compare(Target o1, Target o2) {
 				return o1.getFullPartName().compareTo(o2.getFullPartName());
 			}
@@ -218,7 +218,7 @@ public class PyOCD {
 			return String.format("<Target: %s %s [%s]>", fVendor, fPartNumber, fName);
 		}
 	}
-	
+
 	/**
 	 * pyOCD version number.
 	 *
@@ -227,18 +227,18 @@ public class PyOCD {
 		public final int fMajor;
 		public final int fMinor;
 		public final int fMicro;
-		
+
 		Version(int major, int minor, int micro) {
 			fMajor = major;
 			fMinor = minor;
 			fMicro = micro;
 		}
-		
+
 		/**
 		 * Parse the given version string, returning a Version object or null.
 		 */
 		public static Version fromString(String versionString) {
-			if (versionString.isEmpty() ) {
+			if (versionString.isEmpty()) {
 				return null;
 			}
 			// remove initial 'v' if present
@@ -246,11 +246,11 @@ public class PyOCD {
 				versionString = versionString.substring(1);
 			}
 			String[] pieces = versionString.split("\\.", 4);
-			
+
 			if (pieces.length == 0) {
 				return null;
 			}
-			
+
 			int major = 0;
 			int minor = 0;
 			int micro = 0;
@@ -275,7 +275,7 @@ public class PyOCD {
 					System.out.printf("failed to parse pyocd micro version:" + String.join(".", pieces) + "\n");
 				}
 			}
-			
+
 			return new Version(major, minor, micro);
 		}
 
@@ -288,16 +288,15 @@ public class PyOCD {
 	public PyOCD() {
 		fExecutor = new DefaultDsfExecutor();
 	}
-	
+
 	public void getProbes(ILaunchConfiguration configuration, final DataRequestMonitor<List<Probe>> rm) {
 
 		String pyOCDPath = Configuration.getGdbServerCommand(configuration, null);
 		if (pyOCDPath == null) {
-			rm.setStatus(new Status(IStatus.ERROR, PyOCD.class,
-					IDsfStatusConstants.REQUEST_FAILED, "no pyocd path", null));
+			rm.setStatus(
+					new Status(IStatus.ERROR, PyOCD.class, IDsfStatusConstants.REQUEST_FAILED, "no pyocd path", null));
 			rm.done();
-		}
-		else {
+		} else {
 			getProbes(pyOCDPath, rm);
 		}
 	}
@@ -306,11 +305,10 @@ public class PyOCD {
 
 		String pyOCDPath = Configuration.getGdbServerCommand(configuration, null);
 		if (pyOCDPath == null) {
-			rm.setStatus(new Status(IStatus.ERROR, PyOCD.class,
-					IDsfStatusConstants.REQUEST_FAILED, "no pyocd path", null));
+			rm.setStatus(
+					new Status(IStatus.ERROR, PyOCD.class, IDsfStatusConstants.REQUEST_FAILED, "no pyocd path", null));
 			rm.done();
-		}
-		else {
+		} else {
 			getTargets(pyOCDPath, rm);
 		}
 	}
@@ -360,120 +358,108 @@ public class PyOCD {
 
 	public void getProbes(String pyOCDPath, final DataRequestMonitor<List<Probe>> rm) {
 
-		getJsonOutput(pyOCDPath, "--probes",
-				new DataRequestMonitor<JSONObject>(fExecutor, rm) {
-					@Override
-					protected void handleSuccess() {
-						JSONObject output = getData();
-						
-						if (!(checkOutput(output) && output.containsKey(PROBES_KEY))) {
-							rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-									Errors.ERROR_INVALID_JSON_FORMAT, "invalid output", null));
-							rm.done();
-							return;
+		getJsonOutput(pyOCDPath, "--probes", new DataRequestMonitor<JSONObject>(fExecutor, rm) {
+			@Override
+			protected void handleSuccess() {
+				JSONObject output = getData();
+
+				if (!(checkOutput(output) && output.containsKey(PROBES_KEY))) {
+					rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Errors.ERROR_INVALID_JSON_FORMAT,
+							"invalid output", null));
+					rm.done();
+					return;
+				}
+
+				Object probesObj = output.get(PROBES_KEY);
+				if (!(probesObj instanceof JSONArray)) {
+					rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Errors.ERROR_INVALID_JSON_FORMAT,
+							"invalid probes key type", null));
+					rm.done();
+					return;
+				}
+
+				JSONArray probes = (JSONArray) probesObj;
+
+				ArrayList<Probe> result = new ArrayList<>();
+				for (Object b : probes) {
+					try {
+						JSONObject bobj = (JSONObject) b;
+
+						Probe probeInfo = new Probe((String) bobj.get(PROBE_BOARD_NAME_KEY),
+								(String) bobj.get(PROBE_VENDOR_NAME_KEY), (String) bobj.get(PROBE_PRODUCT_NAME_KEY),
+								(String) bobj.get(PROBE_TARGET_KEY), (String) bobj.get(PROBE_UNIQUE_ID_KEY));
+
+						result.add(probeInfo);
+					} catch (Exception e) {
+						if (Activator.getInstance().isDebugging()) {
+							System.out.printf("Exception extracting probe info: %s\n", e);
 						}
-				
-						Object probesObj = output.get(PROBES_KEY);
-						if (!(probesObj instanceof JSONArray)) {
-							rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-									Errors.ERROR_INVALID_JSON_FORMAT, "invalid probes key type", null));
-							rm.done();
-							return;
-						}
-				
-						JSONArray probes = (JSONArray) probesObj;
-				
-						ArrayList<Probe> result = new ArrayList<Probe>();
-						for (Object b : probes) {
-							try {
-								JSONObject bobj = (JSONObject) b;
-				
-								Probe probeInfo = new Probe(
-														(String) bobj.get(PROBE_BOARD_NAME_KEY),
-														(String) bobj.get(PROBE_VENDOR_NAME_KEY),
-														(String) bobj.get(PROBE_PRODUCT_NAME_KEY),
-														(String) bobj.get(PROBE_TARGET_KEY),
-														(String) bobj.get(PROBE_UNIQUE_ID_KEY)
-														);
-				
-								result.add(probeInfo);
-							} catch (Exception e) {
-								if (Activator.getInstance().isDebugging()) {
-									System.out.printf("Exception extracting probe info: %s\n", e);
-								}
-								continue;
-							}
-						}
-				
-						rm.done(result);
+						continue;
 					}
 				}
-			);
+
+				rm.done(result);
+			}
+		});
 	}
 
 	public void getTargets(String pyOCDPath, final DataRequestMonitor<List<Target>> rm) {
 
-		getJsonOutput(pyOCDPath, "--targets",
-				new DataRequestMonitor<JSONObject>(fExecutor, rm) {
-					@Override
-					protected void handleSuccess() {
-						JSONObject output = getData();
-						
-						if (!(checkOutput(output) && output.containsKey(TARGETS_KEY))) {
-							rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-									Errors.ERROR_INVALID_JSON_FORMAT, "invalid output", null));
-							rm.done();
-							return;
-						}
-								
-						Object targetsObj = output.get(TARGETS_KEY);
-						if (!(targetsObj instanceof JSONArray)) {
-							rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-									Errors.ERROR_INVALID_JSON_FORMAT, "invalid targets key type", null));
-							rm.done();
-							return;
-						}
-				
-						JSONArray targets = (JSONArray) targetsObj;
-				
-						ArrayList<Target> result = new ArrayList<Target>();
-						for (Object t : targets) {
-							try {
-								JSONObject tobj = (JSONObject) t;
-								
-								String families[];
-								if (tobj.containsKey(TARGET_FAMILIES_KEY)) {
-									JSONArray familiesJsonArray = (JSONArray)tobj.get(TARGET_FAMILIES_KEY);
-									ArrayList<String> familiesArrayList = new ArrayList<String>();
-									for (Object f : familiesJsonArray) {
-										familiesArrayList.add((String)f);
-									}
-									families = familiesArrayList.toArray(new String[familiesJsonArray.size()]);
-								}
-								else {
-									families = new String[] {};
-								}
-								
-								Target targetInfo = new Target(
-														(String) tobj.get(TARGET_NAME_KEY),
-														(String) tobj.get(TARGET_VENDOR_KEY),
-														(String) tobj.get(TARGET_PART_NUMBER_KEY),
-														families
-														);
-				
-								result.add(targetInfo);
-							} catch (Exception e) {
-								if (Activator.getInstance().isDebugging()) {
-									System.out.printf("Exception extracting target info: %s\n", e);
-								}
-								continue;
+		getJsonOutput(pyOCDPath, "--targets", new DataRequestMonitor<JSONObject>(fExecutor, rm) {
+			@Override
+			protected void handleSuccess() {
+				JSONObject output = getData();
+
+				if (!(checkOutput(output) && output.containsKey(TARGETS_KEY))) {
+					rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Errors.ERROR_INVALID_JSON_FORMAT,
+							"invalid output", null));
+					rm.done();
+					return;
+				}
+
+				Object targetsObj = output.get(TARGETS_KEY);
+				if (!(targetsObj instanceof JSONArray)) {
+					rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Errors.ERROR_INVALID_JSON_FORMAT,
+							"invalid targets key type", null));
+					rm.done();
+					return;
+				}
+
+				JSONArray targets = (JSONArray) targetsObj;
+
+				ArrayList<Target> result = new ArrayList<>();
+				for (Object t : targets) {
+					try {
+						JSONObject tobj = (JSONObject) t;
+
+						String families[];
+						if (tobj.containsKey(TARGET_FAMILIES_KEY)) {
+							JSONArray familiesJsonArray = (JSONArray) tobj.get(TARGET_FAMILIES_KEY);
+							ArrayList<String> familiesArrayList = new ArrayList<>();
+							for (Object f : familiesJsonArray) {
+								familiesArrayList.add((String) f);
 							}
+							families = familiesArrayList.toArray(new String[familiesJsonArray.size()]);
+						} else {
+							families = new String[] {};
 						}
-				
-						rm.done(result);
+
+						Target targetInfo = new Target((String) tobj.get(TARGET_NAME_KEY),
+								(String) tobj.get(TARGET_VENDOR_KEY), (String) tobj.get(TARGET_PART_NUMBER_KEY),
+								families);
+
+						result.add(targetInfo);
+					} catch (Exception e) {
+						if (Activator.getInstance().isDebugging()) {
+							System.out.printf("Exception extracting target info: %s\n", e);
+						}
+						continue;
 					}
 				}
-			);
+
+				rm.done(result);
+			}
+		});
 	}
 
 	private void getJsonOutput(final String pyOCDPath, String listArg, final DataRequestMonitor<JSONObject> rm) {
@@ -485,17 +471,17 @@ public class PyOCD {
 					cmdArray[0] = pyOCDPath;
 					cmdArray[1] = "json";
 					cmdArray[2] = listArg;
-					
+
 					String result = getOutput(cmdArray);
 					JSONParser parser = new JSONParser();
-					JSONObject obj = (JSONObject)parser.parse(result);
+					JSONObject obj = (JSONObject) parser.parse(result);
 					rm.done(obj);
 				} catch (ParseException e) {
 					if (Activator.getInstance().isDebugging()) {
 						System.out.printf("Parse exception: %s\n", e);
 					}
-					rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							Errors.ERROR_PARSING_OUTPUT, "error parsing pyocd JSON output", e));
+					rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Errors.ERROR_PARSING_OUTPUT,
+							"error parsing pyocd JSON output", e));
 					rm.done();
 				} catch (CoreException e) {
 					if (Activator.getInstance().isDebugging()) {
@@ -507,13 +493,13 @@ public class PyOCD {
 			}
 		});
 	}
-	
+
 	public Version getVersion(final String pyOCDPath) {
 		try {
 			String[] args = new String[2];
 			args[0] = pyOCDPath;
 			args[1] = "--version";
-			
+
 			String output = getOutput(args).trim();
 			return Version.fromString(output);
 		} catch (CoreException e) {
@@ -538,7 +524,7 @@ public class PyOCD {
 		// Bug 376203
 		final class PyOCDTimeoutJob extends SystemJob { //$NON-NLS-1$
 			private boolean f_didTimeout = false;
-			
+
 			public PyOCDTimeoutJob() {
 				super("pyOCD output timeout job");
 			}
@@ -555,7 +541,7 @@ public class PyOCD {
 				f_didTimeout = true;
 				return Status.OK_STATUS;
 			}
-		};
+		}
 		PyOCDTimeoutJob timeoutJob = new PyOCDTimeoutJob();
 		timeoutJob.schedule(PYOCD_TIMEOUT_MS);
 
@@ -564,28 +550,26 @@ public class PyOCD {
 			cmdOutput = readStream(process.getInputStream());
 		} catch (IOException e) {
 			throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Errors.ERROR_RUNNING_PYOCD,
-					"Error reading pyOCD stdout: " + StringUtils.join(args, " "),
-					e.getCause()));// $NON-NLS-1$
+					"Error reading pyOCD stdout: " + StringUtils.join(args, " "), e.getCause()));// $NON-NLS-1$
 		} finally {
 			if (timeoutJob.didTimeout()) {
 				throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Errors.ERROR_TIMEOUT,
-						"pyOCD timed out: " + StringUtils.join(args, " "),
-						null));// $NON-NLS-1$
-			}
-			else {
+						"pyOCD timed out: " + StringUtils.join(args, " "), null));// $NON-NLS-1$
+			} else {
 				// If we get here we are obviously not stuck so we can cancel the
 				// timeout job.
 				// Note that it may already have executed, but that is not a
 				// problem.
 				timeoutJob.cancel();
-	
+
 				process.destroy();
-				
+
 				// Check process exit value.
 				if (process.exitValue() != 0) {
 					throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Errors.ERROR_RUNNING_PYOCD,
 							String.format("pyOCD returned exit value (%d): %s", process.exitValue(),
-									StringUtils.join(args, " ")), null));// $NON-NLS-1$
+									StringUtils.join(args, " ")),
+							null));// $NON-NLS-1$
 				}
 			}
 		}
@@ -595,32 +579,33 @@ public class PyOCD {
 
 	/**
 	 * Read from the specified stream and return what was read.
-	 * 
+	 *
 	 * @param stream The input stream to be used to read the data.  This method will close the stream.
 	 * @return The data read from the stream
 	 * @throws IOException If an IOException happens when reading the stream
 	 */
 	public String readStream(InputStream stream) throws IOException {
-        StringBuilder cmdOutput = new StringBuilder(200);
-        try {
-        	Reader r = new InputStreamReader(stream);
-        	BufferedReader reader = new BufferedReader(r);
-        	
-        	String line;
-        	while ((line = reader.readLine()) != null) {
-        		cmdOutput.append(line);
-        		cmdOutput.append('\n');
-        	}
-        	return cmdOutput.toString();
-        } finally {
-        	// Cleanup to avoid leaking pipes
-        	// Bug 345164
-        	if (stream != null) {
-				try { 
-					stream.close(); 
-				} catch (IOException e) {}
-        	}
-        }
+		StringBuilder cmdOutput = new StringBuilder(200);
+		try {
+			Reader r = new InputStreamReader(stream);
+			BufferedReader reader = new BufferedReader(r);
+
+			String line;
+			while ((line = reader.readLine()) != null) {
+				cmdOutput.append(line);
+				cmdOutput.append('\n');
+			}
+			return cmdOutput.toString();
+		} finally {
+			// Cleanup to avoid leaking pipes
+			// Bug 345164
+			if (stream != null) {
+				try {
+					stream.close();
+				} catch (IOException e) {
+				}
+			}
+		}
 	}
 
 }

@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *     		(based on Ningareddy Modase contribution)
  *******************************************************************************/
 
@@ -43,6 +43,7 @@ public class AltWindowsRegistryStreamReader extends Thread {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public void run() {
 		try {
 			String line = fReader.readLine();

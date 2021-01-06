@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -16,7 +16,7 @@ package org.eclipse.embedcdt.debug.gdbjtag.jlink.core.preferences;
 
 /**
  * Manage a workspace preference file stored in:
- * 
+ *
  * <pre>
  * workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/<plug-in-id>.prefs
  * </pre>
@@ -101,18 +101,21 @@ public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.co
 	}
 
 	// ----- Install folder -------------------------------------------
+	@Override
 	public String getInstallFolder() {
 
 		return getString(INSTALL_FOLDER, INSTALL_FOLDER_DEFAULT);
 	}
 
 	// ----- Executable name ------------------------------------------
+	@Override
 	public String getExecutableName() {
 
 		return getString(EXECUTABLE_NAME, EXECUTABLE_NAME_DEFAULT);
 	}
 
 	// ----- Is strict ------------------------------------------------
+	@Override
 	public boolean getFolderStrict() {
 
 		return getBoolean(FOLDER_STRICT, FOLDER_STRICT_DEFAULT);

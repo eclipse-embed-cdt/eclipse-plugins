@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -22,7 +22,7 @@ public class CProjectExtraDataManagerFactory implements ICProjectExtraDataManage
 	// ------------------------------------------------------------------------
 
 	public CProjectExtraDataManagerFactory() {
-		;
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -36,7 +36,7 @@ public class CProjectExtraDataManagerFactory implements ICProjectExtraDataManage
 
 	@Override
 	public void dispose() {
-		;
+
 	}
 
 	// ------------------------------------------------------------------------

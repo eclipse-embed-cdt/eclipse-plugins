@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -26,7 +26,7 @@ import org.eclipse.core.resources.IProject;
 
 /**
  * Property tester for the Tools Paths page.
- * 
+ *
  * The project must be managed and the type must be one of the GNU Arm defined
  * type.
  */
@@ -64,7 +64,7 @@ public class GnuArmPropertyTester extends PropertyTester {
 							return true;
 						}
 					} catch (BuildException e) {
-						;
+
 					}
 
 				}

@@ -70,7 +70,7 @@ public class Configuration {
 
 	public static String[] getGdbServerCommandLineArray(ILaunchConfiguration configuration) {
 
-		List<String> lst = new ArrayList<String>();
+		List<String> lst = new ArrayList<>();
 
 		try {
 			DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
@@ -232,7 +232,7 @@ public class Configuration {
 
 	public static String[] getGdbClientCommandLineArray(ILaunchConfiguration configuration) {
 
-		List<String> lst = new ArrayList<String>();
+		List<String> lst = new ArrayList<>();
 
 		String executable = getGdbClientCommand(configuration, null);
 		if (executable == null || executable.isEmpty())

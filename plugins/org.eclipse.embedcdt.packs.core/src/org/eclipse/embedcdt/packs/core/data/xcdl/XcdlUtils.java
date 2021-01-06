@@ -37,7 +37,7 @@ public class XcdlUtils {
 			} else if ("kHz".equalsIgnoreCase(arr[1])) {
 				value = value.multiply(new BigInteger("1000"));
 			} else if ("Hz".equalsIgnoreCase(arr[1])) {
-				;
+
 			}
 		}
 		return value;

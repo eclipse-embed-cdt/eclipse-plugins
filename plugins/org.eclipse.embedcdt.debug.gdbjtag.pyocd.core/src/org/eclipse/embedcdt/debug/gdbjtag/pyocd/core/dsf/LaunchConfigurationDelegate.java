@@ -105,6 +105,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 	/**
 	 * This method is called first when starting a debug session.
 	 */
+	@Override
 	protected GdbLaunch createGdbLaunch(ILaunchConfiguration configuration, String mode, ISourceLocator locator)
 			throws CoreException {
 
@@ -123,6 +124,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 		return new Launch(configuration, mode, locator);
 	}
 
+	@Override
 	protected String getGDBVersion(ILaunchConfiguration config) throws CoreException {
 
 		String gdbClientCommand = Configuration.getGdbClientCommand(config, null);
@@ -184,6 +186,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 	}
 
 	/** @since 4.1 */
+	@Override
 	protected void launchDebugSession(final ILaunchConfiguration config, ILaunch l, IProgressMonitor monitor)
 			throws CoreException {
 
@@ -305,12 +308,12 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 			// Wait for the server to be available, or to know it failed.
 			IStatus serverStatus;
 			try {
-				Callable<IStatus> callable = new Callable<IStatus>() {
+				Callable<IStatus> callable = new Callable<>() {
 					@Override
 					public IStatus call() throws CoreException {
 						DsfServicesTracker tracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
 								launch.getSession().getId());
-						GdbServerBackend backend = (GdbServerBackend) tracker.getService(GdbServerBackend.class);
+						GdbServerBackend backend = tracker.getService(GdbServerBackend.class);
 						if (backend != null) {
 							return backend.getServerExitStatus();
 						} else {
@@ -418,7 +421,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 		final IProgressMonitor subMon2 = new SubProgressMonitor(monitor, 4,
 				SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
 
-		Query<Object> completeLaunchQuery = new Query<Object>() {
+		Query<Object> completeLaunchQuery = new Query<>() {
 			@Override
 			protected void execute(final DataRequestMonitor<Object> rm) {
 				DsfServicesTracker tracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
@@ -501,6 +504,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 	/**
 	 * Get a custom launch sequence, that inserts a GDB server starter.
 	 */
+	@Override
 	protected Sequence getServicesSequence(DsfSession session, ILaunch launch, IProgressMonitor progressMonitor) {
 
 		if (Activator.getInstance().isDebugging()) {

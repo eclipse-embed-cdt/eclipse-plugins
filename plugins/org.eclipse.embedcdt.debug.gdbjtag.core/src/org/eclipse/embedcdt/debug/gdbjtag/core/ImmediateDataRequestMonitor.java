@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -37,7 +37,7 @@ public class ImmediateDataRequestMonitor<V> extends DataRequestMonitor<V> {
 
 	/**
 	 * Create an immediate data request monitor with a parent request monitor.
-	 * 
+	 *
 	 * @param parentRequestMonitor
 	 */
 	public ImmediateDataRequestMonitor(RequestMonitor parentRequestMonitor) {

@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -87,7 +87,7 @@ public class ConfigurationBuildMacroSupplier implements IConfigurationBuildMacro
 	public IBuildMacro[] getMacros(IConfiguration configuration, IBuildMacroProvider provider) {
 
 		IToolChain toolchain = configuration.getToolChain();
-		ArrayList<IBuildMacro> oMacrosList = new ArrayList<IBuildMacro>();
+		ArrayList<IBuildMacro> oMacrosList = new ArrayList<>();
 
 		String sValue;
 		for (String cmd : fCmds) {

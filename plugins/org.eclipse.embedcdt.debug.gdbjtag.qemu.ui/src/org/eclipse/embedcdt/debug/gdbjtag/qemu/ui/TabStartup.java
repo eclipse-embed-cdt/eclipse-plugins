@@ -393,7 +393,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				GridData gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
 				gd.widthHint = ((GridData) fSymbolsOffset.getLayoutData()).widthHint;
-				;
+
 				fImageOffset.setLayoutData(gd);
 			}
 		}

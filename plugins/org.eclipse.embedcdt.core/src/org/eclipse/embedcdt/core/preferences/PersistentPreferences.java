@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -38,7 +38,7 @@ public class PersistentPreferences {
 	/**
 	 * Search the given scopes and return the non empty trimmed string or the
 	 * default.
-	 * 
+	 *
 	 * @param pluginId
 	 *            a string with the plugin id.
 	 * @param key
@@ -60,13 +60,13 @@ public class PersistentPreferences {
 			value = null;
 			node = contexts[i].getNode(pluginId);
 			if (node != null) {
-			  value = node.get(key, null);
+				value = node.get(key, null);
 			}
-			
+
 			if (value == null) {
 				node = contexts[i].getNode(pluginCompatId);
 				if (node != null) {
-				  value = node.get(key, null);
+					value = node.get(key, null);
 				}
 			}
 
@@ -97,7 +97,7 @@ public class PersistentPreferences {
 
 	/**
 	 * Compute a maximum array of scopes where to search for.
-	 * 
+	 *
 	 * @param project
 	 *            the IProject reference to the project, possibly null.
 	 * @return an array of IScopeContext.
@@ -118,7 +118,7 @@ public class PersistentPreferences {
 
 	/**
 	 * Search all scopes and return the non empty trimmed string or the default.
-	 * 
+	 *
 	 * @param pluginId
 	 *            a string with the plugin id.
 	 * @param key
@@ -150,7 +150,7 @@ public class PersistentPreferences {
 	/**
 	 * Search string in persistent store. Explicitly define the list of scopes,
 	 * starting with project scope.
-	 * 
+	 *
 	 * @param key
 	 * @param defaultValue
 	 * @param project
@@ -173,7 +173,7 @@ public class PersistentPreferences {
 	/**
 	 * Search string in persistent stores. Explicitly define the list of scopes,
 	 * excluding the project scope.
-	 * 
+	 *
 	 * @param key
 	 * @param defaultValue
 	 * @return
@@ -232,7 +232,7 @@ public class PersistentPreferences {
 	/**
 	 * Store a string in the persistent store. If the key was already present in
 	 * the workspace, store it there, otherwise use the glonbal store.
-	 * 
+	 *
 	 * @param key
 	 * @param value
 	 */
@@ -278,7 +278,7 @@ public class PersistentPreferences {
 			ConfigurationScope.INSTANCE.getNode(fPluginId).flush();
 			InstanceScope.INSTANCE.getNode(fPluginId).flush();
 		} catch (BackingStoreException e) {
-			;
+
 		}
 	}
 
@@ -296,7 +296,7 @@ public class PersistentPreferences {
 		try {
 			new ProjectScope(project).getNode(fPluginId).flush();
 		} catch (BackingStoreException e) {
-			;
+
 		}
 	}
 

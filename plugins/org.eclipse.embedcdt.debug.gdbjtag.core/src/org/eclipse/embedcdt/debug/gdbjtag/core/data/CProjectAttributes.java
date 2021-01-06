@@ -26,7 +26,7 @@ public class CProjectAttributes {
 
 	/**
 	 * Get the value of a given attribute.
-	 * 
+	 *
 	 * @param configuration
 	 * @param attributeName
 	 * @return attribute value or null.

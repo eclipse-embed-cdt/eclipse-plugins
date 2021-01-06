@@ -8,7 +8,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Chris Reed - pyOCD changes
@@ -80,10 +80,12 @@ public class SemihostingProcess extends Process implements Runnable {
 			return 0;
 		}
 
+		@Override
 		public int available() {
 			return 0;
 		}
 
+		@Override
 		public void close() throws IOException {
 
 			if (Activator.getInstance().isDebugging()) {
@@ -226,6 +228,7 @@ public class SemihostingProcess extends Process implements Runnable {
 		return 0;
 	}
 
+	@Override
 	public void run() {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -305,28 +308,28 @@ public class SemihostingProcess extends Process implements Runnable {
 			try {
 				fPipeOut.close();
 			} catch (IOException e1) {
-				;
+
 			}
 
 			try {
 				fErrorStream.close();
 			} catch (IOException e1) {
-				;
+
 			}
 
 			try {
 				fSocket.close();
 				fSocket = null;
 			} catch (IOException e) {
-				;
+
 			}
 
 			try {
 				fInputStream.close();
 			} catch (NullPointerException e) {
-				;
+
 			} catch (IOException e) {
-				;
+
 			}
 
 			fRunning = false;

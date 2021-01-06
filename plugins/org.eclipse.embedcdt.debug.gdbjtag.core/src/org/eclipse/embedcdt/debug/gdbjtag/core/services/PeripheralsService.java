@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
@@ -52,6 +52,7 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 
 	}
 
+	@Override
 	public void initialize(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -60,6 +61,7 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 
 		super.initialize(new RequestMonitor(getExecutor(), rm) {
 
+			@Override
 			protected void handleSuccess() {
 				doInitialize(rm);
 			}
@@ -74,7 +76,7 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 		}
 
 		// Get and remember the command control service
-		fCommandControl = ((ICommandControlService) getServicesTracker().getService(ICommandControlService.class));
+		fCommandControl = (getServicesTracker().getService(ICommandControlService.class));
 
 		// Register this service to DSF.
 		// For completeness, use both the interface and the class name.

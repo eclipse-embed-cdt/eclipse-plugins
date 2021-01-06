@@ -42,7 +42,7 @@ import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator;
 public class Configuration {
 
 	// ------------------------------------------------------------------------
-	
+
 	public static String getSymbolsFileName(ILaunchConfiguration config) {
 		try {
 			ICProject cproject = LaunchUtils.getCProject(config);
@@ -53,27 +53,23 @@ public class Configuration {
 
 			String symbolsFileName = null;
 			if (config.hasAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)
-					&& config.getAttribute(
-							IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+					&& config.getAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
 							IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS)) {
 				if (programPath != null) {
 					symbolsFileName = programPath.toOSString();
 				}
 			} else {
-				symbolsFileName = config.getAttribute(
-						IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
+				symbolsFileName = config.getAttribute(IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
 						IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
 				if (!symbolsFileName.isEmpty()) {
-					symbolsFileName = DebugUtils.resolveAll(symbolsFileName,
-							config.getAttributes());
+					symbolsFileName = DebugUtils.resolveAll(symbolsFileName, config.getAttributes());
 				} else {
 					symbolsFileName = null;
 				}
 			}
-			
+
 			return symbolsFileName;
-		}
-		catch (CoreException e) {
+		} catch (CoreException e) {
 			return null;
 		}
 	}
@@ -109,7 +105,7 @@ public class Configuration {
 
 	public static String[] getGdbServerCommandLineArray(ILaunchConfiguration configuration) {
 
-		List<String> lst = new ArrayList<String>();
+		List<String> lst = new ArrayList<>();
 
 		try {
 			if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
@@ -124,13 +120,13 @@ public class Configuration {
 
 			// gdbserver subcommand
 			lst.add("gdbserver");
-			
+
 			// disable waiting for a board to be connected
 			lst.add("--no-wait");
 
 			lst.add("-j");
 			lst.add(DebugUtils.getProjectOsPath(configuration).toOSString());
-			
+
 			// GDB port
 			lst.add("--port");
 			lst.add(Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
@@ -161,7 +157,7 @@ public class Configuration {
 			lst.add("--frequency");
 			lst.add(Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
 					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT)));
-			
+
 			// Connect mode
 			int connectMode = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_CONNECT_MODE,
 					DefaultPreferences.GDB_SERVER_CONNECT_MODE_DEFAULT);
@@ -179,7 +175,7 @@ public class Configuration {
 				lst.add("--connect=attach");
 				break;
 			}
-			
+
 			// Reset type
 			int resetType = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_RESET_TYPE,
 					DefaultPreferences.GDB_SERVER_RESET_TYPE_DEFAULT);
@@ -246,7 +242,7 @@ public class Configuration {
 					DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT)) {
 				lst.add("--Osemihost_use_syscalls");
 			}
-			
+
 			// ELF file
 			String symbolsFilePath = getSymbolsFileName(configuration);
 			if (symbolsFilePath != null) {
@@ -319,7 +315,7 @@ public class Configuration {
 
 	public static String[] getGdbClientCommandLineArray(ILaunchConfiguration configuration) {
 
-		List<String> lst = new ArrayList<String>();
+		List<String> lst = new ArrayList<>();
 
 		String executable = getGdbClientCommand(configuration, null);
 		if (executable == null || executable.isEmpty())
@@ -413,9 +409,9 @@ public class Configuration {
 				&& config.getAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
 						DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
 	}
-	
+
 	public static String getGdbServerStartedMessage() {
-		return "Started by Eclipse Embedded CDT"; 
+		return "Started by Eclipse Embedded CDT";
 	}
 
 	// ------------------------------------------------------------------------

@@ -60,7 +60,7 @@ public class RunProcessorExpertWizard extends ProcessRunner {
 			}
 		} catch (CoreException e) {
 			Activator.log(e);
-			;
+
 		}
 	}
 

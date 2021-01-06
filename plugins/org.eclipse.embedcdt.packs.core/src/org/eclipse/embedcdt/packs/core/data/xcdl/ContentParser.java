@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -38,11 +38,11 @@ public class ContentParser extends GenericParser {
 
 		super();
 
-		fPackNodes = new HashSet<String>();
+		fPackNodes = new HashSet<>();
 		fPackNodes.add("package");
 		fPackNodes.add("version");
 
-		fLeafNodes = new HashSet<String>();
+		fLeafNodes = new HashSet<>();
 		fLeafNodes.add("devicefamily");
 		fLeafNodes.add("board");
 		fLeafNodes.add("component");
@@ -52,7 +52,7 @@ public class ContentParser extends GenericParser {
 
 		fGroupsToIgnore = new String[] { "packages", "versions" };
 
-		fReplaceMap = new HashMap<String, String>();
+		fReplaceMap = new HashMap<>();
 		// The explicit name is used in the content file, but
 		// internally it is shortened.
 		fReplaceMap.put("devicefamily", Type.FAMILY);
@@ -87,7 +87,7 @@ public class ContentParser extends GenericParser {
 	public void checkSchemaVersion(String schemaVersion) throws DocumentParseException {
 
 		if (PacksStorage.CONTENT_XML_VERSION.equals(schemaVersion)) {
-			;
+
 		} else {
 			throw new DocumentParseException("Unrecognised schema version " + schemaVersion + ", refresh");
 		}

@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
@@ -84,6 +84,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	/**
 	 * Clear all internal references.
 	 */
+	@Override
 	public void dispose() {
 
 		fAccess = null;
@@ -117,7 +118,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	 * <li>writeOnce
 	 * <li>read-writeOnce
 	 * </ul>
-	 * 
+	 *
 	 * @return a string, possibly empty.
 	 */
 	public String getAccess() {
@@ -198,7 +199,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	}
 
 	/**
-	 * 
+	 *
 	 * @return Number or 0, if not an array.
 	 */
 	public int getArraySize() {
@@ -226,7 +227,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	}
 
 	/**
-	 * 
+	 *
 	 * @return BigInteger or ZERO.
 	 */
 	public BigInteger getBigArrayAddressIncrement() {
@@ -255,7 +256,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 
 	public String[] getRepetitionSubstitutions() {
 
-		List<String> lst = new LinkedList<String>();
+		List<String> lst = new LinkedList<>();
 
 		String element = null;
 		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {

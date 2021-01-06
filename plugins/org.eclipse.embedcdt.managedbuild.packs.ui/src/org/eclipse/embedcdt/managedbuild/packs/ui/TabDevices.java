@@ -91,7 +91,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 			Leaf[] children = (Leaf[]) super.getChildren(parentElement);
 
-			List<Leaf> list = new LinkedList<Leaf>();
+			List<Leaf> list = new LinkedList<>();
 			for (Leaf child : children) {
 				// Filter out memory and book nodes
 				if (!child.isType(Type.MEMORY) && !child.isType(Type.BOOK)) {
@@ -108,6 +108,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 	class DevicesLabelProvider implements ITableLabelProvider {
 
+		@Override
 		public String getColumnText(Object obj, int columnIndex) {
 
 			Leaf node = (Leaf) obj;
@@ -310,14 +311,14 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 						// Ignore not number
 					}
 				}
-				
+
 				String chipPackage = node.getProperty(Property.CHIP_PACKAGE);
-				if (chipPackage.length() > 0 && ! "other".equals(chipPackage)) {
+				if (chipPackage.length() > 0 && !"other".equals(chipPackage)) {
 					if (summary.length() > 0) {
 						summary += ", ";
 					}
 					summary += chipPackage;
-					
+
 					String chipPins = node.getProperty(Property.CHIP_PINS);
 					if (chipPins.length() > 0) {
 						summary += chipPins;
@@ -381,7 +382,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	class DevicesViewerComparator extends ViewerComparator {
 
 		public DevicesViewerComparator() {
-			;
+
 		}
 
 		@Override
@@ -443,7 +444,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 		fDataManager = PacksDataManagerFactoryProxy.getInstance().createDataManager();
 		assert (fDataManager != null);
-		
+
 		// usercomp is defined in parent class
 
 		GridLayout gridLayout = new GridLayout();
@@ -678,7 +679,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	private Map<String, String[]> collectMemoryMap(Leaf node) {
 
 		// Collect the memory map from node and parents
-		Map<String, String[]> map = new TreeMap<String, String[]>();
+		Map<String, String[]> map = new TreeMap<>();
 		if (node != null) {
 			do {
 				if (node.hasChildren()) {
@@ -732,7 +733,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 	/**
 	 * Fill in the memory map table using the values in the map.
-	 * 
+	 *
 	 * @param map
 	 *            a map of string arrays, indexed by section name
 	 */
@@ -886,7 +887,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 							mustUpdate = true;
 						}
 					} catch (FileNotFoundException e) {
-						;
+
 					} catch (IOException e) {
 						Activator.log(e);
 					} catch (ParseException e) {
@@ -972,7 +973,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				updateMemoryTableContent(st.getMemoryMap());
 
 			} catch (CoreException e) {
-				;
+
 			}
 
 		}
@@ -983,7 +984,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	 * Update the C project storage with the packs related definitions.
 	 * <p>
 	 * Multiple configurations might be updated at the same time.
-	 * 
+	 *
 	 * @param config
 	 *            the configuration to update.
 	 */
@@ -1106,7 +1107,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 									BigInteger clock = XcdlUtils.convertUnits(hfxtal);
 									st.setOption(CProjectPacksStorage.BOARD_CLOCK, clock.toString());
 								} catch (NumberFormatException ex) {
-									;
+
 								}
 							}
 
@@ -1180,6 +1181,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	/**
 	 * Inform upper class that this page accepts multiple configurations.
 	 */
+	@Override
 	public boolean canSupportMultiCfg() {
 		return true;
 	}

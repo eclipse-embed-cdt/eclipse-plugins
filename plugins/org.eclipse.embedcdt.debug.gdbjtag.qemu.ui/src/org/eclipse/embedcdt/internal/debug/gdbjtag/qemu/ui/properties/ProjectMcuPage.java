@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Liviu Ionescu - UI part extraction.
@@ -56,6 +56,7 @@ public class ProjectMcuPage extends FieldEditorPropertyPage {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	protected IPreferenceStore doGetPreferenceStore() {
 
 		Object element = getElement();
@@ -63,7 +64,8 @@ public class ProjectMcuPage extends FieldEditorPropertyPage {
 			if (Activator.getInstance().isDebugging()) {
 				System.out.println("qemu.ProjectMcuPage.doGetPreferenceStore() project store");
 			}
-			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element), Activator.CORE_PLUGIN_ID);
+			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element),
+					Activator.CORE_PLUGIN_ID);
 		}
 		return null;
 	}

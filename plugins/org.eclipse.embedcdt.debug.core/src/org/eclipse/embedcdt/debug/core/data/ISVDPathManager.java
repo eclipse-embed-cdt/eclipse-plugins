@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -32,7 +32,7 @@ public interface ISVDPathManager {
 	 * Get the absolute path of a SVD file associated with the given device.
 	 * <p>
 	 * For unsupported devices, this should return null.
-	 * 
+	 *
 	 * @param deviceVendorId
 	 *            a string with the CMSIS device vendor id.
 	 * @param deviceName

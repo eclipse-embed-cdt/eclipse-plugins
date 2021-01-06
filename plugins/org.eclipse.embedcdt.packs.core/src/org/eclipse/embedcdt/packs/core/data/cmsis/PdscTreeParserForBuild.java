@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -180,7 +180,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		if (node.hasChildren()) {
 			for (Leaf child : ((Node) node).getChildren()) {
 				if (child.isType("variant")) {
-					processVariantNode(child, deviceNode); 
+					processVariantNode(child, deviceNode);
 				} else {
 					processDevicePropertiesGroup(child, deviceNode);
 				}
@@ -191,7 +191,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			fCount++; // If there were no variants, count this device
 		}
 	}
-	
+
 	private void processVariantNode(Leaf node, Node parent) {
 		// Required
 		String variantName = node.getProperty("Dvariant");
@@ -204,7 +204,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 				}
 			}
 		}
-		
+
 		fCount++;
 	}
 
@@ -388,7 +388,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		// String Pname = el.getAttribute("Pname").trim();
 
 		if (!featureN.isEmpty()) {
-			String packages[] = new String[]{"QFP", "QFN", "BGA", "SOP", "DIP"};
+			String packages[] = new String[] { "QFP", "QFN", "BGA", "SOP", "DIP" };
 			if (Arrays.asList(packages).contains(featureType)) {
 				parent.putNonEmptyProperty(Property.CHIP_PACKAGE, featureType);
 				parent.putNonEmptyProperty(Property.CHIP_PINS, featureN);

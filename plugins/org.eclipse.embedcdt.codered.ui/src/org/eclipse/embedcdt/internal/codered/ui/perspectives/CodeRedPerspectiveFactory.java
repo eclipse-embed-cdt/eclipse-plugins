@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     		(many thanks to Code Red for providing the inspiration)
@@ -61,6 +61,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public void createInitialLayout(IPageLayout layout) {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -93,7 +94,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		topLeftLayout.addPlaceholder(IPageLayout.ID_BOOKMARKS);
 
 		topLeftLayout.addView(IDebugUIConstants.ID_REGISTER_VIEW);
-		
+
 		// If the 'debug.gdbjtag.ui' plug-in is available, add a view
 		// with the PeripheralsView.
 		bundle = Platform.getBundle("org.eclipse.embedcdt.debug.gdbjtag.ui");
@@ -131,7 +132,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 	/**
 	 * Check if the Eclipse debug view is visible. Iterate all pages and all
 	 * view references until the DebugView is identified.
-	 * 
+	 *
 	 * @return true if DebugView is visible.
 	 */
 	private boolean isDebugViewVisble() {
@@ -155,7 +156,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 
 	/**
 	 * Make the view identified by ID visible.
-	 * 
+	 *
 	 * @param id
 	 *            a String with view id.
 	 */
@@ -164,6 +165,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		final IWorkbenchPage[] pages = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPages();
 
 		Display.getDefault().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					pages[0].showView(id);
@@ -187,7 +189,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		String[] ids = launchIds;
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType[] types = launchManager.getLaunchConfigurationTypes();
-		ArrayList<ILaunchConfigurationType> list = new ArrayList<ILaunchConfigurationType>();
+		ArrayList<ILaunchConfigurationType> list = new ArrayList<>();
 		for (int i = 0; i < types.length; i++) {
 			String id = types[i].getIdentifier();
 			// System.out.println(id);

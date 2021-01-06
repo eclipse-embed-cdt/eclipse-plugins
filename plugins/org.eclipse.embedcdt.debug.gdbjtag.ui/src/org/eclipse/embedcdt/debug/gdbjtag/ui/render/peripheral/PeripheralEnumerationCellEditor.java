@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
@@ -34,15 +34,18 @@ public class PeripheralEnumerationCellEditor extends ComboBoxCellEditor {
 		super(editorParent, peripheralRegisterField.getEnumerationComboItems(), SWT.BORDER);
 	}
 
+	@Override
 	protected Control createControl(Composite composite) {
 
 		CCombo combo = (CCombo) super.createControl(composite);
 
 		combo.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent event) {
 				PeripheralEnumerationCellEditor.this.focusLost();
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				PeripheralEnumerationCellEditor.this.focusLost();
 			}

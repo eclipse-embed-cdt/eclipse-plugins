@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Marc-Andre Laperle - initial API and implementation
  *     Liviu Ionescu - Arm version
@@ -91,6 +91,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		return fFinish;
 	}
 
+	@Override
 	public String getName() {
 		return Messages.SetCrossCommandWizardPage_name;
 	}
@@ -101,6 +102,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_WIZARD, newWizard);
 	}
 
+	@Override
 	public void createControl(Composite parent) {
 		fComposite = new Composite(parent, SWT.NULL);
 
@@ -149,6 +151,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		fToolchainCombo.setText(toolchainSel);
 
 		fToolchainCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				// System.out.println("Combo " + toolchainCombo.getText());
 				fSelectedToolchainIndex = fToolchainCombo.getSelectionIndex();
@@ -174,6 +177,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		fPathTxt.setLayoutData(layoutData);
 		fPathTxt.addModifyListener(new ModifyListener() {
 
+			@Override
 			public void modifyText(ModifyEvent e) {
 
 				updatePathProperty();
@@ -184,9 +188,11 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		button.setText(Messages.SetCrossCommandWizardPage_browse);
 		button.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				DirectoryDialog dirDialog = new DirectoryDialog(fComposite.getShell(), SWT.APPLICATION_MODAL);
 				String browsedDirectory = dirDialog.open();
@@ -198,42 +204,53 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		button.setLayoutData(layoutData);
 	}
 
+	@Override
 	public Control getControl() {
 		return fComposite;
 	}
 
+	@Override
 	public String getDescription() {
 		return Messages.SetCrossCommandWizardPage_description;
 	}
 
+	@Override
 	public String getErrorMessage() {
 		return null;
 	}
 
+	@Override
 	public Image getImage() {
 		return wizard.getDefaultPageImage();
 	}
 
+	@Override
 	public String getMessage() {
 		return null;
 	}
 
+	@Override
 	public String getTitle() {
 		return Messages.SetCrossCommandWizardPage_title;
 	}
 
+	@Override
 	public void performHelp() {
 	}
 
+	@Override
 	public void setDescription(String description) {
 	}
 
+	@Override
 	public void setImageDescriptor(ImageDescriptor image) {
 	}
 
+	@Override
 	public void setTitle(String title) {
 	}
 
+	@Override
 	public void setVisible(boolean visible) {
 		if (visible) {
 			fFinish = true;
@@ -241,6 +258,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		fComposite.setVisible(visible);
 	}
 
+	@Override
 	public void dispose() {
 		// System.out.println("dispose() "+fFinish);
 	}

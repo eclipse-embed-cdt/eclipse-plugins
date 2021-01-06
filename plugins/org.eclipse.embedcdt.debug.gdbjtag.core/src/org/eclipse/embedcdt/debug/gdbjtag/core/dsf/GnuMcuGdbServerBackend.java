@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -53,7 +53,7 @@ import org.osgi.framework.BundleContext;
 /**
  * This abstract class handles the start/stop of the GDB server. Based on the
  * configuration, it may or it may not actually start the server.
- * 
+ *
  * It should be used as base class for an implementation specific GDB server
  * backend.
  */
@@ -117,6 +117,7 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 		// Initialise parent, and, when ready, initialise this class too.
 		super.initialize(new RequestMonitor(getExecutor(), rm) {
 
+			@Override
 			protected void handleSuccess() {
 				doInitialize(rm);
 			}
@@ -212,9 +213,9 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 
 	/**
 	 * A lot of MIStoppedEvent debug events come here. (like breakpoint hit).
-	 * 
+	 *
 	 * Currently not used.
-	 * 
+	 *
 	 * @param e
 	 */
 	@DsfServiceEventHandler
@@ -226,10 +227,10 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 	/**
 	 * Safety net in case the server is not configured to terminate on closing
 	 * the client connection.
-	 * 
+	 *
 	 * The event is created and fired in the backend monitor, when the client is
 	 * confirmed dead.
-	 * 
+	 *
 	 * @param e
 	 */
 	@DsfServiceEventHandler
@@ -299,18 +300,22 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public Process getServerProcess() {
 		return fServerPipedProcess;
 	}
 
+	@Override
 	public State getServerState() {
 		return fServerBackendState;
 	}
 
+	@Override
 	public int getServerExitCode() {
 		return fGdbServerExitValue;
 	}
 
+	@Override
 	public IStatus getServerExitStatus() {
 		return fGdbServerExitStatus;
 	}
@@ -415,7 +420,7 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 
 	/**
 	 * A best effort to determine if the GDB server started properly.
-	 * 
+	 *
 	 * @param serverLaunchRequestMonitor
 	 * @param monitor
 	 * @param outBuffer
@@ -472,7 +477,7 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 					}
 				}).get(); // Wait for it to complete.
 			} catch (InterruptedException e) {
-				;
+
 			} catch (ExecutionException e) {
 				Activator.log(e);
 			}
@@ -630,7 +635,7 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 		/**
 		 * The initialise is completed either normally, or with timeout,
 		 * notified directly by the timeout job.
-		 * 
+		 *
 		 */
 		@Override
 		public void initialize(final RequestMonitor rm) {
@@ -857,9 +862,9 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 							}
 						}).get();
 					} catch (InterruptedException e) {
-						;
+
 					} catch (ExecutionException e) {
-						;
+
 					}
 
 					if (Activator.getInstance().isDebugging()) {

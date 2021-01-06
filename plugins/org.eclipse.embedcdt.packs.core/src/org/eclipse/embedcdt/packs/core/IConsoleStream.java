@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Alexander Fedorov (ArSysOp) - initial API and implementation.
  *     Liviu Ionescu - UI part extraction.
@@ -16,22 +16,21 @@
 package org.eclipse.embedcdt.packs.core;
 
 /**
- * 
+ *
  * Used to write messages to a message console. A message console may have more
  * than one stream connected to it. Each stream may be displayed in a different
  * color.
- * 
+ *
  * @since 3.0
  */
 public interface IConsoleStream {
-	
+
 	/**
 	 * Appends the specified message to this stream.
 	 *
 	 * @param message message to append
 	 */
 	public void print(String message);
-
 
 	/**
 	 * Appends a line separator string to this stream.

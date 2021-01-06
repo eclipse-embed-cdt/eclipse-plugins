@@ -174,7 +174,7 @@ public class GnuMcuLaunch extends GdbLaunch {
 		// retrieval in this session.
 		// The manager is called to create a memory retrieval on session START.
 		try {
-			fExecutor.submit(new Callable<Object>() {
+			fExecutor.submit(new Callable<>() {
 				@Override
 				public Object call() throws CoreException {
 					fMemRetrievalManager = new GdbMcuMemoryBlockRetrievalManager(GdbLaunchDelegate.GDB_DEBUG_MODEL_ID,
@@ -223,7 +223,7 @@ public class GnuMcuLaunch extends GdbLaunch {
 			// the overrideable process factory to allow others to override.
 			// First set attribute to specify we want to create the gdb process.
 			// Bug 210366
-			Map<String, String> attributes = new HashMap<String, String>();
+			Map<String, String> attributes = new HashMap<>();
 			attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
 					IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
 			newProcess = DebugPlugin.newProcess(this, cliProc, label, attributes);
@@ -240,12 +240,12 @@ public class GnuMcuLaunch extends GdbLaunch {
 		return newProcess;
 	}
 
-	protected String getDefaultGDBPath()
-	{
+	@Override
+	protected String getDefaultGDBPath() {
 		// Currently returns 'gdb'.
 		String path = super.getDefaultGDBPath();
 		return path;
 	}
-	
+
 	// ------------------------------------------------------------------------
 }

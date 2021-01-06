@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.memory;
@@ -37,7 +37,7 @@ public class PeripheralMemoryRegion implements Comparable<PeripheralMemoryRegion
 		fAddressOffset = offset;
 		fSizeBytes = sizeBytes;
 
-		fVMNodes = new LinkedList<PeripheralRegisterVMNode>();
+		fVMNodes = new LinkedList<>();
 	}
 
 	// ------------------------------------------------------------------------
@@ -61,7 +61,7 @@ public class PeripheralMemoryRegion implements Comparable<PeripheralMemoryRegion
 	/**
 	 * Check if the parameter region is contiguous or contained in the current
 	 * region.
-	 * 
+	 *
 	 * @param region
 	 *            the region to be compared with the current region.
 	 * @return true if contiguous or contained.
@@ -73,7 +73,7 @@ public class PeripheralMemoryRegion implements Comparable<PeripheralMemoryRegion
 	/**
 	 * Concatenate to contiguous regions by adjusting the current region size to
 	 * fully include the given region and take of region nodes.
-	 * 
+	 *
 	 * @param region
 	 *            the region to be concatenated with the current region.
 	 */

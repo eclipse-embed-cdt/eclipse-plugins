@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -210,6 +210,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public String getSearchPath() {
 
 		String key = PersistentPreferences.SEARCH_PATH;
@@ -221,6 +222,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 		return value;
 	}
 
+	@Override
 	public String getSearchPathOs() {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
@@ -232,6 +234,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 		return value;
 	}
 
+	@Override
 	public void putSearchPath(String value) {
 
 		String key = PersistentPreferences.SEARCH_PATH;
@@ -256,7 +259,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 				return getBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SEMIHOSTING, ENABLE_SEMIHOSTING_DEFAULT);
 			}
 		} catch (BackingStoreException e) {
-			;
+
 		}
 		return ENABLE_SEMIHOSTING_DEFAULT;
 	}
@@ -268,7 +271,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 				return getBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SWO, ENABLE_SWO_DEFAULT);
 			}
 		} catch (BackingStoreException e) {
-			;
+
 		}
 		return ENABLE_SWO_DEFAULT;
 	}
@@ -376,6 +379,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	protected String getRegistryInstallFolder(String subFolder, String executableName) {
 
 		String path = Discoverer.getRegistryInstallFolder(executableName, subFolder, REG_SUBKEY, REG_NAME);

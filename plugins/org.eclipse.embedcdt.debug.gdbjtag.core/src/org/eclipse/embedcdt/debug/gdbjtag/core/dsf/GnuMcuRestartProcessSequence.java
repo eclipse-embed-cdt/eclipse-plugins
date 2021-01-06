@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -84,7 +84,7 @@ public class GnuMcuRestartProcessSequence extends ReflectionSequence {
 		assert containerDmc != null;
 		if (attributes == null) {
 			// If no attributes are specified, simply use an empty map.
-			attributes = new HashMap<String, Object>();
+			attributes = new HashMap<>();
 		}
 
 		fContainerDmc = containerDmc;
@@ -142,7 +142,7 @@ public class GnuMcuRestartProcessSequence extends ReflectionSequence {
 	@Execute
 	public void stepRestartCommands(final RequestMonitor rm) {
 
-		List<String> commandsList = new ArrayList<String>();
+		List<String> commandsList = new ArrayList<>();
 
 		IStatus status = fDebuggerCommands.addGnuMcuRestartCommands(commandsList);
 

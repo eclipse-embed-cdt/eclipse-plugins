@@ -193,6 +193,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		fToolchainCombo.setLayoutData(layoutData);
 
 		fToolchainCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 
 				updateInterfaceAfterToolchainChange();
@@ -1073,6 +1074,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	}
 
 	// Must be true, otherwise the page is not shown
+	@Override
 	public boolean canSupportMultiCfg() {
 		return true;
 	}
@@ -1116,7 +1118,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.cdt.ui.newui.AbstractCPropertyTab#handleTabEvent(int,
 	 * java.lang.Object)
 	 */

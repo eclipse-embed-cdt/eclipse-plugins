@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -36,7 +36,7 @@ public class Utils {
 	/**
 	 * Extracts a resource info from a build object. If no resource info can be
 	 * found, it returns null.
-	 * 
+	 *
 	 * @param configuration
 	 * @return
 	 */

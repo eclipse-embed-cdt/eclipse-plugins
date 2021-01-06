@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -27,7 +27,7 @@ import org.eclipse.embedcdt.internal.packs.core.Activator;
  * it.
  * <p>
  * Usage:
- * 
+ *
  * <pre>
  * IPacksDataManager dataManager = PacksDataManagerFactoryProxy.getInstance().createDataManager();
  * </pre>
@@ -62,7 +62,7 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory, I
 
 	/**
 	 * Create a packs data manager using the extension point.
-	 * 
+	 *
 	 * @return a reference to the data manager or null.
 	 */
 	@Override

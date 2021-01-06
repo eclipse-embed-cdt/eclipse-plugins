@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.ui.render.peripheral;
@@ -24,7 +24,7 @@ import org.eclipse.swt.SWT;
 
 /**
  * Comparator used to sort columns in the Peripheral monitor.
- * 
+ *
  * Inspired by the code provided by Lars Vogella.
  */
 public class PeripheralViewerComparator extends ViewerComparator {
@@ -71,7 +71,7 @@ public class PeripheralViewerComparator extends ViewerComparator {
 			try {
 				comparison = p1.getName().compareTo(p2.getName());
 			} catch (DebugException e) {
-				;
+
 			}
 			break;
 		case 1:

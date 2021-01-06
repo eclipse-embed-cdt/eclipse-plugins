@@ -31,7 +31,7 @@ import org.json.simple.JSONObject;
 public class JsonGenericParser {
 
 	public JsonGenericParser() {
-		;
+
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class JsonGenericParser {
 			node.setPackType(Leaf.PACK_TYPE_XPACK);
 			for (Object arrValue : (JSONArray) value) {
 				if (arrValue instanceof JSONObject) {
-					parseRecursive(name, (JSONObject) arrValue, node);
+					parseRecursive(name, arrValue, node);
 				} else if (arrValue instanceof String) {
 					Node subNode = Node.addNewChild(node, Type.ARRAY_ELEMENT_);
 					subNode.setPackType(Leaf.PACK_TYPE_XPACK);

@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
 // It is more efficient then building a list and iterating it, and less
 // efficient than manually recursing the tree.
 //
-// One possible optimisation may be a method to define leaf nodes, 
+// One possible optimisation may be a method to define leaf nodes,
 // that are not entered for children inspection.
 
 public abstract class AbstractJsTreePreOrderIterator implements IJsTreeIterator {
@@ -41,12 +41,14 @@ public abstract class AbstractJsTreePreOrderIterator implements IJsTreeIterator 
 		fNextNode = null;
 	}
 
+	@Override
 	public void setTreeNode(JsNode node) {
 		fTopNode = node;
 		fCurrentNode = null;
 		fNextNode = null;
 	}
 
+	@Override
 	public Iterator<JsNode> iterator() {
 		return this;
 	}
@@ -87,7 +89,7 @@ public abstract class AbstractJsTreePreOrderIterator implements IJsTreeIterator 
 
 	@Override
 	public void remove() {
-		; // Not used
+		// Not used
 	}
 
 	// Depth-first, pre-order (root first, then children)
@@ -99,7 +101,7 @@ public abstract class AbstractJsTreePreOrderIterator implements IJsTreeIterator 
 			} else {
 				if (!isLeaf(node) && node.hasChildren()) {
 					// First children
-					node = ((JsNode) node).getFirstChild();
+					node = node.getFirstChild();
 				} else {
 					for (;;) {
 						// Next sibling

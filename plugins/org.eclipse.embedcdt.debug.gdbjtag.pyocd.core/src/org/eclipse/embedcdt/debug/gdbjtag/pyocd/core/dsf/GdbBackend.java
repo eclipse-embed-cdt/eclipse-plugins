@@ -87,6 +87,7 @@ public class GdbBackend extends GnuMcuGdbBackend {
 	 * Overridden to get the full command line, including all options, from the
 	 * pyOCD configuration.
 	 */
+	@Override
 	protected String[] getGDBCommandLineArray() {
 		String[] commandLineArray = Configuration.getGdbClientCommandLineArray(fLaunchConfiguration);
 

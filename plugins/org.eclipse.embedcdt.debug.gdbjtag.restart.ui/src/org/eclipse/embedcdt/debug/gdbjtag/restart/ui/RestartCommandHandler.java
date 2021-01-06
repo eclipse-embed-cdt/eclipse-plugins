@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Wind River Systems - initial API and implementation
  *     IBM Corporation - bug fixing
@@ -20,7 +20,7 @@ import org.eclipse.debug.ui.actions.DebugCommandHandler;
 
 /**
  * Command candler for the restart command (to enable key-binding activation).
- * 
+ *
  * @since 3.6
  */
 public class RestartCommandHandler extends DebugCommandHandler {

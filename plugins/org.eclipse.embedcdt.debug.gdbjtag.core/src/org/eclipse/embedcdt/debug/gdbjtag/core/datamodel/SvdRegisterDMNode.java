@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
@@ -101,7 +101,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 			return null;
 		}
 
-		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();
+		List<SvdObjectDMNode> list = new LinkedList<>();
 		for (Leaf child : ((Node) group).getChildren()) {
 
 			// Keep only <field> nodes
@@ -121,7 +121,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	/**
 	 * Enumerate all registers and find the derived from node. The name is taken
 	 * from the derivedFrom attribute.
-	 * 
+	 *
 	 * @return a register node, or null if not found.
 	 */
 	@Override
@@ -213,7 +213,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	 * Get the address offset inside the peripheral block or the cluster.
 	 * <p>
 	 * Remark: <tt>addressOffset</tt> is mandatory and cannot be derived.
-	 * 
+	 *
 	 * @return a big integer with the address offset.
 	 */
 	@Override
@@ -244,7 +244,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	 * <p>
 	 * It may contain special characters and white spaces. The place holder %s can
 	 * be used and is replaced by the dimIndex substring.
-	 * 
+	 *
 	 * @return a short string.
 	 */
 	@Override
@@ -258,7 +258,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 
 	/**
 	 * Get the register size, in bits.
-	 * 
+	 *
 	 * @return an integer (usually 32).
 	 */
 	@Override
@@ -314,6 +314,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public String getReadAction() {
 
 		if (fReadAction == null) {

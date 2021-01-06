@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
@@ -87,7 +87,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 	private void prepareEnumerations() {
 
 		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
-			
+
 			if (((Node) getNode()).hasChildren()) {
 				for (Leaf child : ((Node) getNode()).getChildren()) {
 
@@ -133,9 +133,9 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 					}
 				}
 			}
-			
+
 		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
-			
+
 			if (((Node) getNode()).hasChildren()) {
 				for (Leaf child : ((Node) getNode()).getChildren()) {
 
@@ -144,7 +144,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 					}
 
 					for (Leaf grandChild : ((Node) child).getChildren()) {
-						
+
 						if (!grandChild.isType("enumeration")) {
 							continue;
 						}
@@ -160,7 +160,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 					}
 				}
 			}
-			
+
 		}
 	}
 
@@ -169,7 +169,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 	/**
 	 * Enumerate all fields and find the derived from node. The name is taken from
 	 * the derivedFrom attribute.
-	 * 
+	 *
 	 * @return a register node, or null if not found.
 	 */
 	@Override
@@ -269,7 +269,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 	/**
 	 * The field is an enumeration if a read <enumerationValues> is present.
-	 * 
+	 *
 	 * @return true if the field is an enumeration.
 	 */
 	public boolean isEnumeration() {
@@ -278,7 +278,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 	/**
 	 * Iterate the read enumeration and try to match the given value.
-	 * 
+	 *
 	 * @param value
 	 *            a PeripheralValue object
 	 * @return a SvdEnumeratedValueDMNode object, or null if not found.
@@ -310,7 +310,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 	/**
 	 * Iterate the write enumeration and try to match the given value.
-	 * 
+	 *
 	 * @param value
 	 *            a PeripheralValue object
 	 * @return an Integer or null if not found.
@@ -339,7 +339,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 	/**
 	 * Get the field least significative bit position in the register.
-	 * 
+	 *
 	 * @return an integer between 0 and register size (usually 31).
 	 */
 	public int getOffset() {
@@ -378,9 +378,10 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 	/**
 	 * Get the field width, in bits.
-	 * 
+	 *
 	 * @return an integer, between 1 and register size (usually 32).
 	 */
+	@Override
 	public int getWidthBits() {
 
 		if (fWidth == null) {
@@ -452,7 +453,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 	/**
 	 * Comparator using the field bit offset.
-	 * 
+	 *
 	 * @param comp
 	 *            another SvdField to compare with.
 	 * @return -1, 0, 1 for lower, same, greater

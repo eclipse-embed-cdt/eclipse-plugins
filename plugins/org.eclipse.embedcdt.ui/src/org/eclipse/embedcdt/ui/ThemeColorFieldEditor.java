@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Liviu Ionescu - UI part extraction.
@@ -41,7 +41,7 @@ public class ThemeColorFieldEditor extends ColorFieldEditor {
 	/**
 	 * Creates a custom colour field editor, using data from the theme colour
 	 * registry.
-	 * 
+	 *
 	 * @param name
 	 *            the name of the preference this field editor works on.
 	 * @param themeColorName
@@ -66,7 +66,7 @@ public class ThemeColorFieldEditor extends ColorFieldEditor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.preference.FieldEditor#doLoad()
 	 */
 	@Override

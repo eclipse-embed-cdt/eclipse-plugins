@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -51,8 +51,8 @@ import org.eclipse.embedcdt.debug.gdbjtag.core.DebugUtils;
 import org.eclipse.embedcdt.debug.gdbjtag.core.data.CProjectExtraDataManagerProxy;
 import org.eclipse.embedcdt.debug.gdbjtag.core.data.SVDPathManagerProxy;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
-import org.eclipse.embedcdt.packs.core.PackType;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
+import org.eclipse.embedcdt.packs.core.PackType;
 import org.eclipse.embedcdt.packs.core.data.IPacksDataManager;
 import org.eclipse.embedcdt.packs.core.data.JsonGenericParser;
 import org.eclipse.embedcdt.packs.core.data.PacksDataManagerFactoryProxy;
@@ -181,7 +181,7 @@ public class SvdUtils {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * 
+	 *
 	 * @param cConfigDescription
 	 * @return Absolute path.
 	 * @throws CoreException
@@ -248,7 +248,7 @@ public class SvdUtils {
 					return svdPath;
 				}
 			} catch (IOException e) {
-				;
+
 			} catch (ParseException e) {
 				Activator.log(e);
 			}
@@ -353,7 +353,7 @@ public class SvdUtils {
 
 	/**
 	 * Identify the SVD file associated with the given device.
-	 * 
+	 *
 	 * @param deviceSupplierId
 	 *            a string with the numeric vendor id.
 	 * @param deviceId
@@ -397,7 +397,7 @@ public class SvdUtils {
 
 	/**
 	 * Parse the SVD file with the generic parser.
-	 * 
+	 *
 	 * @param path
 	 *            an absolute path to the SVD file.
 	 * @return a tree with the parsed SVD.
@@ -408,7 +408,7 @@ public class SvdUtils {
 	public static Leaf getTree(IPath path) throws CoreException {
 
 		assert path != null;
-		
+
 		IConsoleStream out = Activator.getInstance().getConsoleOutput();
 		try {
 
@@ -429,7 +429,7 @@ public class SvdUtils {
 			} else {
 				str = (new String(chars)).trim();
 			}
-			
+
 			IPath actualPath = path;
 			if (str.startsWith("PK")) {
 				out.println("Decompressing zipped SVD file \"" + path.toOSString() + "\"...");
@@ -442,7 +442,7 @@ public class SvdUtils {
 				while (zipEntry != null) {
 					if (!zipEntry.isDirectory()) {
 						String fileName = zipEntry.getName();
-						
+
 						File outFile = PacksStorage.getCachedFileObject(fileName);
 						if (!outFile.getParentFile().exists()) {
 							outFile.getParentFile().mkdirs();
@@ -454,23 +454,23 @@ public class SvdUtils {
 						byte[] buf = new byte[1024];
 						int bytesRead;
 						while ((bytesRead = zipInput.read(buf)) > 0) {
-								output.write(buf, 0, bytesRead);
+							output.write(buf, 0, bytesRead);
 						}
 						output.close();
 						actualPath = new Path(outFile.getAbsolutePath());
-						break;						
+						break;
 					}
 					zipEntry = zipInput.getNextEntry();
 				}
 				zipInput.closeEntry();
 				zipInput.close();
-				
+
 				file = actualPath.toFile();
 				reader = new FileReader(file);
 				chars = new char[10];
 				reader.read(chars);
 				reader.close();
-				
+
 				str = " ";
 				if (chars[0] == '\ufeff') {
 					str = (new String(Arrays.copyOfRange(chars, 1, chars.length - 1))).trim();
@@ -478,7 +478,7 @@ public class SvdUtils {
 					str = (new String(chars)).trim();
 				}
 			}
-			
+
 			out.println("Parsing SVD file \"" + actualPath.toOSString() + "\"...");
 			// If the file starts with the Unicode BOM (0xEF,0xBB,0xBF),
 			// the first char must be skipped.
@@ -551,7 +551,7 @@ public class SvdUtils {
 			}
 		}
 
-		List<Leaf> list = new LinkedList<Leaf>();
+		List<Leaf> list = new LinkedList<>();
 		if (tree != null) {
 
 			ITreeIterator peripheralNodes = new SvdPeriphIterator();

@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -28,8 +28,8 @@ import org.eclipse.embedcdt.internal.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.DataManager;
 import org.eclipse.embedcdt.packs.core.data.DataManagerEvent;
-import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.data.DataUtils;
+import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.Property;
@@ -77,7 +77,7 @@ public class RemoveJob extends Job {
 
 		fOut.println("Removing packs...");
 
-		List<Node> packsToRemove = new LinkedList<Node>();
+		List<Node> packsToRemove = new LinkedList<>();
 
 		for (Node node : fSelection) {
 
@@ -93,7 +93,7 @@ public class RemoveJob extends Job {
 		// set total number of work units
 		monitor.beginTask("Remove packs", workUnits);
 
-		List<Leaf> removedPacksList = new LinkedList<Leaf>();
+		List<Leaf> removedPacksList = new LinkedList<>();
 
 		for (Node versionNode : packsToRemove) {
 

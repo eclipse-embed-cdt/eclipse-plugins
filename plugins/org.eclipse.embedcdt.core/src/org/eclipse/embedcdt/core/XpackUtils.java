@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -50,9 +50,9 @@ public class XpackUtils {
 
 	// DEPRECATED
 	public static IPath getRepoBasePath() {
-		
+
 		Map<String, String> env = System.getenv();
-		
+
 		if (EclipseUtils.isMacOSX()) {
 			String homeFolder = env.get("HOME");
 			IPath path = new Path(homeFolder);
@@ -70,9 +70,9 @@ public class XpackUtils {
 	}
 
 	public static IPath[] getRepoBasePaths() {
-		
+
 		Map<String, String> env = System.getenv();
-		
+
 		if (EclipseUtils.isMacOSX()) {
 			IPath[] paths = new IPath[1];
 			String homeFolder = env.get("HOME");
@@ -95,9 +95,9 @@ public class XpackUtils {
 
 	// DEPRECATED
 	public static IPath getSysRepoBasePath() {
-		
+
 		Map<String, String> env = System.getenv();
-		
+
 		if (EclipseUtils.isMacOSX()) {
 			IPath path = new Path("/opt");
 			return path;
@@ -113,9 +113,9 @@ public class XpackUtils {
 	}
 
 	public static IPath[] getSysRepoBasePaths() {
-		
+
 		Map<String, String> env = System.getenv();
-		
+
 		if (EclipseUtils.isMacOSX()) {
 			IPath[] paths = new IPath[1];
 			paths[0] = new Path("/opt");
@@ -137,7 +137,7 @@ public class XpackUtils {
 
 		Map<String, String> env = System.getenv();
 		String folder = env.get("XPACKS_REPO_FOLDER");
-		
+
 		IPath repoPath;
 		if (folder != null) {
 			repoPath = new Path(folder);
@@ -164,7 +164,7 @@ public class XpackUtils {
 
 		Map<String, String> env = System.getenv();
 		String folder = env.get("XPACKS_SYSTEM_FOLDER");
-		
+
 		IPath repoPath;
 		if (folder != null) {
 			repoPath = new Path(folder);
@@ -209,7 +209,7 @@ public class XpackUtils {
 
 	public static String[] getPackVersions(String[] packNames) {
 
-		Set<String> versions = new LinkedHashSet<String>();
+		Set<String> versions = new LinkedHashSet<>();
 
 		FilenameFilter filter = new FilenameFilter() {
 
@@ -232,28 +232,28 @@ public class XpackUtils {
 			}
 
 		};
-		
+
 		for (String packName : packNames) {
 			// Enumerate user home versions.
 			IPath packPath = getPackPath(packName);
 			File folder = packPath.toFile();
-			if (folder.isDirectory()) {			
+			if (folder.isDirectory()) {
 				folder.listFiles(filter);
 			}
-			
+
 			// Enumerate system version.
 			packPath = getSysPackPath(packName);
 			folder = packPath.toFile();
-			if (folder.isDirectory()) {			
+			if (folder.isDirectory()) {
 				folder.listFiles(filter);
 			}
 		}
-		
+
 		if (versions.isEmpty()) {
-			return new String[] {};		
+			return new String[] {};
 		}
 
-		List<String> list = new LinkedList<String>(versions);
+		List<String> list = new LinkedList<>(versions);
 
 		Collections.sort(list, new Comparator<String>() {
 			@Override

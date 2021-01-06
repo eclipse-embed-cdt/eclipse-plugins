@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Nokia              - initial API and implementation with some code moved from GDBControl.
  *     Wind River System
@@ -19,10 +19,10 @@
 
 /* ----------------------------------------------------------------------------
  *
- * Copied here because we need the new version, but still remain compatible 
- * with Kepler. When dependency to Kepler will be removed, this file will 
+ * Copied here because we need the new version, but still remain compatible
+ * with Kepler. When dependency to Kepler will be removed, this file will
  * no longer be necessary.
- * 
+ *
  * It is identical to the newer GDBBackend, with the following changes:
  * - package org.eclipse.embedcdt.debug.gdbjtag.jlink.dsf;
  * - some imports
@@ -96,7 +96,7 @@ import org.osgi.framework.BundleContext;
  * manages some GDB parameters from a given launch configuration.<br>
  * <br>
  * You can subclass for you special needs.
- * 
+ *
  * @since 1.1
  */
 @SuppressWarnings("restriction")
@@ -216,7 +216,7 @@ public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend,
 
 	/**
 	 * Options for GDB process. Allow subclass to override.
-	 * 
+	 *
 	 * @deprecated Use {@link #getGDBCommandLineArray()} instead
 	 */
 	@Deprecated
@@ -228,7 +228,7 @@ public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend,
 	/**
 	 * Options for GDB process. Returns the GDB command and its arguments as an
 	 * array. Allow subclass to override.
-	 * 
+	 *
 	 * @since 4.6
 	 */
 	protected String[] getGDBCommandLineArray() {
@@ -236,7 +236,7 @@ public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend,
 		// All configuration should be done in the final launch sequence
 		// to allow for more flexibility.
 		return new String[] { getGDBPath().toOSString(), // This could contain
-															// spaces
+				// spaces
 				"--interpreter", //$NON-NLS-1$
 				// We currently work with MI version 2. Don't use just 'mi'
 				// because it
@@ -429,7 +429,7 @@ public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend,
 
 	/**
 	 * Launch GDB process. Allow subclass to override.
-	 * 
+	 *
 	 * @deprecated Use {@link #launchGDBProcess(String[])} instead
 	 */
 	@Deprecated
@@ -455,7 +455,7 @@ public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend,
 	/**
 	 * Launch GDB process with command and arguments. Allow subclass to
 	 * override.
-	 * 
+	 *
 	 * @since 4.6
 	 */
 	protected Process launchGDBProcess(String[] commandLineArray) throws CoreException {
@@ -463,6 +463,7 @@ public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend,
 		return proc;
 	}
 
+	@Override
 	public Process getProcess() {
 		return fProcess;
 	}
@@ -470,18 +471,18 @@ public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend,
 	@Override
 	public OutputStream getMIOutputStream() {
 		return fProcess.getOutputStream();
-	};
+	}
 
 	@Override
 	public InputStream getMIInputStream() {
 		return fProcess.getInputStream();
-	};
+	}
 
 	/** @since 4.1 */
 	@Override
 	public InputStream getMIErrorStream() {
 		return fProcess.getErrorStream();
-	};
+	}
 
 	@Override
 	public String getId() {
@@ -883,7 +884,7 @@ public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend,
 			 * the GDBControlInitializedDMEvent that's used to indicate that GDB
 			 * back end is ready for MI commands. But we still fire the event as
 			 * it does no harm and may be needed sometime.... 09/29/2008
-			 * 
+			 *
 			 * We send the event in the register step because that is when other
 			 * services have access to it.
 			 */
@@ -975,12 +976,12 @@ public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend,
 	 * this job should be canceled. If this job is not canceled before the time
 	 * is up, it will imply the interrupt did not successfully suspend the
 	 * backend, and the current job will indicate this in the request monitor.
-	 * 
+	 *
 	 * The specified timeout is used to indicate how many milliseconds this job
 	 * should wait for. INTERRUPT_TIMEOUT_DEFAULT indicates to use the default
 	 * of 5 seconds. The default is also use if the timeout value is 0 or
 	 * negative.
-	 * 
+	 *
 	 * @since 3.0
 	 */
 	protected class MonitorInterruptJob extends Job {
@@ -1028,14 +1029,14 @@ public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend,
 	 * when the target stops, in cases where we don't want to views to update.
 	 * For example, if we want to interrupt the target to set a breakpoint, this
 	 * interruption is done silently; we will receive the MI event though.
-	 * 
+	 *
 	 * <p>
 	 * Though we send a SIGINT, we may not specifically get an MISignalEvent.
 	 * Typically we will, but not always, so wait for an MIStoppedEvent. See
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=305178#c21
-	 * 
+	 *
 	 * @since 3.0
-	 * 
+	 *
 	 */
 	@DsfServiceEventHandler
 	public void eventDispatched(final MIStoppedEvent e) {
@@ -1049,9 +1050,9 @@ public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend,
 
 	/**
 	 * Safety net, in case the GDB client does not exit on command.
-	 * 
+	 *
 	 * The event is created and triggered by Process.terminate().
-	 * 
+	 *
 	 * @param e
 	 */
 	@DsfServiceEventHandler

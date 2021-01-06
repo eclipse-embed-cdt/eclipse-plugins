@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -93,9 +93,10 @@ public class GnuMcuControl_7_2 extends GDBControl_7_2 {
 	 * Be sure it is present and does nothing, otherwise the parent
 	 * implementation will fire and dispatch the event.
 	 */
+	@Override
 	@DsfServiceEventHandler
 	public void eventDispatched(BackendStateChangedEvent e) {
-		;
+
 	}
 
 	/**

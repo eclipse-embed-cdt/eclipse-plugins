@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
@@ -41,6 +41,7 @@ public class PeripheralDMNode extends SvdPeripheralDMNode implements IAdaptable 
 		fIsChecked = true;
 	}
 
+	@Override
 	public void dispose() {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -55,6 +56,7 @@ public class PeripheralDMNode extends SvdPeripheralDMNode implements IAdaptable 
 		disposeChildren();
 	}
 
+	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object getAdapter(Class clazz) {
 		return null;

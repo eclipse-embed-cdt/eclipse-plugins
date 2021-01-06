@@ -45,14 +45,14 @@ import org.eclipse.ui.progress.UIJob;
  * <ul>
  * <li>PlatformUI</li>
  * </ul>
- * 
+ *
  * Other interesting places to search for utility functions are:
  * <ul>
  * <li>Plugin</li>
  * </ul>
  *
  * For debugging, use
- * 
+ *
  * <pre>
  * private static final boolean DEBUG_TWO =
  *     ExamplesPlugin.getDefault().isDebugging() &&
@@ -62,7 +62,7 @@ import org.eclipse.ui.progress.UIJob;
  *  if (DEBUG_TWO)
  *     System.out.println("Debug statement two.");
  * </pre>
- * 
+ *
  * This will test two properties like
  * <ul>
  * <li>org.eclipse.faq.examples/debug=true</li>
@@ -74,7 +74,7 @@ import org.eclipse.ui.progress.UIJob;
  * See also the <a href=
  * "https://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility"
  * >Eclipse Wiki</a>.
- * 
+ *
  */
 @SuppressWarnings("restriction")
 public class EclipseUiUtils {
@@ -131,7 +131,7 @@ public class EclipseUiUtils {
 					&& (((IStructuredSelection) selection).size() == 1)) {
 				Object firstElement = ((IStructuredSelection) selection).getFirstElement();
 				if (firstElement instanceof IAdaptable) {
-					IProject project = (IProject) ((IAdaptable) firstElement).getAdapter(IProject.class);
+					IProject project = ((IAdaptable) firstElement).getAdapter(IProject.class);
 					return project;
 				}
 			}
@@ -145,7 +145,7 @@ public class EclipseUiUtils {
 	 * visible (page.ispartVisible(part)).
 	 * <p>
 	 * Preferably use getSite().getPage().
-	 * 
+	 *
 	 * @return the active page.
 	 */
 	public static IWorkbenchPage getActivePage() {
@@ -165,7 +165,7 @@ public class EclipseUiUtils {
 
 	/**
 	 * Helper function to open an error dialog.
-	 * 
+	 *
 	 * @param title
 	 * @param message
 	 * @param e
@@ -193,6 +193,7 @@ public class EclipseUiUtils {
 		// Display.getDefault().syncExec(new Runnable() {
 		Display.getDefault().syncExec(new Runnable() {
 
+			@Override
 			public void run() {
 				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				if (window instanceof WorkbenchWindow) {
@@ -205,7 +206,7 @@ public class EclipseUiUtils {
 
 	/**
 	 * Shows status message in RCP
-	 * 
+	 *
 	 * @param message
 	 *            message to be displayed
 	 * @param isError
@@ -219,6 +220,7 @@ public class EclipseUiUtils {
 		// Display.getDefault().syncExec(new Runnable() {
 		Display.getDefault().asyncExec(new Runnable() {
 
+			@Override
 			public void run() {
 				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				if (window instanceof WorkbenchWindow) {
@@ -238,6 +240,7 @@ public class EclipseUiUtils {
 		// Display.getDefault().syncExec(new Runnable() {
 		Display.getDefault().asyncExec(new Runnable() {
 
+			@Override
 			public void run() {
 				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				if (window instanceof WorkbenchWindow) {

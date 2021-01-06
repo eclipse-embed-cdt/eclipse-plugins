@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Alexander Fedorov (ArSysOp) - initial API and implementation.
  *     Liviu Ionescu - UI part extraction.
@@ -18,7 +18,7 @@ package org.eclipse.embedcdt.internal.packs.core;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
 
 final class SystemOutputConsoleStream implements IConsoleStream {
-	
+
 	@Override
 	public void print(String message) {
 		System.out.print(message);

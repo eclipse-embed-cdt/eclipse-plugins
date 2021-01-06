@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -18,6 +18,7 @@ import org.eclipse.cdt.managedbuilder.makegen.gnu.GnuMakefileGenerator;
 
 public class GnuMcuMakefileGenerator extends GnuMakefileGenerator {
 
+	@Override
 	public String ensurePathIsGNUMakeTargetRuleCompatibleSyntax(String path) {
 		return escapeWhitespaces(ensureUnquoted(path));
 	}
@@ -38,7 +39,7 @@ public class GnuMcuMakefileGenerator extends GnuMakefileGenerator {
 		}
 		boolean doubleQuoted = path.startsWith("\"") && path.endsWith("\""); //$NON-NLS-1$ //$NON-NLS-2$
 		boolean singleQuoted = path.startsWith("'") && path.endsWith("'"); //$NON-NLS-1$ //$NON-NLS-2$
-		return prefix + (doubleQuoted || singleQuoted ? path.substring(1,path.length()-1) : path);
+		return prefix + (doubleQuoted || singleQuoted ? path.substring(1, path.length() - 1) : path);
 	}
 
 }

@@ -100,7 +100,7 @@ public class CProjectPacksStorage {
 	 * Create a new custom storage for packs related config options. The new storage
 	 * is specific for each build configuration, so it is created inside the
 	 * "cconfiguration" element.
-	 * 
+	 *
 	 * @param config
 	 *            a Configuration object (like Debug/Release).
 	 * @throws CoreException
@@ -148,7 +148,7 @@ public class CProjectPacksStorage {
 	}
 
 	public void update() {
-		;
+
 	}
 
 	/**
@@ -165,14 +165,14 @@ public class CProjectPacksStorage {
 
 	/**
 	 * Retrieve a map with all properties.
-	 * 
+	 *
 	 * @return a map of strings.
 	 */
 	public Map<String, String> getOptions() {
 
 		assert (fStorage != null);
 
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 
 		for (ICStorageElement child : fStorage.getChildrenByName("option")) {
 
@@ -186,7 +186,7 @@ public class CProjectPacksStorage {
 
 	/**
 	 * Retrieve the value of an option.
-	 * 
+	 *
 	 * @param id
 	 *            a string uniquely identifying the option
 	 * @return its value or null, if not found
@@ -225,7 +225,7 @@ public class CProjectPacksStorage {
 
 	/**
 	 * Store the value of an option.
-	 * 
+	 *
 	 * @param id
 	 *            a string uniquely identifying the option
 	 * @param value
@@ -269,7 +269,7 @@ public class CProjectPacksStorage {
 	/**
 	 * Store the value of an option. If the value is null or empty, the operation is
 	 * not performed..
-	 * 
+	 *
 	 * @param id
 	 *            a string uniquely identifying the option
 	 * @param value
@@ -287,7 +287,7 @@ public class CProjectPacksStorage {
 
 	/**
 	 * Store the description of a memory section.
-	 * 
+	 *
 	 * @param section
 	 *            a string with the section name, using the CMSIS convention (like
 	 *            IRAM1, IROM1)
@@ -326,7 +326,7 @@ public class CProjectPacksStorage {
 
 	public Map<String, String[]> getMemoryMap() {
 
-		Map<String, String[]> map = new TreeMap<String, String[]>();
+		Map<String, String[]> map = new TreeMap<>();
 
 		ICStorageElement[] memory = fStorage.getChildrenByName("memory");
 		if (memory != null) {

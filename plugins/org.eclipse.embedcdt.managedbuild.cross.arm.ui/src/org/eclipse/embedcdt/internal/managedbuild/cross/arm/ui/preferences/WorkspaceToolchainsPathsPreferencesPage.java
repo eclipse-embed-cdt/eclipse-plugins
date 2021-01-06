@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Liviu Ionescu - UI part extraction.
@@ -99,7 +99,7 @@ public class WorkspaceToolchainsPathsPreferencesPage extends FieldEditorPreferen
 				Messages.ToolchainName_label, getFieldEditorParent());
 		addField(toolchainNameField);
 
-		Set<String> toolchainNames = new HashSet<String>();
+		Set<String> toolchainNames = new HashSet<>();
 
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for (int i = 0; i < projects.length; ++i) {
@@ -120,7 +120,7 @@ public class WorkspaceToolchainsPathsPreferencesPage extends FieldEditorPreferen
 							toolchainNames.add(name);
 						}
 					} catch (BuildException e) {
-						;
+
 					}
 				}
 			}

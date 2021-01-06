@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
@@ -59,7 +59,7 @@ public class PeripheralValue implements IValue {
 
 	/**
 	 * Set the format used when converting the value to string.
-	 * 
+	 *
 	 * @param displayFormat
 	 *            an integer (FORMAT_NONE, FORMAT_HEX, ...)
 	 */
@@ -85,7 +85,7 @@ public class PeripheralValue implements IValue {
 
 	/**
 	 * Update the object value field with possibly a different node.
-	 * 
+	 *
 	 * @param value
 	 *            the new node.
 	 * @return true if the new node is different.
@@ -109,7 +109,7 @@ public class PeripheralValue implements IValue {
 
 	/**
 	 * Get the numeric value.
-	 * 
+	 *
 	 * @return a BigInteger value.
 	 */
 	public BigInteger getBigValue() {

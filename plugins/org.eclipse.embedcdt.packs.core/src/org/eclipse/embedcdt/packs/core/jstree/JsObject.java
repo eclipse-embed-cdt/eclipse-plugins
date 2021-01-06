@@ -24,10 +24,10 @@ import java.util.Map;
 /**
  * A class to manage a JavaScript style of object, with named properties.
  * Properties can be only strings or JsNodes.
- * 
+ *
  * DO NOT add or remove elements via direct access via getProperties(), to avoid
  * dangling references to parent objects.
- * 
+ *
  * @author ilg
  */
 
@@ -41,14 +41,14 @@ public class JsObject extends JsNode {
 
 	public JsObject() {
 		// Linked list, to preserve the order.
-		fProperties = new LinkedHashMap<String, Object>();
+		fProperties = new LinkedHashMap<>();
 
-		fChildren = new ArrayList<JsNode>();
+		fChildren = new ArrayList<>();
 	}
 
 	/**
 	 * Get all properties, strings and objects.
-	 * 
+	 *
 	 * @return
 	 */
 	public Map<String, Object> getProperties() {
@@ -62,7 +62,7 @@ public class JsObject extends JsNode {
 
 	/**
 	 * Get properties with object values.
-	 * 
+	 *
 	 * @return a collection of JsNode nodes.
 	 */
 	@Override
@@ -91,7 +91,7 @@ public class JsObject extends JsNode {
 
 	/**
 	 * Add a string property.
-	 * 
+	 *
 	 * @param name
 	 * @param value
 	 *            a string; cannot be null; will be trimmed before storing.
@@ -103,7 +103,7 @@ public class JsObject extends JsNode {
 		assert value != null;
 
 		value = value.trim();
-		Object prevValue = fProperties.put(name, (Object) value);
+		Object prevValue = fProperties.put(name, value);
 		// System.out.println(this);
 		if (prevValue instanceof String) {
 			return (String) prevValue;
@@ -113,7 +113,7 @@ public class JsObject extends JsNode {
 
 	/**
 	 * Add a JsNode property.
-	 * 
+	 *
 	 * @param name
 	 * @param value
 	 * @return
@@ -128,7 +128,7 @@ public class JsObject extends JsNode {
 		value.setPropertyName(name);
 		fChildren.add(value);
 
-		Object prevValue = fProperties.put(name, (Object) value);
+		Object prevValue = fProperties.put(name, value);
 		if (prevValue instanceof JsNode) {
 			return (JsNode) prevValue;
 		}
@@ -148,7 +148,7 @@ public class JsObject extends JsNode {
 
 	/**
 	 * Add the string property only if the value has content.
-	 * 
+	 *
 	 * @param name
 	 * @param value
 	 * @return the previous value of the property, or null if not present, or had
@@ -165,7 +165,7 @@ public class JsObject extends JsNode {
 
 	/**
 	 * Check if a property exists.
-	 * 
+	 *
 	 * @param name
 	 * @return true if the property exists.
 	 */
@@ -180,7 +180,7 @@ public class JsObject extends JsNode {
 
 	/**
 	 * Get a generic property.
-	 * 
+	 *
 	 * @param name
 	 *            a string with the property name.
 	 * @return an object (string or JsNode) or null if the property is not found.
@@ -191,7 +191,7 @@ public class JsObject extends JsNode {
 
 	/**
 	 * Retrieve a string property, or the default.
-	 * 
+	 *
 	 * @param name
 	 * @param defaultValue
 	 * @return the non-empty property value or the default value.
@@ -206,7 +206,7 @@ public class JsObject extends JsNode {
 
 	/**
 	 * Remove a property, if present.
-	 * 
+	 *
 	 * @param name
 	 * @return the value of the property, or null if the property was not defined.
 	 */
@@ -225,9 +225,10 @@ public class JsObject extends JsNode {
 
 	/**
 	 * Convert the node to a string; only string properties are shown.
-	 * 
+	 *
 	 * @return a string similar to a JSON.
 	 */
+	@Override
 	public String toString() {
 		String str = "{ ";
 		boolean first = true;

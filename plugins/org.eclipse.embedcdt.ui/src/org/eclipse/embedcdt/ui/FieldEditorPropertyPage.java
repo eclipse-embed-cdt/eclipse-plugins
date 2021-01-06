@@ -38,7 +38,7 @@ public abstract class FieldEditorPropertyPage extends FieldEditorPreferencePage 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.IWorkbenchPropertyPage#getElement()
 	 */
 	@Override
@@ -48,7 +48,7 @@ public abstract class FieldEditorPropertyPage extends FieldEditorPreferencePage 
 
 	/**
 	 * Sets the element that owns properties shown on this page.
-	 * 
+	 *
 	 * @param element
 	 *            the element
 	 */

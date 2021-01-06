@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Liviu Ionescu - UI part extraction.
@@ -30,7 +30,7 @@ import org.osgi.service.prefs.Preferences;
  * Initialisations are executed in two different moments: as the first step
  * during bundle inits and after all defaults are loaded from all possible
  * sources
- * 
+ *
  */
 public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer {
 

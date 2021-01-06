@@ -29,7 +29,7 @@ public class StringUtils {
 
 	/**
 	 * Join an array of string.
-	 * 
+	 *
 	 * @param strArray
 	 *            array of strings.
 	 * @param joiner
@@ -53,7 +53,7 @@ public class StringUtils {
 
 	/**
 	 * Convert hex to long. Considers +/-, ignores 0x and 0X.
-	 * 
+	 *
 	 * @param hex
 	 *            a string.
 	 * @return a long.
@@ -81,7 +81,7 @@ public class StringUtils {
 
 	/**
 	 * Capitalise first letter of a string.
-	 * 
+	 *
 	 * @param str
 	 *            a string.
 	 * @return a string.
@@ -97,7 +97,7 @@ public class StringUtils {
 	/**
 	 * Cosmetise the URL tail to always have a slash, to simplify appending more
 	 * path elements.
-	 * 
+	 *
 	 * @param url
 	 *            a string.
 	 * @return a string.
@@ -113,7 +113,7 @@ public class StringUtils {
 
 	/**
 	 * Convert an integer to B/kB/MB.
-	 * 
+	 *
 	 * @param size
 	 *            an integer size.
 	 * @return a string.
@@ -133,7 +133,7 @@ public class StringUtils {
 
 	/**
 	 * Duplicate single backslashes, i.e. not part of a double backslash group.
-	 * 
+	 *
 	 * @param str
 	 *            a string.
 	 * @return a string.
@@ -158,7 +158,7 @@ public class StringUtils {
 
 	/**
 	 * Split the path into segments and return the name.
-	 * 
+	 *
 	 * @param str
 	 *            a string with the full path.
 	 * @return a string with the name, or the full path if error.
@@ -183,20 +183,20 @@ public class StringUtils {
 
 	private static enum SplitState {
 		None, InOption, InString
-	};
+	}
 
 	/**
 	 * Split a string containing command line option separated by white spaces
 	 * into substrings. Content of quoted options is not parsed, but preserved
 	 * as a single substring. Quotes are removed.
-	 * 
+	 *
 	 * @param str
 	 *            a command line string, possibly with single/double quotes.
 	 * @return array of strings.
 	 */
 	public static List<String> splitCommandLineOptions(String str) {
 
-		List<String> lst = new ArrayList<String>();
+		List<String> lst = new ArrayList<>();
 		SplitState state = SplitState.None;
 
 		char quote = 0;
@@ -260,7 +260,7 @@ public class StringUtils {
 	/**
 	 * Compare two strings that represent numeric versions. Version numbers are
 	 * expected to be in the format x.y.z...
-	 * 
+	 *
 	 * Return - -1 if v1 is older than v2 - 0 if they are the same - +1 if v1 is
 	 * newer than v2
 	 */

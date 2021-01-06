@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -74,6 +74,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 		// initialisations.
 		super.initialize(new RequestMonitor(getExecutor(), rm) {
 
+			@Override
 			protected void handleSuccess() {
 				doInitialize(rm);
 			}
@@ -124,6 +125,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 		return commandLineArray;
 	}
 
+	@Override
 	public String getServerCommandName() {
 
 		String[] commandLineArray = getServerCommandLineArray();
@@ -140,19 +142,23 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 		return fGdbServerLaunchTimeout;
 	}
 
+	@Override
 	public String getServerName() {
 		return "OpenOCD";
 	}
 
+	@Override
 	public boolean canMatchStdOut() {
 		return false;
 	}
 
+	@Override
 	public boolean canMatchStdErr() {
 		// Do not match stderr if we do not start the client.
 		return fDoStartGdbClient ? true : false;
 	}
 
+	@Override
 	public boolean matchStdErrExpectedPattern(String line) {
 		if (line.indexOf("Started by GNU ARM Eclipse") >= 0 || line.indexOf("Started by GNU MCU Eclipse") >= 0) {
 			return true;
@@ -165,7 +171,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 	 * Since the J-Link stderr messages are not final, this function makes the
 	 * best use of the available information (the exit code and the captured
 	 * string) to compose the text displayed in case of error.
-	 * 
+	 *
 	 * @param exitCode
 	 *            an integer with the process exit code.
 	 * @param message

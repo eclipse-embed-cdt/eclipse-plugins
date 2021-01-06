@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -33,8 +33,8 @@ import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.core.zafarkhaja.semver.Version;
 import org.eclipse.embedcdt.internal.packs.ui.Activator;
 import org.eclipse.embedcdt.internal.packs.ui.Messages;
-import org.eclipse.embedcdt.packs.core.PackType;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
+import org.eclipse.embedcdt.packs.core.PackType;
 import org.eclipse.embedcdt.packs.core.data.DataManager;
 import org.eclipse.embedcdt.packs.core.data.DataManagerEvent;
 import org.eclipse.embedcdt.packs.core.data.DurationMonitor;
@@ -116,6 +116,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 	class TableLabelProvider implements ITableLabelProvider {
 
+		@Override
 		public Image getColumnImage(Object obj, int columnIndex) {
 
 			switch (columnIndex) {
@@ -148,6 +149,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			return null;
 		}
 
+		@Override
 		public String getColumnText(Object obj, int columnIndex) {
 
 			Leaf node = ((Leaf) obj);
@@ -173,7 +175,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 									extra += StringUtils.convertSizeToString(n);
 								}
 							} catch (NumberFormatException e) {
-								;
+
 							}
 						}
 						String date = node.getProperty(Property.DATE);
@@ -224,6 +226,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 	// ------------------------------------------------------------------------
 
 	class NameComparator extends ViewerComparator {
+		@Override
 		public int compare(Viewer viewer, Object e1, Object e2) {
 
 			Leaf n1 = (Leaf) e1;
@@ -277,6 +280,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		return fViewer;
 	}
 
+	@Override
 	public void createPartControl(Composite parent) {
 
 		// System.out.println("PacksView.createPartControl()");
@@ -333,6 +337,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		contributeToActionBars();
 	}
 
+	@Override
 	public void dispose() {
 
 		super.dispose();
@@ -455,7 +460,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				try {
 					size = Integer.valueOf(node.getProperty(Property.ARCHIVE_SIZE, "0"));
 				} catch (NumberFormatException e) {
-					;
+
 				}
 				if (!isInstalled && size >= 0) {
 					fIsInstallEnabled = true;
@@ -477,6 +482,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				PacksView.this.fillContextMenu(manager);
 			}
@@ -546,6 +552,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 		fUpdateAction = new Action() {
 
+			@Override
 			public void run() {
 
 				// Obtain IServiceLocator implementer, e.g. from
@@ -554,7 +561,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				// or a site from within a editor or view:
 				IServiceLocator serviceLocator = getSite();
 
-				ICommandService commandService = (ICommandService) serviceLocator.getService(ICommandService.class);
+				ICommandService commandService = serviceLocator.getService(ICommandService.class);
 
 				try {
 					// Lookup commmand with its ID
@@ -578,6 +585,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		// -----
 		fInstallAction = new Action() {
 
+			@Override
 			public void run() {
 
 				// System.out.println("m_installAction.run();");
@@ -603,6 +611,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		// -----
 		fRemoveAction = new Action() {
 
+			@Override
 			public void run() {
 
 				// System.out.println("m_removeAction.run();");
@@ -626,6 +635,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		// -----
 		fCopyExampleAction = new Action() {
 
+			@Override
 			public void run() {
 
 				TreeSelection selection = (TreeSelection) fViewer.getSelection();
@@ -652,6 +662,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		// -----
 		fExpandAll = new Action() {
 
+			@Override
 			public void run() {
 				fViewer.expandAll();
 			}
@@ -663,6 +674,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 		fCollapseAll = new Action() {
 
+			@Override
 			public void run() {
 				fViewer.collapseAll();
 			}
@@ -675,12 +687,13 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 	}
 
 	private void hookDoubleClickAction() {
-		; // None
+		// None
 	}
 
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+	@Override
 	public void setFocus() {
 		fViewer.getControl().setFocus();
 	}
@@ -724,6 +737,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return "PacksView";
 	}
@@ -791,7 +805,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 					// m_out.println("PacksView NEW_INPUT");
 
-					((TreeViewer) fViewer).setAutoExpandLevel(AUTOEXPAND_LEVEL);
+					fViewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
 					fViewer.setInput(getPacksTree());
 				}
 			});
@@ -815,7 +829,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			@SuppressWarnings("unchecked")
 			final List<PackNode> updatedList = (List<PackNode>) event.getPayload();
 
-			final Map<String, Node> parentsMap = new HashMap<String, Node>();
+			final Map<String, Node> parentsMap = new HashMap<>();
 			for (PackNode versionNode : updatedList) {
 				String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
 				String packName = versionNode.getProperty(Property.PACK_NAME);
@@ -879,6 +893,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 			(new DurationMonitor()).displayTimeAndRun(new Runnable() {
 
+				@Override
 				public void run() {
 
 					fOut.println("Collecting packs...");

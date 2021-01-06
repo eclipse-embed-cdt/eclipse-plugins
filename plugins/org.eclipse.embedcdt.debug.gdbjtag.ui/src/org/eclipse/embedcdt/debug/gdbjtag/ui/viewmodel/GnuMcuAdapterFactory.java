@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -89,7 +89,7 @@ public class GnuMcuAdapterFactory extends GdbAdapterFactory {
 	/**
 	 * Map of disposed session adapters, by launcher.
 	 */
-	private static Map<ILaunch, SessionAdapters> fgDisposedLaunchAdaptersMap = new WeakHashMap<ILaunch, SessionAdapters>();
+	private static Map<ILaunch, SessionAdapters> fgDisposedLaunchAdaptersMap = new WeakHashMap<>();
 
 	// ------------------------------------------------------------------------
 

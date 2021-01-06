@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package org.eclipse.embedcdt.debug.gdbjtag.core.datamodel;
@@ -92,7 +92,7 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 			element = "value";
 		}
 
-		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();
+		List<SvdObjectDMNode> list = new LinkedList<>();
 
 		for (Leaf child : children) {
 
@@ -140,7 +140,7 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 	/**
 	 * Enumerate all enumerations and find the derived from node. The name is taken
 	 * from the derivedFrom attribute.
-	 * 
+	 *
 	 * @return a register node, or null if not found.
 	 */
 	@Override
@@ -254,9 +254,9 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 	 * This allows specifying two different enumerated values depending whether it
 	 * is to be used for a read or a write access. If not specified, the default
 	 * value read-write is used.
-	 * 
+	 *
 	 * @return `read`, `write`, or `read-write`.
-	 * 
+	 *
 	 * @note: XSVD does not implement it yet, default to `read-write`.
 	 */
 	public String getUsage() {

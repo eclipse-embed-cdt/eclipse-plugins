@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -38,9 +38,9 @@ import org.eclipse.embedcdt.internal.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.data.DataManager;
 import org.eclipse.embedcdt.packs.core.data.DataManagerEvent;
+import org.eclipse.embedcdt.packs.core.data.DataUtils;
 import org.eclipse.embedcdt.packs.core.data.FileNotFoundException;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
-import org.eclipse.embedcdt.packs.core.data.DataUtils;
 import org.eclipse.embedcdt.packs.core.tree.Leaf;
 import org.eclipse.embedcdt.packs.core.tree.Node;
 import org.eclipse.embedcdt.packs.core.tree.Property;
@@ -90,7 +90,7 @@ public class InstallJob extends Job {
 
 		fOut.println("Installing packs...");
 
-		List<Node> packsToInstall = new ArrayList<Node>();
+		List<Node> packsToInstall = new ArrayList<>();
 
 		// Iterate selection and build the list of versions to be installed
 		for (Node node : fSelection) {
@@ -122,8 +122,8 @@ public class InstallJob extends Job {
 		monitor.beginTask("Install packs", workUnits);
 
 		Boolean notifyUpdate = false;
-		
-		List<Leaf> installedPacksList = new LinkedList<Leaf>();
+
+		List<Leaf> installedPacksList = new LinkedList<>();
 
 		for (Node versionNode : packsToInstall) {
 
@@ -148,8 +148,8 @@ public class InstallJob extends Job {
 					// Mark package as not available.
 					versionNode.putProperty(Property.ARCHIVE_SIZE, "-1");
 				}
-				notifyUpdate =  true;
-				
+				notifyUpdate = true;
+
 			} catch (IOException e) {
 				fOut.println(DataUtils.reportError(e.toString()));
 			}
@@ -194,7 +194,7 @@ public class InstallJob extends Job {
 
 			status = Status.OK_STATUS;
 		}
-		
+
 		fgRunning = false;
 		return status;
 	}
@@ -228,7 +228,7 @@ public class InstallJob extends Job {
 
 	/**
 	 * Try to install a specific version of a pack.
-	 * 
+	 *
 	 * @param versionNode
 	 * @return true if the pack was correctly downloaded and expanded, false it the
 	 *         user decided to ignore this pack.
@@ -263,7 +263,7 @@ public class InstallJob extends Job {
 				String msg = e.getMessage();
 				DataUtils.reportError(msg);
 				fOut.println(msg);
-				
+
 				return false;
 			}
 		} else {
@@ -314,7 +314,7 @@ public class InstallJob extends Job {
 
 	/**
 	 * Try to download a file from a URL.
-	 * 
+	 *
 	 * @param sourceUrl
 	 * @param destinationFile
 	 * @return true for successful download; false if the user decided to ignore it.

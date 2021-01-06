@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -43,7 +43,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 	// ------------------------------------------------------------------------
 
 	// Static members
-	protected static List<ToolchainDefinition> fgList = new ArrayList<ToolchainDefinition>();
+	protected static List<ToolchainDefinition> fgList = new ArrayList<>();
 	protected static String fgArchitectures[] = { "RISC-V" };
 
 	// ------------------------------------------------------------------------
@@ -94,7 +94,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 	/**
 	 * Try to identify toolcahin by name. If not possible, throw
 	 * IndexOutOfBoundsException().
-	 * 
+	 *
 	 * @param sName a string with the toolchain name.
 	 * @return non-negative index.
 	 */

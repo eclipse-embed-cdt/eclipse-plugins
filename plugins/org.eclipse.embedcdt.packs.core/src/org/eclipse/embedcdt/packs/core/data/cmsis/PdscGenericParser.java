@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
@@ -24,7 +24,7 @@ import org.eclipse.embedcdt.packs.core.tree.Leaf;
 public class PdscGenericParser extends XmlGenericParser {
 
 	public PdscGenericParser() {
-		;
+
 	}
 
 	/**

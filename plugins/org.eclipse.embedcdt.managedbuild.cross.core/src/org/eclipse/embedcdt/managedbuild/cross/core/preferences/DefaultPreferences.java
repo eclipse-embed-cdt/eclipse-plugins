@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -42,7 +42,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 
 	/**
 	 * Get the default toolchain name.
-	 * 
+	 *
 	 * @return a trimmed string, possibly empty.
 	 */
 	public String getToolchainName() {
@@ -74,7 +74,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 	/**
 	 * Get the default toolchain path for a given toolchain name. Toolchains are
 	 * identified by their absolute hash code.
-	 * 
+	 *
 	 * @param toolchainName
 	 *            a string.
 	 * @return a trimmed string, possibly empty.
@@ -107,7 +107,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 	/**
 	 * Get the default toolchain search path for a given toolchain name. Toolchains
 	 * are identified by their absolute hash code.
-	 * 
+	 *
 	 * @param toolchainName
 	 *            a string.
 	 * @return a trimmed string, possibly empty.
@@ -141,7 +141,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 	/**
 	 * Get the default toolchain search path for a given toolchain name and the
 	 * current OS family. Toolchains are identified by their absolute hash code.
-	 * 
+	 *
 	 * @param toolchainName
 	 *            a string.
 	 * @return a trimmed string, possibly empty.
@@ -170,7 +170,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 
 	/**
 	 * Get the default value for the build tools path.
-	 * 
+	 *
 	 * @return a trimmed string, possibly empty.
 	 */
 	public String getBuildToolsPath() {
@@ -210,7 +210,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 	}
 
 	/**
-	 * 
+	 *
 	 * @return string, possibly empty.
 	 */
 	public String[] getBuildToolsXpackNames() {
@@ -227,7 +227,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 	/**
 	 * Find where the build tools might have been installed. The returned folder is
 	 * known to be an existing folder.
-	 * 
+	 *
 	 * @return a trimmed string, possibly empty.
 	 */
 	public String discoverBuildToolsPath() {

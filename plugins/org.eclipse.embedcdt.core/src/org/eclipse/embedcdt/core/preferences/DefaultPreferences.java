@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -52,7 +52,7 @@ public class DefaultPreferences {
 
 	/**
 	 * Get a string preference value, or the default.
-	 * 
+	 *
 	 * @param key          a string with the key to search.
 	 * @param defaultValue a string with the default, possibly null.
 	 * @return a trimmed string, or a null default.
@@ -76,7 +76,7 @@ public class DefaultPreferences {
 
 	/**
 	 * Get an array of strings, or the default.
-	 * 
+	 *
 	 * @param key           a string with the key to search.
 	 * @param defaultValuea string with the default, possibly null.
 	 * @return an array of strings, possibly with an empty element
@@ -185,7 +185,7 @@ public class DefaultPreferences {
 	/**
 	 * Search subfolders for an executable and remember timestamp of version
 	 * folders. "<searchPath>/<version>/bin/<executable>"
-	 * 
+	 *
 	 * @param searchPath
 	 * @param subFolder      may be null; usually "bin".
 	 * @param executableName
@@ -204,7 +204,7 @@ public class DefaultPreferences {
 		String newSearchPath = searchPath;
 
 		// Compute the list of unique names in xpackNames (ignore scope).
-		Set<String> uniqueNames = new LinkedHashSet<String>();
+		Set<String> uniqueNames = new LinkedHashSet<>();
 		// Iterate in reverse order.
 		for (int i = xpackNames.length - 1; i >= 0; --i) {
 			if (!xpackNames[i].isEmpty()) {
@@ -221,7 +221,6 @@ public class DefaultPreferences {
 			}
 		}
 
-		
 		// Add paths for manually installed packages
 		// ${XPACK_REPO_PATH}/<name>
 		IPath repoPath = XpackUtils.getRepoPath();
@@ -253,7 +252,7 @@ public class DefaultPreferences {
 					System.out.println(
 							"DefaultPreferences.searchLatestExecutable() prepend \"" + xpackPath + "\" to path ");
 				}
-				
+
 				// Add user xPack path in front of the search path.
 				xpackPath = XpackUtils.getPackPath(xpackNames[i]).toPortableString();
 				newSearchPath = xpackPath + EclipseUtils.getPathSeparator() + newSearchPath;
@@ -282,7 +281,7 @@ public class DefaultPreferences {
 			executableName = addExeExtension(executableName);
 		}
 
-		Map<Long, String> map = new HashMap<Long, String>();
+		Map<Long, String> map = new HashMap<>();
 		// Try paths in order; collect dates.
 		for (String path : paths) {
 			searchExecutable(path, subFolder, executableName, map);
@@ -304,7 +303,7 @@ public class DefaultPreferences {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param folder
 	 * @param subFolder      may be null; usually "bin".
 	 * @param executableName

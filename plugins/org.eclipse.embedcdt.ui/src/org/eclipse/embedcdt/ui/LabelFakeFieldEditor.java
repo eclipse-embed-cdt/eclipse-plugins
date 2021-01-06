@@ -33,7 +33,7 @@ public class LabelFakeFieldEditor extends FieldEditor {
 
 	/**
 	 * Old text value.
-	 * 
+	 *
 	 * @since 3.4 this field is protected.
 	 */
 	protected String oldValue;
@@ -58,7 +58,7 @@ public class LabelFakeFieldEditor extends FieldEditor {
 
 	/**
 	 * Creates a label fake field editor.
-	 * 
+	 *
 	 * @param value
 	 *            the content of the label field
 	 * @param labelText
@@ -128,7 +128,7 @@ public class LabelFakeFieldEditor extends FieldEditor {
 	 */
 	@Override
 	protected void doStore() {
-		;
+
 	}
 
 	/**

@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -81,10 +81,10 @@ public class Repos {
 	public List<Map<String, Object>> getDefaultList() {
 
 		List<Map<String, Object>> list;
-		list = new ArrayList<Map<String, Object>>();
+		list = new ArrayList<>();
 
 		Map<String, Object> map;
-		map = new HashMap<String, Object>();
+		map = new HashMap<>();
 		map.put("type", CMSIS_PACK_TYPE);
 		map.put("name", "Keil");
 		map.put("url", "https://www.keil.com/pack/index.pidx");
@@ -107,7 +107,7 @@ public class Repos {
 
 	public Map<String, Object> convertToMap(String[] sa) {
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("type", sa[0]);
 		map.put("name", sa[1]);
 		map.put("url", sa[2]);
@@ -145,7 +145,7 @@ public class Repos {
 			try {
 				putList(list);
 			} catch (IOException e) {
-				;
+
 			}
 		}
 
@@ -172,7 +172,7 @@ public class Repos {
 		}
 
 		List<Map<String, Object>> sitesList;
-		sitesList = new ArrayList<Map<String, Object>>();
+		sitesList = new ArrayList<>();
 
 		List<Element> repositoryElements = Xml.getChildrenElementsList(repositoriesElement, "repository");
 		for (Element repositoryElement : repositoryElements) {
@@ -196,7 +196,7 @@ public class Repos {
 			}
 
 			// Pack all attributes as a map.
-			Map<String, Object> map = new HashMap<String, Object>();
+			Map<String, Object> map = new HashMap<>();
 			map.put("type", type);
 			if (name.isEmpty()) {
 				name = getDomaninNameFromUrl(url);
@@ -331,7 +331,7 @@ public class Repos {
 		List<Map<String, Object>> reposList;
 		reposList = getList();
 
-		List<PackNode> packsVersionsList = new LinkedList<PackNode>();
+		List<PackNode> packsVersionsList = new LinkedList<>();
 
 		for (Map<String, Object> map : reposList) {
 			String type = (String) map.get("type");

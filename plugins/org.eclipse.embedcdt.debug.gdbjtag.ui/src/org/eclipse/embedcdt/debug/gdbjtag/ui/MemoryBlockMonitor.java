@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
@@ -76,7 +76,7 @@ public class MemoryBlockMonitor {
 
 	/**
 	 * Called from UI Thread.
-	 * 
+	 *
 	 * @param workbenchWindow
 	 * @param peripheralDMContext
 	 * @param isChecked
@@ -109,7 +109,7 @@ public class MemoryBlockMonitor {
 
 	/**
 	 * Find memory block retrieval and save names.
-	 * 
+	 *
 	 * @param memoryBlocks
 	 */
 	public void savePeripheralNames(IMemoryBlock[] memoryBlocks) {
@@ -139,7 +139,7 @@ public class MemoryBlockMonitor {
 	/**
 	 * Called by displayPeripheralMonitor() and addPersistentPeripherals() from
 	 * the UI thread.
-	 * 
+	 *
 	 * @param workbenchWindow
 	 * @param peripheralDMContext
 	 * @param memoryBlockRetrieval
@@ -215,7 +215,7 @@ public class MemoryBlockMonitor {
 
 	/**
 	 * Called from UI thread.
-	 * 
+	 *
 	 * @param workbenchWindow
 	 * @param memoryBlock
 	 * @param renderingId
@@ -257,7 +257,7 @@ public class MemoryBlockMonitor {
 	/**
 	 * Create a new rendering in the Memory view, and initialise it with the
 	 * memory block.
-	 * 
+	 *
 	 * @param workbenchWindow
 	 * @param memoryBlock
 	 * @param memoryRenderingType
@@ -286,7 +286,7 @@ public class MemoryBlockMonitor {
 
 	/**
 	 * Identify the rendering site of the "Memory" view.
-	 * 
+	 *
 	 * @param workbenchWindow
 	 * @return the rendering site, or null if not found.
 	 */
@@ -302,7 +302,7 @@ public class MemoryBlockMonitor {
 	/**
 	 * Make the "Memory" view visible, by calling showView(). Called from the UI
 	 * thread, no need to start a separate job.
-	 * 
+	 *
 	 * @param workbenchWindow
 	 */
 	public void showMemoryView(final IWorkbenchWindow workbenchWindow) {
@@ -312,6 +312,7 @@ public class MemoryBlockMonitor {
 		}
 
 		Display.getDefault().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					workbenchWindow.getActivePage().showView(IDebugUIConstants.ID_MEMORY_VIEW);

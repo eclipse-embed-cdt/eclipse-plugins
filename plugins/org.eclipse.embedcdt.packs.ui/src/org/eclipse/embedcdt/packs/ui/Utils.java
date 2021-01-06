@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 public class Utils {
 
 	/**
-	 * 
+	 *
 	 * @param sourceUrl
 	 * @param destinationFile
 	 * @param out

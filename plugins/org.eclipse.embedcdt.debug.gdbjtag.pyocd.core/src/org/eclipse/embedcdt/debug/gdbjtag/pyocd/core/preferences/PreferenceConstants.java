@@ -26,7 +26,7 @@ public interface PreferenceConstants {
 		public static final int SECTOR_ERASE = 2;
 		public static final int FAST_PROGRAM = 3;
 	}
-	
+
 	public static final class ConnectMode {
 		public static final int HALT = 0;
 		public static final int PRE_RESET = 1;

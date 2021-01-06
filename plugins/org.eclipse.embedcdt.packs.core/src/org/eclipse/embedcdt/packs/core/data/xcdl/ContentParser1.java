@@ -7,7 +7,7 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
  *     Alexander Fedorov (ArSysOp) - UI part extraction.
@@ -50,7 +50,7 @@ public class ContentParser1 {
 
 		String schemaVersion = firstElement.getAttribute("version").trim();
 		if ("1.1".equals(schemaVersion)) {
-			;
+
 		} else {
 			throw new DocumentParseException("Unrecognised schema version " + schemaVersion);
 		}

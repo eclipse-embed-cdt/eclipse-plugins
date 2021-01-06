@@ -7,9 +7,9 @@
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- *     Liviu Ionescu - initial version 
+ *     Liviu Ionescu - initial version
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
@@ -115,7 +115,7 @@ public class PeripheralEditingSupport extends EditingSupport {
 
 	/**
 	 * Get the initial value to be used for the edit control.
-	 * 
+	 *
 	 * @param peripheralRegister
 	 *            the view node where to get the value from.
 	 * @return a string with the value, an Integer, or null if none.
