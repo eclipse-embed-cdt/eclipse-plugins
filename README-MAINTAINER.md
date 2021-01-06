@@ -148,8 +148,6 @@ on a separate Eclipse (not the one used for development); use the URL:
 
 - https://download.eclipse.org/embed-cdt/builds/develop/p2/
 
-## How to make a new release
-
 ### Merge to master
 
 When ready, merge the `develop` branch into `master`, and push them to GitHub.
