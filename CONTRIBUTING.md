@@ -111,7 +111,11 @@ https://wiki.eclipse.org/CDT/policy
 * code line size: 120 chars
 * comments line size: 80 chars
 
-Currently these settings are provided by the default Eclipse Java formatter.
+The formatting settings are part of the project settings. They are derived from the standard Eclipse formatter settings and are similar to those used by CDT. The XML file for the style is [formattersettings.xml](scripts/style/formattersettings.xml).
+
+The formatting is enforced as part of the Editor Auto Save actions (Project Properties -> Java Code Style -> Formatter). On saving files in Eclipse the file will be formatted and other code cleanups will be run (Project Properties -> Java Editor -> Save Actions). The XML file for the style is [cleanupsettings.xml](scripts/style/cleanupsettings.xml.
+
+To ensure that all projects within the The Eclipse Embedded CDT project use the same settings and that all files follow the expected formatting rules, there are a set of scripts that can enforce the style in the [scripts/style](scripts/style) directory. See comments in those files for more information.
 
 ## Legal
 
