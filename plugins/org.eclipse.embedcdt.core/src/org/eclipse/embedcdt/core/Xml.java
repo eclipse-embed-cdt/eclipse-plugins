@@ -44,6 +44,9 @@ public class Xml {
 		return parseInputStream(inputStream);
 	}
 
+	/**
+	 * @since 6.1
+	 */
 	public static Document parseInputStream(InputStream inputStream)
 			throws ParserConfigurationException, SAXException, IOException {
 

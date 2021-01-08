@@ -26,6 +26,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.embedcdt.internal.core.Activator;
 
+/**
+ * @noextend This class is not intended to be subclassed by clients.
+ */
 @SuppressWarnings("restriction")
 public class CProjectPacksStorage {
 
@@ -44,6 +47,9 @@ public class CProjectPacksStorage {
 	public static final String CMSIS_DEVICE_VENDOR_ID = "cmsis.device.vendor.id";
 	public static final String CMSIS_FAMILY_NAME = "cmsis.family.name";
 	public static final String CMSIS_SUBFAMILY_NAME = "cmsis.subfamily.name";
+	/**
+	 * @since 6.1
+	 */
 	public static final String CMSIS_DEVICE_VARIANT_NAME = "cmsis.device.variant.name";
 	public static final String CMSIS_CORE_NAME = "cmsis.core.name";
 	public static final String CMSIS_COMPILER_DEFINE = "cmsis.compiler.define";

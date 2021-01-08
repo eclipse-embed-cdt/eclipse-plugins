@@ -18,6 +18,9 @@ import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.xml.DocumentParseException;
 import org.eclipse.embedcdt.packs.core.xml.GenericParser;
 
+/**
+ * @since 3.1
+ */
 public class InstalledDevicesParser extends GenericParser {
 
 	public InstalledDevicesParser() {

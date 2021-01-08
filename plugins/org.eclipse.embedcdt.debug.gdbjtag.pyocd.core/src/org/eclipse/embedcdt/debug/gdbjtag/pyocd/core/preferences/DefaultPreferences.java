@@ -20,6 +20,9 @@ import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.preferences.Discoverer;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.pyocd.core.Activator;
 
+/**
+ * @since 3.0
+ */
 public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.preferences.DefaultPreferences {
 
 	// ------------------------------------------------------------------------
@@ -49,11 +52,23 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 	public static final int GDB_SERVER_BUS_SPEED_DEFAULT = 1000000;
 	public static final boolean GDB_SERVER_OVERRIDE_TARGET_DEFAULT = false;
 	public static final String GDB_SERVER_TARGET_NAME_DEFAULT = ""; //$NON-NLS-1$
+	/**
+	 * @since 3.0
+	 */
 	public static final int GDB_SERVER_CONNECT_MODE_DEFAULT = PreferenceConstants.ConnectMode.HALT;
+	/**
+	 * @since 3.0
+	 */
 	public static final int GDB_SERVER_RESET_TYPE_DEFAULT = PreferenceConstants.ResetType.DEFAULT;
 	public static final boolean GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT = true;
 	public static final boolean GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT = false;
+	/**
+	 * @since 3.0
+	 */
 	public static final int GDB_SERVER_FLASH_MODE_DEFAULT = PreferenceConstants.FlashMode.SECTOR_ERASE;
+	/**
+	 * @since 3.0
+	 */
 	public static final boolean GDB_SERVER_SMART_FLASH_DEFAULT = true;
 	public static final boolean GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT = true;
 	public static final boolean GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT = false;

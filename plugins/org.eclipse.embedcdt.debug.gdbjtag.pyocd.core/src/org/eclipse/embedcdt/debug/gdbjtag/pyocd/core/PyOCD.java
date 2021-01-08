@@ -58,29 +58,77 @@ public class PyOCD {
 	public static final String VERSION_MINOR_KEY = "minor";
 	public static final String STATUS_KEY = "status";
 	public static final String ERROR_KEY = "error";
+	/**
+	 * @since 3.0
+	 */
 	public static final String PROBES_KEY = "boards"; // Yes, this is correct!
 	public static final String TARGETS_KEY = "targets";
 
+	/**
+	 * @since 3.0
+	 */
 	public static final String PROBE_INFO_KEY = "info";
+	/**
+	 * @since 3.0
+	 */
 	public static final String PROBE_BOARD_NAME_KEY = "board_name";
+	/**
+	 * @since 3.0
+	 */
 	public static final String PROBE_VENDOR_NAME_KEY = "vendor_name";
+	/**
+	 * @since 3.0
+	 */
 	public static final String PROBE_PRODUCT_NAME_KEY = "product_name";
+	/**
+	 * @since 3.0
+	 */
 	public static final String PROBE_TARGET_KEY = "target";
+	/**
+	 * @since 3.0
+	 */
 	public static final String PROBE_UNIQUE_ID_KEY = "unique_id";
 
 	public static final String TARGET_NAME_KEY = "name";
+	/**
+	 * @since 3.0
+	 */
 	public static final String TARGET_VENDOR_KEY = "vendor";
+	/**
+	 * @since 3.0
+	 */
 	public static final String TARGET_FAMILIES_KEY = "part_families";
+	/**
+	 * @since 3.0
+	 */
 	public static final String TARGET_PART_NUMBER_KEY = "part_number";
 	public static final String TARGET_SVD_PATH_KEY = "svd_path";
 
 	// 60 second timeout for calling pyocd.
+	/**
+	 * @since 3.0
+	 */
 	public static final long PYOCD_TIMEOUT_MS = 60000;
 
+	/**
+	 * @since 3.0
+	 */
 	public static final class Errors {
+		/**
+		 * @since 3.0
+		 */
 		public static final int ERROR_PARSING_OUTPUT = 1;
+		/**
+		 * @since 3.0
+		 */
 		public static final int ERROR_RUNNING_PYOCD = 2;
+		/**
+		 * @since 3.0
+		 */
 		public static final int ERROR_TIMEOUT = 3;
+		/**
+		 * @since 3.0
+		 */
 		public static final int ERROR_INVALID_JSON_FORMAT = 4;
 	}
 
@@ -91,12 +139,16 @@ public class PyOCD {
 		fInstance = new PyOCD();
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public static PyOCD getInstance() {
 		return fInstance;
 	}
 
 	/**
 	 * Info about an available probe.
+	 * @since 3.0
 	 *
 	 */
 	public static class Probe {
@@ -151,14 +203,21 @@ public class PyOCD {
 
 		/**
 		 * Comparator to sort boards by description.
+		 * @since 3.0
 		 */
 		private static class Comparator implements java.util.Comparator<Probe> {
+			/**
+			 * @since 3.0
+			 */
 			@Override
 			public int compare(Probe o1, Probe o2) {
 				return o1.getDescription().compareTo(o2.getDescription());
 			}
 		}
 
+		/**
+		 * @since 3.0
+		 */
 		@Override
 		public String toString() {
 			return String.format("<Probe: %s [%s] %s>", getDescription(), fTargetName, fUniqueId);
@@ -167,17 +226,39 @@ public class PyOCD {
 
 	/**
 	 * Info about a target supported by pyOCD.
+	 * @since 3.0
 	 *
 	 */
 	public static class Target {
+		/**
+		 * @since 3.0
+		 */
 		public final String fName;
+		/**
+		 * @since 3.0
+		 */
 		public final String fVendor;
+		/**
+		 * @since 3.0
+		 */
 		public final String fPartNumber;
+		/**
+		 * @since 3.0
+		 */
 		public final String fFamilies[];
 
+		/**
+		 * @since 3.0
+		 */
 		public static final NameComparator NAME_COMPARATOR = new NameComparator();
+		/**
+		 * @since 3.0
+		 */
 		public static final PartNumberComparator PART_NUMBER_COMPARATOR = new PartNumberComparator();
 
+		/**
+		 * @since 3.0
+		 */
 		Target(String name, String vendor, String part, String[] families) {
 			fName = name;
 			fVendor = vendor;
@@ -185,6 +266,9 @@ public class PyOCD {
 			fFamilies = families;
 		}
 
+		/**
+		 * @since 3.0
+		 */
 		public String getFullPartName() {
 			if (fVendor != null) {
 				return fVendor + " " + fPartNumber;
@@ -195,6 +279,7 @@ public class PyOCD {
 
 		/**
 		 * Comparator to sort targets by name.
+		 * @since 3.0
 		 */
 		public static class NameComparator implements java.util.Comparator<Target> {
 			@Override
@@ -205,6 +290,7 @@ public class PyOCD {
 
 		/**
 		 * Comparator to sort targets by part number.
+		 * @since 3.0
 		 */
 		public static class PartNumberComparator implements java.util.Comparator<Target> {
 			@Override
@@ -221,6 +307,7 @@ public class PyOCD {
 
 	/**
 	 * pyOCD version number.
+	 * @since 3.0
 	 *
 	 */
 	public static class Version {
@@ -236,6 +323,7 @@ public class PyOCD {
 
 		/**
 		 * Parse the given version string, returning a Version object or null.
+		 * @since 3.0
 		 */
 		public static Version fromString(String versionString) {
 			if (versionString.isEmpty()) {
@@ -279,6 +367,9 @@ public class PyOCD {
 			return new Version(major, minor, micro);
 		}
 
+		/**
+		 * @since 3.0
+		 */
 		@Override
 		public String toString() {
 			return String.format("<Version: %d.%d.%d>", fMajor, fMinor, fMicro);
@@ -289,6 +380,9 @@ public class PyOCD {
 		fExecutor = new DefaultDsfExecutor();
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void getProbes(ILaunchConfiguration configuration, final DataRequestMonitor<List<Probe>> rm) {
 
 		String pyOCDPath = Configuration.getGdbServerCommand(configuration, null);
@@ -301,6 +395,9 @@ public class PyOCD {
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void getTargets(ILaunchConfiguration configuration, final DataRequestMonitor<List<Target>> rm) {
 
 		String pyOCDPath = Configuration.getGdbServerCommand(configuration, null);
@@ -313,6 +410,9 @@ public class PyOCD {
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	private boolean checkOutput(JSONObject output) {
 		// Make sure we even have valid output.
 		if (output == null) {
@@ -356,6 +456,9 @@ public class PyOCD {
 		return true;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void getProbes(String pyOCDPath, final DataRequestMonitor<List<Probe>> rm) {
 
 		getJsonOutput(pyOCDPath, "--probes", new DataRequestMonitor<JSONObject>(fExecutor, rm) {
@@ -403,6 +506,9 @@ public class PyOCD {
 		});
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void getTargets(String pyOCDPath, final DataRequestMonitor<List<Target>> rm) {
 
 		getJsonOutput(pyOCDPath, "--targets", new DataRequestMonitor<JSONObject>(fExecutor, rm) {
@@ -462,6 +568,9 @@ public class PyOCD {
 		});
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	private void getJsonOutput(final String pyOCDPath, String listArg, final DataRequestMonitor<JSONObject> rm) {
 		fExecutor.execute(new DsfRunnable() {
 			@Override
@@ -494,6 +603,9 @@ public class PyOCD {
 		});
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public Version getVersion(final String pyOCDPath) {
 		try {
 			String[] args = new String[2];
@@ -510,6 +622,9 @@ public class PyOCD {
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public String getOutput(final String[] args) throws CoreException {
 		final Process process;
 		try {
@@ -583,6 +698,7 @@ public class PyOCD {
 	 * @param stream The input stream to be used to read the data.  This method will close the stream.
 	 * @return The data read from the stream
 	 * @throws IOException If an IOException happens when reading the stream
+	 * @since 3.0
 	 */
 	public String readStream(InputStream stream) throws IOException {
 		StringBuilder cmdOutput = new StringBuilder(200);

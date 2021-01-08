@@ -14,6 +14,10 @@
 
 package org.eclipse.embedcdt.packs.core.tree;
 
+/**
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noinstantiate This class is not intended to be instantiated by clients.
+ */
 public class Property {
 
 	// Special properties for name & description.
@@ -37,7 +41,13 @@ public class Property {
 	// public static final String BOARD_NAME = "board.name";
 	public static final String BOARD_REVISION = "board.revision";
 	public static final String CATEGORY = "category";
+	/**
+	 * @since 3.1
+	 */
 	public static final String CHIP_PACKAGE = "chip.package";
+	/**
+	 * @since 3.1
+	 */
 	public static final String CHIP_PINS = "chip.pins";
 	public static final String CLOCK = "clock";
 	public static final String COMPILER_HEADERS = "compilerHeaders";
