@@ -65,7 +65,7 @@ public class CProjectAttributes {
 	public static String getCmsisDeviceVariantName(ILaunchConfiguration configuration) {
 
 		String variantName = getCmsisAttribute(configuration, CProjectPacksStorage.CMSIS_DEVICE_VARIANT_NAME);
-		if (!variantName.isEmpty()) {
+		if (variantName != null && !variantName.isEmpty()) {
 			return variantName;
 		}
 
