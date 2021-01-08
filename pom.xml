@@ -87,6 +87,7 @@
 		<module>features/org.eclipse.embedcdt.doc.user-feature</module>
 
 		<module>repositories/org.eclipse.embedcdt-repository</module>
+		<module>target-platform</module>
 
 		<!-- Arm specific modules. -->
 		<module>branding/org.eclipse.embedcdt.managedbuild.cross.arm-branding</module>

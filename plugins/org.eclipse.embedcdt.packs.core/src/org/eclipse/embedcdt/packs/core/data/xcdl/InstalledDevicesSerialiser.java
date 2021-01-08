@@ -17,6 +17,9 @@ package org.eclipse.embedcdt.packs.core.data.xcdl;
 import org.eclipse.embedcdt.packs.core.data.PacksStorage;
 import org.eclipse.embedcdt.packs.core.xml.GenericSerialiser;
 
+/**
+ * @since 3.1
+ */
 public class InstalledDevicesSerialiser extends GenericSerialiser {
 
 	public InstalledDevicesSerialiser() {

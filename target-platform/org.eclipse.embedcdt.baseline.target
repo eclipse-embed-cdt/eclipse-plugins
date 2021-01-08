@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+<target name="embedcdt-baseline">
+	<locations>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="https://download.eclipse.org/releases/2020-09/202009161000"/>
+			<unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
+			<unit id="org.eclipse.cdt.debug.dap.gdbjtag.feature.group" version="0.0.0"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="http://download.eclipse.org/cbi/updates/license/"/>
+			<unit id="org.eclipse.license.feature.group" version="0.0.0"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="https://download.eclipse.org/embed-cdt/releases/6.0.0/p2/"/>
+			<unit id="org.eclipse.embedcdt.codered.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.codered.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.debug.gdbjtag.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.debug.gdbjtag.jlink.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.debug.gdbjtag.jlink.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.debug.gdbjtag.openocd.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.debug.gdbjtag.openocd.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.debug.gdbjtag.pyocd.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.debug.gdbjtag.pyocd.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.debug.gdbjtag.qemu.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.debug.gdbjtag.qemu.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.debug.gdbjtag.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.doc.user.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.doc.user.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.managedbuild.cross.arm.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.managedbuild.cross.arm.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.managedbuild.cross.riscv.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.managedbuild.cross.riscv.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.packs.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.packs.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.ad.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.ad.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.cortexm.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.cortexm.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.freescale.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.freescale.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.sifive.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.sifive.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.stm.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.stm.source.feature.group" version="6.0.0.202012080907"/>
+		</location>
+	</locations>
+</target>

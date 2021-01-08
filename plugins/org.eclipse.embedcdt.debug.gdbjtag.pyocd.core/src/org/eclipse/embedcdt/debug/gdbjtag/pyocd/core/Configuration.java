@@ -43,6 +43,9 @@ public class Configuration {
 
 	// ------------------------------------------------------------------------
 
+	/**
+	 * @since 3.0
+	 */
 	public static String getSymbolsFileName(ILaunchConfiguration config) {
 		try {
 			ICProject cproject = LaunchUtils.getCProject(config);
@@ -403,6 +406,9 @@ public class Configuration {
 						DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public static boolean getDoAddSemihostingConsole(ILaunchConfiguration config) throws CoreException {
 
 		return getDoStartGdbServer(config)
@@ -410,6 +416,9 @@ public class Configuration {
 						DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public static String getGdbServerStartedMessage() {
 		return "Started by Eclipse Embedded CDT";
 	}

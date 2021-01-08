@@ -36,6 +36,10 @@ import org.eclipse.embedcdt.internal.packs.core.Activator;
 import org.eclipse.embedcdt.packs.core.IConsoleStream;
 import org.eclipse.embedcdt.packs.core.Preferences;
 
+/**
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noinstantiate This class is not intended to be instantiated by clients.
+ */
 public class PacksStorage {
 
 	public static final String CACHE_FOLDER = ".cache";
@@ -45,6 +49,9 @@ public class PacksStorage {
 	public static final String CONTENT_XML_VERSION = "1.1";
 
 	public static final String INSTALLED_DEVICES_FILE_NAME = ".installed_devices_boards_books.xml";
+	/**
+	 * @since 3.1
+	 */
 	public static final String INSTALLED_DEVICES_XML_VERSION = "1.2";
 
 	private static IPath fgFolderPath = null;
