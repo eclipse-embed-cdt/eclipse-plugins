@@ -63,21 +63,6 @@
 		</license>
 	</licenses>
 
-	<repositories>
-		<repository>
-			<id>eclipse</id>
-			<layout>p2</layout>
-			<!-- Explicit reference to 2020-09 with CDT 10.0.0 -->
-			<!-- (Do a run without version and retain the most recent one) -->
-			<!-- <url>https://download.eclipse.org/releases/neon/201705151400/</url> -->
-			<url>https://download.eclipse.org/releases/2020-09/202009161000/</url>
-		</repository>
-		<repository>
-			<id>license-feature</id>
-			<url>http://download.eclipse.org/cbi/updates/license/</url>
-			<layout>p2</layout>
-		</repository>
-	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<!-- Eclipse provided plug-ins for signing JARs with Eclipse infra -->
@@ -145,6 +130,15 @@
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
+
+					<!-- Use the same target file that can be used within Eclipse -->
+					<target>
+						<artifact>
+							<groupId>org.eclipse.embedcdt</groupId>
+							<artifactId>org.eclipse.embedcdt.target-platform</artifactId>
+							<version>6.1.0-SNAPSHOT</version>
+						</artifact>
+					</target>
 				</configuration>
 			</plugin>
 			<plugin>
