@@ -287,6 +287,9 @@ and press Enter
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
 - Save
+- commit _embedcdt: update for 6.1.0-202101081915'_
+- _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
+
 
 ```bash
 git commit -m 'embedcdt: update for 6.1.0-202012080907'
