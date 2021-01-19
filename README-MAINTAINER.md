@@ -9,8 +9,7 @@ The project is hosted on GitHub:
 To clone it, be sure the submodules are also cloned:
 
 ```
-git clone --recurse-submodule https://github.com/eclipse-embed-cdt/eclips
-e-plugins \
+git clone --recurse-submodule https://github.com/eclipse-embed-cdt/eclipse-plugins \
   eclipse-plugins.git
 ```
 
@@ -65,7 +64,7 @@ Use the CBI Aggregator installed from:
 
 At first use, clone the SimRel Git repo:
 
-```
+```bash
 git clone "ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build"
 scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "org.eclipse.simrel.build/.git/hooks/"
 ```
@@ -78,7 +77,7 @@ The deadline for SimRel changes is **Wed 5pm Ottawa time**.
 
 At first use, clone the EPP Git repo:
 
-```
+```bash
 git clone "ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git"
 scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "epp/org.eclipse.epp.packages.git/.git/hooks/"
 ```
@@ -136,7 +135,7 @@ This will also trigger a GitHub Actions CI job that will run a maven build.
 ### Trigger the Jenkins development build
 
 - go to [https://ci.eclipse.org/embed-cdt/job/build-plug-ins/](https://ci.eclipse.org/embed-cdt/job/build-plug-ins/)
-- login (otherwise the next link is not visible!)
+- **login** (otherwise the next link is not visible!)
 - click the **Scan Multibranch Pipeline Now** link
 - when ready, the p2 repository is published at
 [https://download.eclipse.org/embed-cdt/builds/develop/p2/](https://download.eclipse.org/embed-cdt/builds/develop/p2/)
@@ -157,7 +156,7 @@ Wait for the GitHub Actions CI job to confirm that the build passed.
 ### Trigger the Jenkins master build
 
 - go to [https://ci.eclipse.org/embed-cdt/job/build-plug-ins/](https://ci.eclipse.org/embed-cdt/job/build-plug-ins/)
-- login (otherwise the next link will not be visible!)
+- **login** (otherwise the next link will not be visible!)
 - click the **Scan Multibranch Pipeline Now** link
 - when ready, the p2 repository is published at
 [https://download.eclipse.org/embed-cdt/builds/master/p2/](https://download.eclipse.org/embed-cdt/builds/master/p2/)
@@ -165,7 +164,7 @@ Wait for the GitHub Actions CI job to confirm that the build passed.
 ### Publish the release candidate
 
 - go to https://ci.eclipse.org/embed-cdt/
-- login (otherwise the next link is not visible!)
+- **login** (otherwise the next link is not visible!)
 - use the [make-release-candidate-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-candidate-from-master/)
 Jenkins job to copy the files from `builds/master` to `updates/v6-test/` and
 `release-candidates/<version>-<date>`,
@@ -224,23 +223,6 @@ Start with _Release candidate_ (Header 3).
 <ul>
 	<li><a href="https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19">https://github.com/eclipse-embed-cdt/eclipse-plugins/milestone/19</a></li>
 </ul>
-
-<h3>Release content</h3>
-
-<p>The following features and plugins are included in this release:</p>
-
-<pre>
-features:
-org.eclipse.embedcdt.codered.feature_2.0.0.202101081915.jar
-...
-org.eclipse.embedcdt.templates.stm.feature.source_2.7.2.202101081915.jar
-
-plugins:
-org.eclipse.embedcdt.codered_2.0.0.202101081915.jar
-...
-org.eclipse.embedcdt.templates.stm.source_2.7.2.202101081915.jar
-</pre>
-
 ```
 
 To get the list of changes, scan the Git log:
@@ -290,7 +272,6 @@ and press Enter
 - commit _embedcdt: update for 6.1.0-202101081915'_
 - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 
-
 ```bash
 git push ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build HEAD:refs/for/master
 ```
@@ -317,7 +298,7 @@ Beta testers can install the release candidate from:
 
 - https://download.eclipse.org/embed-cdt/updates/v6-test/
 
-## Add Git tag
+## Add Git tag for pre-release
 
 Go to the release candidate folder
 
@@ -325,12 +306,30 @@ Go to the release candidate folder
 
 Copy the tag and enter it in Git, like `v6.1.0-202011301954` (with `v`).
 
+## Add GitHub release
+
+In GitHub releases (https://github.com/eclipse-embed-cdt/eclipse-plugins/releases) add a new release
+
+- tag: _v6.1.0_
+- title _Eclipse Embedded CDT plug-ins v6.1.0_
+- copy/paste from the release page
+- add `[Continue reading »](https://eclipse-embed-cdt.github.io/blog/2021/01/18/plugins-v6.1.0-released/)` with a link to the web page
+- do not attach files
+- click **Publish release**
+
 ## Publish the final release
 
 When the plug-ins are considered stable:
 
+- in `eclipse-plugins.git`, the master branch, edit
+  - `repositories/org.eclipse.embededcdt-repository/composite/compositeArtifacts.xml`
+  - `repositories/org.eclipse.embededcdt-repository/composite/compositeContent.xml`
+  - add new child like `<child location='../../releases/6.1.0/p2'/>`
+  - update `p2.timestamp` to the value shown at the end of the `make-release-candidate-from-master`
+- push master with a message like **add 6.1.0 to composite**
+
 - go to https://ci.eclipse.org/embed-cdt/
-- login (otherwise the next link is not visible!)
+- **login** (otherwise the next link is not visible!)
 - use the
 [make-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-from-master/)
 Jenkins job to copy from `builds/master` to `updates/v6/` and `releases/<version>`
@@ -351,13 +350,46 @@ The public update URLs are:
 - https://download.eclipse.org/embed-cdt/updates/v6/
 - https://download.eclipse.org/embed-cdt/releases/6.1.0/p2/
 
+## Add Git tag for release
+
+Add a tag like `v6.1.0` (with `v`).
+
 ### Update the Eclipse Marketplace records
 
 - go to [Eclipse Marketplace](https://marketplace.eclipse.org/content/eclipse-embedded-cdt/)
-- log in
+- **login**
 - click **Edit**
 - update version number, minimum Eclipse versions
 - click the bottom page **Save**.
+
+### Add a new release in the project web
+
+Edit the `eclipse-embed-cdt/web-jekyll.git` project
+
+In the `develop` branch, add a new release page.
+
+As links for the latest two, open https://download.eclipse.org/embed-cdt/releases/
+and get the archive URL, like:
+
+- https://download.eclipse.org/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202101081915.zip
+
+Isolate the part starting with `/embed-cdt/...` and update the URLs to use the download redirect:
+
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202101081915.zip
+- https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202101081915.zip.sha
+
+Update the milestone URL.
+
+- commit with a message like _Eclipse Embedded CDT plug-ins v6.1.0 released_.
+- push the `develop` branch
+- wait for GitHub Actions job
+- check the result at
+  - https://eclipse-embed-cdt.github.io/web-preview/
+- when ok, merge `develop` into `master`
+- push the `master` branch
+- wait for GitHub Actions job
+- check the result at
+  - https://eclipse-embed-cdt.github.io/
 
 ### Update the release record
 
@@ -368,45 +400,17 @@ and select the new release
 - replace the **Release candidate** section with the above:
 
 ```html
-<h3>Eclipse Marketplace</h3>
+<p>Version <strong>6.1.0</strong> is a new major/minor/service release; it updates ...</p>
 
-<p>The recommended way to update to the latest plug-ins is via the <strong>Eclipse Marketplace</strong>; search for <em>Embedded CDT</em>.</p>
-
-<h3>Eclipse Update Sites</h3>
-
-<p>For those who prefer to do it manually, the latest version is available via <strong>Install New Software</strong> from:</p>
+<p>Fore more details, please read the project web release pages:</p>
 
 <ul>
-	<li><a href="https://download.eclipse.org/embed-cdt/updates/v6/">https://download.eclipse.org/embed-cdt/updates/v6/</a></li>
-</ul>
-
-<p>To get exactly this version, <strong>Install New Software</strong> from:</p>
-
-<ul>
-	<li><a href="https://download.eclipse.org/embed-cdt/releases/6.1.0/p2/">https://download.eclipse.org/embed-cdt/releases/6.1.0/p2/</a></li>
-</ul>
-
-<h3>Local install</h3>
-
-<p>For manual installs, the plug-ins are also available as regular archives, that can be downloaded locally and installed.</p>
-
-<ul>
-	<li><a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202101081915.zip">org.eclipse.embedcdt.repository-6.1.0-202101081915.zip</a> <a href="https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202101081915.zip.sha">(SHA)</a></li>
+	<li><a href="https://eclipse-embed-cdt.github.io/blog/2020/12/16/package-2020-12-released/">Eclipse IDE for Embedded C/C++ Developers 2020-12 released</a>&nbsp;(for installing a new Eclipse)</li>
+	<li><a href="https://eclipse-embed-cdt.github.io/blog/2021/01/19/plugins-v6.1.0-released/">Eclipse Embedded CDT plug-ins v6.1.0 released</a>&nbsp;(for updating the plug-ins on an existing Eclipse)</li>
 </ul>
 ```
 
-As links for the latest two, open https://download.eclipse.org/embed-cdt/releases/
-and get something like:
-
-- https://download.eclipse.org/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202101081915.zip
-- https://download.eclipse.org/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202101081915.zip.sha
-
-Update the URLs to use the download redirect:
-
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202101081915.zip
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.1.0/org.eclipse.embedcdt.repository-6.1.0-202101081915.zip.sha
-
-Remove the _Pre-release_ top header.
+Remove the _Pre-release_ top header and **Save**.
 
 ### Update the Downloads page
 
@@ -419,7 +423,7 @@ Use copy/paste/edit.
 
 ## Check & update SimRel
 
-Pull new commits.
+**Pull** new commits.
 
 In Eclipse:
 
@@ -435,9 +439,11 @@ and press Enter
 **Fix Versions**
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
+- commit with a message like:
+  - _embedcdt: update for 6.1.0_
+  - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 
 ```bash
-git commit -m 'embedcdt: update for 6.1.0'
 git push ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build HEAD:refs/for/master
 ```
 
@@ -508,24 +514,16 @@ available from:
 
 - https://ci.eclipse.org/packaging/job/simrel.epp-tycho-build/lastSuccessfulBuild/artifact/org.eclipse.epp.packages/archive/ 
 
-## Add Git tag
-
-Add a tag like `v6.1.0` (with `v`).
-
 ### Announce release
 
 Announce the release to the **embed-cdt-dev@eclipse.org** list;
-use a subject like **Embed CDT v6.1.0 released**, and
+use a subject like **Eclipse Embedded CDT plug-ins v6.1.0 released**, and
 pass a link to the release page.
-
-Beta testers can install the pre-release from:
-
-- https://ci.eclipse.org/packaging/job/simrel.epp-tycho-build/lastSuccessfulBuild/artifact/org.eclipse.epp.packages/archive/ 
 
 ## Share on Twitter
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@embedCDT` account, enter a message like
-  **Embed CDT v6.1.0 released** and on the next line
+  **Eclipse Embedded CDT plug-ins v6.1.0 released** and on the next line
   paste the link to the release
 - click the Tweet button
