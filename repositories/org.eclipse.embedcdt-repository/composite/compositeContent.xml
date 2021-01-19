@@ -3,10 +3,11 @@
 <repository name='Embed CDT 6.0 Update Site'
     type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
   <properties size='1'>
-    <!-- timestamp made with date +%s%3N -->
-    <property name='p2.timestamp' value='1608058606601'/>
+    <!-- timestamp made with `date +%s%3N` on Linux -->
+    <property name='p2.timestamp' value='1611064386640'/>
   </properties>
   <children size='1'>
     <child location='../../releases/6.0.0/p2'/>
+    <child location='../../releases/6.1.0/p2'/>
   </children>
 </repository>
