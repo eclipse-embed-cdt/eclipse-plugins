@@ -8,6 +8,6 @@
   </properties>
   <children size='1'>
     <child location='../../releases/6.0.0/p2'/>
-    <child location='../../releases/6.1.0/p2'/>
+    <child location='../../releases/6.1.1/p2'/>
   </children>
 </repository>

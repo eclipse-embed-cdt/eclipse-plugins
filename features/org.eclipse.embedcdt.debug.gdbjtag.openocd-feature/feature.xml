@@ -14,7 +14,7 @@
 <feature
       id="org.eclipse.embedcdt.debug.gdbjtag.openocd"
       label="%featureName"
-      version="6.1.0.qualifier"
+      version="6.1.1.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.embedcdt.debug.gdbjtag.openocd"
       license-feature="org.eclipse.license"
@@ -29,7 +29,7 @@
    </copyright>
 
    <requires>
-      <import feature="org.eclipse.embedcdt.debug.gdbjtag" version="6.1.0" match="compatible"/>
+      <import feature="org.eclipse.embedcdt.debug.gdbjtag" version="6.1.1" match="compatible"/>
    </requires>
 
    <plugin
