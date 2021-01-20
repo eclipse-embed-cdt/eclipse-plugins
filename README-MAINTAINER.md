@@ -301,17 +301,6 @@ Go to the release candidate folder
 
 Copy the tag and enter it in Git, like `v6.1.1-202101200825` (with `v`).
 
-## Add GitHub release
-
-In GitHub releases (https://github.com/eclipse-embed-cdt/eclipse-plugins/releases) add a new release
-
-- tag: _v6.1.1_
-- title _Eclipse Embedded CDT plug-ins v6.1.1_
-- copy/paste from the release page
-- add `[Continue reading »](https://eclipse-embed-cdt.github.io/blog/2021/01/18/plugins-v6.1.1-released/)` with a link to the web page
-- do not attach files
-- click **Publish release**
-
 ## Publish the final release
 
 When the plug-ins are considered stable:
@@ -321,7 +310,7 @@ When the plug-ins are considered stable:
   - `repositories/org.eclipse.embededcdt-repository/composite/compositeContent.xml`
   - add new child like `<child location='../../releases/6.1.1/p2'/>`
   - update `p2.timestamp` to the value shown at the end of the `make-release-candidate-from-master`
-- push master with a message like **add 6.1.1 to composite**
+- **push** master with a message like _add 6.1.1 to composite_
 
 - go to https://ci.eclipse.org/embed-cdt/
 - **login** (otherwise the next link is not visible!)
@@ -345,9 +334,17 @@ The public update URLs are:
 - https://download.eclipse.org/embed-cdt/updates/v6/
 - https://download.eclipse.org/embed-cdt/releases/6.1.1/p2/
 
-## Add Git tag for release
+## Add GitHub release
 
-Add a tag like `v6.1.1` (with `v`).
+In [GitHub releases](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases) add a new release
+
+- tag: _v6.1.1_ (with `v`)
+- title _Eclipse Embedded CDT plug-ins v6.1.1_
+- copy/paste from the release page
+- add `[Continue reading »](https://eclipse-embed-cdt.github.io/blog/2021/01/18/plugins-v6.1.1-released/)` with a link to the web page
+- do not attach files
+- click **Publish release**
+
 
 ### Update the Eclipse Marketplace records
 
