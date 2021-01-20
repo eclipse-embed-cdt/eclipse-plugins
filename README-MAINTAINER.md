@@ -334,24 +334,13 @@ The public update URLs are:
 - https://download.eclipse.org/embed-cdt/updates/v6/
 - https://download.eclipse.org/embed-cdt/releases/6.1.1/p2/
 
-## Add GitHub release
-
-In [GitHub releases](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases) add a new release
-
-- tag: _v6.1.1_ (with `v`)
-- title _Eclipse Embedded CDT plug-ins v6.1.1_
-- copy/paste from the release page
-- add `[Continue reading »](https://eclipse-embed-cdt.github.io/blog/2021/01/18/plugins-v6.1.1-released/)` with a link to the web page
-- do not attach files
-- click **Publish release**
-
-
 ### Update the Eclipse Marketplace records
 
 - go to [Eclipse Marketplace](https://marketplace.eclipse.org/content/eclipse-embedded-cdt/)
 - **login**
 - click **Edit**
 - update version number, minimum Eclipse versions
+- click the **Save item to list** button (very important!)
 - click the bottom page **Save**.
 
 ### Add a new release in the project web
@@ -374,16 +363,33 @@ Update the milestone URL.
 
 - commit with a message like _Eclipse Embedded CDT plug-ins v6.1.1 released_.
 - push the `develop` branch
-- wait for GitHub Actions job
+- wait for GitHub Actions job to complete
 - check the result at
   - https://eclipse-embed-cdt.github.io/web-preview/
 - when ok, merge `develop` into `master`
 - push the `master` branch
-- wait for GitHub Actions job
+- wait for GitHub Actions job to complete
 - check the result at
   - https://eclipse-embed-cdt.github.io/
 
-### Update the release record
+### Add GitHub release
+
+In [GitHub releases](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases) add a new release
+
+- tag: _v6.1.1_ (with `v`)
+- title _Eclipse Embedded CDT plug-ins v6.1.1_
+- copy/paste from the release page
+- add `[Continue reading »](https://eclipse-embed-cdt.github.io/blog/2021/01/18/plugins-v6.1.1-released/)` with a link to the web page
+- do not attach files
+- click **Publish release**
+
+### Close milestone
+
+In [GitHub milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones):
+
+- close the v6.1.1 milestone
+
+### Update the Eclipse release record
 
 - go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/governance/)
 and select the new release
