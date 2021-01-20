@@ -45,11 +45,6 @@ a sub-folder
 - https://download.eclipse.org/embed-cdt/releases/6.1.1/org.eclipse.embedcdt.repository-6.1.1-202101081915.zip
 - https://download.eclipse.org/embed-cdt/releases/6.1.1/p2/
 
-Packages are published at:
-
-- https://download.eclipse.org/embed-cdt/packages/
-- https://download.eclipse.org/embed-cdt/packages-test/
-
 The official download page is
 
 - https://projects.eclipse.org/projects/iot.embed-cdt/downloads/
@@ -109,7 +104,7 @@ a GitHub Issue.
 list, and fix them. The commit message should be prefixed with the issue
 number, like `[#122]`;
 - mark all fixed issues as part of the new milestone;
-- add a message like _fixed on 2020-01-10_;
+- add a message like _Fixed on 2021-01-10_;
 - close the issues
 
 ## Build locally
