@@ -42,7 +42,7 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- https://download.eclipse.org/embed-cdt/releases/6.1.1/org.eclipse.embedcdt.repository-6.1.1-202101081915.zip
+- https://download.eclipse.org/embed-cdt/releases/6.1.1/org.eclipse.embedcdt.repository-6.1.1-202101200825.zip
 - https://download.eclipse.org/embed-cdt/releases/6.1.1/p2/
 
 The official download page is
@@ -257,14 +257,14 @@ In Eclipse:
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release
 candidate p2 URL (like
-`https://download.eclipse.org/embed-cdt/release-candidates/6.1.1-202101081915/p2/`
+`https://download.eclipse.org/embed-cdt/release-candidates/6.1.1-202101200825/p2/`
 and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
 - Save
-- commit _embedcdt: update for 6.1.1-202101081915'_
+- commit _embedcdt: update for 6.1.1-202101200825'_
 - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 
 ```bash
@@ -286,7 +286,7 @@ In about one hour it'll automatically rebuild the staging repo:
 
 Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
 use a subject like
-**Embed CDT v6.1.1-202101081915 release candidate**,
+**Embed CDT v6.1.1-202101200825 release candidate**,
 and pass a link to the release page.
 
 Beta testers can install the release candidate from:
@@ -299,7 +299,7 @@ Go to the release candidate folder
 
 - [https://download.eclipse.org/embed-cdt/release-candidates/](https://download.eclipse.org/embed-cdt/release-candidates/)
 
-Copy the tag and enter it in Git, like `v6.1.1-202011301954` (with `v`).
+Copy the tag and enter it in Git, like `v6.1.1-202101200825` (with `v`).
 
 ## Add GitHub release
 
@@ -366,12 +366,12 @@ In the `develop` branch, add a new release page.
 As links for the latest two, open https://download.eclipse.org/embed-cdt/releases/
 and get the archive URL, like:
 
-- https://download.eclipse.org/embed-cdt/releases/6.1.1/org.eclipse.embedcdt.repository-6.1.1-202101081915.zip
+- https://download.eclipse.org/embed-cdt/releases/6.1.1/org.eclipse.embedcdt.repository-6.1.1-202101200825.zip
 
 Isolate the part starting with `/embed-cdt/...` and update the URLs to use the download redirect:
 
-- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.1.1/org.eclipse.embedcdt.repository-6.1.1-202101081915.zip
-- https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.1.1/org.eclipse.embedcdt.repository-6.1.1-202101081915.zip.sha
+- https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.1.1/org.eclipse.embedcdt.repository-6.1.1-202101200825.zip
+- https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.1.1/org.eclipse.embedcdt.repository-6.1.1-202101200825.zip.sha
 
 Update the milestone URL.
 
