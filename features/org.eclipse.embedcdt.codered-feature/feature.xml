@@ -30,7 +30,7 @@
    </copyright>
 
    <requires>
-      <import feature="org.eclipse.embedcdt" version="6.1.0.qualifier"/>
+      <import feature="org.eclipse.embedcdt" version="6.1.0" match="compatible"/>
    </requires>
 
    <plugin
