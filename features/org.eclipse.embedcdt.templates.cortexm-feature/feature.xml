@@ -11,7 +11,6 @@
   Contributors:
     Liviu Ionescu
 -->
-
 <feature
       id="org.eclipse.embedcdt.templates.cortexm"
       label="%featureName"
@@ -45,6 +44,13 @@
 
    <plugin
          id="org.eclipse.embedcdt.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.embedcdt.templates.cortexm"
          download-size="0"
          install-size="0"
          version="0.0.0"
