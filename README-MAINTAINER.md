@@ -311,7 +311,9 @@ In about one hour it'll automatically rebuild the staging repo:
 Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
 use a subject like
 **Embed CDT v6.1.2-202102181132 release candidate**,
-and pass a link to the release page.
+and pass a link to the release page, available at:
+
+- https://projects.eclipse.org/projects/iot.embed-cdt/
 
 Beta testers can install the release candidate from:
 
