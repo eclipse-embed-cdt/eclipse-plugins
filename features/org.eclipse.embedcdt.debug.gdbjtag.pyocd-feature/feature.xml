@@ -14,7 +14,7 @@
 <feature
       id="org.eclipse.embedcdt.debug.gdbjtag.pyocd"
       label="%featureName"
-      version="6.1.1.qualifier"
+      version="6.1.2.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.embedcdt.debug.gdbjtag.pyocd"
       license-feature="org.eclipse.license"
@@ -29,7 +29,7 @@
    </copyright>
 
    <requires>
-      <import feature="org.eclipse.embedcdt.debug.gdbjtag" version="6.1.1" match="compatible"/>
+      <import feature="org.eclipse.embedcdt.debug.gdbjtag" version="6.1.2" match="compatible"/>
    </requires>
 
    <plugin
