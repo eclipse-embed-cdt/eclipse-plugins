@@ -107,12 +107,15 @@
 		<menuContribution
 			allPopups="false"
 			locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-			<toolbar id="org.eclipse.embedcdt.packs.toolbar.main.showPerspective">
+			<toolbar
+         id="org.eclipse.embedcdt.packs.toolbar.main.showPerspective"
+         label="%menus.toolbar.showPerspective.toolbar.label">
 				<command
-					commandId="org.eclipse.embedcdt.packs.ui.commands.showPerspectiveCommand"
-					icon="icons/packages.png"
-					style="push"
-					tooltip="%menus.toolbar.showPerspective.tooltip">
+          commandId="org.eclipse.embedcdt.packs.ui.commands.showPerspectiveCommand"
+          icon="icons/packages.png"
+          label="%menus.toolbar.showPerspective.command.label"
+          style="push"
+          tooltip="%menus.toolbar.showPerspective.command.tooltip">
 				</command>
 			</toolbar>
 		</menuContribution>
