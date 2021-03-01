@@ -15,7 +15,7 @@
 <feature
       id="org.eclipse.embedcdt"
       label="%featureName"
-      version="6.1.2.qualifier"
+      version="6.1.3.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.embedcdt"
       license-feature="org.eclipse.license"
