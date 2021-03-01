@@ -116,6 +116,19 @@
           label="%menus.toolbar.showPerspective.command.label"
           style="push"
           tooltip="%menus.toolbar.showPerspective.command.tooltip">
+       <visibleWhen
+             checkEnabled="false">
+<iterate ifEmpty="false">
+          <adapt
+                type="org.eclipse.core.resources.IResource">
+             <test
+                   forcePluginActivation="true"
+                   property="org.eclipse.core.resources.projectNature"
+                   value="org.eclipse.cdt.core.cnature">
+             </test>
+          </adapt>
+</iterate>
+       </visibleWhen>
 				</command>
 			</toolbar>
 		</menuContribution>
