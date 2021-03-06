@@ -387,6 +387,9 @@ Isolate the part starting with `/embed-cdt/...` and update the URLs to use the d
 
 Update the milestone URL.
 
+Copy/paste the features/plug-ins from the console of the
+`make-release-from-master` Jenkins job.
+
 - commit with a message like _Eclipse Embedded CDT plug-ins v6.1.2 released_.
 - push the `develop` branch
 - wait for GitHub Actions job to complete
@@ -421,7 +424,7 @@ In [GitHub milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/mile
 and select the new release
 - click Edit -> The Basics
 - switch to Source mode
-- replace the **Release candidate** section with the above:
+- replace the entire content with links to GitHub:
 
 ```html
 <p>Version <strong>6.1.2</strong> is a new major/minor/service release; it updates ...</p>
@@ -434,12 +437,11 @@ and select the new release
 </ul>
 ```
 
-Remove the _Pre-release_ top header and **Save**.
-
 ### Update the Downloads page
 
+For packages releases:
+
 - go to [iot.embed-cdt](https://projects.eclipse.org/projects/iot.embed-cdt/)
-and select the new release
 - click Edit -> The Basics
 - switch to Source mode
 
