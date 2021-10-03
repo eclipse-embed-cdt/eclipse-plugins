@@ -362,7 +362,7 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.optimization.lto"
 				isAbstract="true"
 				name="%option.optimization.lto"
-				tip="Run the standard link-time optimizer. When invoked with source code, it generates GIMPLE (one of GCC’s internal representations) and writes it to special ELF sections in the object file. When the object files are linked together, all the function bodies are read from these ELF sections and instan- tiated as if they had been part of the same translation unit."
+				tip="Run the standard link-time optimizer. When invoked with source code, it generates GIMPLE (one of GCC’s internal representations) and writes it to special ELF sections in the object file. When the object files are linked together, all the function bodies are read from these ELF sections and instantiated as if they had been part of the same translation unit."
 				useByScannerDiscovery="true"
 				valueType="boolean">
 			</option>
