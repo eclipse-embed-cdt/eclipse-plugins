@@ -1100,7 +1100,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		return true;
 	}
 
-	public static final String TYPE_PREFIX = "ilg.gnuarmeclipse.managedbuild.cross.target.";
+	public static final String TYPE_PREFIX_GNUARM = "ilg.gnuarmeclipse.managedbuild.cross.";
+	public static final String TYPE_PREFIX_GNUMCU = "ilg.gnumcueclipse.managedbuild.cross.";
 
 	private boolean isManaged() {
 
@@ -1109,11 +1110,16 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		IManagedProject managedProject = fConfig.getManagedProject();
 		IProjectType projectType = managedProject.getProjectType();
 
-		if (projectType == null || !projectType.getId().startsWith(TYPE_PREFIX)) {
-			return false;
+		if (projectType != null) {
+			String projectId = projectType.getId();
+			if (projectId.startsWith(TYPE_PREFIX_GNUARM)) {
+				return true;
+			} else if (projectId.startsWith(TYPE_PREFIX_GNUMCU)) {
+				return true;
+			}
 		}
 
-		return true;
+		return false;
 	}
 
 	/*
