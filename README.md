@@ -4,17 +4,24 @@
 # The Eclipse Embedded CDT plug-ins
 
 These are the Eclipse projects used to build the
-[Eclipse Embedded CDT](http://www.eclipse.org/embed-cdt) plug-ins,
+[Eclipse Embedded CDT](https://eclipse-embed-cdt.github.io) plug-ins,
 formerly the [GNU MCU/ARM Eclipse](http://gnu-mcu-eclipse.github.io) plug-ins.
+
+The project is now part of the
+[Eclipse Foundation](http://www.eclipse.org/embed-cdt/) and is hosted on
+[GitHub](https://github.com/eclipse-embed-cdt/).
 
 ## How to install
 
 ### Eclipse Packages
 
 For new installs, the preferred method is via
-[Eclipse IDE for Embedded C/C++ Developers](https://github.com/gnu-mcu-eclipse/org.eclipse.epp.packages/releases),
+[Eclipse IDE for Embedded C/C++ Developers](https://www.eclipse.org/downloads/packages/)
 which packs the official **Eclipse IDE for C/C++ Developers** release with
 all **Eclipse Embedded CDT plug-ins** already installed.
+
+Older packages are available from GitHub
+[Releases](https://github.com/eclipse-embed-cdt/org.eclipse.epp.packages/releases/).
 
 ### Eclipse Marketplace
 
@@ -34,10 +41,6 @@ Eclipse Marketplace; search for _Embedded CDT_.
    **Note:** This site is not always functional; use it carefully,
    back up your workspace, and do not use it for production projects.
 
-## Maintainer info
-
-Plese read the separate [README-MAINTAINER.md](README-MAINTAINER.md) page.
-
 ## Run-time dependencies
 
 Starting with v6.x, the minimum requirements for running the Eclipse
@@ -51,9 +54,18 @@ The recommended:
 - JavaSE-11 or later
 - Eclipse 2020-09 or later
 
+## Support
+
+For support, please check the
+[web support](https://eclipse-embed-cdt.github.io/support/) page.
+
+## Maintainer info
+
+Plese read the separate [README-MAINTAINER](README-MAINTAINER.md) page.
+
 ## License
 
-Copyright (c) 2012, 2020 Liviu Ionescu and others.
+Copyright (c) 2012, 2021 Liviu Ionescu and others.
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
