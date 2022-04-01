@@ -228,6 +228,9 @@ public class PeripheralRendering extends AbstractTableRendering
 		addDebugEventListener();
 		addToSyncService();
 		trackTreeSelectionChanges();
+		// Refresh the UI, since while initialising the controls 
+		// it would have missed some debug events
+		fRefreshJob.schedule();		
 		return composite;
 	}
 
