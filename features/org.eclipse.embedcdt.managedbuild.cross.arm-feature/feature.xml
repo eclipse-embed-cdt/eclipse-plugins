@@ -15,7 +15,7 @@
 <feature
       id="org.eclipse.embedcdt.managedbuild.cross.arm"
       label="%featureName"
-      version="6.2.0.qualifier"
+      version="6.2.1.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.embedcdt.managedbuild.cross.arm"
       license-feature="org.eclipse.license"

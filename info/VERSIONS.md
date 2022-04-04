@@ -786,7 +786,7 @@ In project folder:
 
 ```
 ilg@wks plugins % find . -name MANIFEST.MF ! -path '*/target/*' -exec grep 'bundle-version=' {} \; | sed -e 's|^.* ||' | sed -e 's|,$||' | sort -u
-org.eclipse.cdt.core;bundle-version="6.2.0"
+org.eclipse.cdt.core;bundle-version="6.2.1"
 org.eclipse.cdt.debug.core;bundle-version="8.1.0"
 org.eclipse.cdt.debug.gdbjtag.core;bundle-version="9.0.0"
 org.eclipse.cdt.debug.gdbjtag.ui;bundle-version="8.0.0"
