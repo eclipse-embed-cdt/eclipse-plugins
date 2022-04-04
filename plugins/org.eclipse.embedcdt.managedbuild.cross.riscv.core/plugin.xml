@@ -1478,13 +1478,43 @@
 					</enumeratedOptionValue>
 					<enumeratedOptionValue
 						command="-std=c++2a"
-						id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.std.cpp2a"
+						id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.cpp2a"
 						name="%option.cpp.compiler.std.cpp2a">
 					</enumeratedOptionValue>
 					<enumeratedOptionValue
+						command="-std=c++20"
+						id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.cpp20"
+						name="%option.cpp.compiler.std.cpp20">
+					</enumeratedOptionValue>
+					<enumeratedOptionValue
 						command="-std=gnu++2a"
-						id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.std.gnucpp2a"
+						id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp2a"
 						name="%option.cpp.compiler.std.gnucpp2a">
+					</enumeratedOptionValue>
+					<enumeratedOptionValue
+						command="-std=gnu++20"
+						id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp20"
+						name="%option.cpp.compiler.std.gnucpp20">
+					</enumeratedOptionValue>
+					<enumeratedOptionValue
+						command="-std=c++2b"
+						id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.cpp2b"
+						name="%option.cpp.compiler.std.cpp2b">
+					</enumeratedOptionValue>
+					<enumeratedOptionValue
+						command="-std=c++23"
+						id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.cpp23"
+						name="%option.cpp.compiler.std.cpp23">
+					</enumeratedOptionValue>
+					<enumeratedOptionValue
+						command="-std=gnu++2b"
+						id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp2b"
+						name="%option.cpp.compiler.std.gnucpp2b">
+					</enumeratedOptionValue>
+					<enumeratedOptionValue
+						command="-std=gnu++23"
+						id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp23"
+						name="%option.cpp.compiler.std.gnucpp23">
 					</enumeratedOptionValue>
 				</option>
 				<option
