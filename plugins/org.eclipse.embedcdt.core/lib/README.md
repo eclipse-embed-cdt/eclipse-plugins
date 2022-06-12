@@ -1,6 +1,8 @@
+# Dependencies
+
 ## org.jsoup
 
-The `org.jsoup_1.7.2.v201411291515.jar` archive is downloaded from 
+The `org.jsoup_1.7.2.v201411291515.jar` archive is downloaded from
 [Orbit R20201130205003](https://download.eclipse.org/tools/orbit/downloads/drops/R20201130205003/).
 
 ## JSON
@@ -15,8 +17,7 @@ https://code.google.com/archive/p/json-simple/downloads
     * **Add...** `lib/json-simple-1.1.1.json`
   * **Exported Packages**
     * **Add...** `org.json.simple`
-     
-     
+
 ## Eclipse Orbit
 
 [Downloads](https://download.eclipse.org/tools/orbit/downloads/)
@@ -25,14 +26,14 @@ From [Bugzilla](https://dev.eclipse.org/ipzilla/show_bug.cgi?id=21415#c27)
 
 Already approved
 
-```
+```console
 > ./plugins/org.eclipse.embedcdt.core/lib/json-simple-1.1.1.jar
 Already approved. CQ#9858
 ```
 
 Submitted as separate CQ
 
-```
+```console
 > ./plugins/org.eclipse.embedcdt.core/lib/org.eclipse.embedcdt.core.liqp-0.6.8.jar
 
 Good contender for first submission. It appears to be MIT license and I don't
@@ -42,7 +43,7 @@ https://github.com/bkiers/Liqp/releases/tag/org.eclipse.embedcdt.core.liqp-0.6.8
 
 To be upgraded:
 
-```
+```console
 > ./plugins/org.eclipse.embedcdt.core/lib/ST4-4.0.7.jar
 Similar versions already approved - so if you can use one of them it will be a
 little easier. CQ#14504 is for 4.0.8
@@ -68,7 +69,6 @@ Jackson comment as per above.
 Jackson comment as per above.
 
 ```
-
 
 ### antlr ST4-*.jar
 
@@ -104,7 +104,3 @@ https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.9.9
 
 https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations/2.9.9
 https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.9.9/jackson-annotations-2.9.9.jar
-
-
-
-
