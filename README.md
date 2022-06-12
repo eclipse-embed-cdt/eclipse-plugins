@@ -30,14 +30,14 @@ Eclipse Marketplace; search for _Embedded CDT_.
 
 ### Eclipse Update Sites
 
-- Stable: `https://download.eclipse.org/embed-cdt/updates/v6/`  
+- Stable: `https://download.eclipse.org/embed-cdt/updates/v6/`
    This is the official release; it is also referred by the Eclipse
    Marketplace and the same content is packed as **Eclipse IDE for Embedded C/C++ Developers**.
-- Pre-release versions: `https://download.eclipse.org/embed-cdt/updates/v6-test/`  
+- Pre-release versions: `https://download.eclipse.org/embed-cdt/updates/v6-test/`
    Usually this site should be safe, but use it with caution.
 - Development versions: `https://download.eclipse.org/embed-cdt/builds/develop/p2`
    Sometimes you can use this site to test features that are not
-   completely implemented, or that might change before a final version is released.  
+   completely implemented, or that might change before a final version is released.
    **Note:** This site is not always functional; use it carefully,
    back up your workspace, and do not use it for production projects.
 
@@ -61,7 +61,7 @@ For support, please check the
 
 ## Maintainer info
 
-Plese read the separate [README-MAINTAINER](README-MAINTAINER.md) page.
+Please read the separate [README-MAINTAINER](README-MAINTAINER.md) page.
 
 ## License
 

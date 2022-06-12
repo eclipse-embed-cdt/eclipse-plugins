@@ -474,12 +474,12 @@ Pull new commits.
 ### package.embedcpp
 
 To change the default preferences, edit the
-`pacakges/org.eclipse.epp.package.embedcpp/plugin_customization.ini`
+`packages/org.eclipse.epp.package.embedcpp/plugin_customization.ini`
 
 ### package.embedcpp.feature
 
 If necessary, update the text displayed in the Downloads page, it is in
-`pacakges/org.eclipse.epp.package.embedcpp.feature/epp.website.xml` file, the
+`packages/org.eclipse.epp.package.embedcpp.feature/epp.website.xml` file, the
 `<description>` element.
 
 Update the version in **NewAndNoteworthy**, in the same file.
