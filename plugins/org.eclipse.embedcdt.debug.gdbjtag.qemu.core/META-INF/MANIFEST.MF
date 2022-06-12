@@ -4,7 +4,7 @@ Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.debug.gdbjtag.qemu.core;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Bundle-Activator: org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.core.Activator
-Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.2.1",
+Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.2.2",
  org.eclipse.embedcdt.debug.gdbjtag.core;bundle-version="5.1.0",
  org.eclipse.cdt.core;bundle-version="7.0.0",
  org.eclipse.cdt.debug.gdbjtag.core;bundle-version="10.0.0",

@@ -3,7 +3,7 @@ Prepare for a future version that will upgrade to 2020-09.
 ## CDT 10.0.0
 
 ```
-ilg@wks plugins % ls  *.jar | sed -e 's|\.[0-9v\-]*\.jar||' | sed -e '/\.source/d' | sed -e 's|_|  |'                                                                                      
+ilg@wks plugins % ls  *.jar | sed -e 's|\.[0-9v\-]*\.jar||' | sed -e '/\.source/d' | sed -e 's|_|  |'
 com.google.gson  2.8.2
 javax.activation  1.1.0
 javax.xml.bind  2.2.0
@@ -125,7 +125,7 @@ org.eclipse.tools.templates.core  1.2.0
 org.eclipse.tools.templates.freemarker  1.2.0
 org.eclipse.tools.templates.ui  1.2.0
 org.freemarker  2.3.22
-ilg@wks plugins % 
+ilg@wks plugins %
 ```
 
 ```
@@ -786,7 +786,7 @@ In project folder:
 
 ```
 ilg@wks plugins % find . -name MANIFEST.MF ! -path '*/target/*' -exec grep 'bundle-version=' {} \; | sed -e 's|^.* ||' | sed -e 's|,$||' | sort -u
-org.eclipse.cdt.core;bundle-version="6.2.1"
+org.eclipse.cdt.core;bundle-version="6.2.2"
 org.eclipse.cdt.debug.core;bundle-version="8.1.0"
 org.eclipse.cdt.debug.gdbjtag.core;bundle-version="9.0.0"
 org.eclipse.cdt.debug.gdbjtag.ui;bundle-version="8.0.0"

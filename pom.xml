@@ -5,7 +5,7 @@
   are made available under the terms of the Eclipse Public License 2.0
   which accompanies this distribution, and is available at
   https://www.eclipse.org/legal/epl-2.0/
-  
+
   SPDX-License-Identifier: EPL-2.0
 
   Contributors:
@@ -19,7 +19,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<!-- https://maven.apache.org/pom.html groupId:artifactId:version are all 
+	<!-- https://maven.apache.org/pom.html groupId:artifactId:version are all
 		required fields, acting much like an address and timestamp in one. -->
 	<!-- Generally unique amongst an organization or a project. -->
 	<artifactId>ilg.gnumcueclipse.root</artifactId>
@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>org.eclipse.embedcdt</groupId>
 		<artifactId>org.eclipse.embedcdt.parent</artifactId>
-		<version>6.2.1-SNAPSHOT</version>
+		<version>6.2.2-SNAPSHOT</version>
 		<relativePath>parent/pom.xml</relativePath>
 	</parent>
 
@@ -96,20 +96,20 @@
 		<module>features/org.eclipse.embedcdt.managedbuild.cross.arm-feature</module>
 
 		<module>plugins/org.eclipse.embedcdt.templates.core</module>
-		
+
 		<module>branding/org.eclipse.embedcdt.templates.cortexm-branding</module>
 		<module>plugins/org.eclipse.embedcdt.templates.cortexm.ui</module>
 		<module>features/org.eclipse.embedcdt.templates.cortexm-feature</module>
-		
+
 		<module>branding/org.eclipse.embedcdt.templates.stm-branding</module>
 		<module>plugins/org.eclipse.embedcdt.templates.stm.ui</module>
 		<module>features/org.eclipse.embedcdt.templates.stm-feature</module>
-		
+
 		<module>branding/org.eclipse.embedcdt.templates.freescale-branding</module>
 		<module>plugins/org.eclipse.embedcdt.templates.freescale.ui</module>
 		<module>plugins/org.eclipse.embedcdt.templates.freescale.pe.ui</module>
 		<module>features/org.eclipse.embedcdt.templates.freescale-feature</module>
-		
+
 		<module>branding/org.eclipse.embedcdt.templates.ad-branding</module>
 		<module>plugins/org.eclipse.embedcdt.templates.ad.ui</module>
 		<module>features/org.eclipse.embedcdt.templates.ad-feature</module>
@@ -123,10 +123,10 @@
 		<module>branding/org.eclipse.embedcdt.templates.sifive-branding</module>
 		<module>plugins/org.eclipse.embedcdt.templates.sifive.ui</module>
 		<module>features/org.eclipse.embedcdt.templates.sifive-feature</module>
-		
+
 	</modules>
 
 	<name>Embedded C/C++ Root</name>
-	
+
 	<url>https://projects.eclipse.org/projects/iot.embed-cdt/</url>
 </project>

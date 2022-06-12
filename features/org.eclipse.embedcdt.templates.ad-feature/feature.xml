@@ -5,7 +5,7 @@
   are made available under the terms of the Eclipse Public License 2.0
   which accompanies this distribution, and is available at
   https://www.eclipse.org/legal/epl-2.0/
-  
+
   SPDX-License-Identifier: EPL-2.0
 
   Contributors:
@@ -14,7 +14,7 @@
 <feature
       id="org.eclipse.embedcdt.templates.ad"
       label="%featureName"
-      version="6.2.1.qualifier"
+      version="6.2.2.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.embedcdt.templates.ad"
       license-feature="org.eclipse.license"

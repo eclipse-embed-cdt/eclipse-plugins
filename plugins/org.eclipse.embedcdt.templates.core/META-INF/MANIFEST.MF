@@ -4,7 +4,7 @@ Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.templates.core;singleton:=true
 Bundle-Version: 3.0.0.qualifier
 Bundle-Activator: org.eclipse.embedcdt.internal.templates.core.Activator
-Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.2.1",
+Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.2.2",
  org.eclipse.cdt.core;bundle-version="7.0.0",
  org.eclipse.cdt.managedbuilder.core;bundle-version="9.0.0",
  org.eclipse.core.resources;bundle-version="3.13.800",

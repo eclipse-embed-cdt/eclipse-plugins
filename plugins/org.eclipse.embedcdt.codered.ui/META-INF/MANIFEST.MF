@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.cdt.ui;bundle-version="7.0.0",
  org.eclipse.ui.console;bundle-version="3.9.300",
  org.eclipse.ui.ide;bundle-version="3.17.200",
  org.eclipse.ui.workbench;bundle-version="3.120.0",
- org.eclipse.embedcdt.ui;bundle-version="6.2.1"
+ org.eclipse.embedcdt.ui;bundle-version="6.2.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor

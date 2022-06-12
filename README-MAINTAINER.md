@@ -42,8 +42,8 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- <https://download.eclipse.org/embed-cdt/releases/6.2.1/org.eclipse.embedcdt.repository-6.2.1-202204041943.zip>
-- <https://download.eclipse.org/embed-cdt/releases/6.2.1/p2/>
+- <https://download.eclipse.org/embed-cdt/releases/6.2.2/org.eclipse.embedcdt.repository-6.2.2-202204041943.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.2.2/p2/>
 
 The official download page is
 
@@ -91,7 +91,7 @@ page, click the
 [Milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/)
 button and add a
 [new](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/new/)
-milestone. As title, use the current version, like _v6.2.1_.
+milestone. As title, use the current version, like _v6.2.2_.
 
 ### Update version in README-MAINTENANCE
 
@@ -118,7 +118,7 @@ number, like `[#122]`;
 For the plug-ins that were modified, increase the specific version
 (like _1.2.3_).
 
-For all features, increase the common version (like _6.2.1_); be sure
+For all features, increase the common version (like _6.2.2_); be sure
 the composite records are not updated at this moment, they require
 new lines, added later.
 
@@ -200,14 +200,14 @@ page, login and click the
 [Create a new release](https://projects.eclipse.org/node/18638/create-release/)
 link in the right side bar, below Releases (it shows only after login).
 
-Name it like `6.2.1` (no v).
+Name it like `6.2.2` (no v).
 
 Click on Edit, The Basics; switch to Source mode
 
 Start with _Release candidate_ (Header 3).
 
 ```html
-<p>Version <strong>6.2.1</strong> is a maintenance release; it ....</p>
+<p>Version <strong>6.2.2</strong> is a maintenance release; it ....</p>
 
 <h3>Release candidate</h3>
 
@@ -246,14 +246,14 @@ In Eclipse:
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release
 candidate p2 URL (like
-`https://download.eclipse.org/embed-cdt/release-candidates/6.2.1-202204041943/p2/`
+`https://download.eclipse.org/embed-cdt/release-candidates/6.2.2-202204041943/p2/`
 and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
 - Save
-- commit _embedcdt: update for 6.2.1-202204041943'_
+- commit _embedcdt: update for 6.2.2-202204041943'_
 - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 - _Signed-off-by: Liviu Ionescu &lt;ilg@livius.net&gt;_
 
@@ -282,7 +282,7 @@ In about one hour it'll automatically rebuild the staging repo:
 
 Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
 use a subject like
-**Embed CDT v6.2.1-202204041943 release candidate**,
+**Embed CDT v6.2.2-202204041943 release candidate**,
 and pass a link to the release page, available at:
 
 - <https://projects.eclipse.org/projects/iot.embed-cdt/>
@@ -297,7 +297,7 @@ Go to the release candidate folder
 
 - [https://download.eclipse.org/embed-cdt/release-candidates/](https://download.eclipse.org/embed-cdt/release-candidates/)
 
-Copy the tag and enter it in Git, like `v6.2.1-202204041943` (with `v`).
+Copy the tag and enter it in Git, like `v6.2.2-202204041943` (with `v`).
 
 ## Publish the final release
 
@@ -306,9 +306,9 @@ When the plug-ins are considered stable:
 - in `eclipse-plugins.git`, the master branch, edit both .xml files
   - `repositories/org.eclipse.embededcdt-repository/composite/compositeArtifacts.xml`
   - `repositories/org.eclipse.embededcdt-repository/composite/compositeContent.xml`
-  - add new child like `<child location='../../releases/6.2.1/p2'/>`
+  - add new child like `<child location='../../releases/6.2.2/p2'/>`
   - update `p2.timestamp` to the value shown at the end of the `make-release-candidate-from-master`
-- **push** master with a message like _add 6.2.1 to composite_
+- **push** master with a message like _add 6.2.2 to composite_
 
 - go to <https://ci.eclipse.org/embed-cdt/>
 - **login** (otherwise the next link is not visible!)
@@ -330,7 +330,7 @@ Both can be used in Eclipse to **Install New Software**.
 The public update URLs are:
 
 - <https://download.eclipse.org/embed-cdt/updates/v6/>
-- <https://download.eclipse.org/embed-cdt/releases/6.2.1/p2/>
+- <https://download.eclipse.org/embed-cdt/releases/6.2.2/p2/>
 
 ### Update the Eclipse Marketplace records
 
@@ -350,12 +350,12 @@ In the `develop` branch, in `_posts/release`, add a new release page.
 As links for the latest two, open <https://download.eclipse.org/embed-cdt/releases/>
 and get the archive URL, like:
 
-- <https://download.eclipse.org/embed-cdt/releases/6.2.1/org.eclipse.embedcdt.repository-6.2.1-202204041943.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.2.2/org.eclipse.embedcdt.repository-6.2.2-202204041943.zip>
 
 Isolate the part starting with `/embed-cdt/...` and update the URLs to use the download redirect:
 
-- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.2.1/org.eclipse.embedcdt.repository-6.2.1-202204041943.zip>
-- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.2.1/org.eclipse.embedcdt.repository-6.2.1-202204041943.zip.sha>
+- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.2.2/org.eclipse.embedcdt.repository-6.2.2-202204041943.zip>
+- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.2.2/org.eclipse.embedcdt.repository-6.2.2-202204041943.zip.sha>
 
 Update the milestone URL.
 
@@ -363,7 +363,7 @@ Copy/paste the features/plug-ins from the console output of the
 [make-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-from-master/)
 Jenkins job.
 
-- commit with a message like _Eclipse Embedded CDT plug-ins v6.2.1 released_.
+- commit with a message like _Eclipse Embedded CDT plug-ins v6.2.2 released_.
 - push the `develop` branch
 - wait for GitHub Actions job to complete
   (<https://github.com/eclipse-embed-cdt/web-jekyll/actions>)
@@ -377,10 +377,10 @@ Jenkins job.
 
 In [GitHub releases](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases) add a new release
 
-- tag: _v6.2.1_ (with `v`)
-- title _Eclipse Embedded CDT plug-ins v6.2.1_
+- tag: _v6.2.2_ (with `v`)
+- title _Eclipse Embedded CDT plug-ins v6.2.2_
 - copy/paste from the release page
-- add `[Continue reading »](https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.2.1-released/)` with a link to the web page
+- add `[Continue reading »](https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.2.2-released/)` with a link to the web page
 - do not attach files
 - click **Publish release**
 
@@ -388,7 +388,7 @@ In [GitHub releases](https://github.com/eclipse-embed-cdt/eclipse-plugins/releas
 
 In [GitHub milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones):
 
-- close the v6.2.1 milestone
+- close the v6.2.2 milestone
 
 ### Update the Eclipse release record
 
@@ -399,13 +399,13 @@ and select the new release
 - replace the entire content with links to GitHub:
 
 ```html
-<p>Version <strong>6.2.1</strong> is a new major/minor/service release; it updates ...</p>
+<p>Version <strong>6.2.2</strong> is a new major/minor/service release; it updates ...</p>
 
 <p>Fore more details, please read the project web release pages:</p>
 
 <ul>
  <li><a href="https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/package-2020-12-released/">Eclipse IDE for Embedded C/C++ Developers 2020-12 released</a>&nbsp;(for installing a new Eclipse)</li>
- <li><a href="https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.2.1-released/">Eclipse Embedded CDT plug-ins v6.2.1 released</a>&nbsp;(for updating the plug-ins on an existing Eclipse)</li>
+ <li><a href="https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.2.2-released/">Eclipse Embedded CDT plug-ins v6.2.2 released</a>&nbsp;(for updating the plug-ins on an existing Eclipse)</li>
 </ul>
 ```
 
@@ -431,14 +431,14 @@ In Eclipse:
 - select **Mapped Repository**
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release p2 URL
-(like `https://download.eclipse.org/embed-cdt/releases/6.2.1/p2/`
+(like `https://download.eclipse.org/embed-cdt/releases/6.2.2/p2/`
 and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
 - commit with a message like:
-  - _embedcdt: update for 6.2.1_
+  - _embedcdt: update for 6.2.2_
   - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 
 ```bash
@@ -520,13 +520,13 @@ available from:
 ### Announce release
 
 Announce the release to the **embed-cdt-dev@eclipse.org** list;
-use a subject like **Eclipse Embedded CDT plug-ins v6.2.1 released**, and
+use a subject like **Eclipse Embedded CDT plug-ins v6.2.2 released**, and
 pass a link to the release page.
 
 ## Share on Twitter
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@EmbedCDT` account, enter a message like
-  **Eclipse Embedded CDT plug-ins v6.2.1 released** and on the next line
+  **Eclipse Embedded CDT plug-ins v6.2.2 released** and on the next line
   paste the link to the release
 - click the Tweet button
