@@ -1,7 +1,6 @@
 target/
 bin/
 content.xml
-.vscode/
 vscode.mac.command
 .metadata
 
