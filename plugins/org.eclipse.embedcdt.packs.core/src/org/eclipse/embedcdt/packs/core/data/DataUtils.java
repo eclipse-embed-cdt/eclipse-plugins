@@ -37,7 +37,7 @@ import org.eclipse.embedcdt.packs.core.IConsoleStream;
 
 public class DataUtils {
 
-	private final static int TIME_OUT = 60 * 000;
+	private final static int TIME_OUT = 60 * 1000;
 
 	public static InputStream checkForUtf8BOM(InputStream inputStream) throws IOException {
 
