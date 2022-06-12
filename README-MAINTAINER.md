@@ -142,6 +142,8 @@ Be sure the repo is clean and push the `develop` branch to GitHub.
 
 This will also trigger a GitHub Actions CI job that will run a maven build.
 
+- <https://github.com/eclipse-embed-cdt/eclipse-plugins/actions>
+
 ### Trigger the Jenkins development build
 
 - go to [https://ci.eclipse.org/embed-cdt/job/build-plug-ins/](https://ci.eclipse.org/embed-cdt/job/build-plug-ins/)
