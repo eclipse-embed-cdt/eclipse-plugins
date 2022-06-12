@@ -1,0 +1,18 @@
+{
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"editor.tabSize": 4,
+	"cSpell.ignoreWords": [
+		"Ionescu",
+		"Liviu",
+		"Multibranch",
+		"aggr",
+		"embedcdt",
+		"embedcpp",
+		"embededcdt",
+		"lionescu",
+		"plugins",
+		"refs",
+		"simrel"
+	]
+}
