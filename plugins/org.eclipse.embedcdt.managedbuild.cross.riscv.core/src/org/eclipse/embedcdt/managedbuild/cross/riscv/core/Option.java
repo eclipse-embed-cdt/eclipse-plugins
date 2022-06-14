@@ -288,11 +288,7 @@ public class Option {
 			}
 		}
 
-		if (sReturn != null) {
-			sReturn = sReturn.trim();
-		}
-
-		return sReturn;
+		return sReturn.trim();
 	}
 
 	private static String getRiscvTargetAbi(IConfiguration config) {
@@ -310,20 +306,13 @@ public class Option {
 			}
 		}
 
-		if (sReturn != null) {
-			sReturn = sReturn.trim();
-		}
-
-		return sReturn;
+		return sReturn.trim();
 	}
 
 	private static String getOptimizationFlags(IConfiguration config) {
 
 		String sReturn = "";
 		String sValue;
-		if (sReturn != null) {
-			sReturn = sReturn.trim();
-		}
 
 		sValue = getOptionEnumCommand(config, OPTION_OPTIMIZATION_LEVEL);
 		if (sValue != null && sValue.length() > 0) {
@@ -395,11 +384,7 @@ public class Option {
 			sReturn += " " + sValue;
 		}
 
-		if (sReturn != null) {
-			sReturn = sReturn.trim();
-		}
-
-		return sReturn;
+		return sReturn.trim();
 	}
 
 	private static String getWarningFlags(IConfiguration config) {
@@ -497,19 +482,13 @@ public class Option {
 			sReturn += " " + sValue;
 		}
 
-		if (sReturn != null) {
-			sReturn = sReturn.trim();
-		}
-
-		return sReturn;
+		return sReturn.trim();
 	}
 
 	private static String getDebuggingFlags(IConfiguration config) {
 
 		String sReturn = "";
 		String sValue;
-		if (sReturn != null)
-			sReturn = sReturn.trim();
 
 		sValue = getOptionEnumCommand(config, OPTION_DEBUGGING_LEVEL);
 		if (sValue != null && sValue.length() > 0) {
@@ -536,7 +515,7 @@ public class Option {
 			sReturn += " " + sValue;
 		}
 
-		return sReturn;
+		return sReturn.trim();
 	}
 
 	public static String getToolChainFlags(IConfiguration config) {
@@ -603,11 +582,7 @@ public class Option {
 			sReturn += " " + sValue;
 		}
 
-		if (sReturn != null) {
-			sReturn = sReturn.trim();
-		}
-
-		return sReturn;
+		return sReturn.trim();
 	}
 
 	// ------------------------------------------------------------------------
