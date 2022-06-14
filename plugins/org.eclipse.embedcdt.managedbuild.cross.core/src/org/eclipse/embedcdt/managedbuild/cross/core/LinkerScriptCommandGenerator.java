@@ -47,14 +47,14 @@ public class LinkerScriptCommandGenerator implements IOptionCommandGenerator {
 
 					if (value != null) {
 						value = value.trim();
-					}
 
-					if (value.length() > 0) {
+						if (!value.isEmpty()) {
 
-						value = CdtVariableResolver.resolveToString(value, macroSubstitutor);
-						command.append("-T ");
-						command.append(Utils.quoteWhitespaces(value));
-						command.append(" ");
+							value = CdtVariableResolver.resolveToString(value, macroSubstitutor);
+							command.append("-T ");
+							command.append(Utils.quoteWhitespaces(value));
+							command.append(" ");
+						}
 					}
 				}
 			}
