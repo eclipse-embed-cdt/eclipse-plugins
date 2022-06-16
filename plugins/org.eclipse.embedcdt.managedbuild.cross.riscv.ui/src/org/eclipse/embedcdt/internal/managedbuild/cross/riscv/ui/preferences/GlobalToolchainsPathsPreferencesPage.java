@@ -36,6 +36,9 @@ import org.eclipse.embedcdt.ui.LabelFakeFieldEditor;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
@@ -148,6 +151,11 @@ public class GlobalToolchainsPathsPreferencesPage extends FieldEditorPreferenceP
 
 			addField(toolchainPathField);
 		}
+
+		Label message = new Label(getFieldEditorParent(), SWT.NONE);
+		GridData layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1);
+		message.setLayoutData(layoutData);
+		message.setText(Messages.SetCrossCommandWizardPage_text);
 	}
 
 	// ------------------------------------------------------------------------

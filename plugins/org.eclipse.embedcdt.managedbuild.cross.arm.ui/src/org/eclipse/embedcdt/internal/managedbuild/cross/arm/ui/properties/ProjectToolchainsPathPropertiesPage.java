@@ -36,6 +36,9 @@ import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Label;
 
 public class ProjectToolchainsPathPropertiesPage extends FieldEditorPropertyPage {
 
@@ -123,6 +126,11 @@ public class ProjectToolchainsPathPropertiesPage extends FieldEditorPropertyPage
 					Messages.ToolchainPaths_label, getFieldEditorParent(), isStrict);
 			addField(toolchainPathField);
 		}
+
+		Label message = new Label(getFieldEditorParent(), SWT.NONE);
+		GridData layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1);
+		message.setLayoutData(layoutData);
+		message.setText(Messages.SetCrossCommandWizardPage_text);
 	}
 
 	// ------------------------------------------------------------------------

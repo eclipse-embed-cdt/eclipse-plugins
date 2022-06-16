@@ -70,6 +70,8 @@ public class Messages extends NLS {
 	public static String WorkspaceToolchainsPathsPreferencesPage_description;
 	public static String GlobalToolchainsPathsPreferencesPage_description;
 
+	public static String SetCrossCommandWizardPage_text;
+
 	// ------------------------------------------------------------------------
 
 	static {

@@ -202,6 +202,11 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		});
 		layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
 		button.setLayoutData(layoutData);
+
+		Label message = new Label(fComposite, SWT.NONE);
+		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1);
+		message.setLayoutData(layoutData);
+		message.setText(Messages.SetCrossCommandWizardPage_text);
 	}
 
 	@Override
