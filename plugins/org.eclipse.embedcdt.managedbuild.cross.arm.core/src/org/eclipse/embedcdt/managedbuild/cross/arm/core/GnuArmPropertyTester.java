@@ -53,20 +53,29 @@ public class GnuArmPropertyTester extends PropertyTester {
 					if (toolchain == null) {
 						continue;
 					}
-					IOption option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
-					if (option == null) {
-						continue;
-					}
-					try {
-						String name = option.getStringValue();
-						// Might be empty
-						if (name != null) {
-							return true;
+					// If there is either a toolchain ID or a name.
+					IOption optionId = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_ID);
+					if (optionId != null) {
+						try {
+							String toolchainId = optionId.getStringValue();
+							// Might be empty
+							if (toolchainId != null) {
+								return true;
+							}
+						} catch (BuildException e) {
 						}
-					} catch (BuildException e) {
-
 					}
-
+					IOption optionName = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
+					if (optionName != null) {
+						try {
+							String toolchainName = optionName.getStringValue();
+							// Might be empty
+							if (toolchainName != null) {
+								return true;
+							}
+						} catch (BuildException e) {
+						}
+					}
 				}
 
 				return false;
