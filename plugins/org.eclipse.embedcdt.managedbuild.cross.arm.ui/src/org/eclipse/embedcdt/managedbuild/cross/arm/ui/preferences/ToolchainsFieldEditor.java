@@ -28,8 +28,8 @@ public class ToolchainsFieldEditor extends ComboFieldEditor {
 
 		int i = 1;
 		for (ToolchainDefinition t : ToolchainDefinition.getList()) {
-			a[i][0] = t.getName();
-			a[i][1] = t.getName();
+			a[i][0] = t.getFullName();
+			a[i][1] = t.getId();
 			++i;
 		}
 		return a;

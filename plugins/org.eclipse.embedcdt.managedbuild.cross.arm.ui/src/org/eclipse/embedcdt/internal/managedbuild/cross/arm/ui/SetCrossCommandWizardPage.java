@@ -56,6 +56,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	private Text fPathTxt;
 	private Combo fToolchainCombo;
 	private int fSelectedToolchainIndex;
+	private String fSelectedToolchainId;
 	private String fSelectedToolchainName;
 
 	// ------------------------------------------------------------------------
@@ -66,6 +67,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	public static final String CROSS_WIZARD = "wizard"; //$NON-NLS-1$
 	public static final String CROSS_PROJECT_NAME = "projectName"; //$NON-NLS-1$
 
+	public static final String CROSS_TOOLCHAIN_ID = "toolchain.id"; //$NON-NLS-1$
 	public static final String CROSS_TOOLCHAIN_NAME = "toolchain.name"; //$NON-NLS-1$
 	public static final String CROSS_TOOLCHAIN_PATH = "toolchain.path"; //$NON-NLS-1$
 
@@ -76,6 +78,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 
 		// initialise properties in local storage
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_PATH, ""); //$NON-NLS-1$
+		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_ID, ""); //$NON-NLS-1$
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_NAME, ""); //$NON-NLS-1$
 	}
 
@@ -128,23 +131,33 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		final PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
 
 		// decide which one is selected
+		fSelectedToolchainIndex = -1;
 		try {
-			fSelectedToolchainName = persistentPreferences.getToolchainName();
-			// System.out.println("Previous toolchain name "
-			// + fSelectedToolchainName);
-			if (fSelectedToolchainName != null && fSelectedToolchainName.length() > 0) {
+			fSelectedToolchainId = persistentPreferences.getToolchainId();
+			if (!fSelectedToolchainId.isEmpty()) {
 				try {
-					fSelectedToolchainIndex = ToolchainDefinition.findToolchainByName(fSelectedToolchainName);
+					fSelectedToolchainIndex = ToolchainDefinition.findToolchainById(fSelectedToolchainId);
 				} catch (IndexOutOfBoundsException e) {
-					fSelectedToolchainIndex = ToolchainDefinition.getDefault();
 				}
-			} else {
-				fSelectedToolchainIndex = ToolchainDefinition.getDefault();
-				fSelectedToolchainName = ToolchainDefinition.getToolchain(fSelectedToolchainIndex).getName();
+			}
+
+			if (fSelectedToolchainIndex == -1) {
+				fSelectedToolchainName = persistentPreferences.getToolchainName();
+				if (!fSelectedToolchainName.isEmpty()) {
+					try {
+						fSelectedToolchainIndex = ToolchainDefinition.findToolchainByName(fSelectedToolchainName);
+					} catch (IndexOutOfBoundsException e) {
+					}
+				}
 			}
 		} catch (Exception e) {
-			fSelectedToolchainIndex = 0;
 		}
+		if (fSelectedToolchainIndex == -1) {
+			fSelectedToolchainIndex = ToolchainDefinition.getDefault();
+		}
+		fSelectedToolchainId = ToolchainDefinition.getToolchain(fSelectedToolchainIndex).getId();
+		fSelectedToolchainName = ToolchainDefinition.getToolchain(fSelectedToolchainIndex).getName();
+
 		updateToolchainNameProperty();
 
 		String toolchainSel = toolchains[fSelectedToolchainIndex];
@@ -155,12 +168,13 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 			public void widgetSelected(SelectionEvent event) {
 				// System.out.println("Combo " + toolchainCombo.getText());
 				fSelectedToolchainIndex = fToolchainCombo.getSelectionIndex();
+				fSelectedToolchainId = ToolchainDefinition.getToolchain(fSelectedToolchainIndex).getId();
 				fSelectedToolchainName = ToolchainDefinition.getToolchain(fSelectedToolchainIndex).getName();
 				updateToolchainNameProperty();
 
-				String crossCommandPath = persistentPreferences.getToolchainPath(fSelectedToolchainName, null);
+				String crossCommandPath = persistentPreferences.getToolchainPath(fSelectedToolchainId,
+						fSelectedToolchainName, null);
 				fPathTxt.setText(crossCommandPath);
-
 			}
 		});
 
@@ -169,7 +183,8 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		label.setText(Messages.SetCrossCommandWizardPage_path);
 
 		fPathTxt = new Text(fComposite, SWT.SINGLE | SWT.BORDER);
-		String crossCommandPath = persistentPreferences.getToolchainPath(fSelectedToolchainName, null);
+		String crossCommandPath = persistentPreferences.getToolchainPath(fSelectedToolchainId, fSelectedToolchainName,
+				null);
 		fPathTxt.setText(crossCommandPath);
 		updatePathProperty();
 
@@ -277,6 +292,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 
 	private void updateToolchainNameProperty() {
 		// save current toolchain name
+		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_ID, fSelectedToolchainId);
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_NAME, fSelectedToolchainName);
 	}
 

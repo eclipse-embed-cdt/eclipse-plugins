@@ -85,6 +85,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	private Combo fToolchainCombo;
 	private int fSelectedToolchainIndex;
+	private String fSelectedToolchainId;
 	private String fSelectedToolchainName;
 
 	private Combo fArchitectureCombo;
@@ -126,6 +127,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		return (IProject) fConfig.getManagedProject().getOwner();
 	}
 
+	@Deprecated
 	protected String getSelectedToolchainName() {
 
 		assert (fToolchainCombo != null);
@@ -140,6 +142,20 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		ToolchainDefinition td = ToolchainDefinition.getToolchain(index);
 
 		return td.getName();
+	}
+
+	protected ToolchainDefinition getSelectedToolchain() {
+
+		assert (fToolchainCombo != null);
+
+		int index;
+		try {
+			String sSelectedCombo = fToolchainCombo.getText();
+			index = ToolchainDefinition.findToolchainByFullName(sSelectedCombo);
+		} catch (NullPointerException e) {
+			index = 0;
+		}
+		return ToolchainDefinition.getToolchain(index);
 	}
 
 	@Override
@@ -443,7 +459,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 				}
 
 				if (ret == Window.OK) {
-					updateToolchainPath(getSelectedToolchainName());
+					updateToolchainPath(getSelectedToolchain());
 				}
 			}
 		});
@@ -527,14 +543,23 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			}
 		}
 
-		updateToolchainPath(td.getName());
+		updateToolchainPath(td);
 	}
 
+	@Deprecated
 	protected void updateToolchainPath(String toolchainName) {
 
 		assert (fConfig != null);
 		IProject project = (IProject) fConfig.getManagedProject().getOwner();
 		String toolchainPath = fPersistentPreferences.getToolchainPath(toolchainName, project);
+		fToolchainPathLabel.setText(toolchainPath);
+	}
+
+	protected void updateToolchainPath(ToolchainDefinition toolchain) {
+
+		assert (fConfig != null);
+		IProject project = (IProject) fConfig.getManagedProject().getOwner();
+		String toolchainPath = fPersistentPreferences.getToolchainPath(toolchain.getId(), toolchain.getName(), project);
 		fToolchainPathLabel.setText(toolchainPath);
 	}
 
@@ -658,30 +683,55 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		}
 
 		// create the selection array
-		String[] toolchains = new String[ToolchainDefinition.getSize()];
+		String[] toolchainsFullNames = new String[ToolchainDefinition.getSize()];
 		for (int i = 0; i < ToolchainDefinition.getSize(); ++i) {
-			toolchains[i] = ToolchainDefinition.getToolchain(i).getFullName();
+			toolchainsFullNames[i] = ToolchainDefinition.getToolchain(i).getFullName();
 		}
-		fToolchainCombo.setItems(toolchains);
+		fToolchainCombo.setItems(toolchainsFullNames);
+
+		fSelectedToolchainIndex = -1;
+
+		fSelectedToolchainId = Option.getOptionStringValue(config, Option.OPTION_TOOLCHAIN_ID);
+		if (fSelectedToolchainId != null && !fSelectedToolchainId.isEmpty()) {
+			try {
+				fSelectedToolchainIndex = ToolchainDefinition.findToolchainById(fSelectedToolchainId);
+			} catch (IndexOutOfBoundsException e) {
+			}
+		}
 
 		fSelectedToolchainName = Option.getOptionStringValue(config, Option.OPTION_TOOLCHAIN_NAME);
-
-		// System.out
-		// .println("Previous toolchain name " + fSelectedToolchainName);
-		if (fSelectedToolchainName != null && fSelectedToolchainName.length() > 0) {
-			try {
-				fSelectedToolchainIndex = ToolchainDefinition.findToolchainByName(fSelectedToolchainName);
-			} catch (IndexOutOfBoundsException e) {
-				fSelectedToolchainIndex = ToolchainDefinition.getDefault();
+		if (fSelectedToolchainIndex == -1) {
+			if (fSelectedToolchainName != null && !fSelectedToolchainName.isEmpty()) {
+				try {
+					fSelectedToolchainIndex = ToolchainDefinition.findToolchainByName(fSelectedToolchainName);
+				} catch (IndexOutOfBoundsException e) {
+				}
 			}
-		} else {
+		}
+
+		if (fSelectedToolchainIndex == -1) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("arm.Toolchains.updateControlsForConfig() no toolchain selected");
+				System.out.println("riscv.Toolchains.updateControlsForConfig() no toolchain selected");
 			}
 			// This is not a project created with the wizard
 			// (most likely it is the result of a toolchain change)
+			fSelectedToolchainId = fPersistentPreferences.getToolchainId();
+			if (!fSelectedToolchainId.isEmpty()) {
+				try {
+					fSelectedToolchainIndex = ToolchainDefinition.findToolchainById(fSelectedToolchainId);
+				} catch (IndexOutOfBoundsException e) {
+				}
+			}
+
 			fSelectedToolchainName = fPersistentPreferences.getToolchainName();
-			fSelectedToolchainIndex = ToolchainDefinition.findToolchainByName(fSelectedToolchainName);
+			if (fSelectedToolchainIndex == -1) {
+				if (!fSelectedToolchainName.isEmpty()) {
+					try {
+						fSelectedToolchainIndex = ToolchainDefinition.findToolchainByName(fSelectedToolchainName);
+					} catch (IndexOutOfBoundsException e) {
+					}
+				}
+			}
 
 			// Initialise .cproject options that were not done at project
 			// creation by the toolchain wizard
@@ -692,7 +742,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			}
 		}
 
-		String toolchainSel = toolchains[fSelectedToolchainIndex];
+		String toolchainSel = toolchainsFullNames[fSelectedToolchainIndex];
 		fToolchainCombo.setText(toolchainSel);
 
 		ToolchainDefinition toolchainDefinition = ToolchainDefinition.getToolchain(fSelectedToolchainIndex);
@@ -936,6 +986,10 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		// events to the option. Also do not use option.setValue()
 		// since this does not propagate notifications and the
 		// values are not saved to .cproject.
+
+		option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_ID); // $NON-NLS-1$
+		config.setOption(toolchain, option, td.getId());
+
 		option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
 		config.setOption(toolchain, option, td.getName());
 

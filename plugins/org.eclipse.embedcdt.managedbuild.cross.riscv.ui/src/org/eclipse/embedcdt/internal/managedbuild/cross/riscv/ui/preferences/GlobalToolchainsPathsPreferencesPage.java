@@ -31,6 +31,7 @@ import org.eclipse.embedcdt.internal.managedbuild.cross.riscv.ui.Messages;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.riscv.core.Option;
+import org.eclipse.embedcdt.managedbuild.cross.riscv.core.ToolchainDefinition;
 import org.eclipse.embedcdt.managedbuild.cross.riscv.ui.preferences.ToolchainsFieldEditor;
 import org.eclipse.embedcdt.ui.LabelFakeFieldEditor;
 import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
@@ -99,11 +100,11 @@ public class GlobalToolchainsPathsPreferencesPage extends FieldEditorPreferenceP
 
 		boolean isStrict;
 
-		FieldEditor toolchainNameField = new ToolchainsFieldEditor(PersistentPreferences.TOOLCHAIN_NAME_KEY,
+		FieldEditor toolchainNameField = new ToolchainsFieldEditor(PersistentPreferences.TOOLCHAIN_ID_KEY,
 				Messages.ToolchainName_label, getFieldEditorParent());
 		addField(toolchainNameField);
 
-		Set<String> toolchainNames = new HashSet<>();
+		Set<ToolchainDefinition> toolchains = new HashSet<>();
 
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for (int i = 0; i < projects.length; ++i) {
@@ -114,37 +115,65 @@ public class GlobalToolchainsPathsPreferencesPage extends FieldEditorPreferenceP
 					if (toolchain == null) {
 						continue;
 					}
-					IOption option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
-					if (option == null) {
-						continue;
-					}
-					try {
-						String name = option.getStringValue();
-						if (!name.isEmpty()) {
-							toolchainNames.add(name);
+					IOption optionId = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_ID);
+					if (optionId != null) {
+						try {
+							String toolchainId = optionId.getStringValue();
+							int ix = ToolchainDefinition.findToolchainById(toolchainId);
+							toolchains.add(ToolchainDefinition.getToolchain(ix));
+							continue;
+						} catch (BuildException e) {
+						} catch (IndexOutOfBoundsException e) {
 						}
-					} catch (BuildException e) {
-
+					}
+					IOption optionName = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
+					if (optionName != null) {
+						try {
+							String toolchainName = optionName.getStringValue();
+							int ix = ToolchainDefinition.findToolchainByName(toolchainName);
+							toolchains.add(ToolchainDefinition.getToolchain(ix));
+						} catch (BuildException e) {
+						} catch (IndexOutOfBoundsException e) {
+						}
 					}
 				}
 			}
 		}
 
-		if (toolchainNames.isEmpty()) {
-			toolchainNames.add(fPersistentPreferences.getToolchainName());
+		if (toolchains.isEmpty()) {
+			try {
+				String toolchainId = fPersistentPreferences.getToolchainId();
+				int ix = ToolchainDefinition.findToolchainById(toolchainId);
+				toolchains.add(ToolchainDefinition.getToolchain(ix));
+			} catch (IndexOutOfBoundsException e) {
+			}
 		}
 
-		for (String toolchainName : toolchainNames) {
+		if (toolchains.isEmpty()) {
+			try {
+				String toolchainName = fPersistentPreferences.getToolchainName();
+				int ix = ToolchainDefinition.findToolchainByName(toolchainName);
+				toolchains.add(ToolchainDefinition.getToolchain(ix));
+			} catch (IndexOutOfBoundsException e) {
+			}
+		}
 
-			FieldEditor labelField = new LabelFakeFieldEditor(toolchainName, Messages.ToolsPaths_ToolchainName_label,
-					getFieldEditorParent());
+		if (toolchains.isEmpty()) {
+			int ix = ToolchainDefinition.getDefault();
+			toolchains.add(ToolchainDefinition.getToolchain(ix));
+		}
+
+		for (ToolchainDefinition toolchain : toolchains) {
+
+			FieldEditor labelField = new LabelFakeFieldEditor(toolchain.getFullName(),
+					Messages.ToolsPaths_ToolchainName_label, getFieldEditorParent());
 			addField(labelField);
 
-			isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.GLOBAL_TOOLCHAIN_PATH_STRICT, true);
+			isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.WORKSPACE_TOOLCHAIN_PATH_STRICT, true);
 
-			String[] xpackNames = fDefaultPreferences.getToolchainXpackNames(toolchainName);
+			String[] xpackNames = fDefaultPreferences.getToolchainXpackNames(toolchain.getId(), toolchain.getName());
 
-			String key = PersistentPreferences.getToolchainKey(toolchainName);
+			String key = PersistentPreferences.getToolchainKey(toolchain.getId(), toolchain.getName());
 			FieldEditor toolchainPathField = new XpackDirectoryNotStrictFieldEditor(xpackNames, key,
 					Messages.ToolchainPaths_label, getFieldEditorParent(), isStrict);
 

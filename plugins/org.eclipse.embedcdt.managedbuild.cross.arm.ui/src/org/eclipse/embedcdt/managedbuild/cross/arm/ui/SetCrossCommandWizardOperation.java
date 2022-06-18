@@ -66,6 +66,8 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 		assert projectName != null;
 
+		String toolchainId = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
+				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_ID);
 		String toolchainName = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
 		String path = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
@@ -81,7 +83,8 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 		if (!toolchainName.isEmpty() && !path.isEmpty()) {
 			// Store persistent values in Eclipse scope
 			PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
-			persistentPreferences.putToolchainPath(toolchainName, path);
+			persistentPreferences.putToolchainPath(toolchainId, toolchainName, path);
+			persistentPreferences.putToolchainId(toolchainId);
 			persistentPreferences.putToolchainName(toolchainName);
 			persistentPreferences.flush();
 		}
@@ -119,6 +122,8 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 	private void updateOptions(IConfiguration config) throws BuildException {
 
+		String sToolchainId = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
+				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_ID);
 		String sToolchainName = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
 
@@ -127,10 +132,18 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 					+ sToolchainName + "\"");
 		}
 
-		int toolchainIndex;
+		int toolchainIndex = -1;
 		try {
-			toolchainIndex = ToolchainDefinition.findToolchainByName(sToolchainName);
+			toolchainIndex = ToolchainDefinition.findToolchainById(sToolchainId);
 		} catch (IndexOutOfBoundsException e) {
+		}
+		if (toolchainIndex == -1) {
+			try {
+				toolchainIndex = ToolchainDefinition.findToolchainByName(sToolchainName);
+			} catch (IndexOutOfBoundsException e) {
+			}
+		}
+		if (toolchainIndex == -1) {
 			toolchainIndex = ToolchainDefinition.getDefault();
 		}
 
