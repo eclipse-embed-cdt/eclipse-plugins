@@ -35,6 +35,8 @@ public abstract class ToolchainDefinition {
 	protected String fCmdObjdump;
 	protected String fCmdSize;
 
+	protected boolean fIsDeprecated;
+
 	// ------------------------------------------------------------------------
 
 	public ToolchainDefinition(String sName) {
@@ -51,6 +53,7 @@ public abstract class ToolchainDefinition {
 		fCmdObjcopy = "objcopy";
 		fCmdObjdump = "objdump";
 		fCmdSize = "size";
+		fIsDeprecated = false;
 	}
 
 	public ToolchainDefinition(String sName, String sPrefix) {
@@ -198,12 +201,27 @@ public abstract class ToolchainDefinition {
 		fCmdSize = cmdSize;
 	}
 
+	public boolean isDeprecated() {
+		return fIsDeprecated;
+	}
+
+	public void setIsDeprecated(boolean flag) {
+		fIsDeprecated = flag;
+	}
+
 	public String getFullCmdC() {
 		return getPrefix() + getCmdC() + getSuffix();
 	}
 
 	public String getFullName() {
-		return getName() + " (" + getFullCmdC() + ")";
+		String name = getName();
+		String cmd = getFullCmdC();
+		String val;
+		val = name;
+		if (fIsDeprecated) {
+			val += " DEPRECATED";
+		}
+		return val;
 	}
 
 	// ------------------------------------------------------------------------
