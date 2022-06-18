@@ -2538,9 +2538,9 @@
 	</extension>
 
 	<extension point="org.eclipse.embedcdt.managedbuild.cross.riscv.core.toolchains">
-	   <!-- id 2029746065 -->
 		<toolchain
 			name="Custom"
-			prefix="riscv64-unknown-none-" />
+			id="2029746065"
+			prefix="riscv-none-elf-" />
 	</extension>
 </plugin>
