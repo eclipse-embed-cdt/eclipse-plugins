@@ -40,7 +40,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 	// Static members
 	protected static List<ToolchainDefinition> fgList = new ArrayList<>();
-	protected static String fArchitectures[] = { "ARM (AArch32)", "ARM64 (AArch64)" };
+	protected static String fgArchitectures[] = { "ARM (AArch32)", "ARM64 (AArch64)" };
 
 	// ------------------------------------------------------------------------
 
@@ -88,7 +88,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 	}
 
 	/**
-	 * Try to identify toolcahin by name. If not possible, throw
+	 * Try to identify toolchain by name. If not possible, throw
 	 * IndexOutOfBoundsException().
 	 *
 	 * @param sName a string with the toolchain name.
@@ -124,11 +124,11 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 	}
 
 	public static String[] getArchitectures() {
-		return fArchitectures;
+		return fgArchitectures;
 	}
 
 	public static String getArchitecture(int index) {
-		return fArchitectures[index];
+		return fgArchitectures[index];
 	}
 
 	/*

@@ -92,7 +92,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 	}
 
 	/**
-	 * Try to identify toolcahin by name. If not possible, throw
+	 * Try to identify toolchain by name. If not possible, throw
 	 * IndexOutOfBoundsException().
 	 *
 	 * @param sName a string with the toolchain name.

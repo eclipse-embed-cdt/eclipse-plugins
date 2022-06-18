@@ -53,6 +53,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * preference store that belongs to the main plug-in class. That way,
  * preferences can be accessed directly via the preference store.
  */
+
 public class WorkspaceToolchainsPathsPreferencesPage extends FieldEditorPreferencePage
 		implements IWorkbenchPreferencePage {
 

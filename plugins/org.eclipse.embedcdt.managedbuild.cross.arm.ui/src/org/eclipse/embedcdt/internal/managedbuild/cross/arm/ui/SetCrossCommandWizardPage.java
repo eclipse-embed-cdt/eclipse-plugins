@@ -197,7 +197,6 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 				DirectoryDialog dirDialog = new DirectoryDialog(fComposite.getShell(), SWT.APPLICATION_MODAL);
 				String browsedDirectory = dirDialog.open();
 				fPathTxt.setText(browsedDirectory);
-
 			}
 		});
 		layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);

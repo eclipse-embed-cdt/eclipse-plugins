@@ -856,11 +856,12 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			String sSelectedCombo = fToolchainCombo.getText();
 			int index = ToolchainDefinition.findToolchainByFullName(sSelectedCombo);
 			ToolchainDefinition td = ToolchainDefinition.getToolchain(index);
-			option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
-			config.setOption(toolchain, option, td.getName());
 
 			option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_ID); // $NON-NLS-1$
-			config.setOption(toolchain, option, String.valueOf(td.getHash()));
+			config.setOption(toolchain, option, td.getId());
+
+			option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
+			config.setOption(toolchain, option, td.getName());
 
 			option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_PREFIX); // $NON-NLS-1$
 			config.setOption(toolchain, option, fPrefixText.getText().trim());

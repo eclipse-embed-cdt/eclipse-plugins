@@ -77,6 +77,7 @@ public class ProjectToolchainsPathPropertiesPage extends FieldEditorPropertyPage
 
 	@Override
 	protected void createFieldEditors() {
+
 		boolean isStrict;
 
 		Set<String> toolchainNames = new HashSet<>();

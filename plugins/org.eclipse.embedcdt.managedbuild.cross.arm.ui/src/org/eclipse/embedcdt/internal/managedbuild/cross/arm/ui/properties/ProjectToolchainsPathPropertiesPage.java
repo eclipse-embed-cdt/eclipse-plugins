@@ -77,6 +77,7 @@ public class ProjectToolchainsPathPropertiesPage extends FieldEditorPropertyPage
 
 	@Override
 	protected void createFieldEditors() {
+
 		boolean isStrict;
 
 		Set<String> toolchainNames = new HashSet<>();
@@ -124,6 +125,7 @@ public class ProjectToolchainsPathPropertiesPage extends FieldEditorPropertyPage
 			String key = PersistentPreferences.getToolchainKey(toolchainName);
 			FieldEditor toolchainPathField = new XpackDirectoryNotStrictFieldEditor(xpackNames, key,
 					Messages.ToolchainPaths_label, getFieldEditorParent(), isStrict);
+
 			addField(toolchainPathField);
 		}
 

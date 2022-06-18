@@ -76,7 +76,6 @@ public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferenceP
 	 * blocks needed to manipulate various types of preferences. Each field editor
 	 * knows how to save and restore itself.
 	 */
-
 	@Override
 	protected void createFieldEditors() {
 

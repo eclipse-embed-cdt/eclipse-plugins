@@ -74,20 +74,14 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	 */
 	public String getToolchainName() {
 
-		String toolchainName = getString(TOOLCHAIN_NAME_KEY, null);
-		if (toolchainName != null && !toolchainName.isEmpty()) {
-			return toolchainName;
-		}
-
-		return "";
+		return getString(TOOLCHAIN_NAME_KEY, "").trim();
 	}
 
 	/**
-	 * Store the toolchain name in the Workspace/Eclipse scope. Used in the
-	 * project wizard, to maintain global persistence.
+	 * Store the toolchain name in the Workspace/Eclipse scope. Used in the project
+	 * wizard, to maintain global persistence.
 	 *
-	 * @param toolchainName
-	 *            a string.
+	 * @param toolchainName a string.
 	 */
 	public void putToolchainName(String toolchainName) {
 		putString(TOOLCHAIN_NAME_KEY, toolchainName);
@@ -124,8 +118,8 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	}
 
 	/**
-	 * Store the toolchain path in the Workspace/Eclipse scope. Used in the
-	 * project wizard, to maintain global persistency.
+	 * Store the toolchain path in the Workspace/Eclipse scope. Used in the project
+	 * wizard, to maintain global persistency.
 	 *
 	 * @param toolchainName
 	 * @param path

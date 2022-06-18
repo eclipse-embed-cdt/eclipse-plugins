@@ -331,7 +331,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 				}
 			}
 
-			if (searchPath != null && !searchPath.isEmpty()) {
+			if (!searchPath.isEmpty()) {
 				String[] xpackNames = getToolchainXpackNames(toolchainName);
 				path = searchLatestExecutable(xpackNames, searchPath, subPath, executableName);
 			}

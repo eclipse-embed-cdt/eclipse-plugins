@@ -37,7 +37,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 	// ------------------------------------------------------------------------
 
-	private static boolean DEBUG_PATH = false;
+	private static boolean DEBUG_PATH = true;
 
 	// ------------------------------------------------------------------------
 
@@ -47,8 +47,10 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 		if (PathEnvironmentVariable.isVar(variableName)) {
 			return PathEnvironmentVariable.create(configuration);
 		} else {
-			// System.out.println("getVariable(" + variableName + ","
-			// + configuration.getName() + ") returns null");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("riscv.EnvironmentVariableSupplier.getVariable(" + variableName + ","
+						+ configuration.getName() + ") returns null");
+			}
 			return null;
 		}
 	}
@@ -60,8 +62,10 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 		if (path != null) {
 			return new IBuildEnvironmentVariable[] { path };
 		} else {
-			// System.out.println("getVariables(" + configuration.getName()
-			// + ") returns empty array");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("riscv.EnvironmentVariableSupplier.getVariables(" + configuration.getName()
+						+ ") returns empty array");
+			}
 			return new IBuildEnvironmentVariable[0];
 		}
 	}
@@ -131,8 +135,9 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 				return new PathEnvironmentVariable(sysroot);
 			}
 
-			// System.out.println("create(" + configuration.getName()
-			// + ") returns null");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("riscv.PathEnvironmentVariable.create(" + configuration.getName() + ") returns null");
+			}
 			return null;
 		}
 
@@ -143,9 +148,13 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 				result = ManagedBuildManager.getBuildMacroProvider().resolveValue(str, "", " ", //$NON-NLS-1$ //$NON-NLS-2$
 						IBuildMacroProvider.CONTEXT_CONFIGURATION, configuration);
 			} catch (CdtVariableException e) {
-				Activator.log("resolveMacros " + e.getMessage());
+				Activator.log("riscv.PathEnvironmentVariable.resolveMacros " + e.getMessage());
 			}
 
+			if (Activator.getInstance().isDebugging()) {
+				Activator.log("riscv.PathEnvironmentVariable.resolveMacros(\"" + str + "\", \"" + configuration.getName()
+						+ "\") = \"" + "\"");
+			}
 			return result;
 
 		}
