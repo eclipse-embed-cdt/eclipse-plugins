@@ -233,7 +233,11 @@ public abstract class ToolchainDefinition {
 		String name = getName();
 		String cmd = getFullCmdC();
 		String val;
-		val = name;
+		if (name.contains(cmd)) {
+			val = name;
+		} else {
+			val = name + " (" + cmd + ")";
+		}
 		if (fIsDeprecated) {
 			val += " DEPRECATED";
 		}
