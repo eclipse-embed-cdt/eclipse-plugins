@@ -232,10 +232,12 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 		tc = new ToolchainDefinition(XPACK_RISCV_GCC, "riscv-none-embed-");
 		tc.setId("2273142912");
+		tc.setIsDeprecated(true);
 		addToolchain(tc);
 
 		tc = new ToolchainDefinition(GME_RISCV_GCC, "riscv-none-embed-");
 		tc.setId("512258282");
+		tc.setIsDeprecated(true);
 		addToolchain(tc);
 
 		// Enumerate extension points and add custom toolchains.

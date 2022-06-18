@@ -238,6 +238,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 		tc = new ToolchainDefinition(GME_ARM_GCC, "arm-none-eabi-");
 		tc.setId("962691777");
+		tc.setIsDeprecated(true);
 		addToolchain(tc);
 
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI", "arm-none-eabi-");
@@ -245,6 +246,7 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 		if (EclipseUtils.isWindows()) {
 			tc.setWin("cs-make", "cs-rm");
 		}
+		tc.setIsDeprecated(true);
 		addToolchain(tc);
 
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM GNU/Linux", "arm-none-linux-gnueabi-");
@@ -252,14 +254,17 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 		if (EclipseUtils.isWindows()) {
 			tc.setWin("cs-make", "cs-rm");
 		}
+		tc.setIsDeprecated(true);
 		addToolchain(tc);
 
 		tc = new ToolchainDefinition("devkitPro ARM EABI", "arm-eabi-");
 		tc.setId("3695067803");
+		tc.setIsDeprecated(true);
 		addToolchain(tc);
 
 		tc = new ToolchainDefinition("Yagarto, Summon, etc. ARM EABI", "arm-none-eabi-");
 		tc.setId("1195655929");
+		tc.setIsDeprecated(true);
 		addToolchain(tc);
 
 
