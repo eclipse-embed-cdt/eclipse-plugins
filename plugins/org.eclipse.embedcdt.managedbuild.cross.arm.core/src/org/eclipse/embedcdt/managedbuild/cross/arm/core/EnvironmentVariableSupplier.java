@@ -85,6 +85,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 			IProject project = (IProject) configuration.getManagedProject().getOwner();
 
+			// Get the build tools path from the common store.
 			PersistentPreferences commonPersistentPreferences = org.eclipse.embedcdt.internal.managedbuild.cross.core.Activator
 					.getInstance().getPersistentPreferences();
 
@@ -97,9 +98,13 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 				path = deprecatedPersistentPreferences.getBuildToolsPath(project);
 			}
 
-			IOption option;
-			option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
-			String toolchainName = (String) option.getValue();
+			IOption optionId;
+			optionId = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_ID); // $NON-NLS-1$
+			String toolchainId = (String) optionId.getValue();
+
+			IOption optionName;
+			optionName = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
+			String toolchainName = (String) optionName.getValue();
 
 			String toolchainPath = null;
 
@@ -107,10 +112,10 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
 			// Get the most specific toolchain path (project, workspace,
 			// Eclipse, defaults).
-			toolchainPath = persistentPreferences.getToolchainPath(toolchainName, project);
+			toolchainPath = persistentPreferences.getToolchainPath(toolchainId, toolchainName, project);
 			if (toolchainPath.isEmpty()) {
 				// Try to get from original gnuarmeclipse store.
-				toolchainPath = deprecatedPersistentPreferences.getToolchainPath(toolchainName, project);
+				toolchainPath = deprecatedPersistentPreferences.getToolchainPath(toolchainId, toolchainName, project);
 			}
 
 			if (path.isEmpty()) {

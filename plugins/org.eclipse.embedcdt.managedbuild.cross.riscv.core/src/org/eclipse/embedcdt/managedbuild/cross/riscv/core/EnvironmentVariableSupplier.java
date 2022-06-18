@@ -92,9 +92,13 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 			String path = commonPersistentPreferences.getBuildToolsPath(project);
 
-			IOption option;
-			option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
-			String toolchainName = (String) option.getValue();
+			IOption optionId;
+			optionId = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_ID); // $NON-NLS-1$
+			String toolchainId = (String) optionId.getValue();
+
+			IOption optionName;
+			optionName = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
+			String toolchainName = (String) optionName.getValue();
 
 			String toolchainPath = null;
 
@@ -102,7 +106,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
 			// Get the most specific toolchain path (project, workspace,
 			// Eclipse, defaults).
-			toolchainPath = persistentPreferences.getToolchainPath(toolchainName, project);
+			toolchainPath = persistentPreferences.getToolchainPath(toolchainId, toolchainName, project);
 
 			if (path.isEmpty()) {
 				path = toolchainPath;
