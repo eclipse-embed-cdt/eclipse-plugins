@@ -25,20 +25,16 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 	// ------------------------------------------------------------------------
 
-	// 2021824384
+	// Custom ID: 2273142912+1, since the name is duplicate.
+	public static final String XPACK_RISCV_GCC_2 = "xPack GNU RISC-V Embedded GCC";
 	public static final String XPACK_RISCV_GCC = "xPack GNU RISC-V Embedded GCC";
-
-	// 512258282
 	public static final String GME_RISCV_GCC = "GNU MCU RISC-V GCC";
 
-	// 2032619395
 	public static final String RISC_V_GCC_NEWLIB = "RISC-V GCC/Newlib";
-	// 344399268
 	public static final String RISC_V_GCC_LINUX = "RISC-V GCC/Linux";
-	// 339524431
 	public static final String RISC_V_GCC_RTEMS = "RISC-V GCC/RTEMS";
 
-	public static final String DEFAULT_TOOLCHAIN_NAME = XPACK_RISCV_GCC;
+	public static final String DEFAULT_TOOLCHAIN_NAME = XPACK_RISCV_GCC_2;
 
 	// ------------------------------------------------------------------------
 
@@ -217,6 +213,10 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 	// Initialise the list of known toolchains
 	static {
 		ToolchainDefinition tc;
+
+		tc = new ToolchainDefinition(XPACK_RISCV_GCC_2, "riscv-none-elf-");
+		tc.setId("2273142913"); // 2273142912+1
+		addToolchain(tc);
 
 		tc = new ToolchainDefinition(RISC_V_GCC_NEWLIB, "riscv64-unknown-elf-");
 		tc.setId("2262347901");
