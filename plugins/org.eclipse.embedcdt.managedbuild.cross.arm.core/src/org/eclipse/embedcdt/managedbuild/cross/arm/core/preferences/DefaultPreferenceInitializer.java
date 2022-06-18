@@ -55,9 +55,14 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 
+		ToolchainDefinition td = ToolchainDefinition.getToolchain(ToolchainDefinition.getDefault());
+
 		// Default toolchain name
-		String toolchainName = ToolchainDefinition.DEFAULT_TOOLCHAIN_NAME;
+		String toolchainName = td.getName();
 		fDefaultPreferences.putToolchainName(toolchainName);
+
+		String toolchainId = td.getId();
+		fDefaultPreferences.putToolchainId(toolchainId);
 
 		// When the 'org.eclipse.embedcdt.managedbuild.cross' node is completely
 		// added to /default, a NodeChangeEvent is raised.
@@ -114,40 +119,33 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			// Toolchains paths
 			for (ToolchainDefinition toolchain : ToolchainDefinition.getList()) {
 
+				String toolchainId = toolchain.getId();
 				String toolchainName = toolchain.getName();
 
-				// If the search path is known, discover toolchain.
-				int ix;
-				try {
-					ix = ToolchainDefinition.findToolchainByName(toolchainName);
-				} catch (IndexOutOfBoundsException e) {
-					ix = ToolchainDefinition.getDefault();
-				}
-
-				String executableName = ToolchainDefinition.getToolchain(ix).getFullCmdC();
+				String executableName = toolchain.getFullCmdC();
 
 				// Try the defaults from the GNU MCU Eclipse store.
-				String path = fDefaultPreferences.getToolchainPath(toolchainName);
+				String path = fDefaultPreferences.getToolchainPath(toolchainId, toolchainName);
 
 				if (!fDefaultPreferences.checkFolderExecutable(path, executableName)) {
 					// Try the deprecated GNU ARM Eclipse store.
-					path = deprecatedDefaultPreferences.getToolchainPath(toolchainName);
+					path = deprecatedDefaultPreferences.getToolchainPath(toolchainId, toolchainName);
 				}
 
 				if (!fDefaultPreferences.checkFolderExecutable(path, executableName)) {
 					// Try the persistent preferences.
-					path = fPersistentPreferences.getToolchainPath(toolchainName, null);
+					path = fPersistentPreferences.getToolchainPath(toolchainId, toolchainName, null);
 				}
 
 				if (!fDefaultPreferences.checkFolderExecutable(path, executableName)) {
 					// If not defined elsewhere, discover.
-					path = fDefaultPreferences.discoverToolchainPath(toolchainName, executableName);
+					path = fDefaultPreferences.discoverToolchainPath(toolchainId, toolchainName, executableName);
 				}
 
 				if (path != null && !path.isEmpty()) {
 					// If the toolchain path was finally discovered, store
 					// it in the default preferences.
-					fDefaultPreferences.putToolchainPath(toolchainName, path);
+					fDefaultPreferences.putToolchainPath(toolchainId, toolchainName, path);
 				}
 
 				if (Activator.getInstance().isDebugging()) {

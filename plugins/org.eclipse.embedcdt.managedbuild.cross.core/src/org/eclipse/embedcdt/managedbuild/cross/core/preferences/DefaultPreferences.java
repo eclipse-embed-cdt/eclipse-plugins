@@ -71,6 +71,32 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 
 	// ------------------------------------------------------------------------
 
+	public String getToolchainId() {
+
+		String key = PersistentPreferences.TOOLCHAIN_ID_KEY;
+		String value = getString(key, null);
+		if (value == null) {
+			value = "";
+		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getToolchainId() = \"" + value + "\"");
+		}
+		return value;
+	}
+
+	public void putToolchainId(String value) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.putToolchainId(\"" + value + "\")");
+		}
+
+		String key = PersistentPreferences.TOOLCHAIN_ID_KEY;
+		putString(key, value);
+	}
+
+	// ------------------------------------------------------------------------
+
 	/**
 	 * Get the default toolchain path for a given toolchain name. Toolchains are
 	 * identified by their absolute hash code.
@@ -79,6 +105,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 	 *            a string.
 	 * @return a trimmed string, possibly empty.
 	 */
+	@Deprecated
 	public String getToolchainPath(String toolchainName) {
 
 		String key = PersistentPreferences.getToolchainKey(toolchainName);
@@ -93,12 +120,38 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 		return value;
 	}
 
+	public String getToolchainPath(String toolchainId, String toolchainName) {
+
+		String key = PersistentPreferences.getToolchainKey(toolchainId, toolchainName);
+		String value = getString(key, null);
+		if (value == null) {
+			value = "";
+		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getToolchainPath(\"" + toolchainId + ", " + toolchainName
+					+ "\") = \"" + value + "\")");
+		}
+		return value;
+	}
+
+	@Deprecated
 	public void putToolchainPath(String toolchainName, String value) {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("DefaultPreferences.putToolchainPath(\"" + toolchainName + "\", \"" + value + "\")");
 		}
 		String key = PersistentPreferences.getToolchainKey(toolchainName);
+		putString(key, value);
+	}
+
+	public void putToolchainPath(String toolchainId, String toolchainName, String value) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.putToolchainPath(\"" + toolchainId + ", " + toolchainName + "\", \""
+					+ value + "\")");
+		}
+		String key = PersistentPreferences.getToolchainKey(toolchainId, toolchainName);
 		putString(key, value);
 	}
 
@@ -112,6 +165,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 	 *            a string.
 	 * @return a trimmed string, possibly empty.
 	 */
+	@Deprecated
 	public String getToolchainSearchPath(String toolchainName) {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -126,12 +180,39 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 		return value;
 	}
 
+	public String getToolchainSearchPath(String toolchainId, String toolchainName) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(
+					"DefaultPreferences.getToolchainSearchPath(\"" + toolchainId + ", " + toolchainName + "\")");
+		}
+		String key = PersistentPreferences.getToolchainSearchKey(toolchainId, toolchainName);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getToolchainSearchPath(\"" + toolchainId + ", " + toolchainName
+					+ "\") (" + key + ")");
+		}
+		String value = getString(key, "");
+
+		return value;
+	}
+
+	@Deprecated
 	public void putToolchainSearchPath(String toolchainName, String value) {
 
 		String key = PersistentPreferences.getToolchainSearchKey(toolchainName);
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("DefaultPreferences.putToolchainSearchPath(\"" + toolchainName + "\", \"" + value
 					+ "\") (" + key + ")");
+		}
+		putString(key, value);
+	}
+
+	public void putToolchainSearchPath(String toolchainId, String toolchainName, String value) {
+
+		String key = PersistentPreferences.getToolchainSearchKey(toolchainId, toolchainName);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.putToolchainSearchPath(\"" + toolchainId + ", " + toolchainName
+					+ "\", \"" + value + "\") (" + key + ")");
 		}
 		putString(key, value);
 	}
@@ -146,12 +227,20 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 	 *            a string.
 	 * @return a trimmed string, possibly empty.
 	 */
+	@Deprecated
 	public String getToolchainSearchPathOs(String toolchainName) {
 
 		String value = getString(PersistentPreferences.getToolchainSearchOsKey(toolchainName), "");
 		return value;
 	}
 
+	public String getToolchainSearchPathOs(String toolchainId, String toolchainName) {
+
+		String value = getString(PersistentPreferences.getToolchainSearchOsKey(toolchainId, toolchainName), "");
+		return value;
+	}
+
+	@Deprecated
 	public String[] getToolchainXpackNames(String toolchainName) {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -166,6 +255,22 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 		return values;
 	}
 
+	public String[] getToolchainXpackNames(String toolchainId, String toolchainName) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(
+					"DefaultPreferences.getToolchainXpackName(\"" + toolchainId + ", " + toolchainName + "\")");
+		}
+		String key = PersistentPreferences.getToolchainXpackKey(toolchainId, toolchainName);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getToolchainXpackName(\"" + toolchainId + ", " + toolchainName
+					+ "\") (" + key + ")");
+		}
+		String[] values = getStringArray(key, "");
+
+		return values;
+	}
+
 	// ------------------------------------------------------------------------
 
 	/**
@@ -174,6 +279,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 	 * @return a trimmed string, possibly empty.
 	 */
 	public String getBuildToolsPath() {
+
 		return getString(PersistentPreferences.BUILD_TOOLS_PATH_KEY, "");
 	}
 
@@ -188,6 +294,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 	}
 
 	public String getBuildToolsSearchPath() {
+
 		String key = PersistentPreferences.BUILD_TOOLS_SEARCH_PATH_KEY;
 		return getString(key, "");
 	}
@@ -299,6 +406,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 		return path;
 	}
 
+	@Deprecated
 	public String discoverToolchainPath(String toolchainName, String executableName) {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -333,6 +441,53 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 
 			if (!searchPath.isEmpty()) {
 				String[] xpackNames = getToolchainXpackNames(toolchainName);
+				path = searchLatestExecutable(xpackNames, searchPath, subPath, executableName);
+			}
+		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("DefaultPreferences.discoverToolchainPath(\"" + toolchainName + "\") = \"" + path + "\"");
+		}
+
+		return path;
+	}
+
+	public String discoverToolchainPath(String toolchainId, String toolchainName, String executableName) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(
+					"DefaultPreferences.discoverToolchainPath(\"" + toolchainId + ", " + toolchainName + "\")");
+		}
+
+		String path = null;
+		String subPath = "bin";
+
+		if (EclipseUtils.isWindows()) {
+			String exe = addExeExtension(executableName);
+			path = getRegistryToolchainInstallFolder(toolchainName, subPath, exe);
+		}
+
+		String searchPath = null;
+
+		if (path == null) {
+
+			// Check if the search path is defined in the default
+			// preferences.
+			searchPath = getToolchainSearchPath(toolchainId, toolchainName);
+			if (searchPath.isEmpty()) {
+
+				// If not defined, get the OS Specific default
+				// from preferences.ini.
+				searchPath = getToolchainSearchPathOs(toolchainId, toolchainName);
+				if (!searchPath.isEmpty()) {
+					// Store the search path in the preferences.
+					putToolchainSearchPath(toolchainId, toolchainName, searchPath);
+				}
+			}
+
+			if (!searchPath.isEmpty()) {
+				String[] xpackNames = getToolchainXpackNames(toolchainId, toolchainName);
 				path = searchLatestExecutable(xpackNames, searchPath, subPath, executableName);
 			}
 		}

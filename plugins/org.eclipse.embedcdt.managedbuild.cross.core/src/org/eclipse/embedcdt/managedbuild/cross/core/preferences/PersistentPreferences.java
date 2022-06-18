@@ -33,6 +33,7 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	public static final String BUILD_TOOLS_XPACK_NAMES = "buildTools.xpack.names";
 
 	public static final String TOOLCHAIN_NAME_KEY = "toolchain.name";
+	public static final String TOOLCHAIN_ID_KEY = "toolchain.id";
 	private static final String TOOLCHAIN_PATH_KEY = "toolchain.path.%d";
 	private static final String TOOLCHAIN_SEARCH_PATH_KEY = "toolchain.search.path.%d";
 	private static final String TOOLCHAIN_SEARCH_PATH_OS_KEY = "toolchain.search.path.%s.%d";
@@ -77,6 +78,11 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 		return getString(TOOLCHAIN_NAME_KEY, "").trim();
 	}
 
+	public String getToolchainId() {
+
+		return getString(TOOLCHAIN_ID_KEY, "").trim();
+	}
+
 	/**
 	 * Store the toolchain name in the Workspace/Eclipse scope. Used in the project
 	 * wizard, to maintain global persistence.
@@ -84,16 +90,44 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	 * @param toolchainName a string.
 	 */
 	public void putToolchainName(String toolchainName) {
+
 		putString(TOOLCHAIN_NAME_KEY, toolchainName);
+	}
+
+	public void putToolchainId(String toolchainId) {
+
+		putString(TOOLCHAIN_ID_KEY, toolchainId);
 	}
 
 	// ------------------------------------------------------------------------
 
+	public static Long getKeyId(String toolchainId, String toolchainName) {
+
+		long keyId;
+		try {
+			if (toolchainId != null && !toolchainId.trim().isEmpty()) {
+				keyId = Long.parseLong(toolchainId.trim());
+				return keyId;
+			}
+		} catch (NumberFormatException ex) {
+		}
+
+		keyId = Math.abs(toolchainName.trim().hashCode());
+		return keyId;
+	}
+
+	@Deprecated
 	public static String getToolchainKey(String toolchainName) {
 
 		int hash = Math.abs(toolchainName.trim().hashCode());
 		String key = String.format(TOOLCHAIN_PATH_KEY, hash);
 		return key;
+	}
+
+	public static String getToolchainKey(String toolchainId, String toolchainName) {
+
+		Long keyId = getKeyId(toolchainId, toolchainName);
+		return String.format(TOOLCHAIN_PATH_KEY, keyId);
 	}
 
 	/**
@@ -102,6 +136,7 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	 * @param toolchainName
 	 * @return a string, possibly empty.
 	 */
+	@Deprecated
 	public String getToolchainPath(String toolchainName, IProject project) {
 
 		String value;
@@ -117,6 +152,21 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 		return "";
 	}
 
+	public String getToolchainPath(String toolchainId, String toolchainName, IProject project) {
+
+		String value;
+		if (project != null) {
+			value = getString(getToolchainKey(toolchainId, toolchainName), null, project);
+		} else {
+			value = getString(getToolchainKey(toolchainId, toolchainName), null);
+		}
+		if (value != null && !value.isEmpty()) {
+			return value;
+		}
+
+		return "";
+	}
+
 	/**
 	 * Store the toolchain path in the Workspace/Eclipse scope. Used in the project
 	 * wizard, to maintain global persistency.
@@ -124,9 +174,15 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	 * @param toolchainName
 	 * @param path
 	 */
+	@Deprecated
 	public void putToolchainPath(String toolchainName, String path) {
 
 		putString(getToolchainKey(toolchainName), path);
+	}
+
+	public void putToolchainPath(String toolchainId, String toolchainName, String path) {
+
+		putString(getToolchainKey(toolchainId, toolchainName), path);
 	}
 
 	/**
@@ -137,13 +193,20 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	 * @param path
 	 * @param project
 	 */
+	@Deprecated
 	public void putToolchainPath(String toolchainName, String path, IProject project) {
 
 		putProjectString(getToolchainKey(toolchainName), path, project);
 	}
 
+	public void putToolchainPath(String toolchainId, String toolchainName, String path, IProject project) {
+
+		putProjectString(getToolchainKey(toolchainId, toolchainName), path, project);
+	}
+
 	// ------------------------------------------------------------------------
 
+	@Deprecated
 	public static String getToolchainSearchKey(String toolchainName) {
 
 		int hash = Math.abs(toolchainName.trim().hashCode());
@@ -152,6 +215,7 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 		return key;
 	}
 
+	@Deprecated
 	public static String getToolchainSearchOsKey(String toolchainName) {
 
 		int hash = Math.abs(toolchainName.trim().hashCode());
@@ -161,10 +225,36 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 		return key;
 	}
 
+	@Deprecated
 	public static String getToolchainXpackKey(String toolchainName) {
 
 		int hash = Math.abs(toolchainName.trim().hashCode());
 		String key = String.format(TOOLCHAIN_XPACK_NAMES_KEY, hash);
+		// System.out.println(key);
+		return key;
+	}
+
+	public static String getToolchainSearchKey(String toolchainId, String toolchainName) {
+
+		Long id = getKeyId(toolchainId, toolchainName);
+		String key = String.format(TOOLCHAIN_SEARCH_PATH_KEY, id);
+		// System.out.println(key);
+		return key;
+	}
+
+	public static String getToolchainSearchOsKey(String toolchainId, String toolchainName) {
+
+		Long id = getKeyId(toolchainId, toolchainName);
+		String os = EclipseUtils.getOsFamily();
+		String key = String.format(TOOLCHAIN_SEARCH_PATH_OS_KEY, os, id);
+		// System.out.println(key);
+		return key;
+	}
+
+	public static String getToolchainXpackKey(String toolchainId, String toolchainName) {
+
+		Long id = getKeyId(toolchainId, toolchainName);
+		String key = String.format(TOOLCHAIN_XPACK_NAMES_KEY, id);
 		// System.out.println(key);
 		return key;
 	}
