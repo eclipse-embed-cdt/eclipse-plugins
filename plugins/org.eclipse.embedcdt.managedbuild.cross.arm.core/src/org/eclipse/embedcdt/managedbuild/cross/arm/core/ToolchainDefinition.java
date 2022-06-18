@@ -154,40 +154,55 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 	/*
 	 * Additional toolchains to be considered.
 	 */
-	private static void addExtensionsToolchains(String extensionPointId) {
+	public static void addExtensionsToolchains(String extensionPointId) {
 		IConfigurationElement[] elements = Platform.getExtensionRegistry()
 				.getConfigurationElementsFor(extensionPointId);
 		for (IConfigurationElement element : elements) {
+
+			String id = element.getAttribute("id");
 			String name = element.getAttribute("name");
 
-			try {
-				findToolchainByName(name);
-				Activator.log("Duplicate toolchain name '" + name + "', ignored.");
-			} catch (IndexOutOfBoundsException e) {
-				ToolchainDefinition td = new ToolchainDefinition(name);
-				String prefix = element.getAttribute("prefix");
-				if (prefix != null && !prefix.isEmpty()) {
-					td.setPrefix(prefix);
+			if (id != null && !id.isEmpty()) {
+				try {
+					findToolchainById(id);
+					Activator.log("Duplicate toolchain id '" + id + "', ignored.");
+					continue;
+				} catch (IndexOutOfBoundsException e) {
 				}
-				String suffix = element.getAttribute("suffix");
-				if (suffix != null && !suffix.isEmpty()) {
-					td.setSuffix(suffix);
+			} else {
+				try {
+					findToolchainByName(name);
+					Activator.log("Duplicate toolchain name '" + name + "', ignored.");
+					continue;
+				} catch (IndexOutOfBoundsException e) {
 				}
-				String architecture = element.getAttribute("architecture");
-				if (architecture != null && !architecture.isEmpty()) {
-					td.setArchitecture(architecture);
-				}
-				String cmdMake = element.getAttribute("make_cmd");
-				if (cmdMake != null && !cmdMake.isEmpty()) {
-					td.setCmdMake(cmdMake);
-				}
-				String cmdRm = element.getAttribute("remove_cmd");
-				if (cmdRm != null && !cmdRm.isEmpty()) {
-					td.setCmdRm(cmdRm);
-				}
-				fgList.add(td);
 			}
 
+			ToolchainDefinition td = new ToolchainDefinition(name);
+			if (id != null && !id.isEmpty()) {
+				td.setId(id);
+			}
+			String prefix = element.getAttribute("prefix");
+			if (prefix != null && !prefix.isEmpty()) {
+				td.setPrefix(prefix);
+			}
+			String suffix = element.getAttribute("suffix");
+			if (suffix != null && !suffix.isEmpty()) {
+				td.setSuffix(suffix);
+			}
+			String architecture = element.getAttribute("architecture");
+			if (architecture != null && !architecture.isEmpty()) {
+				td.setArchitecture(architecture);
+			}
+			String cmdMake = element.getAttribute("make_cmd");
+			if (cmdMake != null && !cmdMake.isEmpty()) {
+				td.setCmdMake(cmdMake);
+			}
+			String cmdRm = element.getAttribute("remove_cmd");
+			if (cmdRm != null && !cmdRm.isEmpty()) {
+				td.setCmdRm(cmdRm);
+			}
+			fgList.add(td);
 		}
 	}
 
