@@ -56,6 +56,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  Toochain&apos;s unique ID. For example the hash of the name string. Not mandatory, but highly recommended.
+               </documentation>
+            </annotation>
+         </attribute>
          <attribute name="prefix" type="string">
             <annotation>
                <documentation>

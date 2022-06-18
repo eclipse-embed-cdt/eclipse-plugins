@@ -56,6 +56,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  Toochain&apos;s unique ID. For example the hash of the name string. Not mandatory, but highly recommended.
+               </documentation>
+            </annotation>
+         </attribute>
          <attribute name="prefix" type="string">
             <annotation>
                <documentation>
@@ -110,7 +117,7 @@
       <documentation>
          &lt;extension
       point=&quot;org.eclipse.embedcdt.managedbuild.cross.riscv.core.toolchains&quot;&gt;
-      &lt;toolchain name=&quot;Custom&quot; prefix=&quot;riscv64-unknown-linux-gnu-&quot; /&gt;
+      &lt;toolchain name=&quot;Custom&quot; prefix=&quot;riscv-none-elf-&quot; /&gt;
    &lt;/extension&gt;
       </documentation>
    </annotation>
