@@ -845,7 +845,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		fLastUpdatedConfig = config;
 
-		updateToolchainPath(toolchainDefinition.getName());
+		updateToolchainPath(toolchainDefinition);
 		updateBuildToolsPath();
 	}
 
