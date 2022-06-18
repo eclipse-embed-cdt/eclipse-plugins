@@ -60,7 +60,7 @@ public abstract class ToolchainDefinition {
 
 	public ToolchainDefinition(String sName, String sPrefix, String sArchitecture) {
 		this(sName, sPrefix);
-		fArchitecture = sArchitecture;
+		setArchitecture(sArchitecture);
 	}
 
 	public ToolchainDefinition(String sName, String sPrefix, String sArchitecture, String cmdMake, String cmdRm) {
@@ -113,6 +113,7 @@ public abstract class ToolchainDefinition {
 		return fArchitecture;
 	}
 
+	// Override it in derived classes to validate the string.
 	public void setArchitecture(String architecture) {
 		fArchitecture = architecture;
 	}

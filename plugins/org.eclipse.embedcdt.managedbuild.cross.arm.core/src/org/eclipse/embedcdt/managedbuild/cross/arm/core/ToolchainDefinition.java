@@ -67,6 +67,14 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 	// ------------------------------------------------------------------------
 
+	@Override
+	public void setArchitecture(String architecture) {
+		assert (architecture.equals("arm") || architecture.equals("aarch64"));
+		super.setArchitecture(architecture);
+	}
+
+	// ------------------------------------------------------------------------
+
 	public static List<ToolchainDefinition> getList() {
 		return fgList;
 	}

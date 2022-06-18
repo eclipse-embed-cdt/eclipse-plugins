@@ -71,6 +71,14 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 	// ------------------------------------------------------------------------
 
+	@Override
+	public void setArchitecture(String architecture) {
+		assert (architecture.equals("risc-v"));
+		super.setArchitecture(architecture);
+	}
+
+	// ------------------------------------------------------------------------
+
 	public static List<ToolchainDefinition> getList() {
 		return fgList;
 	}
