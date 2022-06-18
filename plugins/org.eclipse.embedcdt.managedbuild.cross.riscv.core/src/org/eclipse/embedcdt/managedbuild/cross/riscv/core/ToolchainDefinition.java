@@ -131,6 +131,18 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 		return getDefault();
 	}
 
+	public static int findToolchainById(String sId) {
+
+		int i = 0;
+		for (ToolchainDefinition td : fgList) {
+			if (td.getId().equals(sId.trim()))
+				return i;
+			i++;
+		}
+		// not found
+		throw new IndexOutOfBoundsException();
+	}
+
 	public static int getDefault() {
 		return 0;
 	}

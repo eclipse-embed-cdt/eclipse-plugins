@@ -19,8 +19,10 @@ public abstract class ToolchainDefinition {
 
 	// ------------------------------------------------------------------------
 
-	protected String fName;
-	protected long fHash; // Actually unsigned long.
+	// Basically the name string hash.
+	protected long fUniqueId; // Actually unsigned long.
+
+	protected String fName; // May not be unique.
 	protected String fPrefix;
 	protected String fSuffix;
 	protected String fArchitecture;
@@ -41,7 +43,7 @@ public abstract class ToolchainDefinition {
 
 	public ToolchainDefinition(String sName) {
 		fName = sName;
-		fHash = Integer.toUnsignedLong(fName.hashCode());
+		fUniqueId = Integer.toUnsignedLong(fName.hashCode());
 		fPrefix = "";
 		fSuffix = "";
 		fArchitecture = "?";
@@ -87,13 +89,27 @@ public abstract class ToolchainDefinition {
 		fName = name;
 	}
 
+	@Deprecated
 	public long getHash() {
-		return fHash;
+		return fUniqueId;
 	}
 
+	// Accommodate for negative values.
+	@Deprecated
 	public void setHash(int hash) {
-		fHash = Integer.toUnsignedLong(hash);
+		fUniqueId = Integer.toUnsignedLong(hash);
+	}
 
+	public String getId() {
+		return Long.toString(fUniqueId);
+	}
+
+	public void setId(String id) {
+		long val = Long.parseUnsignedLong(id);
+		if (val != fUniqueId) {
+			System.out.println("Toolchain '" + fName + "' has custom ID '" + id + "' instead of '" + fUniqueId + "'");
+		}
+		fUniqueId = val;
 	}
 
 	public String getPrefix() {
