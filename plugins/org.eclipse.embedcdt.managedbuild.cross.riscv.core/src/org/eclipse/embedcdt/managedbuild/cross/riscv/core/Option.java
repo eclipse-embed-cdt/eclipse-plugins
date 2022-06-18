@@ -37,6 +37,7 @@ public class Option {
 	public static final String OPTION_TARGET_ISA_ATOMIC = OPTION_TARGET + "isa.atomic";
 	public static final String OPTION_TARGET_ISA_MULTIPLY = OPTION_TARGET + "isa.multiply";
 	public static final String OPTION_TARGET_ISA_COMPRESSED = OPTION_TARGET + "isa.compressed";
+	public static final String OPTION_TARGET_ISA_EXTENSIONS = OPTION_TARGET + "isa.extensions";
 
 	public static final String OPTION_TARGET_ABI_INTEGER = OPTION_TARGET + "abi.integer";
 	public static final String OPTION_TARGET_ABI_FP = OPTION_TARGET + "abi.fp";
@@ -283,6 +284,10 @@ public class Option {
 				}
 			}
 			sValue = getOptionBooleanCommand(config, OPTION_TARGET_ISA_COMPRESSED);
+			if (sValue != null && !sValue.isEmpty()) {
+				sReturn += sValue;
+			}
+			sValue = getOptionStringValue(config, OPTION_TARGET_ISA_EXTENSIONS);
 			if (sValue != null && !sValue.isEmpty()) {
 				sReturn += sValue;
 			}

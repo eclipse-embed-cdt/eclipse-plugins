@@ -385,6 +385,16 @@
 				</enablement>
 			</option>
 			<option
+				command=""
+				defaultValue=""
+				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.extensions"
+				isAbstract="true"
+				name="%option.target.isa.extension"
+				tip="Possible other ISA extensions, separated by underscores, like '_zicsr_zifencei'."
+				value=""
+				valueType="string">
+			</option>
+			<option
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.abi.integer"
 				isAbstract="true"
 				name="%option.target.abi.integer"
@@ -711,6 +721,11 @@
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.compressed"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.compressed">
+			</option>
+			<option
+				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
+				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions"
+				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.extensions">
 			</option>
 			<option
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
