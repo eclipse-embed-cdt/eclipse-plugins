@@ -253,6 +253,8 @@ public class Option {
 			try {
 				if (option.getBooleanValue()) {
 					sReturn = option.getCommand().trim();
+				} else {
+					sReturn = option.getCommandFalse().trim();
 				}
 			} catch (BuildException e) {
 				Activator.log(e);
