@@ -26,10 +26,8 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 	// ------------------------------------------------------------------------
 
-	// 435435382
 	public static final String XPACK_ARM_GCC = "xPack GNU Arm Embedded GCC";
 
-	// 962691777
 	public static final String GME_ARM_GCC = "GNU MCU Eclipse ARM Embedded GCC";
 
 	public static final String GNU_TOOLS_FOR_ARM_EMBEDDED = "GNU Tools for ARM Embedded Processors";
@@ -212,45 +210,74 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 	// Initialise the list of known toolchains
 	static {
-		addToolchain(new ToolchainDefinition(XPACK_ARM_GCC, "arm-none-eabi-"));
-		addToolchain(new ToolchainDefinition(GME_ARM_GCC, "arm-none-eabi-"));
-
-		addToolchain(new ToolchainDefinition(GNU_TOOLS_FOR_ARM_EMBEDDED, "arm-none-eabi-"));
-
 		ToolchainDefinition tc;
+
+		tc = new ToolchainDefinition(XPACK_ARM_GCC, "arm-none-eabi-");
+		tc.setId("435435382");
+		addToolchain(tc);
+
+		tc = new ToolchainDefinition(GNU_TOOLS_FOR_ARM_EMBEDDED, "arm-none-eabi-");
+		tc.setId("1287942917");
+		addToolchain(tc);
+
+		tc = new ToolchainDefinition("Linaro ARMv7 bare-metal EABI", "arm-none-eabi-");
+		tc.setId("976189281");
+		addToolchain(tc);
+
+		tc = new ToolchainDefinition("Linaro ARMv7 big-endian bare-metal EABI", "armeb-none-eabi-");
+		tc.setId("1341156853");
+		addToolchain(tc);
+
+		tc = new ToolchainDefinition("Linaro ARMv7 Linux GNU EABI HF", "arm-linux-gnueabihf-");
+		tc.setId("4014586055");
+		addToolchain(tc);
+
+		tc = new ToolchainDefinition("Linaro ARMv7 big-endian Linux GNU EABI HF", "armeb-linux-gnueabihf-");
+		tc.setId("2561104475");
+		addToolchain(tc);
+
+		tc = new ToolchainDefinition(GME_ARM_GCC, "arm-none-eabi-");
+		tc.setId("962691777");
+		addToolchain(tc);
+
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI", "arm-none-eabi-");
+		tc.setId("730666677");
 		if (EclipseUtils.isWindows()) {
 			tc.setWin("cs-make", "cs-rm");
 		}
 		addToolchain(tc);
 
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM GNU/Linux", "arm-none-linux-gnueabi-");
+		tc.setId("4162764353");
 		if (EclipseUtils.isWindows()) {
 			tc.setWin("cs-make", "cs-rm");
 		}
 		addToolchain(tc);
 
-		addToolchain(new ToolchainDefinition("devkitPro ARM EABI", "arm-eabi-"));
+		tc = new ToolchainDefinition("devkitPro ARM EABI", "arm-eabi-");
+		tc.setId("3695067803");
+		addToolchain(tc);
 
-		addToolchain(new ToolchainDefinition("Yagarto, Summon, etc. ARM EABI", "arm-none-eabi-"));
+		tc = new ToolchainDefinition("Yagarto, Summon, etc. ARM EABI", "arm-none-eabi-");
+		tc.setId("1195655929");
+		addToolchain(tc);
 
-		addToolchain(new ToolchainDefinition("Linaro ARMv7 bare-metal EABI", "arm-none-eabi-"));
 
-		addToolchain(new ToolchainDefinition("Linaro ARMv7 big-endian bare-metal EABI", "armeb-none-eabi-"));
+		tc = new ToolchainDefinition("Linaro AArch64 bare-metal ELF", "aarch64-elf-", "aarch64");
+		tc.setId("1871385609");
+		addToolchain(tc);
 
-		addToolchain(new ToolchainDefinition("Linaro ARMv7 Linux GNU EABI HF", "arm-linux-gnueabihf-"));
+		tc = new ToolchainDefinition("Linaro AArch64 big-endian bare-metal ELF", "aarch64_be-elf-", "aarch64");
+		tc.setId("2048201829");
+		addToolchain(tc);
 
-		addToolchain(new ToolchainDefinition("Linaro ARMv7 big-endian Linux GNU EABI HF", "armeb-linux-gnueabihf-"));
+		tc = new ToolchainDefinition("Linaro AArch64 Linux GNU", "aarch64-linux-gnu-", "aarch64");
+		tc.setId("1246627524");
+		addToolchain(tc);
 
-		// 64 bit toolchains
-		addToolchain(new ToolchainDefinition("Linaro AArch64 bare-metal ELF", "aarch64-elf-", "aarch64"));
-
-		addToolchain(new ToolchainDefinition("Linaro AArch64 big-endian bare-metal ELF", "aarch64_be-elf-", "aarch64"));
-
-		addToolchain(new ToolchainDefinition("Linaro AArch64 Linux GNU", "aarch64-linux-gnu-", "aarch64"));
-
-		addToolchain(
-				new ToolchainDefinition("Linaro AArch64 big-endian Linux GNU", "aarch64_be-linux-gnu-", "aarch64"));
+		tc = new ToolchainDefinition("Linaro AArch64 big-endian Linux GNU", "aarch64_be-linux-gnu-", "aarch64");
+		tc.setId("681852136");
+		addToolchain(tc);
 
 		// fgList.add(new ToolchainDefinition("Custom", "arm-none-eabi-"));
 

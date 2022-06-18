@@ -216,14 +216,27 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 	// Initialise the list of known toolchains
 	static {
-		addToolchain(new ToolchainDefinition(XPACK_RISCV_GCC, "riscv-none-embed-"));
-		addToolchain(new ToolchainDefinition(GME_RISCV_GCC, "riscv-none-embed-"));
+		ToolchainDefinition tc;
 
-		addToolchain(new ToolchainDefinition(RISC_V_GCC_NEWLIB, "riscv64-unknown-elf-"));
+		tc = new ToolchainDefinition(RISC_V_GCC_NEWLIB, "riscv64-unknown-elf-");
+		tc.setId("2262347901");
+		addToolchain(tc);
 
-		addToolchain(new ToolchainDefinition(RISC_V_GCC_LINUX, "riscv64-unknown-linux-gnu-"));
+		tc = new ToolchainDefinition(RISC_V_GCC_LINUX, "riscv64-unknown-linux-gnu-");
+		tc.setId("3950568028");
+		addToolchain(tc);
 
-		addToolchain(new ToolchainDefinition(RISC_V_GCC_RTEMS, "riscv64-unknown-rtems-"));
+		tc = new ToolchainDefinition(RISC_V_GCC_RTEMS, "riscv64-unknown-rtems-");
+		tc.setId("3955442865");
+		addToolchain(tc);
+
+		tc = new ToolchainDefinition(XPACK_RISCV_GCC, "riscv-none-embed-");
+		tc.setId("2273142912");
+		addToolchain(tc);
+
+		tc = new ToolchainDefinition(GME_RISCV_GCC, "riscv-none-embed-");
+		tc.setId("512258282");
+		addToolchain(tc);
 
 		// Enumerate extension points and add custom toolchains.
 		addExtensionsToolchains(CUSTOM_TOOLCHAINS_EXTENSION_POINT_ID);
