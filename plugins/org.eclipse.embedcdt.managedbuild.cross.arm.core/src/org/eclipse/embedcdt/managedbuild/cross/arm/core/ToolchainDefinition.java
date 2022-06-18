@@ -28,6 +28,8 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 
 	public static final String XPACK_ARM_GCC = "xPack GNU Arm Embedded GCC";
 
+	public static final String XPACK_AARCH64_GCC = "xPack GNU AArch64 Embedded GCC";
+
 	public static final String GME_ARM_GCC = "GNU MCU Eclipse ARM Embedded GCC";
 
 	public static final String GNU_TOOLS_FOR_ARM_EMBEDDED = "GNU Tools for ARM Embedded Processors";
@@ -267,6 +269,10 @@ public class ToolchainDefinition extends org.eclipse.embedcdt.managedbuild.cross
 		tc.setIsDeprecated(true);
 		addToolchain(tc);
 
+		// 64 bit toolchains
+		tc = new ToolchainDefinition(XPACK_AARCH64_GCC, "aarch64-none-elf-", "aarch64");
+		tc.setId("596462749");
+		addToolchain(tc);
 
 		tc = new ToolchainDefinition("Linaro AArch64 bare-metal ELF", "aarch64-elf-", "aarch64");
 		tc.setId("1871385609");
