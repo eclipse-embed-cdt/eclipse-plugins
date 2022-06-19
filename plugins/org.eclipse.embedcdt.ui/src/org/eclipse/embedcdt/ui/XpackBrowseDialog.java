@@ -35,7 +35,7 @@ public class XpackBrowseDialog extends Dialog {
 	private int fReturnIndex;
 	private Combo fTypeCombo;
 
-	protected XpackBrowseDialog(Shell parentShell, String[] versions) {
+	public XpackBrowseDialog(Shell parentShell, String[] versions) {
 		super(parentShell);
 
 		fVersions = versions;
@@ -55,7 +55,7 @@ public class XpackBrowseDialog extends Dialog {
 		shell.setText("Select the xPack version");
 	}
 
-	protected int getData() {
+	public int getData() {
 		return fReturnIndex;
 	}
 
