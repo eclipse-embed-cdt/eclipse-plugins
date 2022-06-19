@@ -268,6 +268,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.core.preferences.De
 		}
 		String[] values = getStringArray(key, "");
 
+		// An array of strings, possibly with an empty element.
 		return values;
 	}
 
