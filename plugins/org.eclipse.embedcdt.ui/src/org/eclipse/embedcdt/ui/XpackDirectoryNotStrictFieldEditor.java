@@ -29,7 +29,7 @@ public class XpackDirectoryNotStrictFieldEditor extends DirectoryNotStrictFieldE
 
 	protected String[] fXpackNames;
 	protected Button fXpackButton;
-	String[] fVersions;
+	protected String[] fVersions;
 
 	public XpackDirectoryNotStrictFieldEditor(String[] xpackNames, String buildToolsPathKey, String toolsPaths_label,
 			Composite fieldEditorParent, boolean isStrict) {
