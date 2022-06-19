@@ -136,9 +136,17 @@ public class XpackUtils {
 	public static IPath getRepoPath() {
 
 		Map<String, String> env = System.getenv();
-		String folder = env.get("XPACKS_REPO_FOLDER");
+		String folder = env.get("XPACKS_STORE_FOLDER");
 
 		IPath repoPath;
+		if (folder != null) {
+			repoPath = new Path(folder);
+			if (repoPath.toFile().isDirectory()) {
+				return repoPath;
+			}
+		}
+
+		folder = env.get("XPACKS_REPO_FOLDER");
 		if (folder != null) {
 			repoPath = new Path(folder);
 			if (repoPath.toFile().isDirectory()) {
