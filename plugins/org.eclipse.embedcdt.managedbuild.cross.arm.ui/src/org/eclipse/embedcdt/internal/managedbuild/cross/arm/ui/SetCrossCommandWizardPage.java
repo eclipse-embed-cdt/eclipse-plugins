@@ -18,9 +18,15 @@ package org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui;
 
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPage;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.embedcdt.core.XpackUtils;
 import org.eclipse.embedcdt.managedbuild.cross.arm.core.ToolchainDefinition;
+import org.eclipse.embedcdt.managedbuild.cross.arm.core.preferences.DefaultPreferences;
 import org.eclipse.embedcdt.managedbuild.cross.arm.ui.SetCrossCommandWizardOperation;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
+import org.eclipse.embedcdt.ui.EclipseUiUtils;
+import org.eclipse.embedcdt.ui.XpackBrowseDialog;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -51,6 +57,9 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 
 	// ------------------------------------------------------------------------
 
+	private PersistentPreferences fPersistentPreferences;
+	private DefaultPreferences fDefaultPreferences;
+
 	private Composite fComposite;
 	private boolean fFinish = false;
 	private Text fPathTxt;
@@ -58,6 +67,9 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	private int fSelectedToolchainIndex;
 	private String fSelectedToolchainId;
 	private String fSelectedToolchainName;
+	private Button fXpackButton;
+	private String[] fXpackNames;
+	private String[] fXpackVersions;
 
 	// ------------------------------------------------------------------------
 
@@ -80,6 +92,9 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_PATH, ""); //$NON-NLS-1$
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_ID, ""); //$NON-NLS-1$
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_NAME, ""); //$NON-NLS-1$
+
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 	}
 
 	// ------------------------------------------------------------------------
@@ -109,7 +124,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	public void createControl(Composite parent) {
 		fComposite = new Composite(parent, SWT.NULL);
 
-		fComposite.setLayout(new GridLayout(3, false));
+		fComposite.setLayout(new GridLayout(4, false));
 		GridData layoutData = new GridData();
 		fComposite.setLayoutData(layoutData);
 
@@ -118,7 +133,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		toolchainLbl.setText(Messages.SetCrossCommandWizardPage_toolchain);
 
 		fToolchainCombo = new Combo(fComposite, SWT.DROP_DOWN);
-		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1);
 		fToolchainCombo.setLayoutData(layoutData);
 
 		// create the selection array
@@ -128,12 +143,10 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		}
 		fToolchainCombo.setItems(toolchains);
 
-		final PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
-
 		// decide which one is selected
 		fSelectedToolchainIndex = -1;
 		try {
-			fSelectedToolchainId = persistentPreferences.getToolchainId();
+			fSelectedToolchainId = fPersistentPreferences.getToolchainId();
 			if (!fSelectedToolchainId.isEmpty()) {
 				try {
 					fSelectedToolchainIndex = ToolchainDefinition.findToolchainById(fSelectedToolchainId);
@@ -142,7 +155,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 			}
 
 			if (fSelectedToolchainIndex == -1) {
-				fSelectedToolchainName = persistentPreferences.getToolchainName();
+				fSelectedToolchainName = fPersistentPreferences.getToolchainName();
 				if (!fSelectedToolchainName.isEmpty()) {
 					try {
 						fSelectedToolchainIndex = ToolchainDefinition.findToolchainByName(fSelectedToolchainName);
@@ -158,6 +171,9 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		fSelectedToolchainId = ToolchainDefinition.getToolchain(fSelectedToolchainIndex).getId();
 		fSelectedToolchainName = ToolchainDefinition.getToolchain(fSelectedToolchainIndex).getName();
 
+		fXpackNames = fDefaultPreferences.getToolchainXpackNames(fSelectedToolchainId, fSelectedToolchainName);
+		fXpackVersions = XpackUtils.getPackVersions(fXpackNames);
+
 		updateToolchainNameProperty();
 
 		String toolchainSel = toolchains[fSelectedToolchainIndex];
@@ -172,9 +188,18 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 				fSelectedToolchainName = ToolchainDefinition.getToolchain(fSelectedToolchainIndex).getName();
 				updateToolchainNameProperty();
 
-				String crossCommandPath = persistentPreferences.getToolchainPath(fSelectedToolchainId,
+				String crossCommandPath = fPersistentPreferences.getToolchainPath(fSelectedToolchainId,
 						fSelectedToolchainName, null);
 				fPathTxt.setText(crossCommandPath);
+
+				fXpackNames = fDefaultPreferences.getToolchainXpackNames(fSelectedToolchainId, fSelectedToolchainName);
+				fXpackVersions = XpackUtils.getPackVersions(fXpackNames);
+
+				if (fXpackVersions.length > 0) {
+					fXpackButton.setEnabled(true);
+				} else {
+					fXpackButton.setEnabled(false);
+				}
 			}
 		});
 
@@ -183,7 +208,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		label.setText(Messages.SetCrossCommandWizardPage_path);
 
 		fPathTxt = new Text(fComposite, SWT.SINGLE | SWT.BORDER);
-		String crossCommandPath = persistentPreferences.getToolchainPath(fSelectedToolchainId, fSelectedToolchainName,
+		String crossCommandPath = fPersistentPreferences.getToolchainPath(fSelectedToolchainId, fSelectedToolchainName,
 				null);
 		fPathTxt.setText(crossCommandPath);
 		updatePathProperty();
@@ -199,9 +224,9 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 			}
 		});
 
-		Button button = new Button(fComposite, SWT.NONE);
-		button.setText(Messages.SetCrossCommandWizardPage_browse);
-		button.addSelectionListener(new SelectionListener() {
+		Button browseButton = new Button(fComposite, SWT.NONE);
+		browseButton.setText(Messages.SetCrossCommandWizardPage_browse);
+		browseButton.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -215,12 +240,51 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 			}
 		});
 		layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
-		button.setLayoutData(layoutData);
+		browseButton.setLayoutData(layoutData);
+
+		fXpackButton = new Button(fComposite, SWT.NONE);
+		fXpackButton.setText("xPack...");
+		layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
+		fXpackButton.setLayoutData(layoutData);
+		fXpackButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				buttonPressed(event);
+			}
+		});
+
+		if (fXpackVersions.length > 0) {
+			fXpackButton.setEnabled(true);
+		} else {
+			fXpackButton.setEnabled(false);
+		}
 
 		Label message = new Label(fComposite, SWT.NONE);
-		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1);
+		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1);
 		message.setLayoutData(layoutData);
 		message.setText(Messages.SetCrossCommandWizardPage_text);
+	}
+
+	private void buttonPressed(SelectionEvent e) {
+		XpackBrowseDialog dlg = new XpackBrowseDialog(EclipseUiUtils.getShell(), fXpackVersions);
+		if (dlg.open() == Dialog.OK) {
+			int index = dlg.getData();
+			String version = fXpackVersions[index];
+
+			for (String name : fXpackNames) {
+				IPath path = XpackUtils.getPackPath(name).append(version);
+				if (!path.toFile().isDirectory()) {
+					path = XpackUtils.getSysPackPath(name).append(version);
+					if (!path.toFile().isDirectory()) {
+						continue;
+					}
+				}
+				// TODO: remove hard reference to .content/bin
+				path = path.append(".content").append("bin");
+				fPathTxt.setText(path.toString());
+				break;
+			}
+		}
 	}
 
 	@Override
