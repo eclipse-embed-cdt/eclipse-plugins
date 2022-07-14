@@ -14,7 +14,7 @@
 <feature
       id="org.eclipse.embedcdt.debug.gdbjtag.qemu"
       label="%featureName"
-      version="6.2.2.qualifier"
+      version="6.3.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.embedcdt.debug.gdbjtag.qemu"
       license-feature="org.eclipse.license"
@@ -29,7 +29,7 @@
    </copyright>
 
    <requires>
-      <import feature="org.eclipse.embedcdt.debug.gdbjtag" version="6.2.2" match="compatible"/>
+      <import feature="org.eclipse.embedcdt.debug.gdbjtag" version="6.3.0" match="compatible"/>
    </requires>
 
    <plugin

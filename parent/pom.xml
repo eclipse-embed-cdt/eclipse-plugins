@@ -28,7 +28,7 @@
 	<groupId>org.eclipse.embedcdt</groupId>
 	<!-- Generally the name that the project is known by. -->
 	<artifactId>org.eclipse.embedcdt.parent</artifactId>
-	<version>6.2.2-SNAPSHOT</version>
+	<version>6.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -44,7 +44,7 @@
 		<!-- Eclipse provided plug-ins for signing JARs with Eclipse infra -->
 		<cbi-plugins.version>1.3.1</cbi-plugins.version>
 
-		<semverVersion>6.2.2</semverVersion>
+		<semverVersion>6.3.0</semverVersion>
 
 		<tycho.scmUrl>scm:git:https://github.com/eclipse-embed-cdt/eclipse-plugins.git</tycho.scmUrl>
 	</properties>
@@ -136,7 +136,7 @@
 						<artifact>
 							<groupId>org.eclipse.embedcdt</groupId>
 							<artifactId>org.eclipse.embedcdt.target-platform</artifactId>
-							<version>6.2.2-SNAPSHOT</version>
+							<version>6.3.0-SNAPSHOT</version>
 						</artifact>
 					</target>
 				</configuration>

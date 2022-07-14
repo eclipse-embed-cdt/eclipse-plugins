@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.packs.core;singleton:=true
-Bundle-Version: 3.1.1.qualifier
+Bundle-Version: 3.1.2.qualifier
 Bundle-Activator: org.eclipse.embedcdt.internal.packs.core.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
@@ -17,7 +17,7 @@ Export-Package: org.eclipse.embedcdt.internal.packs.core;x-friends:="org.eclipse
  org.eclipse.embedcdt.packs.core.jstree,
  org.eclipse.embedcdt.packs.core.tree,
  org.eclipse.embedcdt.packs.core.xml
-Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.2.2",
+Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.3.0",
  org.eclipse.core.jobs;bundle-version="3.10.800",
  org.eclipse.core.resources;bundle-version="3.13.800",
  org.eclipse.core.runtime;bundle-version="3.19.0",
