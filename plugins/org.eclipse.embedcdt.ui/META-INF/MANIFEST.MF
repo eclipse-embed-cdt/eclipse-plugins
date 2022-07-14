@@ -23,6 +23,7 @@ Export-Package: org.eclipse.embedcdt.internal.ui;
    org.eclipse.embedcdt.packs.ui,
    org.eclipse.embedcdt.templates.ad.ui,
    org.eclipse.embedcdt.templates.cortexm.ui,
+   org.eclipse.embedcdt.templates.xpack.ui,
    org.eclipse.embedcdt.templates.freescale.pe.ui,
    org.eclipse.embedcdt.templates.freescale.ui,
    org.eclipse.embedcdt.templates.sifive.ui,
