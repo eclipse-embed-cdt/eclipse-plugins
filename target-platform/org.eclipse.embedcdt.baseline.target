@@ -38,6 +38,8 @@
 			<unit id="org.eclipse.embedcdt.templates.ad.source.feature.group" version="6.0.0.202012080907"/>
 			<unit id="org.eclipse.embedcdt.templates.cortexm.feature.group" version="6.0.0.202012080907"/>
 			<unit id="org.eclipse.embedcdt.templates.cortexm.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.xpack.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.xpack.source.feature.group" version="6.0.0.202012080907"/>
 			<unit id="org.eclipse.embedcdt.templates.freescale.feature.group" version="6.0.0.202012080907"/>
 			<unit id="org.eclipse.embedcdt.templates.freescale.source.feature.group" version="6.0.0.202012080907"/>
 			<unit id="org.eclipse.embedcdt.templates.sifive.feature.group" version="6.0.0.202012080907"/>
