@@ -116,6 +116,11 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private DefaultPreferences fDefaultPreferences;
 	private PersistentPreferences fPersistentPreferences;
 
+	// This must be either empty (for legacy gnuarmeclipse) or one of
+	// PersistentPreferences.architectures.
+	private String fArchitecture;
+	private String fPrefix;
+
 	// ------------------------------------------------------------------------
 
 	public TabStartup() {
@@ -123,6 +128,16 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
+
+		fArchitecture = "";
+		fPrefix = "";
+	}
+
+	public TabStartup(String architecture) {
+		this();
+
+		fArchitecture = architecture;
+		fPrefix = architecture.isEmpty() ? "" : fArchitecture + ".";
 	}
 
 	@Override
@@ -839,12 +854,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Initialisation Commands
 			{
 				// Do initial reset
-				booleanDefault = fPersistentPreferences.getQemuDoInitialReset();
+				booleanDefault = fPersistentPreferences.getQemuDoInitialReset(fPrefix);
 				fDoFirstReset.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_FIRST_RESET, booleanDefault));
 
 				// Other commands
-				stringDefault = fPersistentPreferences.getQemuInitOther();
+				stringDefault = fPersistentPreferences.getQemuInitOther(fPrefix);
 				fInitCommands.setText(
 						configuration.getAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, stringDefault));
 			}
@@ -893,7 +908,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			// Runtime Options
 			{
-				booleanDefault = fPersistentPreferences.getQemuDebugInRam();
+				booleanDefault = fPersistentPreferences.getQemuDebugInRam(fPrefix);
 				fDoDebugInRam.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, booleanDefault));
 			}
@@ -901,12 +916,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Run Commands
 			{
 				// Do pre-run reset
-				booleanDefault = fPersistentPreferences.getQemuDoPreRunReset();
+				booleanDefault = fPersistentPreferences.getQemuDoPreRunReset(fPrefix);
 				fDoSecondReset.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_SECOND_RESET, booleanDefault));
 
 				// Other commands
-				stringDefault = fPersistentPreferences.getQemuPreRunOther();
+				stringDefault = fPersistentPreferences.getQemuPreRunOther(fPrefix);
 				fRunCommands
 						.setText(configuration.getAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, stringDefault));
 
@@ -957,11 +972,11 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		// Initialisation Commands
 		{
 			// Do initial reset
-			booleanDefault = fDefaultPreferences.getQemuDoInitialReset();
+			booleanDefault = fDefaultPreferences.getQemuDoInitialReset(fPrefix);
 			fDoFirstReset.setSelection(booleanDefault);
 
 			// Other commands
-			stringDefault = fDefaultPreferences.getQemuInitOther();
+			stringDefault = fDefaultPreferences.getQemuInitOther(fPrefix);
 			fInitCommands.setText(stringDefault);
 		}
 
@@ -988,18 +1003,18 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		// Runtime Options
 		{
-			booleanDefault = fDefaultPreferences.getQemuDebugInRam();
+			booleanDefault = fDefaultPreferences.getQemuDebugInRam(fPrefix);
 			fDoDebugInRam.setSelection(booleanDefault);
 		}
 
 		// Run Commands
 		{
 			// Do pre-run reset
-			booleanDefault = fDefaultPreferences.getQemuDoPreRunReset();
+			booleanDefault = fDefaultPreferences.getQemuDoPreRunReset(fPrefix);
 			fDoSecondReset.setSelection(booleanDefault);
 
 			// Other commands
-			stringDefault = fDefaultPreferences.getQemuPreRunOther();
+			stringDefault = fDefaultPreferences.getQemuPreRunOther(fPrefix);
 			fRunCommands.setText(stringDefault);
 
 			fSetPcRegister.setSelection(IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
@@ -1052,12 +1067,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Do first reset
 			booleanValue = fDoFirstReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET, booleanValue);
-			fPersistentPreferences.putQemuDoInitialReset(booleanValue);
+			fPersistentPreferences.putQemuDoInitialReset(fPrefix, booleanValue);
 
 			// Other commands
 			stringValue = fInitCommands.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
-			fPersistentPreferences.putQemuInitOther(stringValue);
+			fPersistentPreferences.putQemuInitOther(fPrefix, stringValue);
 		}
 
 		// Load Symbols & Image...
@@ -1083,7 +1098,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			booleanValue = fDoDebugInRam.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, booleanValue);
-			fPersistentPreferences.putQemuDebugInRam(booleanValue);
+			fPersistentPreferences.putQemuDebugInRam(fPrefix, booleanValue);
 		}
 
 		// Run Commands
@@ -1091,12 +1106,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Pre-run reset
 			booleanValue = fDoSecondReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET, booleanValue);
-			fPersistentPreferences.putQemuDoPreRunReset(booleanValue);
+			fPersistentPreferences.putQemuDoPreRunReset(fPrefix, booleanValue);
 
 			// Other commands
 			stringValue = fRunCommands.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
-			fPersistentPreferences.putQemuPreRunOther(stringValue);
+			fPersistentPreferences.putQemuPreRunOther(fPrefix, stringValue);
 
 			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER, fSetPcRegister.getSelection());
 			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER, fPcRegister.getText());
@@ -1126,13 +1141,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		String defaultString;
 
 		// Initialisation Commands
-		defaultBoolean = fPersistentPreferences.getQemuDoInitialReset();
+		defaultBoolean = fPersistentPreferences.getQemuDoInitialReset(fPrefix);
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET, defaultBoolean);
 
-		defaultBoolean = fPersistentPreferences.getQemuEnableSemihosting();
+		defaultBoolean = fPersistentPreferences.getQemuEnableSemihosting(fPrefix);
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, defaultBoolean);
 
-		defaultString = fPersistentPreferences.getQemuInitOther();
+		defaultString = fPersistentPreferences.getQemuInitOther(fPrefix);
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, defaultString);
 
 		// Load Image...
@@ -1155,14 +1170,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET, IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 		// Runtime Options
-		defaultBoolean = fPersistentPreferences.getQemuDebugInRam();
+		defaultBoolean = fPersistentPreferences.getQemuDebugInRam(fPrefix);
 		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, defaultBoolean);
 
 		// Run Commands
-		defaultBoolean = fPersistentPreferences.getQemuDoPreRunReset();
+		defaultBoolean = fPersistentPreferences.getQemuDoPreRunReset(fPrefix);
 		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET, defaultBoolean);
 
-		defaultString = fPersistentPreferences.getQemuPreRunOther();
+		defaultString = fPersistentPreferences.getQemuPreRunOther(fPrefix);
 		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, defaultString);
 
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER, IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);

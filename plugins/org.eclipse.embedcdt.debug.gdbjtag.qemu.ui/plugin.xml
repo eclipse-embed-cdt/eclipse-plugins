@@ -6,7 +6,7 @@
   are made available under the terms of the Eclipse Public License 2.0
   which accompanies this distribution, and is available at
   https://www.eclipse.org/legal/epl-2.0/
-  
+
   SPDX-License-Identifier: EPL-2.0
 
   Contributors:
@@ -20,6 +20,22 @@
 			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType"
 			icon="icons/obj16/c_app.gif"
 			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.launchConfigurationTypeImage" />
+		<launchConfigurationTypeImage
+			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.qemu.arm.launchConfigurationType"
+			icon="icons/obj16/c_app.gif"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.arm.ui.launchConfigurationTypeImage" />
+		<launchConfigurationTypeImage
+			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.qemu.aarch64.launchConfigurationType"
+			icon="icons/obj16/c_app.gif"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.aarch64.ui.launchConfigurationTypeImage" />
+		<launchConfigurationTypeImage
+			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.qemu.riscv32.launchConfigurationType"
+			icon="icons/obj16/c_app.gif"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.riscv32.ui.launchConfigurationTypeImage" />
+		<launchConfigurationTypeImage
+			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.qemu.riscv64.launchConfigurationType"
+			icon="icons/obj16/c_app.gif"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.riscv64.ui.launchConfigurationTypeImage" />
 	</extension>
 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -27,6 +43,22 @@
 			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.TabGroupLaunchConfiguration"
 			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationTabGroup"
 			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType" />
+		<launchConfigurationTabGroup
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.TabGroupLaunchConfigurationArm"
+			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.arm.launchConfigurationTabGroup"
+			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.arm.launchConfigurationType" />
+		<launchConfigurationTabGroup
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.TabGroupLaunchConfigurationAarch64"
+			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.aarch64.launchConfigurationTabGroup"
+			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.aarch64.launchConfigurationType" />
+		<launchConfigurationTabGroup
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.TabGroupLaunchConfigurationRiscv32"
+			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.riscv32.launchConfigurationTabGroup"
+			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.riscv32.launchConfigurationType" />
+		<launchConfigurationTabGroup
+			class="org.eclipse.embedcdt.debug.gdbjtag.qemu.ui.TabGroupLaunchConfigurationRiscv64"
+			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.riscv64.launchConfigurationTabGroup"
+			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.riscv64.launchConfigurationType" />
 	</extension>
 
 	<extension point="org.eclipse.ui.preferencePages">
