@@ -241,7 +241,7 @@ public class Repos {
 	}
 
 	// Do some magic to obtain a domain name from the url
-	static public String getDomaninNameFromUrl(String url) {
+	public static String getDomaninNameFromUrl(String url) {
 
 		String s = url;
 		if (s.startsWith("http://")) {

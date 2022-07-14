@@ -170,7 +170,7 @@ public class EclipseUiUtils {
 	 * @param message
 	 * @param e
 	 */
-	static public void openError(final String title, final String message, final Exception e) {
+	public static void openError(final String title, final String message, final Exception e) {
 		UIJob uiJob = new SystemUIJob("open error") { //$NON-NLS-1$
 
 			@Override

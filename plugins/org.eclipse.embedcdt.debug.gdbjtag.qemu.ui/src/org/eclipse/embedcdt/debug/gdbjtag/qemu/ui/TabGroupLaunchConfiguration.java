@@ -42,7 +42,5 @@ public class TabGroupLaunchConfiguration extends AbstractLaunchConfigurationTabG
 				tabStartup, new SourceLookupTab(), new CommonTab(), new TabSvd() };
 
 		setTabs(tabs);
-
 	}
-
 }

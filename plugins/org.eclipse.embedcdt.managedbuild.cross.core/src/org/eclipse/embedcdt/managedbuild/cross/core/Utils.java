@@ -97,7 +97,7 @@ public class Utils {
 		return config.setOption(toolchain, newOption, value);
 	}
 
-	static public String escapeWhitespaces(String path) {
+	public static String escapeWhitespaces(String path) {
 		path = path.trim();
 		// Escape the spaces in the path/filename if it has any
 		String[] segments = path.split("\\s"); //$NON-NLS-1$
@@ -122,7 +122,7 @@ public class Utils {
 		}
 	}
 
-	static public String quoteWhitespaces(String path) {
+	public static String quoteWhitespaces(String path) {
 		path = path.trim();
 		// Escape the spaces in the path/filename if it has any
 		String[] segments = path.split("\\s"); //$NON-NLS-1$

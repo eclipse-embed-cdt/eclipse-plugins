@@ -307,7 +307,7 @@ public class DebugUtils {
 	// return sb.toString();
 	// }
 
-	static public String escapeWhitespaces(String path) {
+	public static String escapeWhitespaces(String path) {
 		path = path.trim();
 		// Escape the spaces in the path/filename if it has any
 		String[] segments = path.split("\\s"); //$NON-NLS-1$

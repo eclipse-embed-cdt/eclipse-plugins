@@ -93,21 +93,21 @@ public class EclipseUtils {
 
 	private static final String PROPERTY_OS_NAME = "os.name"; //$NON-NLS-1$
 
-	static public boolean isWindows() {
+	public static boolean isWindows() {
 
 		// Platform.OS_WIN32 might be not appropriate, use shorter prefix
 		return System.getProperty(PROPERTY_OS_NAME).toLowerCase().startsWith("win");
 	}
 
-	static public boolean isWindowsXP() {
+	public static boolean isWindowsXP() {
 		return System.getProperty(PROPERTY_OS_NAME).toLowerCase().equalsIgnoreCase("Windows XP");
 	}
 
-	static public boolean isLinux() {
+	public static boolean isLinux() {
 		return System.getProperty(PROPERTY_OS_NAME).toLowerCase().startsWith(Platform.OS_LINUX);
 	}
 
-	static public boolean isMacOSX() {
+	public static boolean isMacOSX() {
 		// Platform.OS_MACOSX is not appropriate, since the returned value
 		// contains spaces "Mac OS X".
 		return System.getProperty(PROPERTY_OS_NAME).toLowerCase().startsWith("mac");
@@ -118,7 +118,7 @@ public class EclipseUtils {
 	 *
 	 * @return a String, one of "windows", "linux", "osx", "other".
 	 */
-	static public String getOsFamily() {
+	public static String getOsFamily() {
 
 		if (isWindows()) {
 			return "windows";
@@ -137,7 +137,7 @@ public class EclipseUtils {
 	 * @param key
 	 * @return
 	 */
-	static public String getKeyOs(String key) {
+	public static String getKeyOs(String key) {
 
 		String os = getOsFamily();
 		String keyOs = String.format(key, os);
@@ -151,7 +151,7 @@ public class EclipseUtils {
 	 *
 	 * @return a string.
 	 */
-	static public String getPathSeparator() {
+	public static String getPathSeparator() {
 
 		if (isWindows()) {
 			return ";";
@@ -165,8 +165,7 @@ public class EclipseUtils {
 	/**
 	 * Find the project with the given project name.
 	 *
-	 * @param name
-	 *            a string with the project name
+	 * @param name a string with the project name
 	 * @return the project or null, if not found
 	 */
 	public static IProject getProjectByName(String name) {
@@ -200,14 +199,10 @@ public class EclipseUtils {
 	 * Search the given scopes and return the non empty trimmed string or the
 	 * default.
 	 *
-	 * @param pluginId
-	 *            a string with the plugin id.
-	 * @param key
-	 *            a string with the key to search.
-	 * @param defaultValue
-	 *            a string with the default, possibly null.
-	 * @param contexts
-	 *            an array of IScopeContext.
+	 * @param pluginId     a string with the plugin id.
+	 * @param key          a string with the key to search.
+	 * @param defaultValue a string with the default, possibly null.
+	 * @param contexts     an array of IScopeContext.
 	 * @return a trimmed string or the given default, possibly null.
 	 */
 	public static String getPreferenceValueForId(String pluginId, String key, String defaultValue,
@@ -246,8 +241,7 @@ public class EclipseUtils {
 	/**
 	 * Compute a maximum array of scopes where to search for.
 	 *
-	 * @param project
-	 *            the IProject reference to the project, possibly null.
+	 * @param project the IProject reference to the project, possibly null.
 	 * @return an array of IScopeContext.
 	 */
 	public static IScopeContext[] getPreferenceScopeContexts(IProject project) {
@@ -268,14 +262,10 @@ public class EclipseUtils {
 	/**
 	 * Search all scopes and return the non empty trimmed string or the default.
 	 *
-	 * @param pluginId
-	 *            a string with the plugin id.
-	 * @param key
-	 *            a string with the key to search.
-	 * @param defaultValue
-	 *            a string with the default, possibly null.
-	 * @param project
-	 *            the IProject reference to the project, possibly null.
+	 * @param pluginId     a string with the plugin id.
+	 * @param key          a string with the key to search.
+	 * @param defaultValue a string with the default, possibly null.
+	 * @param project      the IProject reference to the project, possibly null.
 	 * @return a trimmed string or the given default, possibly null.
 	 */
 	public static String getPreferenceValueForId(String pluginId, String key, String defaultValue, IProject project) {
@@ -290,8 +280,7 @@ public class EclipseUtils {
 	 * Get the variable value. The variables are accessible in the Run/Debug ->
 	 * String Substitution preferences page.
 	 *
-	 * @param name
-	 *            a String with the variable name.
+	 * @param name a String with the variable name.
 	 * @return a String with the variable value, or null if not found.
 	 */
 	public static String getVariableValue(String name) {
@@ -313,10 +302,8 @@ public class EclipseUtils {
 	 * Set a variable value. The variables are accessible in the Run/Debug -> String
 	 * Substitution preferences page.
 	 *
-	 * @param name
-	 *            a String with the variable name.
-	 * @param value
-	 *            a String with the variable value.
+	 * @param name  a String with the variable name.
+	 * @param value a String with the variable value.
 	 */
 	public static void setVariableValue(String name, String value) {
 
@@ -338,12 +325,9 @@ public class EclipseUtils {
 	 * If the variable does not exist, it is created. Unfortunately the 'Contributed
 	 * By' field is not filled in.
 	 *
-	 * @param name
-	 *            a String with the variable name.
-	 * @param description
-	 *            a String with the variable description.
-	 * @param value
-	 *            a String with the variable value.
+	 * @param name        a String with the variable name.
+	 * @param description a String with the variable description.
+	 * @param value       a String with the variable value.
 	 */
 	public static void setVariableValue(String name, String description, String value) {
 
@@ -415,8 +399,7 @@ public class EclipseUtils {
 	 * Get the build configuration associated with the debug launch configuration,
 	 * if defined in the first tab.
 	 *
-	 * @param config
-	 *            a debug launch configuration.
+	 * @param config a debug launch configuration.
 	 * @return the build configuration, or null if not found or not defined.
 	 */
 	public static ICConfigurationDescription getBuildConfigDescription(ILaunchConfiguration config) {
