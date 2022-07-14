@@ -6,7 +6,7 @@
   are made available under the terms of the Eclipse Public License 2.0
   which accompanies this distribution, and is available at
   https://www.eclipse.org/legal/epl-2.0/
-  
+
   SPDX-License-Identifier: EPL-2.0
 
   Contributors:
@@ -24,7 +24,7 @@
 					<simple name="id" />
 					<simple name="value" />
 					<simple name="path" />
-					<simple name="buildType" />
+					<simple name="buildType" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
@@ -37,7 +37,7 @@
 					<simple name="id" />
 					<simpleArray name="values" />
 					<simple name="path" />
-					<simple name="buildType" />
+					<simple name="buildType" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
@@ -50,7 +50,7 @@
 					<simple name="id" />
 					<simple name="value" />
 					<simple name="path" />
-					<simple name="buildType" />
+					<simple name="buildType" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
@@ -63,7 +63,7 @@
 					<simple name="id" />
 					<simple name="value" />
 					<simple name="path" />
-					<simple name="buildType" />
+					<simple name="buildType" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
@@ -76,9 +76,7 @@
 					<simple name="id" />
 					<simpleArray name="values" />
 					<simple name="path" />
-					<simple
-						name="buildType"
-						nullable="true" />
+					<simple name="buildType" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
@@ -88,89 +86,55 @@
 			<simple name="projectName">
 			</simple>
 			<simple
-				name="condition"
-				nullable="true">
-			</simple>
+				name="condition" nullable="true" />
 			<complexArray name="resourcePaths">
 				<baseType>
-					<simple name="id">
-					</simple>
-					<simple name="value">
-					</simple>
-					<simple name="path">
-					</simple>
-					<simple name="buildType">
-					</simple>
+					<simple name="id" />
+					<simple name="value" />
+					<simple name="path" />
+					<simple name="buildType" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
 		<processType
 			name="ConditionalAppendToMBSStringOptionValue"
 			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAppendToMBSStringOptionValue">
-			<simple name="projectName">
-			</simple>
-			<simple
-				name="condition"
-				nullable="true">
-			</simple>
+			<simple name="projectName" />
+			<simple name="condition" nullable="true" />
 			<complexArray name="resourcePaths">
 				<baseType>
-					<simple name="id">
-					</simple>
-					<simple name="value">
-					</simple>
-					<simple name="path">
-					</simple>
-					<simple
-						name="buildType"
-						nullable="true">
-					</simple>
+					<simple name="id" />
+					<simple name="value" />
+					<simple name="path" nullable="true" />
+					<simple name="buildType" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
 		<processType
 			name="ConditionalAppendToMBSStringListOptionValues"
 			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAppendToMBSStringListOptionValues">
-			<simple name="projectName">
-			</simple>
-			<simple
-				name="condition"
-				nullable="true">
-			</simple>
+			<simple name="projectName" />
+			<simple name="condition" nullable="true" />
 			<complexArray name="resourcePaths">
 				<baseType>
-					<simple name="id">
-					</simple>
-					<simpleArray name="values">
-					</simpleArray>
-					<simple name="path">
-					</simple>
-					<simple
-						name="buildType"
-						nullable="true">
-					</simple>
+					<simple name="id" />
+					<simpleArray name="values" />
+					<simple name="path" nullable="true" />
+					<simple name="buildType" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
 		<processType
 			name="ConditionalSetMBSBooleanOptionValue"
 			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalSetMBSBooleanOptionValue">
-			<simple name="projectName">
-			</simple>
-			<simple
-				name="condition"
-				nullable="true">
-			</simple>
+			<simple name="projectName" />
+			<simple name="condition" nullable="true" />
 			<complexArray name="resourcePaths">
 				<baseType>
-					<simple name="id">
-					</simple>
-					<simple name="value">
-					</simple>
-					<simple name="path">
-					</simple>
-					<simple name="buildType">
-					</simple>
+					<simple name="id" />
+					<simple name="value" />
+					<simple name="path" nullable="true" />
+					<simple name="buildType" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
@@ -179,15 +143,12 @@
 			name="ConditionalAddFiles"
 			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAddFiles">
 			<simple name="projectName" />
-			<simple
-				name="condition"
-				nullable="true">
-			</simple>
+			<simple name="condition" nullable="true" />
 			<complexArray name="files">
 				<baseType>
 					<simple name="source" />
 					<simple name="target" />
-					<simple name="replaceable" />
+					<simple name="replaceable" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
@@ -196,15 +157,12 @@
 			name="ConditionalAppendCreate"
 			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAppendCreate">
 			<simple name="projectName" />
-			<simple
-				name="condition"
-				nullable="true">
-			</simple>
+			<simple name="condition" nullable="true" />
 			<complexArray name="files">
 				<baseType>
 					<simple name="source" />
 					<simple name="target" />
-					<simple name="replaceable" />
+					<simple name="replaceable" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
@@ -222,10 +180,7 @@
 			name="ConditionalSetProperty"
 			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalSetProperty">
 			<simple name="projectName" />
-			<simple
-				name="condition"
-				nullable="true">
-			</simple>
+			<simple name="condition" nullable="true" />
 			<simple name="propertyName" />
 			<simple name="propertyValue" />
 		</processType>
@@ -234,10 +189,7 @@
 			name="ConditionalSetLowerCaseProperty"
 			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalSetLowerCaseProperty">
 			<simple name="projectName" />
-			<simple
-				name="condition"
-				nullable="true">
-			</simple>
+			<simple name="condition" nullable="true" />
 			<simple name="propertyName" />
 			<simple name="propertyValue" />
 		</processType>
@@ -246,12 +198,27 @@
 			name="ConditionalSetUpperCaseProperty"
 			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalSetUpperCaseProperty">
 			<simple name="projectName" />
-			<simple
-				name="condition"
-				nullable="true">
-			</simple>
+			<simple name="condition" nullable="true" />
 			<simple name="propertyName" />
 			<simple name="propertyValue" />
+		</processType>
+
+		<processType
+			name="ConditionalRunCommand"
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalRunCommand">
+			<simple name="projectName" />
+			<simple name="condition" nullable="true" />
+			<simple name="cwd" />
+			<simple name="command" />
+			<simpleArray name="args" />
+		</processType>
+
+		<processType
+			name="ConditionalAddSourceFolders"
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAddSourceFolders">
+			<simple name="projectName" />
+			<simple name="condition" nullable="true" />
+			<simpleArray name="paths" />
 		</processType>
 
 		<processType
@@ -270,7 +237,7 @@
 				<baseType>
 					<simple name="source" />
 					<simple name="target" />
-					<simple name="replaceable" />
+					<simple name="replaceable" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
@@ -279,44 +246,46 @@
 			name="ConditionalCopyFolders"
 			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalCopyFolders">
 			<simple name="projectName" />
-			<simple
-				name="condition"
-				nullable="true">
-			</simple>
+			<simple name="condition" nullable="true" />
 			<complexArray name="folders">
 				<baseType>
 					<simple name="source" />
 					<simple name="target" />
-					<simple name="pattern" />
-					<simple name="replaceable" />
+					<simple name="pattern" nullable="true" />
+					<simple name="replaceable" nullable="true" />
 				</baseType>
 			</complexArray>
 		</processType>
-  <processType
-        name="ConditionalAddLiquidFiles"
-        processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAddLiquidFiles">
-     <simple
-           name="projectName">
-     </simple>
-     <simple
-           name="condition"
-           nullable="true">
-     </simple>
-     <complexArray
-           name="files">
-        <baseType>
-           <simple
-                 name="source">
-           </simple>
-           <simple
-                 name="target">
-           </simple>
-           <simple
-                 name="replaceable">
-           </simple>
-        </baseType>
-     </complexArray>
-  </processType>
+
+		<processType
+			name="ConditionalCopyFoldersRecursive"
+			processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalCopyFoldersRecursive">
+			<simple name="projectName" />
+			<simple name="condition" nullable="true" />
+			<complexArray name="folders">
+				<baseType>
+					<simple name="source" />
+					<simple name="target" nullable="true" />
+					<simple name="pattern" nullable="true" />
+					<simple name="replaceable" nullable="true" />
+					<simple name="recursive" nullable="true" />
+				</baseType>
+			</complexArray>
+		</processType>
+
+		<processType
+        	name="ConditionalAddLiquidFiles"
+        	processRunner="org.eclipse.embedcdt.templates.core.processes.ConditionalAddLiquidFiles">
+			<simple name="projectName" />
+			<simple name="condition" nullable="true" />
+			<complexArray name="files">
+				<baseType>
+					 <simple name="source" />
+					<simple name="target" />
+					<simple name="replaceable" nullable="true" />
+				</baseType>
+			</complexArray>
+		</processType>
 
 	</extension>
 
