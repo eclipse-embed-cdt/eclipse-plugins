@@ -1,0 +1,12 @@
+
+# add update sites
+instructions.configure=\
+ org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:https${#58}//download.eclipse.org/embed-cdt/updates/v6/,type:0,name:Embedded C/C++ v6.x Updates);\
+ org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:https${#58}//download.eclipse.org/embed-cdt/updates/v6/,type:1,name:Embedded C/C++ v6.x Updates);
+
+# The pc.name should define both the new and the old feature names, followed
+# by `.feature.group`.
+# The pc.namespace seems fixed to `org.eclipse.equinox.p2.iu`.
+update.matchExp=providedCapabilities.exists(pc | pc.namespace == 'org.eclipse.equinox.p2.iu' && (pc.name == 'org.eclipse.embedcdt.templates.xpack.feature.group' || pc.name == 'ilg.gnumcueclipse.templates.xpack.feature.feature.group'))
+
+# eof

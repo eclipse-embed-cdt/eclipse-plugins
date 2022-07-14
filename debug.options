@@ -35,6 +35,7 @@ org.eclipse.embedcdt.packs.ui/debug=true
 org.eclipse.embedcdt.templates.ad.ui/debug=true
 org.eclipse.embedcdt.templates.core/debug=true
 org.eclipse.embedcdt.templates.cortexm.ui/debug=true
+org.eclipse.embedcdt.templates.xpack.ui/debug=true
 org.eclipse.embedcdt.templates.freescale.ui/debug=true
 org.eclipse.embedcdt.templates.freescale.pe.ui/debug=true
 org.eclipse.embedcdt.templates.sifive.ui/debug=true

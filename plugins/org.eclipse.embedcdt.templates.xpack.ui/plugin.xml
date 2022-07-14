@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+  Copyright (c) 2012, 2017 Liviu Ionescu.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
+  https://www.eclipse.org/legal/epl-2.0/
+
+  SPDX-License-Identifier: EPL-2.0
+
+  Contributors:
+    Liviu Ionescu
+-->
+
+<plugin>
+	<extension point="org.eclipse.cdt.core.templates">
+		<template
+			filterPattern=".*g[c\+][c\+]"
+			id="org.eclipse.embedcdt.templates.xpack.ui.hello.world.qemu.project"
+			location="$nl$/templates/hello-world-qemu-xpack-project/template.xml"
+			projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+		</template>
+	</extension>
+	<extension point="org.eclipse.cdt.core.templateAssociations">
+		<template id="org.eclipse.embedcdt.templates.xpack.ui.hello.world.qemu.project">
+			<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+			</toolChain>
+		</template>
+	</extension>
+</plugin>

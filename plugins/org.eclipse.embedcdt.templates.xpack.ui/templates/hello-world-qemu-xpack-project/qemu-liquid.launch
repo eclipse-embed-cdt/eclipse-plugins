@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+{% if HWcore == 'cortex-m7f' %}
+<launchConfiguration type="ilg.gnumcueclipse.debug.gdbjtag.qemu.arm.launchConfigurationType">
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.architecture" value="arm"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerExecutable" value="${qemu_arm_path}/${qemu_arm_executable}"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerQemuCpuName" value="cortex-m7"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerQemuMachineName" value="mps2-an500"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.semihosting.cmdline" value="{{ projectName }} M7F"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doDebugInRam" value="false"/>
+{% elsif HWcore == 'cortex-m0' %}
+<launchConfiguration type="ilg.gnumcueclipse.debug.gdbjtag.qemu.arm.launchConfigurationType">
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.architecture" value="arm"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerExecutable" value="${qemu_arm_path}/${qemu_arm_executable}"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerQemuCpuName" value="cortex-m3"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerQemuMachineName" value="mps2-an385"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.semihosting.cmdline" value="{{ projectName }} M0"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doDebugInRam" value="false"/>
+{% elsif HWcore == 'cortex-a15' %}
+<launchConfiguration type="ilg.gnumcueclipse.debug.gdbjtag.qemu.arm.launchConfigurationType">
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.architecture" value="arm"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerExecutable" value="${qemu_arm_path}/${qemu_arm_executable}"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerQemuCpuName" value="cortex-a15"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerQemuMachineName" value="virt"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.semihosting.cmdline" value="{{ projectName }} A15"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doDebugInRam" value="true"/>
+{% elsif HWcore == 'cortex-a72' %}
+<launchConfiguration type="ilg.gnumcueclipse.debug.gdbjtag.qemu.aarch64.launchConfigurationType">
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.architecture" value="aarch64"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerExecutable" value="${qemu_aarch64_path}/${qemu_aarch64_executable}"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerQemuCpuName" value="cortex-a72"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerQemuMachineName" value="virt"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.semihosting.cmdline" value="{{ projectName }} A72"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doDebugInRam" value="true"/>
+{% endif %}
+    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Debug/{{ projectName }}.elf"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="{{ projectName }}"/>
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+        <listEntry value="/{{ projectName }}"/>
+    </listAttribute>
+
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.disableGraphics" value="true"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doContinue" value="true"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doFirstReset" value="true"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doGdbServerAllocateConsole" value="true"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doSecondReset" value="true"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doStartGdbServer" value="true"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.enableSemihosting" value="true"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbClientOtherCommands" value="set mem inaccessible-by-default off"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbClientOtherOptions" value=""/>
+    <intAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerDelaySeconds" value="0"/>
+    <intAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerGdbPortNumber" value="1234"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerOther" value="-d unimp,guest_errors"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.isGdbServerVerbose" value="false"/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.otherInitCommands" value=""/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.otherRunCommands" value=""/>
+    <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.svdPath" value=""/>
+    <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.imageFileName" value=""/>
+    <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.imageOffset" value=""/>
+    <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.ipAddress" value="localhost"/>
+    <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.jtagDevice" value="GNU MCU QEMU"/>
+    <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.loadImage" value="true"/>
+    <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.loadSymbols" value="true"/>
+    <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.pcRegister" value=""/>
+    <intAttribute key="org.eclipse.cdt.debug.gdbjtag.core.portNumber" value="1234"/>
+    <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setPcRegister" value="false"/>
+    <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setResume" value="false"/>
+    <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setStopAt" value="true"/>
+    <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.stopAt" value="main"/>
+    <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.symbolsFileName" value=""/>
+    <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.symbolsOffset" value=""/>
+    <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useFileForImage" value="false"/>
+    <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useFileForSymbols" value="false"/>
+    <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useProjBinaryForImage" value="true"/>
+    <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useProjBinaryForSymbols" value="true"/>
+    <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useRemoteTarget" value="true"/>
+    <stringAttribute key="org.eclipse.cdt.dsf.gdb.DEBUG_NAME" value="${cross_prefix}gdb${cross_suffix}"/>
+    <booleanAttribute key="org.eclipse.cdt.dsf.gdb.UPDATE_THREADLIST_ON_SUSPEND" value="false"/>
+    <intAttribute key="org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR" value="2"/>
+    <stringAttribute key="org.eclipse.cdt.launch.COREFILE_PATH" value=""/>
+    <booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="true"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value=""/>
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+        <listEntry value="4"/>
+    </listAttribute>
+    <stringAttribute key="org.eclipse.dsf.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;memoryBlockExpressionList context=&quot;Context string&quot;/&gt;&#10;"/>
+    <stringAttribute key="process_factory_id" value="org.eclipse.cdt.dsf.gdb.GdbProcessFactory"/>
+</launchConfiguration>

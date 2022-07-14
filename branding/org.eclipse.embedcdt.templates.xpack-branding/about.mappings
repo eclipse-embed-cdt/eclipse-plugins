@@ -1,0 +1,23 @@
+###############################################################################
+# Copyright (c) 2014 Liviu Ionescu.
+#
+# This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License 2.0
+# which accompanies this distribution, and is available at
+# https://www.eclipse.org/legal/epl-2.0/
+#
+# SPDX-License-Identifier: EPL-2.0
+#
+# Contributors:
+#   Liviu Ionescu - Arm version   
+###############################################################################
+
+# about.mappings
+# contains fill-ins for about.properties
+# java.io.Properties file (ISO 8859-1 with "\" escapes)
+# This file does not need to be translated.
+
+# The following should contain the build version.
+# e.g. "0=20020612"
+# This value will be added automaticaly via the build scripts
+# 0=@build@

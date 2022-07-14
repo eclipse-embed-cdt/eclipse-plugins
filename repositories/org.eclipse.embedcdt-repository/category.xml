@@ -5,7 +5,7 @@
   are made available under the terms of the Eclipse Public License 2.0
   which accompanies this distribution, and is available at
   https://www.eclipse.org/legal/epl-2.0/
-  
+
   SPDX-License-Identifier: EPL-2.0
 
   Contributors:
@@ -46,6 +46,9 @@
       <category name="org.eclipse.embedcdt.category"/>
    </feature>
    <feature id="org.eclipse.embedcdt.templates.cortexm">
+      <category name="org.eclipse.embedcdt.category"/>
+   </feature>
+   <feature id="org.eclipse.embedcdt.templates.xpack">
       <category name="org.eclipse.embedcdt.category"/>
    </feature>
    <feature id="org.eclipse.embedcdt.packs">
@@ -92,6 +95,9 @@
       <category name="org.eclipse.embedcdt.category.source"/>
    </feature>
    <feature id="org.eclipse.embedcdt.templates.cortexm.source">
+      <category name="org.eclipse.embedcdt.category.source"/>
+   </feature>
+   <feature id="org.eclipse.embedcdt.templates.xpack.source">
       <category name="org.eclipse.embedcdt.category.source"/>
    </feature>
    <feature id="org.eclipse.embedcdt.packs.source">
