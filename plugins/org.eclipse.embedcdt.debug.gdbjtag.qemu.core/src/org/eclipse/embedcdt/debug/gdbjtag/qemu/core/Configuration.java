@@ -36,18 +36,46 @@ public class Configuration {
 
 	// ------------------------------------------------------------------------
 
+	public static String getPrefix(ILaunchConfiguration configuration) {
+		String prefix = "";
+		String architecture = "";
+
+		try {
+			architecture = configuration.getAttribute(ConfigurationAttributes.ARCHITECTURE, "");
+		} catch (CoreException e) {
+		}
+
+		if (!architecture.isEmpty()) {
+			prefix = architecture + ".";
+		}
+
+		return prefix;
+	}
+
 	public static String getGdbServerCommand(ILaunchConfiguration configuration, String executable) {
 
 		try {
 
 			if (executable == null) {
+				String prefix = "";
+				String architecture = "";
+
+				try {
+					architecture = configuration.getAttribute(ConfigurationAttributes.ARCHITECTURE, "");
+				} catch (CoreException e) {
+				}
+
+				if (!architecture.isEmpty()) {
+					prefix = architecture + ".";
+				}
+
 				DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 				if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
-						fDefaultPreferences.getGdbServerDoStart()))
+						fDefaultPreferences.getGdbServerDoStart(prefix)))
 					return null;
 
 				executable = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-						fDefaultPreferences.getGdbServerExecutable());
+						fDefaultPreferences.getGdbServerExecutable(prefix, architecture));
 				// executable = Utils.escapeWhitespaces(executable).trim();
 			}
 
@@ -74,8 +102,25 @@ public class Configuration {
 
 		try {
 			DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+
+			String prefix = "";
+			String architecture = "";
+
+			try {
+				architecture = configuration.getAttribute(ConfigurationAttributes.ARCHITECTURE, "");
+			} catch (CoreException e) {
+			}
+
+			boolean useLegacyInterface = false;
+
+			if (architecture.isEmpty()) {
+				useLegacyInterface = true;
+			} else {
+				prefix = architecture + ".";
+			}
+
 			if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
-					fDefaultPreferences.getGdbServerDoStart()))
+					fDefaultPreferences.getGdbServerDoStart(prefix)))
 				return null;
 
 			String executable = getGdbServerCommand(configuration, null);
@@ -84,32 +129,57 @@ public class Configuration {
 
 			lst.add(executable);
 
-			// Added always, to get the 'Waiting for connection' message.
-			lst.add("--verbose");
+			if (useLegacyInterface) {
 
-			if (configuration.getAttribute(ConfigurationAttributes.IS_GDB_SERVER_VERBOSE,
-					DefaultPreferences.QEMU_IS_VERBOSE_DEFAULT)) {
+				// Added always, to get the 'Waiting for connection' message.
 				lst.add("--verbose");
-			}
 
-			String boardName = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_NAME, "").trim();
-			boardName = DebugUtils.resolveAll(boardName, configuration.getAttributes());
-			if (!boardName.isEmpty()) {
-				lst.add("--board");
-				lst.add(boardName);
-			}
+				if (configuration.getAttribute(ConfigurationAttributes.IS_GDB_SERVER_VERBOSE,
+						DefaultPreferences.QEMU_IS_VERBOSE_DEFAULT)) {
+					lst.add("--verbose");
+				}
 
-			String deviceName = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, "").trim();
-			deviceName = DebugUtils.resolveAll(deviceName, configuration.getAttributes());
-			if (!deviceName.isEmpty()) {
-				lst.add("--mcu");
-				lst.add(deviceName);
+				String boardName = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_NAME, "").trim();
+				boardName = DebugUtils.resolveAll(boardName, configuration.getAttributes());
+				if (!boardName.isEmpty()) {
+					lst.add("--board");
+					lst.add(boardName);
+				}
+
+				String deviceName = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, "")
+						.trim();
+				deviceName = DebugUtils.resolveAll(deviceName, configuration.getAttributes());
+				if (!deviceName.isEmpty()) {
+					lst.add("--mcu");
+					lst.add(deviceName);
+				}
+
+			} else {
+
+				String boardName = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_MACHINE_NAME, "")
+						.trim();
+				boardName = DebugUtils.resolveAll(boardName, configuration.getAttributes());
+				if (!boardName.isEmpty()) {
+					lst.add("--machine");
+					lst.add(boardName);
+				}
+
+				String deviceName = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_CPU_NAME, "").trim();
+				deviceName = DebugUtils.resolveAll(deviceName, configuration.getAttributes());
+				if (!deviceName.isEmpty()) {
+					lst.add("--cpu");
+					lst.add(deviceName);
+				}
 			}
 
 			lst.add("--gdb");
 			lst.add("tcp::"
 					+ Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 							DefaultPreferences.SERVER_GDB_PORT_NUMBER_DEFAULT)));
+
+			if (!useLegacyInterface) {
+				lst.add("-S");
+			}
 
 			String other = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
 					DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT).trim();
@@ -129,18 +199,43 @@ public class Configuration {
 			boolean isSemihosting = configuration.getAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
 					DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT);
 
-			lst.add("--semihosting-config");
-			lst.add(isSemihosting ? "enable=on,target=native" : "enable=off,target=native");
+			if (useLegacyInterface) {
 
-			if (isSemihosting) {
-				String semihostingCmdline = configuration.getAttribute(ConfigurationAttributes.SEMIHOSTING_CMDLINE, "")
-						.trim();
+				lst.add("--semihosting-config");
+				lst.add(isSemihosting ? "enable=on,target=native" : "enable=off,target=native");
 
-				// This option must be the last one.
-				if (!semihostingCmdline.isEmpty()) {
-					lst.add("--semihosting-cmdline");
-					lst.addAll(StringUtils.splitCommandLineOptions(semihostingCmdline));
+				if (isSemihosting) {
+					String semihostingCmdline = configuration
+							.getAttribute(ConfigurationAttributes.SEMIHOSTING_CMDLINE, "").trim();
+
+					// This option must be the last one.
+					if (!semihostingCmdline.isEmpty()) {
+						lst.add("--semihosting-cmdline");
+						lst.addAll(StringUtils.splitCommandLineOptions(semihostingCmdline));
+					}
 				}
+
+			} else {
+
+				lst.add("--semihosting-config");
+
+				String semiConfig = "enable=";
+				semiConfig += isSemihosting ? "on" : "off";
+				semiConfig += ",target=native";
+
+				if (isSemihosting) {
+					String semihostingCmdline = configuration
+							.getAttribute(ConfigurationAttributes.SEMIHOSTING_CMDLINE, "").trim();
+
+					// This option must be the last one.
+					if (!semihostingCmdline.isEmpty()) {
+
+						for (String opt : StringUtils.splitCommandLineOptions(semihostingCmdline)) {
+							semiConfig += ",arg=" + opt;
+						}
+					}
+				}
+				lst.add(semiConfig);
 			}
 
 		} catch (CoreException e) {
@@ -151,27 +246,51 @@ public class Configuration {
 		return lst.toArray(new String[0]);
 	}
 
-	public static String getGdbServerCommandName(ILaunchConfiguration config) {
+	public static String getGdbServerCommandName(ILaunchConfiguration configuration) {
 
-		String fullCommand = getGdbServerCommand(config, null);
+		String fullCommand = getGdbServerCommand(configuration, null);
 		return StringUtils.extractNameFromPath(fullCommand);
 	}
 
-	public static String getGdbServerOtherConfig(ILaunchConfiguration config) throws CoreException {
+	public static String getGdbServerOtherConfig(ILaunchConfiguration configuration) throws CoreException {
 
-		return config
+		return configuration
 				.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT)
 				.trim();
 	}
 
-	public static String getQemuBoardName(ILaunchConfiguration config) throws CoreException {
+	public static String getQemuBoardName(ILaunchConfiguration configuration) throws CoreException {
 
-		return config.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_NAME, "").trim();
+		String architecture = "";
+
+		try {
+			architecture = configuration.getAttribute(ConfigurationAttributes.ARCHITECTURE, "");
+		} catch (CoreException e) {
+		}
+		boolean useLegacyInterface = architecture.isEmpty();
+
+		if (useLegacyInterface) {
+			return configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_NAME, "").trim();
+		} else {
+			return configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_MACHINE_NAME, "").trim();
+		}
 	}
 
-	public static String getQemuDeviceName(ILaunchConfiguration config) throws CoreException {
+	public static String getQemuDeviceName(ILaunchConfiguration configuration) throws CoreException {
 
-		return config.getAttribute(ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, "").trim();
+		String architecture = "";
+
+		try {
+			architecture = configuration.getAttribute(ConfigurationAttributes.ARCHITECTURE, "");
+		} catch (CoreException e) {
+		}
+		boolean useLegacyInterface = architecture.isEmpty();
+
+		if (useLegacyInterface) {
+			return configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, "").trim();
+		} else {
+			return configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_CPU_NAME, "").trim();
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -220,8 +339,10 @@ public class Configuration {
 		String other;
 		try {
 			DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+			String prefix = getPrefix(configuration);
+
 			other = configuration.getAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
-					fDefaultPreferences.getGdbClientOtherOptions()).trim();
+					fDefaultPreferences.getGdbClientOtherOptions(prefix)).trim();
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
 			if (other.length() > 0) {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
@@ -239,9 +360,9 @@ public class Configuration {
 		return StringUtils.join(cmdLineArray, " ");
 	}
 
-	public static String getGdbClientCommandName(ILaunchConfiguration config) {
+	public static String getGdbClientCommandName(ILaunchConfiguration configuration) {
 
-		String fullCommand = getGdbClientCommand(config, null);
+		String fullCommand = getGdbClientCommand(configuration, null);
 		return StringUtils.extractNameFromPath(fullCommand);
 	}
 
@@ -275,18 +396,29 @@ public class Configuration {
 
 	// ------------------------------------------------------------------------
 
-	public static boolean getDoStartGdbServer(ILaunchConfiguration config) throws CoreException {
+	public static boolean getDoStartGdbServer(ILaunchConfiguration configuration) throws CoreException {
 
 		DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
-		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
-				fDefaultPreferences.getGdbServerDoStart());
+		String prefix = getPrefix(configuration);
+		return configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
+				fDefaultPreferences.getGdbServerDoStart(prefix));
 	}
 
-	public static boolean getDoAddServerConsole(ILaunchConfiguration config) throws CoreException {
+	public static boolean getDoAddServerConsole(ILaunchConfiguration configuration) throws CoreException {
 
-		return getDoStartGdbServer(config)
-				&& config.getAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+		return getDoStartGdbServer(configuration)
+				&& configuration.getAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
 						DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+	}
+
+	public static boolean hasLegacyInterface(ILaunchConfiguration configuration) {
+		String architecture = "";
+		try {
+			architecture = configuration.getAttribute(ConfigurationAttributes.ARCHITECTURE, "");
+		} catch (CoreException e) {
+		}
+
+		return architecture.isEmpty();
 	}
 
 	// ------------------------------------------------------------------------

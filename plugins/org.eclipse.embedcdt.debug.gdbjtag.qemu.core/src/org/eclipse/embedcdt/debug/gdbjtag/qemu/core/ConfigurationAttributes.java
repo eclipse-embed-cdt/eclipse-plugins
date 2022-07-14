@@ -28,9 +28,10 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 
 	public static final String GDB_SERVER_EXECUTABLE = PREFIX + ".gdbServerExecutable"; //$NON-NLS-1$
 
-	public static final String GDB_SERVER_MACHINE_NAME = PREFIX + ".gdbServerMachineName"; //$NON-NLS-1$
+	public static final String GDB_SERVER_MACHINE_NAME = PREFIX + ".gdbServerQemuMachineName"; //$NON-NLS-1$
 	public static final String GDB_SERVER_BOARD_NAME = PREFIX + ".gdbServerBoardName"; //$NON-NLS-1$
 
+	public static final String GDB_SERVER_CPU_NAME = PREFIX + ".gdbServerQemuCpuName"; //$NON-NLS-1$
 	public static final String GDB_SERVER_DEVICE_NAME = PREFIX + ".gdbServerDeviceName"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_GDB_PORT_NUMBER = PREFIX + ".gdbServerGdbPortNumber"; //$NON-NLS-1$
@@ -46,6 +47,8 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 	public static final String GDB_CLIENT_OTHER_OPTIONS = PREFIX + ".gdbClientOtherOptions"; //$NON-NLS-1$
 
 	public static final String GDB_CLIENT_OTHER_COMMANDS = PREFIX + ".gdbClientOtherCommands"; //$NON-NLS-1$
+
+	public static final String GDB_SERVER_DELAY_SECONDS = PREFIX + ".gdbServerDelaySeconds"; //$NON-NLS-1$
 
 	public static final boolean UPDATE_THREAD_LIST_DEFAULT = false;
 
@@ -67,5 +70,7 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 	public static final String OTHER_RUN_COMMANDS = PREFIX + ".otherRunCommands"; //$NON-NLS-1$
 
 	public static final String DO_CONTINUE = PREFIX + ".doContinue"; //$NON-NLS-1$
+
+	public static final String ARCHITECTURE = PREFIX + ".architecture"; //$NON-NLS-1$
 
 }

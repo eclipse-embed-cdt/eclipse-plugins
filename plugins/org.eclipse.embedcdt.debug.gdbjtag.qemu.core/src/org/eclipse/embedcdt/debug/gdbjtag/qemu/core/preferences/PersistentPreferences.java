@@ -18,6 +18,10 @@ public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.co
 
 	// ------------------------------------------------------------------------
 
+	public static final String architectures[] = { "arm", "aarch64", "riscv32", "riscv64" };
+
+	// Legacy gnuarmeclipse uses these names directly; the new ones are prefixed.
+
 	// Tab Debugger
 	public static final String GDB_SERVER = "gdb.server.";
 
@@ -75,18 +79,28 @@ public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.co
 	}
 
 	// ----- gdb server doStart -----------------------------------------------
+	@Deprecated
 	public boolean getGdbServerDoStart() {
-
 		return Boolean
 				.valueOf(getString(GDB_SERVER_DO_START, Boolean.toString(DefaultPreferences.SERVER_DO_START_DEFAULT)));
 	}
 
-	public void putGdbServerDoStart(boolean value) {
+	public boolean getGdbServerDoStart(String prefix) {
+		return Boolean.valueOf(
+				getString(prefix + GDB_SERVER_DO_START, Boolean.toString(DefaultPreferences.SERVER_DO_START_DEFAULT)));
+	}
 
+	@Deprecated
+	public void putGdbServerDoStart(boolean value) {
 		putWorkspaceString(GDB_SERVER_DO_START, Boolean.toString(value));
 	}
 
+	public void putGdbServerDoStart(String prefix, boolean value) {
+		putWorkspaceString(prefix + GDB_SERVER_DO_START, Boolean.toString(value));
+	}
+
 	// ----- gdb server executable --------------------------------------------
+	@Deprecated
 	public String getGdbServerExecutable() {
 
 		String value = getString(GDB_SERVER_EXECUTABLE, null);
@@ -96,23 +110,45 @@ public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.co
 		return fDefaultPreferences.getGdbServerExecutable();
 	}
 
-	public void putGdbServerExecutable(String value) {
+	public String getGdbServerExecutable(String prefix, String architecture) {
 
+		String value = getString(prefix + GDB_SERVER_EXECUTABLE, null);
+		if (value != null) {
+			return value;
+		}
+		return fDefaultPreferences.getGdbServerExecutable(prefix, architecture);
+	}
+
+	@Deprecated
+	public void putGdbServerExecutable(String value) {
 		putWorkspaceString(GDB_SERVER_EXECUTABLE, value);
 	}
 
-	// ----- gdb server other options -----------------------------------------
-	public String getGdbServerOtherOptions() {
+	public void putGdbServerExecutable(String prefix, String value) {
+		putWorkspaceString(prefix + GDB_SERVER_EXECUTABLE, value);
+	}
 
+	// ----- gdb server other options -----------------------------------------
+	@Deprecated
+	public String getGdbServerOtherOptions() {
 		return getString(GDB_SERVER_OTHER_OPTIONS, DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT);
 	}
 
-	public void putGdbServerOtherOptions(String value) {
+	public String getGdbServerOtherOptions(String prefix) {
+		return getString(prefix + GDB_SERVER_OTHER_OPTIONS, DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT);
+	}
 
+	@Deprecated
+	public void putGdbServerOtherOptions(String value) {
 		putWorkspaceString(GDB_SERVER_OTHER_OPTIONS, value);
 	}
 
+	public void putGdbServerOtherOptions(String prefix, String value) {
+		putWorkspaceString(prefix + GDB_SERVER_OTHER_OPTIONS, value);
+	}
+
 	// ----- gdb client executable --------------------------------------------
+	@Deprecated
 	public String getGdbClientExecutable() {
 
 		String value = getString(GDB_CLIENT_EXECUTABLE, null);
@@ -122,46 +158,85 @@ public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.co
 		return fDefaultPreferences.getGdbClientExecutable();
 	}
 
-	public void putGdbClientExecutable(String value) {
+	public String getGdbClientExecutable(String prefix) {
 
+		String value = getString(prefix + GDB_CLIENT_EXECUTABLE, null);
+		if (value != null) {
+			return value;
+		}
+		return fDefaultPreferences.getGdbClientExecutable(prefix);
+	}
+
+	@Deprecated
+	public void putGdbClientExecutable(String value) {
 		putWorkspaceString(GDB_CLIENT_EXECUTABLE, value);
 	}
 
-	// ----- gdb client other options -----------------------------------------
-	public String getGdbClientOtherOptions() {
+	public void putGdbClientExecutable(String prefix, String value) {
+		putWorkspaceString(prefix + GDB_CLIENT_EXECUTABLE, value);
+	}
 
+	// ----- gdb client other options -----------------------------------------
+	@Deprecated
+	public String getGdbClientOtherOptions() {
 		return getString(GDB_CLIENT_OTHER_OPTIONS, DefaultPreferences.CLIENT_OTHER_OPTIONS_DEFAULT);
 	}
 
-	public void putGdbClientOtherOptions(String value) {
+	public String getGdbClientOtherOptions(String prefix) {
+		return getString(prefix + GDB_CLIENT_OTHER_OPTIONS, DefaultPreferences.CLIENT_OTHER_OPTIONS_DEFAULT);
+	}
 
+	@Deprecated
+	public void putGdbClientOtherOptions(String value) {
 		putWorkspaceString(GDB_CLIENT_OTHER_OPTIONS, value);
 	}
 
-	// ----- gdb client commands ----------------------------------------------
-	public String getGdbClientCommands() {
+	public void putGdbClientOtherOptions(String prefix, String value) {
+		putWorkspaceString(prefix + GDB_CLIENT_OTHER_OPTIONS, value);
+	}
 
+	// ----- gdb client commands ----------------------------------------------
+	@Deprecated
+	public String getGdbClientCommands() {
 		return getString(GDB_CLIENT_COMMANDS, DefaultPreferences.CLIENT_COMMANDS_DEFAULT);
 	}
 
-	public void putGdbClientCommands(String value) {
+	public String getGdbClientCommands(String prefix) {
+		return getString(prefix + GDB_CLIENT_COMMANDS, DefaultPreferences.CLIENT_COMMANDS_DEFAULT);
+	}
 
+	@Deprecated
+	public void putGdbClientCommands(String value) {
 		putWorkspaceString(GDB_CLIENT_COMMANDS, value);
 	}
 
-	// ----- QEMU do initial reset -----------------------------------------
-	public boolean getQemuDoInitialReset() {
+	public void putGdbClientCommands(String prefix, String value) {
+		putWorkspaceString(prefix + GDB_CLIENT_COMMANDS, value);
+	}
 
+	// ----- QEMU do initial reset -----------------------------------------
+	@Deprecated
+	public boolean getQemuDoInitialReset() {
 		return Boolean.valueOf(
 				getString(GDB_QEMU_DO_INITIAL_RESET, Boolean.toString(DefaultPreferences.DO_INITIAL_RESET_DEFAULT)));
 	}
 
-	public void putQemuDoInitialReset(boolean value) {
+	public boolean getQemuDoInitialReset(String prefix) {
+		return Boolean.valueOf(getString(prefix + GDB_QEMU_DO_INITIAL_RESET,
+				Boolean.toString(DefaultPreferences.DO_INITIAL_RESET_DEFAULT)));
+	}
 
+	@Deprecated
+	public void putQemuDoInitialReset(boolean value) {
 		putWorkspaceString(GDB_QEMU_DO_INITIAL_RESET, Boolean.toString(value));
 	}
 
+	public void putQemuDoInitialReset(String prefix, boolean value) {
+		putWorkspaceString(prefix + GDB_QEMU_DO_INITIAL_RESET, Boolean.toString(value));
+	}
+
 	// ----- QEMU enable semihosting ---------------------------------------
+	@Deprecated
 	public boolean getQemuEnableSemihosting() {
 
 		String value = getString(GDB_QEMU_ENABLE_SEMIHOSTING, null);
@@ -172,23 +247,46 @@ public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.co
 
 	}
 
-	public void putQemuEnableSemihosting(boolean value) {
+	public boolean getQemuEnableSemihosting(String prefix) {
 
+		String value = getString(prefix + GDB_QEMU_ENABLE_SEMIHOSTING, null);
+		if (value != null) {
+			return Boolean.valueOf(value);
+		}
+		return fDefaultPreferences.getQemuEnableSemihosting(prefix);
+
+	}
+
+	@Deprecated
+	public void putQemuEnableSemihosting(boolean value) {
 		putWorkspaceString(GDB_QEMU_ENABLE_SEMIHOSTING, Boolean.toString(value));
 	}
 
-	// ----- QEMU init other -----------------------------------------------
-	public String getQemuInitOther() {
+	public void putQemuEnableSemihosting(String prefix, boolean value) {
+		putWorkspaceString(prefix + GDB_QEMU_ENABLE_SEMIHOSTING, Boolean.toString(value));
+	}
 
+	// ----- QEMU init other -----------------------------------------------
+	@Deprecated
+	public String getQemuInitOther() {
 		return getString(GDB_QEMU_INIT_OTHER, DefaultPreferences.INIT_OTHER_DEFAULT);
 	}
 
-	public void putQemuInitOther(String value) {
+	public String getQemuInitOther(String prefix) {
+		return getString(prefix + GDB_QEMU_INIT_OTHER, DefaultPreferences.INIT_OTHER_DEFAULT);
+	}
 
+	@Deprecated
+	public void putQemuInitOther(String value) {
 		putWorkspaceString(GDB_QEMU_INIT_OTHER, value);
 	}
 
+	public void putQemuInitOther(String prefix, String value) {
+		putWorkspaceString(prefix + GDB_QEMU_INIT_OTHER, value);
+	}
+
 	// ----- QEMU board name ------------------------------------------------
+	@Deprecated
 	public String getQemuBoardName() {
 
 		String value = getString(GDB_QEMU_BOARD_NAME, null);
@@ -198,77 +296,147 @@ public class PersistentPreferences extends org.eclipse.embedcdt.debug.gdbjtag.co
 		return getString(GDB_QEMU_MACHINE_NAME, DefaultPreferences.QEMU_BOARD_NAME_DEFAULT);
 	}
 
-	public void putQemuBoardName(String value) {
+	public String getQemuBoardName(String prefix) {
 
+		String value = getString(prefix + GDB_QEMU_BOARD_NAME, null);
+		if (value != null) {
+			return value;
+		}
+		return getString(prefix + GDB_QEMU_MACHINE_NAME, DefaultPreferences.QEMU_BOARD_NAME_DEFAULT);
+	}
+
+	@Deprecated
+	public void putQemuBoardName(String value) {
 		putWorkspaceString(GDB_QEMU_BOARD_NAME, value);
 	}
 
-	// ----- QEMU device name ------------------------------------------------
-	public String getQemuDeviceName() {
+	public void putQemuBoardName(String prefix, String value) {
+		putWorkspaceString(prefix + GDB_QEMU_BOARD_NAME, value);
+	}
 
+	// ----- QEMU device name ------------------------------------------------
+	@Deprecated
+	public String getQemuDeviceName() {
 		return getString(GDB_QEMU_DEVICE_NAME, DefaultPreferences.QEMU_DEVICE_NAME_DEFAULT);
 	}
 
-	public void putQemuDeviceName(String value) {
+	public String getQemuDeviceName(String prefix) {
+		return getString(prefix + GDB_QEMU_DEVICE_NAME, DefaultPreferences.QEMU_DEVICE_NAME_DEFAULT);
+	}
 
+	@Deprecated
+	public void putQemuDeviceName(String value) {
 		putWorkspaceString(GDB_QEMU_DEVICE_NAME, value);
 	}
 
+	public void putQemuDeviceName(String prefix, String value) {
+		putWorkspaceString(prefix + GDB_QEMU_DEVICE_NAME, value);
+	}
+
 	// ----- QEMU is verbose ---------------------------------------------
+	@Deprecated
 	public Boolean getQemuIsVerbose() {
 		return getBoolean(GDB_QEMU_IS_VERBOSE, DefaultPreferences.QEMU_IS_VERBOSE_DEFAULT);
 	}
 
-	public void putQemuIsVerbose(boolean value) {
+	public Boolean getQemuIsVerbose(String prefix) {
+		return getBoolean(prefix + GDB_QEMU_IS_VERBOSE, DefaultPreferences.QEMU_IS_VERBOSE_DEFAULT);
+	}
 
+	@Deprecated
+	public void putQemuIsVerbose(boolean value) {
 		putWorkspaceString(GDB_QEMU_IS_VERBOSE, Boolean.toString(value));
 	}
 
-	// ----- QEMU debug in ram ---------------------------------------------
-	public boolean getQemuDebugInRam() {
+	public void putQemuIsVerbose(String prefix, boolean value) {
+		putWorkspaceString(prefix + GDB_QEMU_IS_VERBOSE, Boolean.toString(value));
+	}
 
+	// ----- QEMU debug in ram ---------------------------------------------
+	@Deprecated
+	public boolean getQemuDebugInRam() {
 		return Boolean.valueOf(
 				getString(GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
 	}
 
-	public void putQemuDebugInRam(boolean value) {
+	public boolean getQemuDebugInRam(String prefix) {
+		return Boolean.valueOf(getString(prefix + GDB_QEMU_DO_DEBUG_IN_RAM,
+				Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
+	}
 
+	@Deprecated
+	public void putQemuDebugInRam(boolean value) {
 		putWorkspaceString(GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
-	// ----- QEMU do prerun reset ------------------------------------------
-	public boolean getQemuDoPreRunReset() {
+	public void putQemuDebugInRam(String prefix, boolean value) {
+		putWorkspaceString(prefix + GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(value));
+	}
 
+	// ----- QEMU do prerun reset ------------------------------------------
+	@Deprecated
+	public boolean getQemuDoPreRunReset() {
 		return Boolean.valueOf(
 				getString(GDB_QEMU_DO_PRERUN_RESET, Boolean.toString(DefaultPreferences.DO_PRERUN_RESET_DEFAULT)));
 	}
 
-	public void putQemuDoPreRunReset(boolean value) {
+	public boolean getQemuDoPreRunReset(String prefix) {
+		return Boolean.valueOf(getString(prefix + GDB_QEMU_DO_PRERUN_RESET,
+				Boolean.toString(DefaultPreferences.DO_PRERUN_RESET_DEFAULT)));
+	}
 
+	@Deprecated
+	public void putQemuDoPreRunReset(boolean value) {
 		putWorkspaceString(GDB_QEMU_DO_PRERUN_RESET, Boolean.toString(value));
 	}
 
-	// ----- QEMU init other --------------------------------------------------
-	public String getQemuPreRunOther() {
+	public void putQemuDoPreRunReset(String prefix, boolean value) {
+		putWorkspaceString(prefix + GDB_QEMU_DO_PRERUN_RESET, Boolean.toString(value));
+	}
 
+	// ----- QEMU init other --------------------------------------------------
+	@Deprecated
+	public String getQemuPreRunOther() {
 		return getString(GDB_QEMU_PRERUN_OTHER, DefaultPreferences.PRERUN_OTHER_DEFAULT);
 	}
 
-	public void putQemuPreRunOther(String value) {
+	public String getQemuPreRunOther(String prefix) {
+		return getString(prefix + GDB_QEMU_PRERUN_OTHER, DefaultPreferences.PRERUN_OTHER_DEFAULT);
+	}
 
+	@Deprecated
+	public void putQemuPreRunOther(String value) {
 		putWorkspaceString(GDB_QEMU_PRERUN_OTHER, value);
 	}
 
-	// ----- QEMU debug in ram ---------------------------------------------
-	public boolean getQemuDisableGraphics() {
+	public void putQemuPreRunOther(String prefix, String value) {
+		putWorkspaceString(prefix + GDB_QEMU_PRERUN_OTHER, value);
+	}
 
+	// ----- QEMU debug in ram ---------------------------------------------
+	@Deprecated
+	public boolean getQemuDisableGraphics() {
 		return Boolean.valueOf(
 				getString(GDB_QEMU_DISABLE_GRAPHICS, Boolean.toString(DefaultPreferences.DISABLE_GRAPHICS_DEFAULT)));
 	}
 
-	public void putQemuDisableGraphics(boolean value) {
+	public boolean getQemuDisableGraphics(String prefix) {
+		if (prefix.isEmpty()) {
+			// Legacy interface.
+			return Boolean.valueOf(getString(prefix + GDB_QEMU_DISABLE_GRAPHICS,
+					Boolean.toString(DefaultPreferences.DISABLE_GRAPHICS_DEFAULT)));
+		} else {
+			return Boolean.valueOf(getString(prefix + GDB_QEMU_DISABLE_GRAPHICS, Boolean.toString(true)));
+		}
+	}
 
+	@Deprecated
+	public void putQemuDisableGraphics(boolean value) {
 		putWorkspaceString(GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(value));
+	}
+
+	public void putQemuDisableGraphics(String prefix, boolean value) {
+		putWorkspaceString(prefix + GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
 	// ------------------------------------------------------------------------

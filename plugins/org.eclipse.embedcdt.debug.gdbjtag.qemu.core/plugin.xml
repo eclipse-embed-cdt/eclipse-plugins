@@ -17,10 +17,30 @@
 
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 		<launchConfigurationType
-			id="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType"
-			modes="debug, run"
-			name="%launchConfig.name"
-			public="true" />
+        id="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType"
+        modes="debug, run"
+        name="%launchConfig.gnuarmeclipse.name"
+        public="true"/>
+		<launchConfigurationType
+        id="ilg.gnumcueclipse.debug.gdbjtag.qemu.arm.launchConfigurationType"
+        modes="debug, run"
+        name="%launchConfig.arm.name"
+        public="true"/>
+		<launchConfigurationType
+        id="ilg.gnumcueclipse.debug.gdbjtag.qemu.aarch64.launchConfigurationType"
+        modes="debug, run"
+        name="%launchConfig.aarch64.name"
+        public="true"/>
+		<launchConfigurationType
+        id="ilg.gnumcueclipse.debug.gdbjtag.qemu.riscv32.launchConfigurationType"
+        modes="debug, run"
+        name="%launchConfig.riscv32.name"
+        public="true"/>
+		<launchConfigurationType
+        id="ilg.gnumcueclipse.debug.gdbjtag.qemu.riscv64.launchConfigurationType"
+        modes="debug, run"
+        name="%launchConfig.riscv64.name"
+        public="true"/>
 	</extension>
 
 	<extension point="org.eclipse.debug.core.launchDelegates">
@@ -33,6 +53,46 @@
 			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
 			sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
 			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.launchConfigurationType">
+		</launchDelegate>
+		<launchDelegate
+			delegate="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsf.LaunchConfigurationDelegate"
+			delegateDescription="%launchDelegate.jtagDsf.description"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.arm.core.dsfLaunchDelegate"
+			modes="debug,run"
+			name="%launchDelegate.jtagDsf.name"
+			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+			sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
+			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.arm.launchConfigurationType">
+		</launchDelegate>
+		<launchDelegate
+			delegate="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsf.LaunchConfigurationDelegate"
+			delegateDescription="%launchDelegate.jtagDsf.description"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.aarch64.core.dsfLaunchDelegate"
+			modes="debug,run"
+			name="%launchDelegate.jtagDsf.name"
+			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+			sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
+			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.aarch64.launchConfigurationType">
+		</launchDelegate>
+		<launchDelegate
+			delegate="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsf.LaunchConfigurationDelegate"
+			delegateDescription="%launchDelegate.jtagDsf.description"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.riscv32.core.dsfLaunchDelegate"
+			modes="debug,run"
+			name="%launchDelegate.jtagDsf.name"
+			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+			sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
+			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.riscv32.launchConfigurationType">
+		</launchDelegate>
+		<launchDelegate
+			delegate="org.eclipse.embedcdt.debug.gdbjtag.qemu.core.dsf.LaunchConfigurationDelegate"
+			delegateDescription="%launchDelegate.jtagDsf.description"
+			id="org.eclipse.embedcdt.debug.gdbjtag.qemu.riscv64.core.dsfLaunchDelegate"
+			modes="debug,run"
+			name="%launchDelegate.jtagDsf.name"
+			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+			sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
+			type="ilg.gnumcueclipse.debug.gdbjtag.qemu.riscv64.launchConfigurationType">
 		</launchDelegate>
 	</extension>
 

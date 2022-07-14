@@ -72,6 +72,9 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 	private boolean fIsNonStopSession = false;
 	private boolean fDoStartGdbServer = false;
 
+	protected String fPrefix = "";
+	protected boolean fHasLegacyOptions = true;
+
 	// ------------------------------------------------------------------------
 
 	@Override
@@ -413,6 +416,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 				SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
 
 		Query<Object> completeLaunchQuery = new Query<>() {
+
 			@Override
 			protected void execute(final DataRequestMonitor<Object> rm) {
 				DsfServicesTracker tracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
@@ -439,7 +443,9 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 		try {
 			completeLaunchQuery.get();
 			succeed = true;
-		} catch (InterruptedException e1) {
+		} catch (
+
+		InterruptedException e1) {
 			throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.INTERNAL_ERROR,
 					"Interrupted Exception in dispatch thread", e1)); //$NON-NLS-1$
 		} catch (ExecutionException e1) {

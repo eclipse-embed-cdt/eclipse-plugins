@@ -139,7 +139,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 
 	@Override
 	public boolean canMatchStdOut() {
-		return true;
+		return Configuration.hasLegacyInterface(fLaunchConfiguration);
 	}
 
 	@Override
@@ -157,9 +157,8 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 	}
 
 	/**
-	 * Since the J-Link stderr messages are not final, this function makes the
-	 * best use of the available information (the exit code and the captured
-	 * string) to compose the text displayed in case of error.
+	 * Use the exit code and the captured
+	 * string to compose the text displayed in case of error.
 	 *
 	 * @param exitCode
 	 *            an integer with the process exit code.
