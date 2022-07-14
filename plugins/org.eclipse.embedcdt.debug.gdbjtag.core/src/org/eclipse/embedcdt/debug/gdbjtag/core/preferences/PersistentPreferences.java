@@ -57,15 +57,27 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 	}
 
 	// ----- Install folder -------------------------------------------
+	@Deprecated
 	public String getInstallFolder() {
 
 		return getString(INSTALL_FOLDER, INSTALL_FOLDER_DEFAULT);
 	}
 
+	public String getInstallFolder(String prefix) {
+
+		return getString(prefix + INSTALL_FOLDER, INSTALL_FOLDER_DEFAULT);
+	}
+
 	// ----- Executable name ------------------------------------------
+	@Deprecated
 	public String getExecutableName() {
 
 		return getString(EXECUTABLE_NAME, EXECUTABLE_NAME_DEFAULT);
+	}
+
+	public String getExecutableName(String prefix) {
+
+		return getString(prefix + EXECUTABLE_NAME, EXECUTABLE_NAME_DEFAULT);
 	}
 
 	// ----- Is strict ------------------------------------------------
