@@ -16,15 +16,10 @@
 package org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.McuPage;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Messages;
-import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
-import org.eclipse.jface.preference.FieldEditor;
-import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -37,7 +32,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * This page uses special filed editors, that get the default values from the
  * preferences store, but the values are from the variables store.
  */
-public class WorkspaceMcuPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class WorkspaceMcuPage extends McuPage implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
@@ -45,16 +40,8 @@ public class WorkspaceMcuPage extends FieldEditorPreferencePage implements IWork
 
 	// ------------------------------------------------------------------------
 
-	private PersistentPreferences fPersistentPreferences;
-	private DefaultPreferences fDefaultPreferences;
-
-	// ------------------------------------------------------------------------
-
 	public WorkspaceMcuPage() {
-		super(GRID);
-
-		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
-		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+		super();
 
 		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.CORE_PLUGIN_ID));
 
@@ -70,27 +57,6 @@ public class WorkspaceMcuPage extends FieldEditorPreferencePage implements IWork
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("qemu.WorkspaceMcuPage.init()");
 		}
-	}
-
-	/**
-	 * Creates the field editors. Field editors are abstractions of the common GUI
-	 * blocks needed to manipulate various types of preferences. Each field editor
-	 * knows how to save and restore itself.
-	 */
-	@Override
-	protected void createFieldEditors() {
-
-		FieldEditor executable = new StringFieldEditor(PersistentPreferences.EXECUTABLE_NAME,
-				Messages.McuPage_executable_label, getFieldEditorParent());
-		addField(executable);
-
-		boolean isStrict = fPersistentPreferences.getFolderStrict();
-
-		String[] xpackNames = fDefaultPreferences.getXpackNames();
-
-		FieldEditor folder = new XpackDirectoryNotStrictFieldEditor(xpackNames, PersistentPreferences.INSTALL_FOLDER,
-				Messages.McuPage_executable_folder, getFieldEditorParent(), isStrict);
-		addField(folder);
 	}
 
 	// ------------------------------------------------------------------------

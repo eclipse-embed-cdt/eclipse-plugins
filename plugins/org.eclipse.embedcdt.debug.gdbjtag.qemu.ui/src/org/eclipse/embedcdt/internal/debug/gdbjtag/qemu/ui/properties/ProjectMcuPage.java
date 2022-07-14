@@ -17,18 +17,13 @@ package org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.DefaultPreferences;
-import org.eclipse.embedcdt.debug.gdbjtag.qemu.core.preferences.PersistentPreferences;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Activator;
+import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.McuPage;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Messages;
-import org.eclipse.embedcdt.ui.FieldEditorPropertyPage;
-import org.eclipse.embedcdt.ui.XpackDirectoryNotStrictFieldEditor;
 import org.eclipse.embedcdt.ui.preferences.ScopedPreferenceStoreWithoutDefaults;
-import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.StringFieldEditor;
 
-public class ProjectMcuPage extends FieldEditorPropertyPage {
+public class ProjectMcuPage extends McuPage {
 
 	// ------------------------------------------------------------------------
 
@@ -36,20 +31,12 @@ public class ProjectMcuPage extends FieldEditorPropertyPage {
 
 	// ------------------------------------------------------------------------
 
-	private PersistentPreferences fPersistentPreferences;
-	private DefaultPreferences fDefaultPreferences;
-
-	// ------------------------------------------------------------------------
-
 	public ProjectMcuPage() {
-		super(GRID);
+		super();
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("qemu.ProjectMcuPage()");
 		}
-
-		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
-		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 
 		setDescription(Messages.ProjectMcuPagePropertyPage_description);
 	}
@@ -68,22 +55,6 @@ public class ProjectMcuPage extends FieldEditorPropertyPage {
 					Activator.CORE_PLUGIN_ID);
 		}
 		return null;
-	}
-
-	@Override
-	protected void createFieldEditors() {
-
-		FieldEditor executable = new StringFieldEditor(PersistentPreferences.EXECUTABLE_NAME,
-				Messages.McuPage_executable_label, getFieldEditorParent());
-		addField(executable);
-
-		boolean isStrict = fPersistentPreferences.getFolderStrict();
-
-		String[] xpackNames = fDefaultPreferences.getXpackNames();
-
-		FieldEditor folder = new XpackDirectoryNotStrictFieldEditor(xpackNames, PersistentPreferences.INSTALL_FOLDER,
-				Messages.McuPage_executable_folder, getFieldEditorParent(), isStrict);
-		addField(folder);
 	}
 
 	// ------------------------------------------------------------------------
