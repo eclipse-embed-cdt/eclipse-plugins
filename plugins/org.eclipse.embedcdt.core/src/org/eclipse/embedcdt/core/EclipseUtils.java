@@ -15,6 +15,10 @@
 
 package org.eclipse.embedcdt.core;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -26,6 +30,7 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
+import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -491,5 +496,82 @@ public class EclipseUtils {
 		IProject project = configDesc.getProjectDescription().getProject();
 		return project;
 	}
+
+	// ------------------------------------------------------------------------
+
+	private static String[] gShellEnvironmentCache = null;
+
+	/**
+	 * Get the shell environment, to overcome the different PATH
+	 * in graphical environments (like on macOS).
+	 *
+	 * It assumes that the shell implements the `env` command.
+	 */
+	public static String[] getShellEnvironment() {
+
+		if (gShellEnvironmentCache != null) {
+			return gShellEnvironmentCache;
+		}
+
+		List<String> envList = new ArrayList<>();
+
+		String shell = System.getenv("SHELL");
+		if (shell == null || shell.trim().isEmpty()) {
+			System.out.println("No SHELL in environment");
+			return null;
+		}
+
+		String cmdArray[] = new String[4];
+		cmdArray[0] = shell;
+		cmdArray[1] = "-i";
+		cmdArray[2] = "-c";
+		cmdArray[3] = "env";
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("> " + StringUtils.join(cmdArray, " "));
+		}
+
+		// Inherit from parent process.
+		String envp[] = null;
+
+		List<String> outputLines = new ArrayList<>();
+		try {
+			BufferedReader reader = null;
+			Process process = ProcessFactory.getFactory().exec(cmdArray, envp);
+			reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+			String line;
+			while ((line = reader.readLine()) != null) {
+				outputLines.add(line);
+			}
+
+			if (Activator.getInstance().isDebugging()) {
+				for (String l : outputLines) {
+					System.out.println(l);
+				}
+			}
+
+			process.destroy();
+			if (process.exitValue() != 0) {
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("exit (" + process.exitValue() + ")");
+				}
+
+				return null;
+			}
+		} catch (IOException e) {
+			return null;
+		}
+
+		for (String line : outputLines) {
+			if (line.contains("=")) {
+				envList.add(line);
+			}
+		}
+
+		gShellEnvironmentCache = envList.toArray(new String[envList.size()]);
+		return gShellEnvironmentCache;
+	}
+
 	// ------------------------------------------------------------------------
 }
