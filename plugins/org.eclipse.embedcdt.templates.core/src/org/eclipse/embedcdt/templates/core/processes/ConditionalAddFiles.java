@@ -70,16 +70,19 @@ public class ConditionalAddFiles extends ProcessRunner {
 			}
 		}
 
-		if (projectHandle == null)
+		if (projectHandle == null) {
 			throw new ProcessFailureException(
 					getProcessMessage(processId, IStatus.ERROR, Messages.getString("AddFiles.8"))); //$NON-NLS-1$
+		}
 
-		if (files == null)
+		if (files == null) {
 			throw new ProcessFailureException(
 					getProcessMessage(processId, IStatus.ERROR, Messages.getString("AddFiles.9"))); //$NON-NLS-1$
+		}
 
-		if (!Utils.isConditionSatisfied(condition))
+		if (!Utils.isConditionSatisfied(condition)) {
 			return;
+		}
 
 		for (int i = 0; i < files.length; i++) {
 			ProcessArgument[] file = files[i];

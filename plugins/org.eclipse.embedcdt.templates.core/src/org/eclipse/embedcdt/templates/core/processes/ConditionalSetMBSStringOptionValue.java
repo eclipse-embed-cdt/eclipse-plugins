@@ -33,6 +33,7 @@ import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.embedcdt.templates.core.Utils;
 
 /**
@@ -47,8 +48,24 @@ public class ConditionalSetMBSStringOptionValue extends ProcessRunner {
 	@Override
 	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
 			throws ProcessFailureException {
-		String projectName = args[0].getSimpleValue();
-		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+
+		String projectName = null;
+		IProject projectHandle = null;
+		String condition = null;
+		ProcessArgument[][] resourcePathObjects = null;
+
+		for (ProcessArgument arg : args) {
+			String argName = arg.getName();
+			if (argName.equals("projectName")) { //$NON-NLS-1$
+				projectName = arg.getSimpleValue();
+				projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+			} else if (argName.equals("resourcePaths")) { //$NON-NLS-1$
+				resourcePathObjects = arg.getComplexArrayValue();
+			} else if (argName.equals("condition")) { //$NON-NLS-1$
+				condition = arg.getSimpleValue();
+			}
+		}
+
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceDescription workspaceDesc = workspace.getDescription();
 		boolean autoBuilding = workspaceDesc.isAutoBuilding();
@@ -58,17 +75,34 @@ public class ConditionalSetMBSStringOptionValue extends ProcessRunner {
 		} catch (CoreException e) {// ignore
 		}
 
-		String condition = args[1].getSimpleValue();
-		if (!Utils.isConditionSatisfied(condition))
+		if (!Utils.isConditionSatisfied(condition)) {
 			return;
+		}
 
-		ProcessArgument[][] resourcePathObjects = args[2].getComplexArrayValue();
+		if (resourcePathObjects == null) {
+			throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR, "No resourcePaths")); //$NON-NLS-1$
+		}
+
 		boolean modified = false;
 		for (ProcessArgument[] resourcePathObject : resourcePathObjects) {
-			String id = resourcePathObject[0].getSimpleValue();
-			String value = resourcePathObject[1].getSimpleValue();
-			String path = resourcePathObject[2].getSimpleValue();
-			String buildType = resourcePathObject[3].getSimpleValue();
+			String id = null;
+			String value = null;
+			String path = null;
+			String buildType = null;
+
+			for (ProcessArgument arg : resourcePathObject) {
+				String argName = arg.getName();
+				if (argName.equals("id")) {
+					id = arg.getSimpleValue();
+				} else if (argName.equals("value")) {
+					value = arg.getSimpleValue();
+				} else if (argName.equals("path")) {
+					path = arg.getSimpleValue().trim();
+				} else if (argName.equals("buildType")) {
+					buildType = arg.getSimpleValue().trim();
+				}
+			}
+
 			try {
 				modified |= setOptionValue(projectHandle, id, value, path, buildType);
 			} catch (BuildException e) {

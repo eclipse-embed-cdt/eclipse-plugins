@@ -51,16 +51,16 @@ public class ConditionalCopyFolders extends ProcessRunner {
 	@Override
 	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
 			throws ProcessFailureException {
+		String projectName = null;
 		IProject projectHandle = null;
 		ProcessArgument[][] folders = null;
-		String startPattern = null;
-		String endPattern = null;
 		String condition = null;
 
 		for (ProcessArgument arg : args) {
 			String argName = arg.getName();
 			if (argName.equals("projectName")) { //$NON-NLS-1$
-				projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(arg.getSimpleValue());
+				projectName = arg.getSimpleValue();
+				projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 			} else if (argName.equals("folders")) { //$NON-NLS-1$
 				folders = arg.getComplexArrayValue();
 			} else if (argName.equals("condition")) { //$NON-NLS-1$
@@ -68,21 +68,45 @@ public class ConditionalCopyFolders extends ProcessRunner {
 			}
 		}
 
-		if (projectHandle == null)
+		if (projectHandle == null) {
 			throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR, "projectName not specified")); //$NON-NLS-1$
+		}
 
-		if (folders == null)
+		if (folders == null) {
 			throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR, "No folders")); //$NON-NLS-1$
+		}
 
-		if (!Utils.isConditionSatisfied(condition))
+		if (!Utils.isConditionSatisfied(condition)) {
 			return;
+		}
 
 		for (int i = 0; i < folders.length; i++) {
 			ProcessArgument[] folder = folders[i];
-			String folderSourcePath = folder[0].getSimpleValue();
-			String folderTargetPath = folder[1].getSimpleValue();
-			String pattern = folder[2].getSimpleValue().trim();
-			boolean replaceable = folder[3].getSimpleValue().equals("true"); //$NON-NLS-1$
+			String folderSourcePath = null;
+			String folderTargetPath = null;
+			String pattern = null;
+
+			boolean replaceable = false;
+			for (ProcessArgument arg : folder) {
+				String argName = arg.getName();
+				if (argName.equals("source")) {
+					folderSourcePath = arg.getSimpleValue();
+				} else if (argName.equals("target")) {
+					folderTargetPath = arg.getSimpleValue();
+				} else if (argName.equals("pattern")) {
+					pattern = arg.getSimpleValue().trim();
+				} else if (argName.equals("replaceable")) {
+					replaceable = arg.getSimpleValue().trim().equals("true");
+				}
+			}
+
+			if (folderSourcePath == null) {
+				throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR, "No source")); //$NON-NLS-1$
+			}
+
+			if (folderTargetPath == null || folderTargetPath.isEmpty()) {
+				folderTargetPath = folderSourcePath;
+			}
 
 			// System.out.println(folderSourcePath);
 			// System.out.println(folderTargetPath);
@@ -110,7 +134,7 @@ public class ConditionalCopyFolders extends ProcessRunner {
 					// System.out.println(child.getName());
 
 					String fileName = child.getName();
-					if (pattern.length() > 0) {
+					if (pattern != null && pattern.length() > 0) {
 						if (!fileName.matches(pattern)) {
 							if (Activator.getInstance().isDebugging()) {
 								System.out.println(fileName + " skipped");
@@ -145,13 +169,8 @@ public class ConditionalCopyFolders extends ProcessRunner {
 						} catch (IOException e) {
 							throw new ProcessFailureException(Messages.getString("AddFiles.3") + folderSourcePath); //$NON-NLS-1$
 						}
-						if (startPattern != null && endPattern != null)
-							fileContents = ProcessHelper.getValueAfterExpandingMacros(fileContents,
-									ProcessHelper.getReplaceKeys(fileContents, startPattern, endPattern),
-									template.getValueStore(), startPattern, endPattern);
-						else
-							fileContents = ProcessHelper.getValueAfterExpandingMacros(fileContents,
-									ProcessHelper.getReplaceKeys(fileContents), template.getValueStore());
+						fileContents = ProcessHelper.getValueAfterExpandingMacros(fileContents,
+								ProcessHelper.getReplaceKeys(fileContents), template.getValueStore());
 
 						contents = new ByteArrayInputStream(fileContents.getBytes());
 					} else {
@@ -175,7 +194,7 @@ public class ConditionalCopyFolders extends ProcessRunner {
 						IFile iFile = projectHandle.getFile(concat.getPath());
 
 						if (iFile.exists()) {
-							// honor the replaceable flag and replace the
+							// honour the replaceable flag and replace the
 							// file
 							// contents
 							// if the file already exists.
