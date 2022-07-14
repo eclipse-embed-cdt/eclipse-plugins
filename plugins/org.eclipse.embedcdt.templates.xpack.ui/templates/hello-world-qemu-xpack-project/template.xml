@@ -392,6 +392,31 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 						name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 					<simple-array name="values">
+						<element value="MICRO_OS_PLUS_DEBUG" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="debug" />
+				</element>
+			</complex-array>
+		</process>
+		<process
+			type="org.eclipse.embedcdt.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
 						<element value="MICRO_OS_PLUS_TRACE" />
 					</simple-array>
 					<simple
