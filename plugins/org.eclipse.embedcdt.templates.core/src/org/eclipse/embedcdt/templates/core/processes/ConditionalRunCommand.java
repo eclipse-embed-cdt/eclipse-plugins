@@ -100,8 +100,7 @@ public class ConditionalRunCommand extends ProcessRunner {
 
 		// Inherit from parent process.
 		String envp[] = null;
-		// if (!EclipseUtils.isWindows()) {
-		if (EclipseUtils.isMacOSX()) {
+		if (!EclipseUtils.isWindows()) {
 			envp = EclipseUtils.getShellEnvironment();
 		}
 
