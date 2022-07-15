@@ -186,7 +186,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 			<simple-array name="args">
 				<element value="init" />
 				<element value="--template" />
-				<element value="@micro-os-plus/hello-world-qemu-template@1.0.0" />
+				<element value="@micro-os-plus/hello-world-qemu-template@1.0.1" />
 				<element value="--property" />
 				<element value="target=$(HWcore)" />
 				<element value="--property" />
