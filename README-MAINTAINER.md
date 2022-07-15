@@ -91,7 +91,7 @@ page, click the
 [Milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/)
 button and add a
 [new](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/new/)
-milestone. As title, use the current version, like _v6.2.2_.
+milestone. As title, use the current version, like _v6.3.0_.
 
 ### Update version in README-MAINTENANCE
 
@@ -118,7 +118,7 @@ number, like `[#122]`;
 For the plug-ins that were modified, increase the specific version
 (like _1.2.3_).
 
-For all features, increase the common version (like _6.2.2_); be sure
+For all features, increase the common version (like _6.3.0_); be sure
 the composite records are not updated at this moment, they require
 new lines, added later.
 
@@ -284,7 +284,7 @@ In about one hour it'll automatically rebuild the staging repo:
 
 Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
 use a subject like
-**Embed CDT v6.2.2-202206121057 release candidate**,
+**Embed CDT v6.3.0-202206121057 release candidate**,
 and pass a link to the release page, available at:
 
 - <https://projects.eclipse.org/projects/iot.embed-cdt/>
@@ -299,7 +299,7 @@ Go to the release candidate folder
 
 - [https://download.eclipse.org/embed-cdt/release-candidates/](https://download.eclipse.org/embed-cdt/release-candidates/)
 
-Copy the tag and enter it in Git, like `v6.2.2-202206121057` (with `v`).
+Copy the tag and enter it in Git, like `v6.3.0-202206121057` (with `v`).
 
 ## Publish the final release
 
@@ -365,7 +365,7 @@ Copy/paste the features/plug-ins from the console output of the
 [make-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-from-master/)
 Jenkins job.
 
-- commit with a message like _Eclipse Embedded CDT plug-ins v6.2.2 released_.
+- commit with a message like _Eclipse Embedded CDT plug-ins v6.3.0 released_.
 - push the `develop` branch
 - wait for GitHub Actions job to complete
   (<https://github.com/eclipse-embed-cdt/web-jekyll/actions>)
@@ -379,10 +379,10 @@ Jenkins job.
 
 In [GitHub releases](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases) add a new release
 
-- tag: _v6.2.2_ (with `v`)
-- title _Eclipse Embedded CDT plug-ins v6.2.2_
+- tag: _v6.3.0_ (with `v`)
+- title _Eclipse Embedded CDT plug-ins v6.3.0_
 - copy/paste from the release page
-- add `[Continue reading »](https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.2.2-released/)` with a link to the web page
+- add `[Continue reading »](https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.3.0-released/)` with a link to the web page
 - do not attach files
 - click **Publish release**
 
@@ -390,7 +390,7 @@ In [GitHub releases](https://github.com/eclipse-embed-cdt/eclipse-plugins/releas
 
 In [GitHub milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones):
 
-- close the v6.2.2 milestone
+- close the v6.3.0 milestone
 
 ### Update the Eclipse release record
 
@@ -407,7 +407,7 @@ and select the new release
 
 <ul>
  <li><a href="https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/package-2020-12-released/">Eclipse IDE for Embedded C/C++ Developers 2020-12 released</a>&nbsp;(for installing a new Eclipse)</li>
- <li><a href="https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.2.2-released/">Eclipse Embedded CDT plug-ins v6.2.2 released</a>&nbsp;(for updating the plug-ins on an existing Eclipse)</li>
+ <li><a href="https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.3.0-released/">Eclipse Embedded CDT plug-ins v6.3.0 released</a>&nbsp;(for updating the plug-ins on an existing Eclipse)</li>
 </ul>
 ```
 
@@ -440,7 +440,7 @@ and press Enter
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
 - commit with a message like:
-  - _embedcdt: update for 6.2.2_
+  - _embedcdt: update for 6.3.0_
   - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 
 ```bash
@@ -522,13 +522,13 @@ available from:
 ### Announce release
 
 Announce the release to the **embed-cdt-dev@eclipse.org** list;
-use a subject like **Eclipse Embedded CDT plug-ins v6.2.2 released**, and
+use a subject like **Eclipse Embedded CDT plug-ins v6.3.0 released**, and
 pass a link to the release page.
 
 ## Share on Twitter
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@EmbedCDT` account, enter a message like
-  **Eclipse Embedded CDT plug-ins v6.2.2 released** and on the next line
+  **Eclipse Embedded CDT plug-ins v6.3.0 released** and on the next line
   paste the link to the release
 - click the Tweet button
