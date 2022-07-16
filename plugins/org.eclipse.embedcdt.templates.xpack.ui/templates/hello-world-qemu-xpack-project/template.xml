@@ -1196,6 +1196,33 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 		</process>
 	</if>
 
+	<if condition="1==1">
+		<process
+			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.preferxpacksbin" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
 
 	<!-- C++ options -->
 	<if condition="$(fileExtension)==cpp">
