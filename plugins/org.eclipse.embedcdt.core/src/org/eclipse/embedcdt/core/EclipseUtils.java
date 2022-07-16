@@ -489,6 +489,8 @@ public class EclipseUtils {
 	 * in graphical environments (like on macOS).
 	 *
 	 * It assumes that the shell implements the `env` command.
+	 *
+	 * Note: No longer used, ConditionalRunCommand uses a shell.
 	 */
 	public static String[] getShellEnvironment() {
 
