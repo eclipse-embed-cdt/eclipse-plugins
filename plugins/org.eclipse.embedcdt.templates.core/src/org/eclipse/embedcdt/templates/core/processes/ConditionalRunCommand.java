@@ -81,15 +81,45 @@ public class ConditionalRunCommand extends ProcessRunner {
 			return;
 		}
 
-		String cmdArray[] = new String[cmdArgs.length + 1];
-		cmdArray[0] = command;
-		for (int i = 0; i < cmdArgs.length; i++) {
-			cmdArray[i + 1] = cmdArgs[i];
+		String substitutedCommand = EclipseUtils.performStringSubstitution(command);
+		if (substitutedCommand == null) {
+			substitutedCommand = command;
 		}
 
-		String originalCommand = StringUtils.join(cmdArray, " ");
+		// TODO: quote spaces
+		String joinedArgs = StringUtils.join(cmdArgs, " ");
+		String substitutedArgs = EclipseUtils.performStringSubstitution(joinedArgs);
+		if (substitutedArgs == null) {
+			substitutedArgs = joinedArgs;
+		}
 
-		// cmdArray[0] = EclipseUtils.makePathAbsolute(command);
+		String cmdArray[];
+
+		if (EclipseUtils.isWindows()) {
+			// ComSpec=C:\Windows\system32\cmd.exe
+			String shell = System.getenv("ComSpec");
+			if (shell == null) {
+				shell = "cmd.exe";
+			}
+
+			cmdArray = new String[5];
+			cmdArray[0] = shell;
+			cmdArray[1] = "/d"; // Disable execution of AutoRun commands from registry
+			cmdArray[2] = "/s"; // Modifies the treatment of string after /C or /K
+			cmdArray[3] = "/c"; // Carries out the command specified by string and then terminates
+			cmdArray[4] = substitutedCommand + " " + substitutedArgs;
+		} else {
+			String shell = System.getenv("SHELL");
+			if (shell == null) {
+				shell = "/bin/sh";
+			}
+
+			cmdArray = new String[4];
+			cmdArray[0] = shell;
+			cmdArray[1] = "-i"; // To read .zshrc, where nvm is configured.
+			cmdArray[2] = "-c";
+			cmdArray[3] = substitutedCommand + " " + substitutedArgs;
+		}
 
 		if (Activator.getInstance().isDebugging()) {
 			Map<String, String> env = System.getenv();
@@ -100,23 +130,23 @@ public class ConditionalRunCommand extends ProcessRunner {
 
 		// Inherit from parent process.
 		String envp[] = null;
-		if (!EclipseUtils.isWindows()) {
-			envp = EclipseUtils.getShellEnvironment();
-		}
 
-		String cwdSubstituted = EclipseUtils.performStringSubstitution(cwd);
-		if (cwdSubstituted == null) {
+		String substitutedCwd = EclipseUtils.performStringSubstitution(cwd);
+		if (substitutedCwd == null) {
 			// If substitution fails, revert to the original string, to alert
 			// the user.
-			cwdSubstituted = cwd;
+			substitutedCwd = cwd;
 		}
 
-		File dir = new File(cwdSubstituted);
+		File dir = new File(substitutedCwd);
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("cwd: " + dir);
 		}
-		System.out.println("> " + originalCommand);
+		System.out.println("> " + StringUtils.join(cmdArray, " "));
+
+		Activator.log("cwd: " + dir);
+		Activator.log("> " + StringUtils.join(cmdArray, " "));
 
 		try {
 			BufferedReader reader = null;
@@ -139,6 +169,9 @@ public class ConditionalRunCommand extends ProcessRunner {
 			while ((line = reader.readLine()) != null) {
 				errorLines.add(line);
 			}
+			if (!errorLines.isEmpty()) {
+				Activator.log(errorLines.toString());
+			}
 
 			process.destroy();
 			if (process.exitValue() != 0) {
@@ -146,11 +179,15 @@ public class ConditionalRunCommand extends ProcessRunner {
 					System.out.println(l);
 				}
 				System.out.println("exit (" + process.exitValue() + ")");
+				Activator.log("exit (" + process.exitValue() + ")");
+
+				throw new ProcessFailureException(errorLines.toString()); //$NON-NLS-1$
 			}
 
 		} catch (IOException e) {
 			// e.printStackTrace();
 
+			// Do not pass a message and a cause, they are messed due to a bug.
 			throw new ProcessFailureException(e.getMessage()); //$NON-NLS-1$
 		}
 
