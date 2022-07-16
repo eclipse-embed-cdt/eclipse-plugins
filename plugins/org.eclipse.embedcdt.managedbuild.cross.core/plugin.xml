@@ -385,6 +385,17 @@
 			</option>
 			<option
 				defaultValue="false"
+				id="ilg.gnumcueclipse.managedbuild.cross.option.base.preferxpacksbin"
+				isAbstract="true"
+				name="%option.preferxpacksbin"
+				valueType="boolean">
+				<enablement type="UI_VISIBILITY">
+					<false> false body text
+					</false>
+				</enablement>
+			</option>
+			<option
+				defaultValue="false"
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.createflash"
 				isAbstract="true"
 				name="%option.toolchain.flash"

@@ -1773,6 +1773,11 @@
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+				id="ilg.gnuarmeclipse.managedbuild.cross.option.preferxpacksbin"
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.preferxpacksbin">
+			</option>
+			<option
+				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.createflash">
 			</option>

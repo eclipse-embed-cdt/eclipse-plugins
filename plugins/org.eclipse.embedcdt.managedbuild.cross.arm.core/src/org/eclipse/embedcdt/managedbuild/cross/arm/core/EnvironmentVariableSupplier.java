@@ -27,6 +27,7 @@ import org.eclipse.cdt.managedbuilder.envvar.IConfigurationEnvironmentVariableSu
 import org.eclipse.cdt.managedbuilder.envvar.IEnvironmentVariableProvider;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.internal.managedbuild.cross.arm.core.Activator;
@@ -85,6 +86,16 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 			IProject project = (IProject) configuration.getManagedProject().getOwner();
 
+			Boolean preferXpacksBin = Option.getOptionBooleanValue(configuration, Option.OPTION_PREFER_XPACKS_BIN);
+
+			String path = "";
+			if (preferXpacksBin) {
+				IPath projectPath = project.getWorkspace().getRoot().getLocation().append(project.getFullPath());
+				IPath xpackBinPath = projectPath.append("xpacks").append(".bin");
+
+				path = xpackBinPath.toOSString();
+			}
+
 			// Get the build tools path from the common store.
 			PersistentPreferences commonPersistentPreferences = org.eclipse.embedcdt.internal.managedbuild.cross.core.Activator
 					.getInstance().getPersistentPreferences();
@@ -93,9 +104,19 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 					"ilg.gnuarmeclipse.managedbuild.cross");
 
 			// Get the build tools path from the common store.
-			String path = commonPersistentPreferences.getBuildToolsPath(project);
+			String buildToolsPath = commonPersistentPreferences.getBuildToolsPath(project);
+			if (buildToolsPath.isEmpty()) {
+				buildToolsPath = deprecatedPersistentPreferences.getBuildToolsPath(project);
+			}
+
 			if (path.isEmpty()) {
-				path = deprecatedPersistentPreferences.getBuildToolsPath(project);
+				path = buildToolsPath;
+			} else {
+				if (!buildToolsPath.isEmpty()) {
+					// Concatenate build tools path with toolchain path.
+					path += EclipseUtils.getPathSeparator();
+					path += buildToolsPath;
+				}
 			}
 
 			IOption optionId;
@@ -106,7 +127,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			optionName = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
 			String toolchainName = (String) optionName.getValue();
 
-			String toolchainPath = null;
+			String toolchainPath = "";
 
 			// Get the toolchain path from this plug-in store.
 			PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
@@ -129,7 +150,6 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			}
 
 			if (!path.isEmpty()) {
-
 				// if present, substitute macros
 				if (path.indexOf("${") >= 0) {
 					path = resolveMacros(path, configuration);

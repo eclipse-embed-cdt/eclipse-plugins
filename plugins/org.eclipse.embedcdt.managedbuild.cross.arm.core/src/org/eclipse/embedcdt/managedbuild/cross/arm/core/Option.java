@@ -130,6 +130,8 @@ public class Option {
 	public static final String OPTION_COMMAND_MAKE = OPTION_COMMAND + "make";
 	public static final String OPTION_COMMAND_RM = OPTION_COMMAND + "rm";
 
+	public static final String OPTION_PREFER_XPACKS_BIN = OPTION_PREFIX + ".preferxpacksbin";
+
 	public static final String OPTION_ADDTOOLS = OPTION_PREFIX + ".addtools.";
 	public static final String OPTION_ADDTOOLS_CREATEFLASH = OPTION_ADDTOOLS + "createflash";
 	public static final String OPTION_ADDTOOLS_CREATELISTING = OPTION_ADDTOOLS + "createlisting";
@@ -138,6 +140,7 @@ public class Option {
 	public static final String OPTION_CREATEFLASH_CHOICE = OPTION_PREFIX + ".createflash.choice";
 
 	// These should be in sync with plugin.xml definitions
+	public static final boolean OPTION_PREFER_XPACKS_BIN_DEFAULT = false;
 	public static final boolean OPTION_ADDTOOLS_CREATEFLASH_DEFAULT = true;
 	public static final boolean OPTION_ADDTOOLS_CREATELISTING_DEFAULT = false;
 	public static final boolean OPTION_ADDTOOLS_PRINTSIZE_DEFAULT = true;

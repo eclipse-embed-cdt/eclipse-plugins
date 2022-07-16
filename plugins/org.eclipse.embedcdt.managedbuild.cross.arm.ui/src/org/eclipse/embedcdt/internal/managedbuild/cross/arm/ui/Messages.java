@@ -56,6 +56,8 @@ public class Messages extends NLS {
 	public static String ToolChainSettingsTab_path_link;
 	public static String ToolChainSettingsTab_warning_link;
 
+	public static String ToolChainSettingsTab_preferXpacksBin;
+
 	public static String ToolsSettingsTab_path_label;
 	public static String ToolsSettingsTab_path_link;
 
