@@ -188,7 +188,6 @@ public class ConditionalRunCommandUi extends ProcessRunner {
 
 				} catch (IOException e) {
 					// e.printStackTrace();
-
 					// Do not pass a message and a cause, they are messed due to a bug.
 					throw new InterruptedException(e.getMessage()); //$NON-NLS-1$
 				} finally {
@@ -201,12 +200,10 @@ public class ConditionalRunCommandUi extends ProcessRunner {
 		try {
 			dialog.run(true, false, runnable);
 		} catch (InvocationTargetException e1) {
-			e1.printStackTrace();
-
+			// e1.printStackTrace();
 			throw new ProcessFailureException(e1.getMessage()); //$NON-NLS-1$
 		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-
+			// e1.printStackTrace();
 			throw new ProcessFailureException(e1.getMessage()); //$NON-NLS-1$
 		}
 
