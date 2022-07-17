@@ -199,7 +199,7 @@ public class ConditionalRunCommandUi extends ProcessRunner {
 		};
 
 		try {
-			dialog.run(true, true, runnable);
+			dialog.run(true, false, runnable);
 		} catch (InvocationTargetException e1) {
 			e1.printStackTrace();
 
