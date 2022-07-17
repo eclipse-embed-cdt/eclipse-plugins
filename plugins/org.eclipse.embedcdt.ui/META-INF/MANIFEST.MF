@@ -39,5 +39,7 @@ Require-Bundle: org.eclipse.core.filesystem;bundle-version="1.7.700",
  org.eclipse.debug.core;bundle-version="3.16.0",
  org.eclipse.embedcdt.core;bundle-version="6.3.0",
  org.eclipse.ui;bundle-version="3.118.0",
- org.eclipse.ui.ide;bundle-version="3.17.200"
+ org.eclipse.ui.ide;bundle-version="3.17.200",
+ org.eclipse.cdt.core;bundle-version="7.0.0",
+ org.eclipse.embedcdt.templates.core;bundle-version="3.1.0"
 Automatic-Module-Name: org.eclipse.embedcdt.ui

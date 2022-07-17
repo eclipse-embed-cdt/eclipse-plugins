@@ -40,4 +40,16 @@
 			</enabledWhen>
 		</page>
 	</extension>
+	<extension point="org.eclipse.cdt.core.templateProcessTypes">
+		<processType
+			name="ConditionalRunCommand"
+			processRunner="org.eclipse.embedcdt.ui.templates.core.processes.ConditionalRunCommandUi">
+			<simple name="projectName" />
+			<simple name="condition" nullable="true" />
+			<simple name="cwd" />
+			<simple name="command" />
+			<simpleArray name="args" />
+		</processType>
+	
+	</extension>
 </plugin>
