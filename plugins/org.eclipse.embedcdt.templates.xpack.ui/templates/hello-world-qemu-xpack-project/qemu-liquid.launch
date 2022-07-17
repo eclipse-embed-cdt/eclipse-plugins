@@ -42,6 +42,7 @@
     <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doContinue" value="true"/>
     <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doFirstReset" value="true"/>
     <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doGdbServerAllocateConsole" value="true"/>
+    <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doGdbServerPreferXpacksBin" value="true"/>
     <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doSecondReset" value="true"/>
     <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doStartGdbServer" value="true"/>
     <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.enableSemihosting" value="true"/>
