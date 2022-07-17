@@ -21,8 +21,11 @@ import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
+import org.eclipse.core.internal.resources.Project;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.core.EclipseUtils;
@@ -52,7 +55,8 @@ public class Configuration {
 		return prefix;
 	}
 
-	public static String getGdbServerCommand(ILaunchConfiguration configuration, String executable) {
+	public static String getGdbServerCommand(ILaunchConfiguration configuration, String executable,
+			Boolean preferXpacksBin) {
 
 		try {
 
@@ -80,6 +84,43 @@ public class Configuration {
 			}
 
 			executable = resolveAll(executable, configuration);
+
+			if (preferXpacksBin == null) {
+				preferXpacksBin = configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
+						DefaultPreferences.DO_GDB_SERVER_PREFER_XPACK_BIN_DEFAULT);
+			}
+
+			if (preferXpacksBin) {
+				String name = StringUtils.extractNameFromPath(executable);
+
+				IResource[] resources = configuration.getMappedResources();
+				Project project = null;
+				if (resources != null) {
+					for (IResource resource : resources) {
+						if (resource instanceof Project) {
+							project = (Project) resource;
+							break;
+						}
+					}
+
+					if (project != null) {
+						IPath projectPath = project.getWorkspace().getRoot().getLocation()
+								.append(project.getFullPath());
+						IPath serverPath = projectPath.append("xpacks").append(".bin").append(name);
+
+						if (serverPath.toFile().exists()) {
+							executable = serverPath.toString();
+						} else {
+							if (EclipseUtils.isWindows()) {
+								serverPath = projectPath.append("xpacks").append(".bin").append(name + ".cmd");
+								if (serverPath.toFile().exists()) {
+									executable = serverPath.toString();
+								}
+							}
+						}
+					}
+				}
+			}
 
 		} catch (CoreException e) {
 			Activator.log(e);
@@ -123,7 +164,7 @@ public class Configuration {
 					fDefaultPreferences.getGdbServerDoStart(prefix)))
 				return null;
 
-			String executable = getGdbServerCommand(configuration, null);
+			String executable = getGdbServerCommand(configuration, null, null);
 			if (executable == null || executable.isEmpty())
 				return null;
 
@@ -248,7 +289,7 @@ public class Configuration {
 
 	public static String getGdbServerCommandName(ILaunchConfiguration configuration) {
 
-		String fullCommand = getGdbServerCommand(configuration, null);
+		String fullCommand = getGdbServerCommand(configuration, null, null);
 		return StringUtils.extractNameFromPath(fullCommand);
 	}
 

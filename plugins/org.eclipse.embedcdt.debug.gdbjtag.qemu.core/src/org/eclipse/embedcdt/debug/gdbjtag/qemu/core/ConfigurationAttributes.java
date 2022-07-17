@@ -26,6 +26,8 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 
 	public static final String DO_START_GDB_SERVER = PREFIX + ".doStartGdbServer"; //$NON-NLS-1$
 
+	public static final String DO_GDB_SERVER_PREFER_XPACK_BIN = PREFIX + ".doGdbServerPreferXpacksBin"; //$NON-NLS-1$
+
 	public static final String GDB_SERVER_EXECUTABLE = PREFIX + ".gdbServerExecutable"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_MACHINE_NAME = PREFIX + ".gdbServerQemuMachineName"; //$NON-NLS-1$

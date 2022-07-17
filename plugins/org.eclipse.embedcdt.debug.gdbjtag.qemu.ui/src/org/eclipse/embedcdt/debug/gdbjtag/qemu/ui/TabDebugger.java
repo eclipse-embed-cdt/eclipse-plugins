@@ -112,6 +112,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Text fGdbServerOtherOptions;
 
 	private Button fDoGdbServerAllocateConsole;
+	private Button fDoGdbServerPreferXpcksBin;
 
 	private Text fGdbServerDelay;
 
@@ -319,6 +320,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
+			fDoGdbServerPreferXpcksBin = new Button(comp, SWT.CHECK);
+			fDoGdbServerPreferXpcksBin.setText(Messages.getString("DebuggerTab.gdbServerPreferXpacksBin_Label"));
+			fDoGdbServerPreferXpcksBin
+					.setToolTipText(Messages.getString("DebuggerTab.gdbServerPreferXpacksBin_ToolTipText"));
+			GridData gd = new GridData();
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			fDoGdbServerPreferXpcksBin.setLayoutData(gd);
+		}
+
+		{
 			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbServerActualPath_Label"));
 
@@ -522,6 +533,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					fTargetIpAddress.setText(DefaultPreferences.REMOTE_IP_ADDRESS_LOCALHOST);
 				}
 				scheduleUpdateJob();
+			}
+		});
+
+		fDoGdbServerPreferXpcksBin.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				updateGdbServerActualPath();
 			}
 		});
 
@@ -818,7 +837,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private void updateGdbServerActualPath() {
 
 		assert (fConfiguration != null);
-		String fullCommand = Configuration.getGdbServerCommand(fConfiguration, fGdbServerExecutable.getText());
+
+		String fullCommand = Configuration.getGdbServerCommand(fConfiguration, fGdbServerExecutable.getText(),
+				fDoGdbServerPreferXpcksBin.getSelection());
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("qemu.TabDebugger.updateActualpath() \"" + fullCommand + "\"");
 		}
@@ -838,6 +859,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private void doStartGdbServerChanged() {
 
 		boolean enabled = fDoStartGdbServer.getSelection();
+
+		fDoGdbServerPreferXpcksBin.setEnabled(enabled);
 
 		fGdbServerExecutable.setEnabled(enabled);
 		fGdbServerBrowseButton.setEnabled(enabled);
@@ -917,6 +940,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				booleanDefault = fPersistentPreferences.getGdbServerDoStart(fPrefix);
 				fDoStartGdbServer.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER, booleanDefault));
+
+				fDoGdbServerPreferXpcksBin
+						.setSelection(configuration.getAttribute(ConfigurationAttributes.DO_GDB_SERVER_PREFER_XPACK_BIN,
+								DefaultPreferences.DO_GDB_SERVER_PREFER_XPACK_BIN_DEFAULT));
 
 				// Executable
 				stringDefault = fPersistentPreferences.getGdbServerExecutable(fPrefix, fArchitecture);
@@ -1060,6 +1087,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// Start server locally
 			booleanDefault = fDefaultPreferences.getGdbServerDoStart(fPrefix);
 			fDoStartGdbServer.setSelection(booleanDefault);
+
+			fDoGdbServerPreferXpcksBin.setSelection(DefaultPreferences.DO_GDB_SERVER_PREFER_XPACK_BIN_DEFAULT);
 
 			// Executable
 			stringDefault = fDefaultPreferences.getGdbServerExecutable(fPrefix, fArchitecture);
@@ -1242,6 +1271,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.DO_START_GDB_SERVER, booleanValue);
 			fPersistentPreferences.putGdbServerDoStart(fPrefix, booleanValue);
 
+			configuration.setAttribute(ConfigurationAttributes.DO_GDB_SERVER_PREFER_XPACK_BIN,
+					fDoGdbServerPreferXpcksBin.getSelection());
+
 			// Executable
 			stringValue = fGdbServerExecutable.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE, stringValue);
@@ -1403,6 +1435,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			defaultBoolean = fPersistentPreferences.getGdbServerDoStart(fPrefix);
 			configuration.setAttribute(ConfigurationAttributes.DO_START_GDB_SERVER, defaultBoolean);
+
+			configuration.setAttribute(ConfigurationAttributes.DO_GDB_SERVER_PREFER_XPACK_BIN,
+					DefaultPreferences.DO_GDB_SERVER_PREFER_XPACK_BIN_DEFAULT);
 
 			defaultString = fPersistentPreferences.getGdbServerExecutable(fPrefix, fArchitecture);
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE, defaultString);

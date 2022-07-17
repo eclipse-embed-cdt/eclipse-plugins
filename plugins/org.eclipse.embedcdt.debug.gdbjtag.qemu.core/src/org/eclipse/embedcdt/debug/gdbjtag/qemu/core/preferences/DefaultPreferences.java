@@ -23,6 +23,8 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 	public static final boolean SERVER_DO_START_DEFAULT = true;
 	public static final boolean DO_START_GDB_SERVER_DEFAULT = true;
 
+	public static final boolean DO_GDB_SERVER_PREFER_XPACK_BIN_DEFAULT = false;
+
 	public static final String SERVER_EXECUTABLE_DEFAULT = "${qemu_path}/${qemu_executable}";
 	public static final String PARAMETRIZED_SERVER_EXECUTABLE_DEFAULT = "${qemu_%s_path}/${qemu_%s_executable}";
 
