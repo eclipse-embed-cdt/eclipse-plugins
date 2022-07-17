@@ -24,7 +24,7 @@ Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.3.0",
  org.eclipse.equinox.preferences;bundle-version="3.8.0",
  org.eclipse.osgi;bundle-version="3.16.0",
  org.eclipse.cdt.managedbuilder.core;bundle-version="9.0.0",
- org.eclipse.core.commands;bundle-version="3.9.700"
-Import-Package: org.eclipse.jface.preference,
- org.eclipse.ui.preferences
+ org.eclipse.core.commands;bundle-version="3.9.700",
+ org.eclipse.jface;bundle-version="3.21.0",
+ org.eclipse.ui.workbench;bundle-version="3.120.0"
 Automatic-Module-Name: org.eclipse.embedcdt.packs.core
