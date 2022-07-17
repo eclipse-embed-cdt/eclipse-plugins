@@ -170,7 +170,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	<if condition="1==1">
 
 		<process
-			type="org.eclipse.embedcdt.templates.core.ConditionalRunCommand">
+			type="org.eclipse.embedcdt.ui.ConditionalRunCommand">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
@@ -197,7 +197,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 		</process>
 
 		<process
-			type="org.eclipse.embedcdt.templates.core.ConditionalRunCommand">
+			type="org.eclipse.embedcdt.ui.ConditionalRunCommand">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
