@@ -28,6 +28,7 @@ import org.eclipse.cdt.managedbuilder.envvar.IConfigurationEnvironmentVariableSu
 import org.eclipse.cdt.managedbuilder.envvar.IEnvironmentVariableProvider;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.internal.managedbuild.cross.riscv.core.Activator;
@@ -86,11 +87,31 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 			IProject project = (IProject) configuration.getManagedProject().getOwner();
 
+			Boolean preferXpacksBin = Option.getOptionBooleanValue(configuration, Option.OPTION_PREFER_XPACKS_BIN);
+
+			String path = "";
+			if (preferXpacksBin) {
+				IPath projectPath = project.getWorkspace().getRoot().getLocation().append(project.getFullPath());
+				IPath xpackBinPath = projectPath.append("xpacks").append(".bin");
+
+				path = xpackBinPath.toOSString();
+			}
+
 			// Get the build tools path from the common store.
 			PersistentPreferences commonPersistentPreferences = org.eclipse.embedcdt.internal.managedbuild.cross.core.Activator
 					.getInstance().getPersistentPreferences();
 
-			String path = commonPersistentPreferences.getBuildToolsPath(project);
+			String buildToolsPath = commonPersistentPreferences.getBuildToolsPath(project);
+
+			if (path.isEmpty()) {
+				path = buildToolsPath;
+			} else {
+				if (!buildToolsPath.isEmpty()) {
+					// Concatenate build tools path with toolchain path.
+					path += EclipseUtils.getPathSeparator();
+					path += buildToolsPath;
+				}
+			}
 
 			IOption optionId;
 			optionId = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_ID); // $NON-NLS-1$
@@ -100,7 +121,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			optionName = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
 			String toolchainName = (String) optionName.getValue();
 
-			String toolchainPath = null;
+			String toolchainPath = "";
 
 			// Get the toolchain path from this plug-in store.
 			PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
@@ -140,7 +161,8 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			}
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("riscv.PathEnvironmentVariable.create(" + configuration.getName() + ") returns null");
+				System.out
+						.println("riscv.PathEnvironmentVariable.create(" + configuration.getName() + ") returns null");
 			}
 			return null;
 		}
@@ -156,8 +178,8 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			}
 
 			if (Activator.getInstance().isDebugging()) {
-				Activator.log("riscv.PathEnvironmentVariable.resolveMacros(\"" + str + "\", \"" + configuration.getName()
-						+ "\") = \"" + "\"");
+				Activator.log("riscv.PathEnvironmentVariable.resolveMacros(\"" + str + "\", \""
+						+ configuration.getName() + "\") = \"" + "\"");
 			}
 			return result;
 

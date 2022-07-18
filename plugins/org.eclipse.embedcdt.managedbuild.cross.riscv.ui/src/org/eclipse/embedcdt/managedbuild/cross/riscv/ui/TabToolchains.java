@@ -106,6 +106,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	private Button fFlashButton;
 	private Button fListingButton;
 	private Button fSizeButton;
+	private Button fUseXpacksBin;
 
 	// private boolean fIsExecutable;
 	// private boolean fIsStaticLibrary;
@@ -354,6 +355,13 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		}
 
 		{
+			fUseXpacksBin = new Button(usercomp, SWT.CHECK);
+			fUseXpacksBin.setText(Messages.ToolChainSettingsTab_preferXpacksBin);
+			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
+			fUseXpacksBin.setLayoutData(layoutData);
+		}
+
+		{
 			Label label = new Label(usercomp, SWT.NONE);
 			label.setText(Messages.ToolChainSettingsTab_path_label);
 
@@ -489,6 +497,16 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			}
 		});
 
+		fUseXpacksBin.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				// Disable the paths if xpacks are preferred.
+				fToolchainPathLabel.setEnabled(!fUseXpacksBin.getSelection());
+				fBuildToolsPathLabel.setEnabled(!fUseXpacksBin.getSelection());
+			}
+		});
+
 		// --------------------------------------------------------------------
 
 		updateControlsForConfig(fConfig);
@@ -615,6 +633,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			fFlashButton.setEnabled(isExecutable);
 			fListingButton.setEnabled(isExecutable);
 			fSizeButton.setEnabled(isExecutable);
+
+			fUseXpacksBin.setEnabled(isExecutable);
 		}
 	}
 
@@ -816,6 +836,17 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 				fCommandRmText.setText(toolchainDefinition.getCmdRm());
 			}
 
+			Boolean useXpacksBin = Option.getOptionBooleanValue(config, Option.OPTION_PREFER_XPACKS_BIN);
+			if (useXpacksBin != null) {
+				fUseXpacksBin.setSelection(useXpacksBin);
+			} else {
+				fUseXpacksBin.setSelection(Option.OPTION_PREFER_XPACKS_BIN_DEFAULT);
+			}
+
+			// Disable the paths if xpacks are preferred.
+			fToolchainPathLabel.setEnabled(!fUseXpacksBin.getSelection());
+			fBuildToolsPathLabel.setEnabled(!fUseXpacksBin.getSelection());
+
 			Boolean isCreateFlash = Option.getOptionBooleanValue(config, Option.OPTION_ADDTOOLS_CREATEFLASH);
 			if (isCreateFlash != null) {
 				fFlashButton.setSelection(isCreateFlash);
@@ -929,6 +960,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					propagateCommandRmUpdate(config);
 				}
 
+				option = toolchain.getOptionBySuperClassId(Option.OPTION_PREFER_XPACKS_BIN); // $NON-NLS-1$
+				config.setOption(toolchain, option, fUseXpacksBin.getSelection());
+
 				option = toolchain.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATEFLASH); // $NON-NLS-1$
 				config.setOption(toolchain, option, fFlashButton.getSelection());
 
@@ -1032,6 +1066,13 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_RM); // $NON-NLS-1$
 		config.setOption(toolchain, option, td.getCmdRm());
 
+		// If already set by the template engine, keep it.
+		Boolean useXpacksBin = Option.getOptionBooleanValue(config, Option.OPTION_PREFER_XPACKS_BIN);
+		if (useXpacksBin == null) {
+			option = toolchain.getOptionBySuperClassId(Option.OPTION_PREFER_XPACKS_BIN); // $NON-NLS-1$
+			config.setOption(toolchain, option, Option.OPTION_PREFER_XPACKS_BIN_DEFAULT);
+		}
+
 		option = toolchain.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATEFLASH); // $NON-NLS-1$
 		config.setOption(toolchain, option, Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
 
@@ -1078,6 +1119,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		updateInterfaceAfterToolchainChange();
 
 		if (isManaged()) {
+			fUseXpacksBin.setSelection(Option.OPTION_PREFER_XPACKS_BIN_DEFAULT);
 			fFlashButton.setSelection(Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
 			fListingButton.setSelection(Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
 			fSizeButton.setSelection(Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);

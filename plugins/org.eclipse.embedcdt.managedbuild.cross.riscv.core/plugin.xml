@@ -678,6 +678,11 @@
 			</option>
 			<option
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
+				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.preferxpacksbin"
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.preferxpacksbin">
+			</option>
+			<option
+				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.createflash"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.createflash">
 			</option>
