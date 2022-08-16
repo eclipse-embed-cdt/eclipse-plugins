@@ -186,7 +186,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 			<simple-array name="args">
 				<element value="init" />
 				<element value="--template" />
-				<element value="@micro-os-plus/hello-world-qemu-template@1.0.1" />
+				<element value="@micro-os-plus/hello-world-qemu-template@1.4.1" />
 				<element value="--property" />
 				<element value="target=$(HWcore)" />
 				<element value="--property" />
@@ -453,6 +453,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-devices-qemu-cortexm/include&quot;" />
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-diag-trace/include&quot;" />
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-semihosting/include&quot;" />
+						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-startup/include&quot;" />
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/xpack-3rd-party-arm-cmsis-core/CMSIS/Core/Include&quot;" />
 					</simple-array>
 					<simple
@@ -484,6 +485,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-devices-qemu-cortexm/include&quot;" />
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-diag-trace/include&quot;" />
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-semihosting/include&quot;" />
+						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-startup/include&quot;" />
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/xpack-3rd-party-arm-cmsis-core/CMSIS/Core/Include&quot;" />
 					</simple-array>
 					<simple
@@ -515,6 +517,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-devices-qemu-aarch32/include&quot;" />
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-diag-trace/include&quot;" />
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-semihosting/include&quot;" />
+						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-startup/include&quot;" />
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/xpack-3rd-party-arm-cmsis-core/CMSIS/Core/Include&quot;" />
 					</simple-array>
 					<simple
@@ -546,6 +549,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-devices-qemu-aarch64/include&quot;" />
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-diag-trace/include&quot;" />
 						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-semihosting/include&quot;" />
+						<element value="&quot;${workspace_loc:/$(projectName)}/xpacks/micro-os-plus-startup/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -602,6 +606,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				<element value="xpacks/micro-os-plus-devices-qemu-cortexm/src" />
 				<element value="xpacks/micro-os-plus-diag-trace/src" />
 				<element value="xpacks/micro-os-plus-semihosting/src" />
+				<element value="xpacks/micro-os-plus-startup/src" />
 			</simple-array>
 		</process>
 
@@ -618,6 +623,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				<element value="xpacks/micro-os-plus-devices-qemu-cortexm/src" />
 				<element value="xpacks/micro-os-plus-diag-trace/src" />
 				<element value="xpacks/micro-os-plus-semihosting/src" />
+				<element value="xpacks/micro-os-plus-startup/src" />
 			</simple-array>
 		</process>
 
@@ -634,6 +640,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				<element value="xpacks/micro-os-plus-devices-qemu-aarch32/src" />
 				<element value="xpacks/micro-os-plus-diag-trace/src" />
 				<element value="xpacks/micro-os-plus-semihosting/src" />
+				<element value="xpacks/micro-os-plus-startup/src" />
 			</simple-array>
 		</process>
 
@@ -650,6 +657,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				<element value="xpacks/micro-os-plus-devices-qemu-aarch64/src" />
 				<element value="xpacks/micro-os-plus-diag-trace/src" />
 				<element value="xpacks/micro-os-plus-semihosting/src" />
+				<element value="xpacks/micro-os-plus-startup/src" />
 			</simple-array>
 		</process>
 		
@@ -1527,7 +1535,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.nostart" />
 					<simple
 						name="value"
-						value="false" />
+						value="true" />
 					<simple
 						name="path"
 						value="" />
