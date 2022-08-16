@@ -18,7 +18,7 @@
 		<template
 			filterPattern=".*g[c\+][c\+]"
 			id="org.eclipse.embedcdt.templates.xpack.ui.hello.world.qemu.project"
-			location="$nl$/templates/hello-world-qemu-xpack-project/template.xml"
+			location="$nl$/templates/hello-world-arm-qemu-xpack-project/template.xml"
 			projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
 		</template>
 	</extension>
