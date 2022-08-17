@@ -28,4 +28,19 @@
 			</toolChain>
 		</template>
 	</extension>
+	
+	<extension point="org.eclipse.cdt.core.templates">
+		<template
+			filterPattern=".*g[c\+][c\+]"
+			id="org.eclipse.embedcdt.templates.xpack.ui.hello.world.riscv.qemu.project"
+			location="$nl$/templates/hello-world-riscv-qemu-xpack-project/template.xml"
+			projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+		</template>
+	</extension>
+	<extension point="org.eclipse.cdt.core.templateAssociations">
+		<template id="org.eclipse.embedcdt.templates.xpack.ui.hello.world.riscv.qemu.project">
+			<toolChain id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.base">
+			</toolChain>
+		</template>
+	</extension>
 </plugin>
