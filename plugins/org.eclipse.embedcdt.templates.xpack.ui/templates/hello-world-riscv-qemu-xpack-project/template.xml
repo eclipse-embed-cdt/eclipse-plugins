@@ -820,7 +820,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(useSomeWarnings.riscv) == true" />
+				value="$(useSomeWarningsRiscv) == true" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -1457,7 +1457,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	</if>
 
 	<!-- 19 -->
-	<if condition="$(useNano.riscv)==true">
+	<if condition="$(useNanoRiscv)==true">
 		<process
 			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
