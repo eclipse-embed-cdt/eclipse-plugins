@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-{% if HWcore == 'cortex-m7f' %}
+{% if HWcoreArm == 'cortex-m7f' %}
 <launchConfiguration type="ilg.gnumcueclipse.debug.gdbjtag.qemu.arm.launchConfigurationType">
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.architecture" value="arm"/>
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerExecutable" value="${qemu_arm_path}/${qemu_arm_executable}"/>
@@ -7,7 +7,7 @@
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerQemuMachineName" value="mps2-an500"/>
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.semihosting.cmdline" value="{{ projectName }} M7F"/>
     <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doDebugInRam" value="false"/>
-{% elsif HWcore == 'cortex-m0' %}
+{% elsif HWcoreArm == 'cortex-m0' %}
 <launchConfiguration type="ilg.gnumcueclipse.debug.gdbjtag.qemu.arm.launchConfigurationType">
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.architecture" value="arm"/>
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerExecutable" value="${qemu_arm_path}/${qemu_arm_executable}"/>
@@ -15,7 +15,7 @@
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerQemuMachineName" value="mps2-an385"/>
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.semihosting.cmdline" value="{{ projectName }} M0"/>
     <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doDebugInRam" value="false"/>
-{% elsif HWcore == 'cortex-a15' %}
+{% elsif HWcoreArm == 'cortex-a15' %}
 <launchConfiguration type="ilg.gnumcueclipse.debug.gdbjtag.qemu.arm.launchConfigurationType">
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.architecture" value="arm"/>
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerExecutable" value="${qemu_arm_path}/${qemu_arm_executable}"/>
@@ -23,7 +23,7 @@
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerQemuMachineName" value="virt"/>
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.semihosting.cmdline" value="{{ projectName }} A15"/>
     <booleanAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.doDebugInRam" value="true"/>
-{% elsif HWcore == 'cortex-a72' %}
+{% elsif HWcoreArm == 'cortex-a72' %}
 <launchConfiguration type="ilg.gnumcueclipse.debug.gdbjtag.qemu.aarch64.launchConfigurationType">
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.architecture" value="aarch64"/>
     <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.qemu.gdbServerExecutable" value="${qemu_aarch64_path}/${qemu_aarch64_executable}"/>

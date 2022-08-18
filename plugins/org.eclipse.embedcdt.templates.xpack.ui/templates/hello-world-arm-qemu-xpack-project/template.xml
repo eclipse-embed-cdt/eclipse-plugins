@@ -11,20 +11,20 @@ of the Eclipse Public License 2.0 which accompanies this distribution, \
 and is available athttps://www.eclipse.org/legal/epl-2.0/
  at
  atSPDX-License-Identifier: EPL-2.0"
-	id="HW.qemu.xpack.exe.c.project"
-	label="%HW.template.label"
-	description="%HW.template.description"
+	id="HW.arm.qemu.xpack.exe.c.project"
+	label="%HW.template.arm.label"
+	description="%HW.template.arm.description"
 	help="help.html">
 	<property-group
 		id="chip"
-		label="%HW.group.target.label"
-		description="%HW.group.target.description"
+		label="%HW.group.target.arm.label"
+		description="%HW.group.target.arm.description"
 		type="PAGES-ONLY"
 		help="help.html">
 		<property
-			id="HWcore"
-			label="%HWcore.label"
-			description="%HWcore.description"
+			id="HWcoreArm"
+			label="%HWcore.arm.label"
+			description="%HWcore.arm.description"
 			type="select"
 			default="cortex-m7f"
 			hidden="false"
@@ -46,49 +46,49 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 		<!-- ============================================================== -->
 
 		<property
-			id="useSomeWarnings"
-			label="%someWarnings.label"
-			description="%someWarnings.description"
+			id="useSomeWarningsArm"
+			label="%someWarnings.arm.label"
+			description="%someWarnings.arm.description"
 			type="boolean"
 			default="true"
 			hidden="false"
 			persist="true" />
 		<property
-			id="useMostWarnings"
-			label="%mostWarnings.label"
-			description="%mostWarnings.description"
+			id="useMostWarningsArm"
+			label="%mostWarnings.arm.label"
+			description="%mostWarnings.arm.description"
 			type="boolean"
 			default="false"
 			hidden="false"
 			persist="true" />
 		<property
-			id="useWerror"
-			label="%useWerror.label"
-			description="%useWerror.description"
+			id="useWerrorArm"
+			label="%useWerror.arm.label"
+			description="%useWerror.arm.description"
 			type="boolean"
 			default="false"
 			hidden="false"
 			persist="true" />
 		<property
-			id="doNotUseExceptions"
-			label="%doNotUseExceptions.label"
-			description="%doNotUseExceptions.description"
+			id="doNotUseExceptionsArm"
+			label="%doNotUseExceptions.arm.label"
+			description="%doNotUseExceptions.arm.description"
 			type="boolean"
 			default="false"
 			hidden="false"
 			persist="true" />
 		<property
-			id="useOg"
-			label="%useOg.label"
-			description="%useOg.description"
+			id="useOgArm"
+			label="%useOg.arm.label"
+			description="%useOg.arm.description"
 			type="boolean"
 			default="false"
 			hidden="false"
 			persist="true" />
 		<property
-			id="useNano"
-			label="%useNano.label"
-			description="%useNano.description"
+			id="useNanoArm"
+			label="%useNano.arm.label"
+			description="%useNano.arm.description"
 			type="boolean"
 			default="false"
 			hidden="false"
@@ -97,8 +97,8 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 
 	<property-group
 		id="folders"
-		label="%group.folders.label"
-		description="%group.folders.description"
+		label="%group.folders.arm.label"
+		description="%group.folders.arm.description"
 		type="PAGES-ONLY"
 		help="help.html">
 
@@ -188,7 +188,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				<element value="--template" />
 				<element value="@micro-os-plus/hello-world-qemu-template@1.4.1" />
 				<element value="--property" />
-				<element value="target=$(HWcore)" />
+				<element value="target=$(HWcoreArm)" />
 				<element value="--property" />
 				<element value="language=$(fileExtension)" />
 				<element value="--property" />
@@ -253,7 +253,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-m7f" />
+				value="$(HWcoreArm) == cortex-m7f" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -279,7 +279,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-m0" />
+				value="$(HWcoreArm) == cortex-m0" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -305,7 +305,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-a15" />
+				value="$(HWcoreArm) == cortex-a15" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -331,7 +331,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-a72" />
+				value="$(HWcoreArm) == cortex-a72" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -441,7 +441,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-m7f" />
+				value="$(HWcoreArm) == cortex-m7f" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -473,7 +473,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-m0" />
+				value="$(HWcoreArm) == cortex-m0" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -505,7 +505,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-a15" />
+				value="$(HWcoreArm) == cortex-a15" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -537,7 +537,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-a72" />
+				value="$(HWcoreArm) == cortex-a72" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -575,8 +575,8 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 						name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;${workspace_loc:/$(projectName)}/platform-qemu-$(HWcore)/include-config&quot;" />
-						<element value="&quot;${workspace_loc:/$(projectName)}/platform-qemu-$(HWcore)/include-platform&quot;" />
+						<element value="&quot;${workspace_loc:/$(projectName)}/platform-qemu-$(HWcoreArm)/include-config&quot;" />
+						<element value="&quot;${workspace_loc:/$(projectName)}/platform-qemu-$(HWcoreArm)/include-platform&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -599,7 +599,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-m7f" />
+				value="$(HWcoreArm) == cortex-m7f" />
 			<simple-array name="paths">
 				<element value="src" />
 				<element value="xpacks/micro-os-plus-architecture-cortexm/src" />
@@ -616,7 +616,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-m0" />
+				value="$(HWcoreArm) == cortex-m0" />
 			<simple-array name="paths">
 				<element value="src" />
 				<element value="xpacks/micro-os-plus-architecture-cortexm/src" />
@@ -633,7 +633,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-a15" />
+				value="$(HWcoreArm) == cortex-a15" />
 			<simple-array name="paths">
 				<element value="src" />
 				<element value="xpacks/micro-os-plus-architecture-aarch32/src" />
@@ -650,7 +650,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-a72" />
+				value="$(HWcoreArm) == cortex-a72" />
 			<simple-array name="paths">
 				<element value="src" />
 				<element value="xpacks/micro-os-plus-architecture-aarch64/src" />
@@ -669,7 +669,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				name="condition"
 				value="" />
 			<simple-array name="paths">
-				<element value="platform-qemu-$(HWcore)/src" />
+				<element value="platform-qemu-$(HWcoreArm)/src" />
 			</simple-array>
 		</process>
 		
@@ -685,7 +685,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-m7f" />
+				value="$(HWcoreArm) == cortex-m7f" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -735,7 +735,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-m0" />
+				value="$(HWcoreArm) == cortex-m0" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -785,7 +785,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-a15" />
+				value="$(HWcoreArm) == cortex-a15" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -822,7 +822,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-a72" />
+				value="$(HWcoreArm) == cortex-a72" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -863,7 +863,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(useSomeWarnings) == true" />
+				value="$(useSomeWarningsArm) == true" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -903,7 +903,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(useMostWarnings) == true" />
+				value="$(useMostWarningsArm) == true" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -1043,7 +1043,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(useWerror) == true" />
+				value="$(useWerrorArm) == true" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -1064,7 +1064,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 	</if>
 
 
-	<if condition="$(useOg)==true">
+	<if condition="$(useOgArm)==true">
 		<process
 			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
@@ -1092,7 +1092,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 		</process>
 	</if>
 
-	<if condition="$(useOg)!=true">
+	<if condition="$(useOgArm)!=true">
 		<process
 			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple
@@ -1291,7 +1291,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(doNotUseExceptions) == true" />
+				value="$(doNotUseExceptionsArm) == true" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -1331,7 +1331,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(useMostWarnings) == true" />
+				value="$(useMostWarningsArm) == true" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -1419,7 +1419,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-m7f" />
+				value="$(HWcoreArm) == cortex-m7f" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -1446,7 +1446,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-m0" />
+				value="$(HWcoreArm) == cortex-m0" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -1473,7 +1473,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-a15" />
+				value="$(HWcoreArm) == cortex-a15" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -1500,7 +1500,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) == cortex-a72" />
+				value="$(HWcoreArm) == cortex-a72" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -1547,35 +1547,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 		</process>
 	</if>
 
-	<if condition="1==1">
-		<process
-			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSStringOptionValue">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple
-						name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
-					<simple
-						name="value"
-						value="--specs=rdimon.specs -Wl,--start-group -lgcc -lc -lc -lm -lrdimon -Wl,--end-group" />
-					<simple
-						name="path"
-						value="" />
-					<simple
-						name="buildType"
-						value="" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="$(useNano)==true">
+	<if condition="$(useNanoArm)==true">
 		<process
 			type="org.eclipse.embedcdt.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple
@@ -1583,7 +1555,7 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(HWcore) != cortex-a72" />
+				value="$(HWcoreArm) != cortex-a72" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
