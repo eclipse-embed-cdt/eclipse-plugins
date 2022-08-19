@@ -60,8 +60,8 @@ Install the **CBI Aggregator Editor** from:
 At first use, clone the SimRel Git repo:
 
 ```bash
-git clone "ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build" "org.eclipse.simrel.build.git"
-scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "org.eclipse.simrel.build.git/.git/hooks/"
+git clone ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build org.eclipse.simrel.build.git
+scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg org.eclipse.simrel.build.git/.git/hooks/
 ```
 
 ### SimRel deadline
@@ -73,8 +73,9 @@ The deadline for SimRel changes is **Wed 5pm Ottawa time**.
 At first use, clone the EPP Git repo:
 
 ```bash
-git clone "ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git"
-scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg "epp/org.eclipse.epp.packages.git/.git/hooks/"
+git clone ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git org.eclipse.epp.packages.git
+mkdir -p org.eclipse.epp.packages.git/.git/hooks/
+scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg org.eclipse.epp.packages.git/.git/hooks/
 ```
 
 ### EPP deadline
@@ -312,7 +313,8 @@ When the plug-ins are considered stable:
   - `repositories/org.eclipse.embededcdt-repository/composite/compositeContent.xml`
   - add new child like `<child location='../../releases/6.3.0/p2'/>`
   - update `p2.timestamp` to the value shown at the end of the `make-release-candidate-from-master`
-- **push** master with a message like _add 6.3.0 to composite_
+- **commit** master with a message like _add 6.3.0 to composite_
+- **push** master
 
 - go to <https://ci.eclipse.org/embed-cdt/>
 - **login** (otherwise the next link is not visible!)
@@ -461,7 +463,7 @@ Jenkins aggregator pipeline:
 
 - <https://ci.eclipse.org/simrel/job/simrel.runaggregator.pipeline/>
 
-In about one hour it'll automatically rebuild the staging repo:
+In about 5 min it'll automatically rebuild the staging repo:
 
 - <https://download.eclipse.org/staging/>
 
@@ -505,7 +507,7 @@ diff packages/org.eclipse.epp.package.cpp.product packages/org.eclipse.epp.packa
 Commit and push to Gerrit:
 
 ```bash
-git commit -m 'embedcpp ...'
+git commit -m 'embedcpp: ...'
 git push ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git HEAD:refs/for/master
 ```
 
