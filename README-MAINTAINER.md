@@ -53,7 +53,7 @@ The official download page is
 
 ### Clone SimRel
 
-Use the CBI Aggregator installed from:
+Install the **CBI Aggregator Editor** from:
 
 - <https://download.eclipse.org/cbi/updates/aggregator/ide/4.13>
 
@@ -257,7 +257,7 @@ and press Enter
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
 - Save
-- commit _embedcdt: update for 6.3.0-202208180721'_
+- commit _embedcdt: update for 6.3.0-202208180721_
 - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 - _Signed-off-by: Liviu Ionescu &lt;ilg@livius.net&gt;_
 
@@ -278,7 +278,7 @@ Jenkins aggregator pipeline:
 
 - <https://ci.eclipse.org/simrel/job/simrel.runaggregator.pipeline/>
 
-In about one hour it'll automatically rebuild the staging repo:
+In about 5 minutes it'll automatically rebuild the staging repo:
 
 - <https://download.eclipse.org/staging/>
 
