@@ -593,13 +593,7 @@ register char* stack_ptr asm ("sp");
 
 /* following is copied from libc/stdio/local.h to check std streams */
 extern void __sinit(struct _reent*);
-#define CHECK_INIT(ptr) \
-  do                                            \
-    {                                           \
-      if ((ptr) && !(ptr)->__sdidinit)          \
-        __sinit (ptr);                          \
-    }                                           \
-  while (0)
+#define CHECK_INIT(ptr) _REENT_SMALL_CHECK_INIT(ptr)
 
 static int monitor_stdin;
 static int monitor_stdout;
