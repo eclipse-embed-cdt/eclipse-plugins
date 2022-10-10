@@ -42,7 +42,7 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- <https://download.eclipse.org/embed-cdt/releases/6.3.1/org.eclipse.embedcdt.repository-6.3.1-202208180721.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.3.1/org.eclipse.embedcdt.repository-6.3.1-202210101738.zip>
 - <https://download.eclipse.org/embed-cdt/releases/6.3.1/p2/>
 
 The official download page is
@@ -251,14 +251,14 @@ In Eclipse:
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release
 candidate p2 URL (like
-`https://download.eclipse.org/embed-cdt/release-candidates/6.3.1-202208180721/p2/`
+`https://download.eclipse.org/embed-cdt/release-candidates/6.3.1-202210101738/p2/`
 and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
 - Save
-- commit _embedcdt: update for 6.3.1-202208180721_
+- commit _embedcdt: update for 6.3.1-202210101738_
 - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 - _Signed-off-by: Liviu Ionescu &lt;ilg@livius.net&gt;_
 
@@ -287,7 +287,7 @@ In about 5 minutes it'll automatically rebuild the staging repo:
 
 Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
 use a subject like
-**Embed CDT v6.3.1-202208180721 release candidate**,
+**Embed CDT v6.3.1-202210101738 release candidate**,
 and pass a link to the release page, available at:
 
 - <https://projects.eclipse.org/projects/iot.embed-cdt/>
@@ -302,7 +302,7 @@ Go to the release candidate folder
 
 - [https://download.eclipse.org/embed-cdt/release-candidates/](https://download.eclipse.org/embed-cdt/release-candidates/)
 
-Copy the tag and enter it in Git, like `v6.3.1-202208180721` (with `v`).
+Copy the tag and enter it in Git, like `v6.3.1-202210101738` (with `v`).
 
 ## Publish the final release
 
@@ -356,12 +356,12 @@ In the `develop` branch, in `_posts/release`, add a new release page.
 As links for the latest two, open <https://download.eclipse.org/embed-cdt/releases/>
 and get the archive URL, like:
 
-- <https://download.eclipse.org/embed-cdt/releases/6.3.1/org.eclipse.embedcdt.repository-6.3.1-202208180721.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.3.1/org.eclipse.embedcdt.repository-6.3.1-202210101738.zip>
 
 Isolate the part starting with `/embed-cdt/...` and update the URLs to use the download redirect:
 
-- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.3.1/org.eclipse.embedcdt.repository-6.3.1-202208180721.zip>
-- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.3.1/org.eclipse.embedcdt.repository-6.3.1-202208180721.zip.sha>
+- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.3.1/org.eclipse.embedcdt.repository-6.3.1-202210101738.zip>
+- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.3.1/org.eclipse.embedcdt.repository-6.3.1-202210101738.zip.sha>
 
 Update the milestone URL.
 
