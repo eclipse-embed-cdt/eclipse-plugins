@@ -3614,7 +3614,7 @@
 			class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector"
 			id="org.eclipse.embedcdt.managedbuild.cross.arm.core.GCCBuiltinSpecsDetector"
 			name="%GCCBuiltinSpecsDetector.name"
-			parameter="${COMMAND} ${FLAGS} ${cross_toolchain_flags} -E -P -v -dD &quot;${INPUTS}&quot;"
+			parameter="${COMMAND} ${ALL_FLAGS} ${cross_toolchain_flags} -E -P -v -dD &quot;${INPUTS}&quot;"
 			prefer-non-shared="true">
 			<language-scope id="org.eclipse.cdt.core.gcc">
 			</language-scope>
