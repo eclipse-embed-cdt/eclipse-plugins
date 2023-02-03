@@ -96,8 +96,6 @@ public class XpackUtils {
 	// DEPRECATED
 	public static IPath getSysRepoBasePath() {
 
-		Map<String, String> env = System.getenv();
-
 		if (EclipseUtils.isMacOSX()) {
 			IPath path = new Path("/opt");
 			return path;
@@ -105,7 +103,7 @@ public class XpackUtils {
 			IPath path = new Path("/opt");
 			return path;
 		} else if (EclipseUtils.isWindows()) {
-			String progFolder = env.get("ProgramFiles");
+			String progFolder = System.getenv("ProgramFiles");
 			IPath path = new Path(progFolder);
 			return path;
 		}
@@ -114,8 +112,6 @@ public class XpackUtils {
 
 	public static IPath[] getSysRepoBasePaths() {
 
-		Map<String, String> env = System.getenv();
-
 		if (EclipseUtils.isMacOSX()) {
 			IPath[] paths = new IPath[1];
 			paths[0] = new Path("/opt");
@@ -126,7 +122,7 @@ public class XpackUtils {
 			return paths;
 		} else if (EclipseUtils.isWindows()) {
 			IPath[] paths = new IPath[1];
-			String progFolder = env.get("ProgramFiles");
+			String progFolder = System.getenv("ProgramFiles");
 			paths[0] = new Path(progFolder);
 			return paths;
 		}
