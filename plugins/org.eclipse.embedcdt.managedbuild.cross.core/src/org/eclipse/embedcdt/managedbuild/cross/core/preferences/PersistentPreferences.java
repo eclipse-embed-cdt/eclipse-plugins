@@ -163,8 +163,10 @@ public class PersistentPreferences extends org.eclipse.embedcdt.core.preferences
 		if (value != null && !value.isEmpty()) {
 			return value;
 		}
-
-		return "";
+		// This could be a project using toolchain id created
+		// using old hash mechanism, so just trying to get the
+		// toolchain path using just the toolchain name.
+		return getToolchainPath(toolchainName, project);
 	}
 
 	/**
