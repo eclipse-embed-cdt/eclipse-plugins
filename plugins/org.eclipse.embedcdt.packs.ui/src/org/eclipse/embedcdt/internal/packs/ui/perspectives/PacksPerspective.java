@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2014, 2023 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     Alexander Fedorov (ArSysOp) - support SimRel 2023-06.
  *******************************************************************************/
 
 package org.eclipse.embedcdt.internal.packs.ui.perspectives;
@@ -129,12 +130,10 @@ public class PacksPerspective implements IPerspectiveFactory {
 		// factory.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");//NON-NLS-1
 	}
 
-	@SuppressWarnings("deprecation")
 	private void addViewShortcuts() {
-
 		fFactory.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
 		// fFactory.addShowViewShortcut(JavaUI.ID_PACKAGES);
-		fFactory.addShowViewShortcut(IPageLayout.ID_RES_NAV);
+		// fFactory.addShowViewShortcut(IPageLayout.ID_RES_NAV);
 		fFactory.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
 		fFactory.addShowViewShortcut(IPageLayout.ID_OUTLINE);
 	}
