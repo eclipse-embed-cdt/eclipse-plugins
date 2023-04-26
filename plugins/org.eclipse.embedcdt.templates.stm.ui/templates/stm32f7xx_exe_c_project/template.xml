@@ -1595,6 +1595,106 @@
 	<!-- ================================================================== -->
 
 	<!-- Linker files -->
+	<if condition="$(STM32F7chipFamilyCube)==STM32F722xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="ldscripts/mem256.ld" />
+					<simple
+						name="target"
+						value="$(ldscriptsDir)/mem.ld" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F7chipFamilyCube)==STM32F723xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="ldscripts/mem256.ld" />
+					<simple
+						name="target"
+						value="$(ldscriptsDir)/mem.ld" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F7chipFamilyCube)==STM32F730xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="ldscripts/mem256.ld" />
+					<simple
+						name="target"
+						value="$(ldscriptsDir)/mem.ld" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F7chipFamilyCube)==STM32F732xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="ldscripts/mem256.ld" />
+					<simple
+						name="target"
+						value="$(ldscriptsDir)/mem.ld" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F7chipFamilyCube)==STM32F733xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="ldscripts/mem256.ld" />
+					<simple
+						name="target"
+						value="$(ldscriptsDir)/mem.ld" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
 	<if condition="$(STM32F7chipFamilyCube)==STM32F745xx">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple
@@ -1616,6 +1716,26 @@
 		</process>
 	</if>
 	<if condition="$(STM32F7chipFamilyCube)==STM32F746xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="ldscripts/mem320.ld" />
+					<simple
+						name="target"
+						value="$(ldscriptsDir)/mem.ld" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F7chipFamilyCube)==STM32F750xx">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple
 				name="projectName"
