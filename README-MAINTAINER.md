@@ -119,9 +119,19 @@ number, like `[#122]`;
 For the plug-ins that were modified, increase the specific version
 (like _1.2.3_).
 
+Commit the MANIFEST.MF files as _update versions..._
+
 For all features, increase the common version (like _6.3.2_); be sure
 the composite records are not updated at this moment, they require
 new lines, added later.
+
+For all branding, edit the MANIFEST.MF and increase the
+`Bundle-Version` (like _6.3.2_).
+
+For all other occurrences, except `compositeArtifacts.xml` and
+`compositeContent.xml`.
+
+Commit all with _update package version 6.3.2_.
 
 ## Build locally
 
