@@ -2311,6 +2311,17 @@ and is available athttps://www.eclipse.org/legal/epl-2.0/
 				<element>
 					<simple
 						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions" />
+					<simple
+						name="value"
+						value="_zicsr_zifencei" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp" />
 					<simple
 						name="value"
