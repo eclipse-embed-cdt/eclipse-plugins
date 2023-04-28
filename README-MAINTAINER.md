@@ -219,7 +219,9 @@ link in the right side bar, below Releases (it shows only after login).
 
 Name it like `6.3.2` (no v).
 
-Click on Edit, The Basics; switch to Source mode
+Click the **Create and edit** button.
+
+Click the **Edit** tab, **The Basics**; switch to Source mode
 
 Start with _Release candidate_ (Header 3).
 
@@ -236,6 +238,8 @@ Start with _Release candidate_ (Header 3).
 ```
 
 Select the **Release Type** (major, minor, service).
+
+Click the bottom **Save** button.
 
 ### Test
 
@@ -270,9 +274,11 @@ and press Enter
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
 - Save
-- commit _embedcdt: update for 6.3.2-202304281106_
+- stage `simrel.aggr` & `embedcdt.aggrcon`
+- commit _embedcdt: update for 6.3.2-202304281106_, do not Push yet
 - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 - _Signed-off-by: Liviu Ionescu &lt;ilg@livius.net&gt;_
+- right click, Show in local Terminal
 
 ```bash
 git push ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build HEAD:refs/for/master
@@ -291,7 +297,7 @@ Jenkins aggregator pipeline:
 
 - <https://ci.eclipse.org/simrel/job/simrel.runaggregator.pipeline/>
 
-In about 5 minutes it'll automatically rebuild the staging repo:
+In about 7-8 minutes it'll automatically rebuild the staging repo:
 
 - <https://download.eclipse.org/staging/>
 
