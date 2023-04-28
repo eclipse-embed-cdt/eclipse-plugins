@@ -197,6 +197,9 @@ which is the public location for the release candidates until the final
 release is out
 - click the **Build Now** link
 
+Check the console output and remember the timestamp shown at the end, it'll
+be used later in the composite files.
+
 ### Update timestamp in README-MAINTENANCE
 
 Go to the release candidate folder
