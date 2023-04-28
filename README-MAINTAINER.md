@@ -278,9 +278,10 @@ and press Enter
 - select the Aggregation and **Validate**
 - Save
 - stage `simrel.aggr` & `embedcdt.aggrcon`
-- commit _embedcdt: update for 6.3.2-202304281106_, do not Push yet
-- _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
-- _Signed-off-by: Liviu Ionescu &lt;ilg@livius.net&gt;_
+- commit with a message like:
+  - _embedcdt: update for 6.3.2-202304281106_,
+  - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
+- click the **Commit** button (do not Push yet)
 - right click, Show in local Terminal
 
 ```bash
@@ -372,7 +373,7 @@ The public update URLs are:
 
 Edit the `eclipse-embed-cdt/web-jekyll.git` project.
 
-In the `develop` branch, in `_posts/release`, add a new release page.
+In the `develop` branch, in `_posts/plugins/releases`, add a new release page.
 
 As links for the latest two, open <https://download.eclipse.org/embed-cdt/releases/>
 and get the archive URL, like:
@@ -436,7 +437,9 @@ and select the new release
 </ul>
 ```
 
-### Update the Downloads page
+Click the **Save** button.
+
+### Update the Downloads page (deprecated)
 
 For packages releases:
 
@@ -464,9 +467,12 @@ and press Enter
 **Fix Versions**
 - select the Contribution and **Validate**
 - select the Aggregation and **Validate**
+- stage `embededcdt.aggrcom`
 - commit with a message like:
   - _embedcdt: update for 6.3.2_
   - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
+- click the **Commit** button (do not push yet)
+- right click, Show in local Terminal
 
 ```bash
 git push ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build HEAD:refs/for/master
@@ -484,7 +490,7 @@ Jenkins aggregator pipeline:
 
 - <https://ci.eclipse.org/simrel/job/simrel.runaggregator.pipeline/>
 
-In about 5 min it'll automatically rebuild the staging repo:
+In about 7-8 min it'll automatically rebuild the staging repo:
 
 - <https://download.eclipse.org/staging/>
 
