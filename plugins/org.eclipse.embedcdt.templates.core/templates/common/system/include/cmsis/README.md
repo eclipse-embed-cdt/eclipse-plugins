@@ -48,7 +48,7 @@ For further details see also the [Slides of the Embedded World CMSIS Partner Mee
 This GitHub development repository contains already pre-built libraries of various software components (DSP, RTOS, RTOS2).
 These libraries are validated for release.
 
-To build a complete CMSIS pack for installation the following additional tools are required:
+To build a complete CMSIS Pack for installation the following additional tools are required:
  - **doxygen.exe**    Version: 1.8.6 (Documentation Generator)
  - **mscgen.exe**     Version: 0.20  (Message Sequence Chart Converter)
  - **7z.exe (7-Zip)** Version: 16.02 (File Archiver)

@@ -268,7 +268,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 		domainName = StringUtils.capitalizeFirst(domainName);
 
 		contentRoot.setName(domainName);
-		contentRoot.setDescription(domainName + " CMSIS packs repository");
+		contentRoot.setDescription(domainName + " CMSIS Packs repository");
 
 		contentRoot.putProperty(Property.TYPE, "cmsis.repo");
 		contentRoot.putProperty(Property.REPO_URL, repoUrl);
