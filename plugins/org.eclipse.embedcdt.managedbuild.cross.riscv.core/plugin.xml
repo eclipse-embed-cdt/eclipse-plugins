@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <!-- 
-  Copyright (c) 2009, 2020 Wind River Systems, Inc. and others. 
+  Copyright (c) 2009, 2023 Wind River Systems, Inc. and others. 
 
   This program and the accompanying materials 
   are made available under the terms of the Eclipse Public License 2.0 
@@ -15,6 +15,7 @@
     Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project 
     Liviu Ionescu - RISC-V version 
     Alexander Fedorov (ArSysOp) - extract UI part
+    John Dallaway - use GNU ELF binary parser (#567)
 -->
 <plugin>
 	<extension-point
@@ -603,7 +604,7 @@
 			targetTool="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.linker;ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.linker;cdt.managedbuild.tool.gnu.archiver">
 			<targetPlatform
 				archList="all"
-				binaryParser="org.eclipse.cdt.core.ELF"
+				binaryParser="org.eclipse.cdt.core.GNU_ELF"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.targetPlatform"
 				isAbstract="false"
 				osList="all">

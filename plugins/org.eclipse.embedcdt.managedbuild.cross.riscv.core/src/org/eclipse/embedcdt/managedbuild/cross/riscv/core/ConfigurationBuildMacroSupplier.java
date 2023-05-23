@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Liviu Ionescu.
+ * Copyright (c) 2013, 2023 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     John Dallaway - provide GNU tool prefix for CDT GNU tool factory (#567)
  *******************************************************************************/
 
 package org.eclipse.embedcdt.managedbuild.cross.riscv.core;
@@ -34,6 +35,7 @@ public class ConfigurationBuildMacroSupplier implements IConfigurationBuildMacro
 			"cross_objdump", "cross_size", "cross_make", "cross_rm" };
 
 	private static String CROSS_FLAGS = "cross_toolchain_flags";
+	private static String GNU_TOOL_PREFIX = "gnu_tool_prefix"; // TODO: use IGnuToolFactory.GNU_TOOL_PREFIX_VARIABLE (since CDT 11.2)
 
 	// ------------------------------------------------------------------------
 
@@ -75,6 +77,14 @@ public class ConfigurationBuildMacroSupplier implements IConfigurationBuildMacro
 				return new BuildMacro(macroName, BuildMacro.VALUE_TEXT, sValue);
 			}
 		}
+
+		if (GNU_TOOL_PREFIX.equals(macroName)) {
+			String sValue = Option.getOptionStringValue(configuration, Option.OPTION_PREFIX + ".command.prefix");
+			if (sValue != null && sValue.length() > 0) {
+				return new BuildMacro(GNU_TOOL_PREFIX, IBuildMacro.VALUE_TEXT, sValue);
+			}
+		}
+
 		// System.out.println("Missing value of " + macroName + " in "
 		// + configuration.getName());
 		return null;
@@ -104,6 +114,11 @@ public class ConfigurationBuildMacroSupplier implements IConfigurationBuildMacro
 		sValue = Option.getToolChainFlags(configuration);
 		if (sValue != null && sValue.length() > 0) {
 			oMacrosList.add(new BuildMacro(CROSS_FLAGS, BuildMacro.VALUE_TEXT, sValue));
+		}
+
+		IBuildMacro gnuToolPrefixMacro = getMacro(GNU_TOOL_PREFIX, configuration, provider);
+		if (gnuToolPrefixMacro != null) {
+			oMacrosList.add(gnuToolPrefixMacro);
 		}
 
 		return oMacrosList.toArray(new IBuildMacro[0]);
