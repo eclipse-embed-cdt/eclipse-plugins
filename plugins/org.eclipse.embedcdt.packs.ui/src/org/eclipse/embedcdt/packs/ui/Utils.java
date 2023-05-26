@@ -43,9 +43,11 @@ public class Utils {
 
 		while (true) {
 			try {
-				org.eclipse.embedcdt.packs.core.data.DataUtils.copyFile(sourceUrl, destinationFile, out, monitor);
+				org.eclipse.embedcdt.packs.core.data.DataUtils.copyFile(sourceUrl, destinationFile, out, null);
 				return 0;
 			} catch (final IOException e) {
+
+				out.println(e.toString() + " " + sourceUrl);
 
 				if (ignoreError) {
 					return 3; // Ignore All
@@ -57,10 +59,12 @@ public class Utils {
 
 					@Override
 					public void run() {
+						// 0 = Retry, 2 = Ignore, 3 = Ignore All, 4 = Abort
 						String[] buttons = new String[] { "Retry", "Ignore", "Ignore All", "Abort" };
 						MessageDialog dialog = new MessageDialog(shell, "Read error", null,
 								sourceUrl.toString() + "\n" + e.getMessage(), MessageDialog.ERROR, buttons, 0);
 						retCode = dialog.open();
+						// System.out.println(retCode);
 					}
 				}
 
@@ -68,7 +72,10 @@ public class Utils {
 				Display.getDefault().syncExec(messageDialog);
 
 				if (messageDialog.retCode == 3) {
-					throw e; // Abort
+					if (monitor != null) {
+						monitor.setCanceled(true);
+					}
+					return 4; // throw e; // Abort
 				} else if (messageDialog.retCode == 1 || messageDialog.retCode == 2) {
 					return messageDialog.retCode + 1; // Ignore & Ignore All
 				}

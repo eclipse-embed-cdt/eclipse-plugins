@@ -307,8 +307,8 @@ public class UpdatePacksHandler extends AbstractHandler {
 				if (!cachedFile.exists()) {
 
 					// If local file does not exist, create it
-					int ret = org.eclipse.embedcdt.packs.ui.Utils.copyFileWithShell(sourceUrl, cachedFile, fOut, null,
-							window.getShell(), ignoreError);
+					int ret = org.eclipse.embedcdt.packs.ui.Utils.copyFileWithShell(sourceUrl, cachedFile, fOut,
+							fMonitor, window.getShell(), ignoreError);
 					if (ret == 0) {
 
 						DataUtils.reportInfo("File " + pdscName + " version " + pdscVersion + " cached locally.");
@@ -317,6 +317,8 @@ public class UpdatePacksHandler extends AbstractHandler {
 								DataUtils.reportWarning("Missing \"" + cachedFile + "\", ignored by user request."));
 						if (ret == 3) {
 							ignoreError = true;
+						} else if (ret == 4) {
+							break;
 						}
 						continue;
 					}

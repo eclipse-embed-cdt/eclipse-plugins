@@ -99,9 +99,9 @@ public class DataUtils {
 		int bytesRead;
 		while ((bytesRead = input.read(buf)) > 0) {
 			output.write(buf, 0, bytesRead);
-			if (monitor != null) {
-				monitor.worked(bytesRead);
-			}
+			// if (monitor != null) {
+			//	monitor.worked(bytesRead);
+			// }
 			totalBytes += bytesRead;
 		}
 		output.close();
