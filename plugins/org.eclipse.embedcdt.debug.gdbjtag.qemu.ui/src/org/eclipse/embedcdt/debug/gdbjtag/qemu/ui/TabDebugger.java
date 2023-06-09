@@ -48,6 +48,8 @@ import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.Messages;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.preferences.GlobalMcuPage;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.preferences.WorkspaceMcuPage;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.qemu.ui.properties.ProjectMcuPage;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -98,6 +100,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Text fTargetIpAddress;
 	private Text fTargetPortNumber;
+	private ControlDecoration fTargetPortNumberDecoration;
+	private ControlDecoration fTargetIpAddressDecoration;
 
 	private Text fQemuBoardName;
 	private Text fQemuDeviceName;
@@ -531,6 +535,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				doStartGdbServerChanged();
 				if (fDoStartGdbServer.getSelection()) {
 					fTargetIpAddress.setText(DefaultPreferences.REMOTE_IP_ADDRESS_LOCALHOST);
+					fTargetPortNumber.setText(fGdbServerGdbPort.getText());
 				}
 				scheduleUpdateJob();
 			}
@@ -798,6 +803,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			GridData gd = new GridData();
 			gd.widthHint = 125;
 			fTargetIpAddress.setLayoutData(gd);
+			fTargetIpAddressDecoration = new ControlDecoration(fTargetIpAddress, SWT.LEFT | SWT.TOP);
+			fTargetIpAddressDecoration.setDescriptionText(Messages.getString("DebuggerTab.ipAddressWarningDecoration")); //$NON-NLS-1$
+			fTargetIpAddressDecoration.setImage(FieldDecorationRegistry.getDefault()
+					.getFieldDecoration(FieldDecorationRegistry.DEC_WARNING).getImage());
 
 			label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.portNumberLabel")); //$NON-NLS-1$
@@ -806,6 +815,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd = new GridData();
 			gd.widthHint = 125;
 			fTargetPortNumber.setLayoutData(gd);
+			fTargetPortNumberDecoration = new ControlDecoration(fTargetPortNumber, SWT.LEFT | SWT.TOP);
+			fTargetPortNumberDecoration
+					.setDescriptionText(Messages.getString("DebuggerTab.portNumberWarningDecoration")); //$NON-NLS-1$
+			fTargetPortNumberDecoration.setImage(FieldDecorationRegistry.getDefault()
+					.getFieldDecoration(FieldDecorationRegistry.DEC_WARNING).getImage());
+
 		}
 
 		// ---- Actions -------------------------------------------------------
@@ -814,6 +829,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fTargetIpAddress.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
+				updateDecorations();
 				scheduleUpdateJob(); // provides much better performance for
 										// Text listeners
 			}
@@ -827,11 +843,23 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fTargetPortNumber.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
+				updateDecorations();
 				scheduleUpdateJob(); // provides much better performance for
 										// Text listeners
 			}
 		});
-
+		fTargetIpAddressDecoration.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				fTargetIpAddress.setText(DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT);
+			}
+		});
+		fTargetPortNumberDecoration.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				fTargetPortNumber.setText(fGdbServerGdbPort.getText());
+			}
+		});
 	}
 
 	private void updateGdbServerActualPath() {
@@ -879,14 +907,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fIsQemuVerbose.setEnabled(enabled);
 		}
 
-		// Disable remote target params when the server is started
-		fTargetIpAddress.setEnabled(!enabled);
-		fTargetPortNumber.setEnabled(!enabled);
-
 		fGdbServerPathLabel.setEnabled(enabled);
 		fLink.setEnabled(enabled);
 
 		fGdbServerDelay.setEnabled(enabled);
+
+		updateDecorations();
 	}
 
 	private void doEnableSemihostingChanged() {
@@ -919,6 +945,24 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		return fProjectName;
+	}
+
+	protected void updateDecorations() {
+		if (fDoStartGdbServer.getSelection()) {
+			if (DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT.equals(fTargetIpAddress.getText())) {
+				fTargetIpAddressDecoration.hide();
+			} else {
+				fTargetIpAddressDecoration.show();
+			}
+			if (fGdbServerGdbPort.getText().equals(fTargetPortNumber.getText())) {
+				fTargetPortNumberDecoration.hide();
+			} else {
+				fTargetPortNumberDecoration.show();
+			}
+		} else {
+			fTargetIpAddressDecoration.hide();
+			fTargetPortNumberDecoration.hide();
+		}
 	}
 
 	@Override
@@ -1158,8 +1202,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			fTargetIpAddress.setText(DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT); // $NON-NLS-1$
 
-			String portString = Integer.toString(DefaultPreferences.REMOTE_PORT_NUMBER_DEFAULT); // $NON-NLS-1$
-			fTargetPortNumber.setText(portString);
+			if (fDoStartGdbServer.getSelection()) {
+				fTargetPortNumber.setText(fGdbServerGdbPort.getText());
+			} else {
+				String portString = Integer.toString(DefaultPreferences.REMOTE_PORT_NUMBER_DEFAULT); // $NON-NLS-1$
+				fTargetPortNumber.setText(portString);
+			}
 		}
 	}
 
@@ -1369,31 +1417,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-			if (fDoStartGdbServer.getSelection()) {
-				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, "localhost");
+			String ip = fTargetIpAddress.getText().trim();
+			configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, ip);
 
-				String str = fGdbServerGdbPort.getText().trim();
-				if (!str.isEmpty()) {
-					try {
-						int port;
-						port = Integer.parseInt(str);
-						configuration.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER, port);
-					} catch (NumberFormatException e) {
-						Activator.log(e);
-					}
-				}
-			} else {
-				String ip = fTargetIpAddress.getText().trim();
-				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, ip);
-
-				String str = fTargetPortNumber.getText().trim();
-				if (!str.isEmpty()) {
-					try {
-						int port = Integer.valueOf(str).intValue();
-						configuration.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER, port);
-					} catch (NumberFormatException e) {
-						Activator.log(e);
-					}
+			String str = fTargetPortNumber.getText().trim();
+			if (!str.isEmpty()) {
+				try {
+					int port = Integer.valueOf(str).intValue();
+					configuration.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER, port);
+				} catch (NumberFormatException e) {
+					Activator.log(e);
 				}
 			}
 		}
