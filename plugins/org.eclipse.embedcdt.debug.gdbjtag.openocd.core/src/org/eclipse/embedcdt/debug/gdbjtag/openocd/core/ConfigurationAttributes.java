@@ -52,6 +52,8 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 
 	public static final String GDB_CLIENT_OTHER_COMMANDS = PREFIX + ".gdbClientOtherCommands"; //$NON-NLS-1$
 
+	public static final String GDB_CONNECT_TO_GDB_SERVER = PREFIX + ".useHostNameAndPortOfStartedGdbServer"; //$NON-NLS-1$
+
 	// ------------------------------------------------------------------------
 
 	// TabStartup

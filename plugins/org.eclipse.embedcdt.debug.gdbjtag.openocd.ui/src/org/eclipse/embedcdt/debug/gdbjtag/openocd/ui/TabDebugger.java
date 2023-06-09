@@ -105,6 +105,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Link fLink;
 
+	private Button fUseHostNameAndPortOfStartedGdbServer;
 	private Text fTargetIpAddress;
 	private Text fTargetPortNumber;
 
@@ -457,7 +458,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			public void modifyText(ModifyEvent e) {
 
 				// make the target port the same
-				fTargetPortNumber.setText(fGdbServerGdbPort.getText());
+				if (fUseHostNameAndPortOfStartedGdbServer.getSelection()) {
+					fTargetPortNumber.setText(fGdbServerGdbPort.getText());
+				}
 				scheduleUpdateJob();
 			}
 		});
@@ -641,11 +644,20 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// Create entry fields for TCP/IP connections
 		{
+			fUseHostNameAndPortOfStartedGdbServer = new Button(comp, SWT.CHECK);
+			fUseHostNameAndPortOfStartedGdbServer
+					.setText(Messages.getString("DebuggerTab.useHostNameAndPortOfStartedGdbServer"));
+			fUseHostNameAndPortOfStartedGdbServer
+					.setToolTipText(Messages.getString("DebuggerTab.useHostNameAndPortOfStartedGdbServer_ToolTipText"));
+			GridData gd = new GridData();
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			fUseHostNameAndPortOfStartedGdbServer.setLayoutData(gd);
+
 			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.ipAddressLabel")); //$NON-NLS-1$
 
 			fTargetIpAddress = new Text(comp, SWT.BORDER);
-			GridData gd = new GridData();
+			gd = new GridData();
 			gd.widthHint = 125;
 			fTargetIpAddress.setLayoutData(gd);
 
@@ -659,6 +671,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		// ---- Actions -------------------------------------------------------
+
+		fUseHostNameAndPortOfStartedGdbServer.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				doStartGdbServerChanged();
+				if (fUseHostNameAndPortOfStartedGdbServer.getSelection()) {
+					fTargetPortNumber.setText(fGdbServerGdbPort.getText());
+				}
+				scheduleUpdateJob();
+			}
+		});
 
 		// Add watchers for user data entry
 		fTargetIpAddress.addModifyListener(new ModifyListener() {
@@ -724,8 +747,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		// Disable remote target params when the server is started
-		fTargetIpAddress.setEnabled(!enabled);
-		fTargetPortNumber.setEnabled(!enabled);
+		fUseHostNameAndPortOfStartedGdbServer.setEnabled(enabled);
+		if (!enabled) {
+			fUseHostNameAndPortOfStartedGdbServer.setSelection(true);
+		}
+		boolean useGdbServerSettings = fUseHostNameAndPortOfStartedGdbServer.getSelection();
+		fTargetIpAddress.setEnabled(!enabled || !useGdbServerSettings);
+		fTargetPortNumber.setEnabled(!enabled || !useGdbServerSettings);
 
 		fGdbServerPathLabel.setEnabled(enabled);
 		fLink.setEnabled(enabled);
@@ -822,6 +850,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			// Remote target
 			{
+				fUseHostNameAndPortOfStartedGdbServer.setSelection(
+						configuration.getAttribute(ConfigurationAttributes.GDB_CONNECT_TO_GDB_SERVER, true));
+
 				fTargetIpAddress.setText(configuration.getAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS,
 						DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT)); // $NON-NLS-1$
 
@@ -910,6 +941,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// Remote target
 		{
+			fUseHostNameAndPortOfStartedGdbServer.setSelection(true);
+
 			fTargetIpAddress.setText(DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT); // $NON-NLS-1$
 
 			String portString = Integer.toString(DefaultPreferences.REMOTE_PORT_NUMBER_DEFAULT); // $NON-NLS-1$
@@ -1112,7 +1145,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-			if (fDoStartGdbServer.getSelection()) {
+			booleanValue = fUseHostNameAndPortOfStartedGdbServer.getSelection();
+			configuration.setAttribute(ConfigurationAttributes.GDB_CONNECT_TO_GDB_SERVER, booleanValue);
+
+			if (fDoStartGdbServer.getSelection() && fUseHostNameAndPortOfStartedGdbServer.getSelection()) {
 				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, "localhost");
 
 				String str = fGdbServerGdbPort.getText().trim();
