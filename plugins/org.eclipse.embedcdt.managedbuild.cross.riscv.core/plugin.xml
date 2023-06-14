@@ -1734,6 +1734,8 @@
 						</value>
 						<value id="org.eclipse.cdt.build.core.buildArtefactType.sharedLib">
 						</value>
+						<value id="org.eclipse.cdt.build.core.buildArtefactType.objectFile">
+						</value>
 					</property>
 				</supportedProperties>
 				<envVarBuildPath
@@ -1923,6 +1925,8 @@
 						<value id="org.eclipse.cdt.build.core.buildArtefactType.exe">
 						</value>
 						<value id="org.eclipse.cdt.build.core.buildArtefactType.sharedLib">
+						</value>
+						<value id="org.eclipse.cdt.build.core.buildArtefactType.objectFile">
 						</value>
 					</property>
 				</supportedProperties>
@@ -2478,6 +2482,61 @@
 				</toolChain>
 			</configuration>
 		</projectType>
+		<projectType
+			isAbstract="false"
+			isTest="false"
+			buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.objectFile"
+			id="ilg.gnumcueclipse.managedbuild.cross.riscv.target.object">
+			<configuration
+				name="Debug"
+				id="ilg.gnumcueclipse.managedbuild.cross.riscv.config.object.debug"
+				buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug"
+				cleanCommand="${cross_rm} -rf">
+				<toolChain
+					superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.base"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.object.debug">
+				</toolChain>
+			</configuration>
+			<configuration
+				name="Release"
+				id="ilg.gnumcueclipse.managedbuild.cross.riscv.config.object.release"
+				buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release"
+				parent="cdt.managedbuild.config.gnu.base"
+				cleanCommand="rm -rf">
+				<toolChain
+					superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.base"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.object.release">
+				</toolChain>
+			</configuration>
+		</projectType>
+	</extension>
+	<extension point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
+		<wizardPage
+			ID="ilg.gnumcueclipse.managedbuild.cross.riscv.setCrossCommandWizardPage"
+			operationClass="ilg.gnumcueclipse.managedbuild.cross.riscv.ui.SetCrossCommandWizardOperation"
+			pageClass="ilg.gnumcueclipse.managedbuild.cross.riscv.ui.SetCrossCommandWizardPage">
+			<toolchain
+				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.elf.debug">
+			</toolchain>
+			<toolchain
+				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.elf.release">
+			</toolchain>
+			<toolchain
+				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.so.debug">
+			</toolchain>
+			<toolchain
+				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.so.release">
+			</toolchain>
+			<toolchain
+				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.lib.debug">
+			</toolchain>
+			<toolchain
+				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.lib.release">
+			</toolchain>
+			<toolchain
+				toolchainID="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.base">
+			</toolchain>
+		</wizardPage>
 	</extension>
 	<extension point="org.eclipse.core.contenttype.contentTypes">
 		<content-type
