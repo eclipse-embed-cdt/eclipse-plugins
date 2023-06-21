@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Marc-Andre Laperle and others.
+ * Copyright (c) 2011, 2023 Marc-Andre Laperle and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -64,10 +64,25 @@ public class Messages extends NLS {
 
 	public static String ToolchainPaths_label;
 	public static String ToolchainName_label;
+	public static String ProjectToolchainsPathPropertiesPage_GlobalSettings_link;
+
+	public static String ProjectToolchainsPathPropertiesPage_ToolchainMessageAllConfigs_label;
+
+	public static String ProjectToolchainsPathPropertiesPage_ToolchainMessageSomeConfigs_label;
+
+	public static String ProjectToolchainsPathPropertiesPage_WorkspaceSettings_link;
 
 	public static String ProjectToolchainsPathsPropertiesPage_description;
 	public static String WorkspaceToolchainsPathsPreferencesPage_description;
 	public static String GlobalToolchainsPathsPreferencesPage_description;
+
+	public static String GlobalToolchainsPathsPreferencesPage_ToolchainDefaultGroup_label;
+
+	public static String GlobalToolchainsPathsPreferencesPage_ToolchainMessageDefault_label;
+
+	public static String GlobalToolchainsPathsPreferencesPage_ToolchainMessageWithProjects_label;
+
+	public static String GlobalToolchainsPathsPreferencesPage_ToolchainPathGroup_label;
 
 	public static String SetCrossCommandWizardPage_text;
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Liviu Ionescu.
+ * Copyright (c) 2018, 2023 Liviu Ionescu and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -69,24 +69,33 @@ public class XpackDirectoryNotStrictFieldEditor extends DirectoryNotStrictFieldE
 	@Override
 	protected void doFillIntoGrid(Composite parent, int numColumns) {
 		super.doFillIntoGrid(parent, numColumns - 1);
-
-		fXpackButton = new Button(parent, SWT.PUSH);
-		fXpackButton.setText("xPack...");
-		fXpackButton.setFont(parent.getFont());
-		fXpackButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-				buttonPressed(event);
-			}
-		});
+		fXpackButton = getXPackButton(parent);
 
 		GridData gd = new GridData();
 		gd.horizontalAlignment = GridData.FILL;
 		int widthHint = convertHorizontalDLUsToPixels(fXpackButton, IDialogConstants.BUTTON_WIDTH);
 		gd.widthHint = Math.max(widthHint, fXpackButton.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
 		fXpackButton.setLayoutData(gd);
+	}
 
-		fXpackButton.setEnabled(false);
+	private Button getXPackButton(Composite parent) {
+		if (fXpackButton == null) {
+			fXpackButton = new Button(parent, SWT.PUSH);
+			fXpackButton.setText("xPack...");
+			fXpackButton.setFont(parent.getFont());
+			fXpackButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent event) {
+					buttonPressed(event);
+				}
+			});
+
+			fXpackButton.setEnabled(false);
+		} else {
+			checkParent(fXpackButton, parent);
+		}
+
+		return fXpackButton;
 	}
 
 	private void buttonPressed(SelectionEvent e) {
