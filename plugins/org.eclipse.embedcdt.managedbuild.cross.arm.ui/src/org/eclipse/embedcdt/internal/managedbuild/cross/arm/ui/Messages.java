@@ -25,7 +25,7 @@ public class Messages extends NLS {
 
 	// ------------------------------------------------------------------------
 
-	private static final String MESSAGES = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
+	private static final String MESSAGES = "org.eclipse.embedcdt.internal.managedbuild.cross.arm.ui.messages"; //$NON-NLS-1$
 
 	public static String SetCrossCommandWizardPage_browse;
 	public static String SetCrossCommandWizardPage_description;
