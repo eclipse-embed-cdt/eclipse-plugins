@@ -15,14 +15,11 @@
 
 package org.eclipse.embedcdt.internal.managedbuild.packs.ui;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
-	private static final String MESSAGES = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
+	private static final String MESSAGES = "org.eclipse.embedcdt.internal.managedbuild.packs.ui.messages"; //$NON-NLS-1$
 
 	public static String DevicesTab_DeviceGroup_name;
 	public static String DevicesTab_DeviceGroup_architecture_label;
@@ -39,23 +36,7 @@ public class Messages extends NLS {
 		NLS.initializeMessages(MESSAGES, Messages.class);
 	}
 
-	private static ResourceBundle RESOURCE_BUNDLE;
-	static {
-		try {
-			RESOURCE_BUNDLE = ResourceBundle.getBundle(MESSAGES);
-		} catch (MissingResourceException e) {
-			Activator.log(e);
-		}
-	}
-
 	private Messages() {
 	}
 
-	public static String getString(String key) {
-		try {
-			return RESOURCE_BUNDLE.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		}
-	}
 }

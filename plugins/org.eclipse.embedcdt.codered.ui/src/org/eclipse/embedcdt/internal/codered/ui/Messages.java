@@ -18,7 +18,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
-	private static final String MESSAGES = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
+	private static final String MESSAGES = "org.eclipse.embedcdt.internal.codered.ui.messages"; //$NON-NLS-1$
 
 	// public static String MyMessage_text;
 

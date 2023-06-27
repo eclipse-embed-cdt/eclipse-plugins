@@ -196,15 +196,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		createRemoteControl(comp);
 
 		fUpdateThreadlistOnSuspend = new Button(comp, SWT.CHECK);
-		fUpdateThreadlistOnSuspend.setText(Messages.getString("DebuggerTab.update_thread_list_on_suspend_Text"));
-		fUpdateThreadlistOnSuspend
-				.setToolTipText(Messages.getString("DebuggerTab.update_thread_list_on_suspend_ToolTipText"));
+		fUpdateThreadlistOnSuspend.setText(Messages.DebuggerTab_update_thread_list_on_suspend_Text);
+		fUpdateThreadlistOnSuspend.setToolTipText(Messages.DebuggerTab_update_thread_list_on_suspend_ToolTipText);
 
 		Link restoreDefaults;
 		{
 			restoreDefaults = new Link(comp, SWT.NONE);
-			restoreDefaults.setText(Messages.getString("DebuggerTab.restoreDefaults_Link"));
-			restoreDefaults.setToolTipText(Messages.getString("DebuggerTab.restoreDefaults_ToolTipText"));
+			restoreDefaults.setText(Messages.DebuggerTab_restoreDefaults_Link);
+			restoreDefaults.setToolTipText(Messages.DebuggerTab_restoreDefaults_ToolTipText);
 
 			GridData gd = new GridData();
 			gd.grabExcessHorizontalSpace = true;
@@ -273,7 +272,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			group.setLayout(layout);
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 			group.setLayoutData(gd);
-			group.setText(Messages.getString("DebuggerTab.gdbServerGroup_Text"));
+			group.setText(Messages.DebuggerTab_gdbServerGroup_Text);
 		}
 
 		Composite comp = new Composite(group, SWT.NONE);
@@ -300,14 +299,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			{
 				fDoStartGdbServer = new Button(local, SWT.CHECK);
-				fDoStartGdbServer.setText(Messages.getString("DebuggerTab.doStartGdbServer_Text"));
-				fDoStartGdbServer.setToolTipText(Messages.getString("DebuggerTab.doStartGdbServer_ToolTipText"));
+				fDoStartGdbServer.setText(Messages.DebuggerTab_doStartGdbServer_Text);
+				fDoStartGdbServer.setToolTipText(Messages.DebuggerTab_doStartGdbServer_ToolTipText);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				fDoStartGdbServer.setLayoutData(gd);
 
 				fDoConnectToRunning = new Button(local, SWT.CHECK);
-				fDoConnectToRunning.setText(Messages.getString("DebuggerTab.noReset_Text"));
-				fDoConnectToRunning.setToolTipText(Messages.getString("DebuggerTab.noReset_ToolTipText"));
+				fDoConnectToRunning.setText(Messages.DebuggerTab_noReset_Text);
+				fDoConnectToRunning.setToolTipText(Messages.DebuggerTab_noReset_ToolTipText);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				fDoConnectToRunning.setLayoutData(gd);
 			}
@@ -315,8 +314,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerExecutable_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerExecutable_ToolTipText"));
+			label.setText(Messages.DebuggerTab_gdbServerExecutable_Label);
+			label.setToolTipText(Messages.DebuggerTab_gdbServerExecutable_ToolTipText);
 
 			Composite local = new Composite(comp, SWT.NONE);
 			GridLayout layout = new GridLayout();
@@ -333,16 +332,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerExecutable.setLayoutData(gd);
 
 				fGdbServerBrowseButton = new Button(local, SWT.NONE);
-				fGdbServerBrowseButton.setText(Messages.getString("DebuggerTab.gdbServerExecutableBrowse"));
+				fGdbServerBrowseButton.setText(Messages.DebuggerTab_gdbServerExecutableBrowse);
 
 				fGdbServerVariablesButton = new Button(local, SWT.NONE);
-				fGdbServerVariablesButton.setText(Messages.getString("DebuggerTab.gdbServerExecutableVariable"));
+				fGdbServerVariablesButton.setText(Messages.DebuggerTab_gdbServerExecutableVariable);
 			}
 		}
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerActualPath_Label"));
+			label.setText(Messages.DebuggerTab_gdbServerActualPath_Label);
 
 			fGdbServerPathLabel = new Text(comp, SWT.SINGLE | SWT.BORDER);
 			GridData gd = new GridData(SWT.FILL, 0, true, false);
@@ -358,7 +357,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setText("");
 
 			fLink = new Link(comp, SWT.NONE);
-			fLink.setText(Messages.getString("DebuggerTab.gdbServerActualPath_link"));
+			fLink.setText(Messages.DebuggerTab_gdbServerActualPath_link);
 			GridData gd = new GridData();
 			gd.horizontalSpan = 4;
 			fLink.setLayoutData(gd);
@@ -367,8 +366,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		Link link;
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.deviceName_Label")); //$NON-NLS-1$
-			label.setToolTipText(Messages.getString("DebuggerTab.deviceName_ToolTipText"));
+			label.setText(Messages.DebuggerTab_deviceName_Label); //$NON-NLS-1$
+			label.setToolTipText(Messages.DebuggerTab_deviceName_ToolTipText);
 
 			Composite local = new Composite(comp, SWT.NONE);
 			GridLayout layout = new GridLayout();
@@ -395,7 +394,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				empty.setLayoutData(gd);
 
 				link = new Link(local, SWT.NONE);
-				link.setText(Messages.getString("DebuggerTab.deviceName_Link"));
+				link.setText(Messages.DebuggerTab_deviceName_Link);
 				gd = new GridData(SWT.RIGHT);
 				link.setLayoutData(gd);
 			}
@@ -403,8 +402,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.endianness_Label")); //$NON-NLS-1$
-			label.setToolTipText(Messages.getString("DebuggerTab.endianness_ToolTipText")); //$NON-NLS-1$
+			label.setText(Messages.DebuggerTab_endianness_Label); //$NON-NLS-1$
+			label.setToolTipText(Messages.DebuggerTab_endianness_ToolTipText); //$NON-NLS-1$
 
 			Composite radio = new Composite(comp, SWT.NONE);
 			GridLayout layout = new GridLayout();
@@ -416,13 +415,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			radio.setLayoutData(gd);
 			{
 				fGdbEndiannessLittle = new Button(radio, SWT.RADIO);
-				fGdbEndiannessLittle.setText(Messages.getString("DebuggerTab.endiannesslittle_Text"));
+				fGdbEndiannessLittle.setText(Messages.DebuggerTab_endiannesslittle_Text);
 				gd = new GridData();
 				gd.widthHint = COLUMN_WIDTH;
 				fGdbEndiannessLittle.setLayoutData(gd);
 
 				fGdbEndiannessBig = new Button(radio, SWT.RADIO);
-				fGdbEndiannessBig.setText(Messages.getString("DebuggerTab.endiannessBig_Text"));
+				fGdbEndiannessBig.setText(Messages.DebuggerTab_endiannessBig_Text);
 				gd = new GridData();
 				gd.widthHint = COLUMN_WIDTH;
 				fGdbEndiannessBig.setLayoutData(gd);
@@ -431,8 +430,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerConnection_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerConnection_ToolTipText"));
+			label.setText(Messages.DebuggerTab_gdbServerConnection_Label);
+			label.setToolTipText(Messages.DebuggerTab_gdbServerConnection_ToolTipText);
 
 			Composite local = new Composite(comp, SWT.NONE);
 			GridLayout layout = new GridLayout();
@@ -445,13 +444,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			local.setLayoutData(gd);
 			{
 				fGdbServerConnectionUsb = new Button(local, SWT.RADIO);
-				fGdbServerConnectionUsb.setText(Messages.getString("DebuggerTab.connectionUsb_Text"));
+				fGdbServerConnectionUsb.setText(Messages.DebuggerTab_connectionUsb_Text);
 				gd = new GridData();
 				gd.widthHint = COLUMN_WIDTH;
 				fGdbServerConnectionUsb.setLayoutData(gd);
 
 				fGdbServerConnectionIp = new Button(local, SWT.RADIO);
-				fGdbServerConnectionIp.setText(Messages.getString("DebuggerTab.connectionTcp_Text"));
+				fGdbServerConnectionIp.setText(Messages.DebuggerTab_connectionTcp_Text);
 				gd = new GridData();
 				gd.widthHint = COLUMN_WIDTH;
 				fGdbServerConnectionIp.setLayoutData(gd);
@@ -462,15 +461,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerConnectionAddress.setLayoutData(gd);
 
 				label = new Label(local, SWT.NONE);
-				label.setText(Messages.getString("DebuggerTab.connectionAfter_Text")); //$NON-NLS-1$
+				label.setText(Messages.DebuggerTab_connectionAfter_Text); //$NON-NLS-1$
 
 			}
 		}
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.interface_Label")); //$NON-NLS-1$
-			label.setToolTipText(Messages.getString("DebuggerTab.interface_ToolTipText"));
+			label.setText(Messages.DebuggerTab_interface_Label); //$NON-NLS-1$
+			label.setToolTipText(Messages.DebuggerTab_interface_ToolTipText);
 
 			Composite local = new Composite(comp, SWT.NONE);
 			GridLayout layout = new GridLayout();
@@ -483,13 +482,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			local.setLayoutData(gd);
 			{
 				fGdbInterfaceSwd = new Button(local, SWT.RADIO);
-				fGdbInterfaceSwd.setText(Messages.getString("DebuggerTab.interfaceSWD_Text"));
+				fGdbInterfaceSwd.setText(Messages.DebuggerTab_interfaceSWD_Text);
 				gd = new GridData();
 				gd.widthHint = COLUMN_WIDTH;
 				fGdbInterfaceSwd.setLayoutData(gd);
 
 				fGdbInterfaceJtag = new Button(local, SWT.RADIO);
-				fGdbInterfaceJtag.setText(Messages.getString("DebuggerTab.interfaceJtag_Text"));
+				fGdbInterfaceJtag.setText(Messages.DebuggerTab_interfaceJtag_Text);
 				gd = new GridData();
 				gd.widthHint = COLUMN_WIDTH;
 				fGdbInterfaceJtag.setLayoutData(gd);
@@ -498,8 +497,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerSpeed_Label")); //$NON-NLS-1$
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerSpeed_ToolTipText"));
+			label.setText(Messages.DebuggerTab_gdbServerSpeed_Label); //$NON-NLS-1$
+			label.setToolTipText(Messages.DebuggerTab_gdbServerSpeed_ToolTipText);
 
 			Composite radio = new Composite(comp, SWT.NONE);
 			GridLayout layout = new GridLayout();
@@ -511,18 +510,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			radio.setLayoutData(gd);
 			{
 				fGdbServerSpeedAuto = new Button(radio, SWT.RADIO);
-				fGdbServerSpeedAuto.setText(Messages.getString("DebuggerTab.gdbServerSpeedAuto_Text"));
+				fGdbServerSpeedAuto.setText(Messages.DebuggerTab_gdbServerSpeedAuto_Text);
 				gd = new GridData();
 				gd.widthHint = COLUMN_WIDTH;
 				fGdbServerSpeedAuto.setLayoutData(gd);
 
 				fGdbServerSpeedAdaptive = new Button(radio, SWT.RADIO);
-				fGdbServerSpeedAdaptive.setText(Messages.getString("DebuggerTab.gdbServerSpeedAdaptive_Text"));
+				fGdbServerSpeedAdaptive.setText(Messages.DebuggerTab_gdbServerSpeedAdaptive_Text);
 				gd.widthHint = COLUMN_WIDTH;
 				fGdbServerSpeedAdaptive.setLayoutData(gd);
 
 				fGdbServerSpeedFixed = new Button(radio, SWT.RADIO);
-				fGdbServerSpeedFixed.setText(Messages.getString("DebuggerTab.gdbServerSpeedFixed_Text"));
+				fGdbServerSpeedFixed.setText(Messages.DebuggerTab_gdbServerSpeedFixed_Text);
 				gd.widthHint = COLUMN_WIDTH;
 				fGdbServerSpeedFixed.setLayoutData(gd);
 
@@ -532,14 +531,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerSpeedFixedValue.setLayoutData(gd);
 
 				label = new Label(radio, SWT.NONE);
-				label.setText(Messages.getString("DebuggerTab.gdbServerSpeedFixedUnit_Text")); //$NON-NLS-1$
+				label.setText(Messages.DebuggerTab_gdbServerSpeedFixedUnit_Text); //$NON-NLS-1$
 			}
 		}
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerGdbPort_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerGdbPort_ToolTipText"));
+			label.setText(Messages.DebuggerTab_gdbServerGdbPort_Label);
+			label.setToolTipText(Messages.DebuggerTab_gdbServerGdbPort_ToolTipText);
 
 			fGdbServerGdbPort = new Text(comp, SWT.SINGLE | SWT.BORDER);
 			GridData gd = new GridData();
@@ -550,8 +549,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerSwoPort_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerSwoPort_ToolTipText"));
+			label.setText(Messages.DebuggerTab_gdbServerSwoPort_Label);
+			label.setToolTipText(Messages.DebuggerTab_gdbServerSwoPort_ToolTipText);
 
 			fGdbServerSwoPort = new Text(comp, SWT.SINGLE | SWT.BORDER);
 			GridData gd = new GridData();
@@ -568,22 +567,21 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			empty.setLayoutData(gd);
 
 			fDoGdbServerVerifyDownload = new Button(comp, SWT.CHECK);
-			fDoGdbServerVerifyDownload.setText(Messages.getString("DebuggerTab.gdbServerVerifyDownload_Label"));
-			fDoGdbServerVerifyDownload
-					.setToolTipText(Messages.getString("DebuggerTab.gdbServerVerifyDownload_ToolTipText"));
+			fDoGdbServerVerifyDownload.setText(Messages.DebuggerTab_gdbServerVerifyDownload_Label);
+			fDoGdbServerVerifyDownload.setToolTipText(Messages.DebuggerTab_gdbServerVerifyDownload_ToolTipText);
 			gd = new GridData();
 			gd.horizontalIndent = 60;
 			fDoGdbServerVerifyDownload.setLayoutData(gd);
 
 			fDoGdbServerInitRegs = new Button(comp, SWT.CHECK);
-			fDoGdbServerInitRegs.setText(Messages.getString("DebuggerTab.gdbServerInitRegs_Label"));
-			fDoGdbServerInitRegs.setToolTipText(Messages.getString("DebuggerTab.gdbServerInitRegs_ToolTipText"));
+			fDoGdbServerInitRegs.setText(Messages.DebuggerTab_gdbServerInitRegs_Label);
+			fDoGdbServerInitRegs.setToolTipText(Messages.DebuggerTab_gdbServerInitRegs_ToolTipText);
 		}
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerTelnetPort_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerTelnetPort_ToolTipText"));
+			label.setText(Messages.DebuggerTab_gdbServerTelnetPort_Label);
+			label.setToolTipText(Messages.DebuggerTab_gdbServerTelnetPort_ToolTipText);
 
 			fGdbServerTelnetPort = new Text(comp, SWT.SINGLE | SWT.BORDER);
 			GridData gd = new GridData();
@@ -600,20 +598,20 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			empty.setLayoutData(gd);
 
 			fDoGdbServerLocalOnly = new Button(comp, SWT.CHECK);
-			fDoGdbServerLocalOnly.setText(Messages.getString("DebuggerTab.gdbServerLocalOnly_Label"));
-			fDoGdbServerLocalOnly.setToolTipText(Messages.getString("DebuggerTab.gdbServerLocalOnly_ToolTipText"));
+			fDoGdbServerLocalOnly.setText(Messages.DebuggerTab_gdbServerLocalOnly_Label);
+			fDoGdbServerLocalOnly.setToolTipText(Messages.DebuggerTab_gdbServerLocalOnly_ToolTipText);
 			gd = new GridData();
 			gd.horizontalIndent = 60;
 			fDoGdbServerLocalOnly.setLayoutData(gd);
 
 			fDoGdbServerSilent = new Button(comp, SWT.CHECK);
-			fDoGdbServerSilent.setText(Messages.getString("DebuggerTab.gdbServerSilent_Label"));
-			fDoGdbServerSilent.setToolTipText(Messages.getString("DebuggerTab.gdbServerSilent_ToolTipText"));
+			fDoGdbServerSilent.setText(Messages.DebuggerTab_gdbServerSilent_Label);
+			fDoGdbServerSilent.setToolTipText(Messages.DebuggerTab_gdbServerSilent_ToolTipText);
 		}
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerLog_Label")); //$NON-NLS-1$
+			label.setText(Messages.DebuggerTab_gdbServerLog_Label); //$NON-NLS-1$
 
 			Composite local = new Composite(comp, SWT.NONE);
 			GridLayout layout = new GridLayout();
@@ -630,13 +628,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerLog.setLayoutData(gd);
 
 				fGdbServerLogBrowse = new Button(local, SWT.NONE);
-				fGdbServerLogBrowse.setText(Messages.getString("DebuggerTab.gdbServerLogBrowse_Button"));
+				fGdbServerLogBrowse.setText(Messages.DebuggerTab_gdbServerLogBrowse_Button);
 			}
 		}
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerOther_Label")); //$NON-NLS-1$
+			label.setText(Messages.DebuggerTab_gdbServerOther_Label); //$NON-NLS-1$
 
 			fGdbServerOtherOptions = new Text(comp, SWT.BORDER);
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -657,17 +655,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			local.setLayoutData(gd);
 
 			fDoGdbServerAllocateConsole = new Button(local, SWT.CHECK);
-			fDoGdbServerAllocateConsole.setText(Messages.getString("DebuggerTab.gdbServerAllocateConsole_Label"));
-			fDoGdbServerAllocateConsole
-					.setToolTipText(Messages.getString("DebuggerTab.gdbServerAllocateConsole_ToolTipText"));
+			fDoGdbServerAllocateConsole.setText(Messages.DebuggerTab_gdbServerAllocateConsole_Label);
+			fDoGdbServerAllocateConsole.setToolTipText(Messages.DebuggerTab_gdbServerAllocateConsole_ToolTipText);
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			fDoGdbServerAllocateConsole.setLayoutData(gd);
 
 			fDoGdbServerAllocateSemihostingConsole = new Button(local, SWT.CHECK);
 			fDoGdbServerAllocateSemihostingConsole
-					.setText(Messages.getString("DebuggerTab.gdbServerAllocateSemihostingConsole_Label"));
+					.setText(Messages.DebuggerTab_gdbServerAllocateSemihostingConsole_Label);
 			fDoGdbServerAllocateSemihostingConsole
-					.setToolTipText(Messages.getString("DebuggerTab.gdbServerAllocateSemihostingConsole_ToolTipText"));
+					.setToolTipText(Messages.DebuggerTab_gdbServerAllocateSemihostingConsole_ToolTipText);
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			fDoGdbServerAllocateSemihostingConsole.setLayoutData(gd);
 		}
@@ -733,8 +730,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerBrowseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseButtonSelected(Messages.getString("DebuggerTab.gdbServerExecutableBrowse_Title"),
-						fGdbServerExecutable);
+				browseButtonSelected(Messages.DebuggerTab_gdbServerExecutableBrowse_Title, fGdbServerExecutable);
 			}
 		});
 
@@ -911,7 +907,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerLogBrowse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseSaveButtonSelected(Messages.getString("DebuggerTab.gdbServerLogBrowse_Title"), fGdbServerLog);
+				browseSaveButtonSelected(Messages.DebuggerTab_gdbServerLogBrowse_Title, fGdbServerLog);
 			}
 		});
 
@@ -925,7 +921,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		Group group = new Group(parent, SWT.NONE);
 		{
-			group.setText(Messages.getString("DebuggerTab.gdbSetupGroup_Text"));
+			group.setText(Messages.DebuggerTab_gdbSetupGroup_Text);
 			GridLayout layout = new GridLayout();
 			group.setLayout(layout);
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -946,8 +942,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		Button variableButton;
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbCommand_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbCommand_ToolTipText"));
+			label.setText(Messages.DebuggerTab_gdbCommand_Label);
+			label.setToolTipText(Messages.DebuggerTab_gdbCommand_ToolTipText);
 
 			Composite local = new Composite(comp, SWT.NONE);
 			GridLayout layout = new GridLayout();
@@ -965,16 +961,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbClientExecutable.setLayoutData(gd);
 
 				browseButton = new Button(local, SWT.NONE);
-				browseButton.setText(Messages.getString("DebuggerTab.gdbCommandBrowse"));
+				browseButton.setText(Messages.DebuggerTab_gdbCommandBrowse);
 
 				variableButton = new Button(local, SWT.NONE);
-				variableButton.setText(Messages.getString("DebuggerTab.gdbCommandVariable"));
+				variableButton.setText(Messages.DebuggerTab_gdbCommandVariable);
 			}
 		}
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbCommandActualPath_Label"));
+			label.setText(Messages.DebuggerTab_gdbCommandActualPath_Label);
 
 			fGdbClientPathLabel = new Text(comp, SWT.SINGLE | SWT.BORDER);
 			GridData gd = new GridData(SWT.FILL, 0, true, false);
@@ -987,8 +983,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbOtherOptions_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbOtherOptions_ToolTipText"));
+			label.setText(Messages.DebuggerTab_gdbOtherOptions_Label);
+			label.setToolTipText(Messages.DebuggerTab_gdbOtherOptions_ToolTipText);
 			GridData gd = new GridData();
 			label.setLayoutData(gd);
 
@@ -1000,8 +996,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbOtherCommands_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbOtherCommands_ToolTipText"));
+			label.setText(Messages.DebuggerTab_gdbOtherCommands_Label);
+			label.setToolTipText(Messages.DebuggerTab_gdbOtherCommands_ToolTipText);
 			GridData gd = new GridData();
 			gd.verticalAlignment = SWT.TOP;
 			label.setLayoutData(gd);
@@ -1041,7 +1037,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		browseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseButtonSelected(Messages.getString("DebuggerTab.gdbCommandBrowse_Title"), fGdbClientExecutable);
+				browseButtonSelected(Messages.DebuggerTab_gdbCommandBrowse_Title, fGdbClientExecutable);
 			}
 		});
 
@@ -1057,7 +1053,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		Group group = new Group(parent, SWT.NONE);
 		{
-			group.setText(Messages.getString("DebuggerTab.remoteGroup_Text"));
+			group.setText(Messages.DebuggerTab_remoteGroup_Text);
 			GridLayout layout = new GridLayout();
 			group.setLayout(layout);
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -1077,27 +1073,26 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// Create entry fields for TCP/IP connections
 		{
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.ipAddressLabel")); //$NON-NLS-1$
+			label.setText(Messages.DebuggerTab_ipAddressLabel); //$NON-NLS-1$
 
 			fTargetIpAddress = new Text(comp, SWT.BORDER);
 			GridData gd = new GridData();
 			gd.widthHint = 125;
 			fTargetIpAddress.setLayoutData(gd);
 			fTargetIpAddressDecoration = new ControlDecoration(fTargetIpAddress, SWT.LEFT | SWT.TOP);
-			fTargetIpAddressDecoration.setDescriptionText(Messages.getString("DebuggerTab.ipAddressWarningDecoration")); //$NON-NLS-1$
+			fTargetIpAddressDecoration.setDescriptionText(Messages.DebuggerTab_ipAddressWarningDecoration); //$NON-NLS-1$
 			fTargetIpAddressDecoration.setImage(FieldDecorationRegistry.getDefault()
 					.getFieldDecoration(FieldDecorationRegistry.DEC_WARNING).getImage());
 
 			label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.portNumberLabel")); //$NON-NLS-1$
+			label.setText(Messages.DebuggerTab_portNumberLabel); //$NON-NLS-1$
 
 			fTargetPortNumber = new Text(comp, SWT.BORDER);
 			gd = new GridData();
 			gd.widthHint = 125;
 			fTargetPortNumber.setLayoutData(gd);
 			fTargetPortNumberDecoration = new ControlDecoration(fTargetPortNumber, SWT.LEFT | SWT.TOP);
-			fTargetPortNumberDecoration
-					.setDescriptionText(Messages.getString("DebuggerTab.portNumberWarningDecoration")); //$NON-NLS-1$
+			fTargetPortNumberDecoration.setDescriptionText(Messages.DebuggerTab_portNumberWarningDecoration); //$NON-NLS-1$
 			fTargetPortNumberDecoration.setImage(FieldDecorationRegistry.getDefault()
 					.getFieldDecoration(FieldDecorationRegistry.DEC_WARNING).getImage());
 		}

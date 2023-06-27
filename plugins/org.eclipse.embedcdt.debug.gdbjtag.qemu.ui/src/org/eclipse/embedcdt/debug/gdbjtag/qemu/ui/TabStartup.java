@@ -172,8 +172,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		Link restoreDefaults;
 		{
 			restoreDefaults = new Link(comp, SWT.NONE);
-			restoreDefaults.setText(Messages.getString("DebuggerTab.restoreDefaults_Link"));
-			restoreDefaults.setToolTipText(Messages.getString("DebuggerTab.restoreDefaults_ToolTipText"));
+			restoreDefaults.setText(Messages.DebuggerTab_restoreDefaults_Link);
+			restoreDefaults.setToolTipText(Messages.DebuggerTab_restoreDefaults_ToolTipText);
 
 			GridData gd = new GridData();
 			gd.grabExcessHorizontalSpace = true;
@@ -209,7 +209,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(),
 				new WorkbenchContentProvider());
 		dialog.setTitle(title);
-		dialog.setMessage(Messages.getString("StartupTab.FileBrowseWs_Message"));
+		dialog.setMessage(Messages.StartupTab_FileBrowseWs_Message);
 		dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
 		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 		if (dialog.open() == IDialogConstants.OK_ID) {
@@ -225,7 +225,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		Group group = new Group(parent, SWT.NONE);
 		{
-			group.setText(Messages.getString("StartupTab.initGroup_Text"));
+			group.setText(Messages.StartupTab_initGroup_Text);
 			GridLayout layout = new GridLayout();
 			group.setLayout(layout);
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -252,8 +252,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// local.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 			fDoFirstReset = new Button(local, SWT.CHECK);
-			fDoFirstReset.setText(Messages.getString("StartupTab.doFirstReset_Text"));
-			fDoFirstReset.setToolTipText(Messages.getString("StartupTab.doFirstReset_ToolTipText"));
+			fDoFirstReset.setText(Messages.StartupTab_doFirstReset_Text);
+			fDoFirstReset.setToolTipText(Messages.StartupTab_doFirstReset_ToolTipText);
 		}
 
 		{
@@ -300,7 +300,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			group.setLayout(layout);
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 			group.setLayoutData(gd);
-			group.setText(Messages.getString("StartupTab.loadGroup_Text"));
+			group.setText(Messages.StartupTab_loadGroup_Text);
 		}
 
 		Composite comp = new Composite(group, SWT.NONE);
@@ -315,7 +315,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fLoadSymbols = new Button(comp, SWT.CHECK);
-			fLoadSymbols.setText(Messages.getString("StartupTab.loadSymbols_Text"));
+			fLoadSymbols.setText(Messages.StartupTab_loadSymbols_Text);
 		}
 
 		{
@@ -328,8 +328,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			{
 				fUseProjectBinaryForSymbols = new Button(local, SWT.RADIO);
-				fUseProjectBinaryForSymbols.setText(Messages.getString("StartupTab.useProjectBinary_Label"));
-				fUseProjectBinaryForSymbols.setToolTipText(Messages.getString("StartupTab.useProjectBinary_ToolTip"));
+				fUseProjectBinaryForSymbols.setText(Messages.StartupTab_useProjectBinary_Label);
+				fUseProjectBinaryForSymbols.setToolTipText(Messages.StartupTab_useProjectBinary_ToolTipText);
 
 				fProjBinaryLabel2 = new Label(local, SWT.NONE);
 				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -339,21 +339,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			{
 				fUseFileForSymbols = new Button(local, SWT.RADIO);
-				fUseFileForSymbols.setText(Messages.getString("StartupTab.useFile_Label"));
+				fUseFileForSymbols.setText(Messages.StartupTab_useFile_Label);
 
 				fSymbolsFileName = new Text(local, SWT.BORDER);
 				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				fSymbolsFileName.setLayoutData(gd);
 
-				fSymbolsFileBrowseWs = createPushButton(local, Messages.getString("StartupTab.FileBrowseWs_Label"),
-						null);
+				fSymbolsFileBrowseWs = createPushButton(local, Messages.StartupTab_FileBrowseWs_Label, null);
 
-				fSymbolsFileBrowse = createPushButton(local, Messages.getString("StartupTab.FileBrowse_Label"), null);
+				fSymbolsFileBrowse = createPushButton(local, Messages.StartupTab_FileBrowse_Label, null);
 			}
 
 			{
 				fSymbolsOffsetLabel = new Label(local, SWT.NONE);
-				fSymbolsOffsetLabel.setText(Messages.getString("StartupTab.symbolsOffsetLabel_Text"));
+				fSymbolsOffsetLabel.setText(Messages.StartupTab_symbolsOffsetLabel_Text);
 
 				fSymbolsOffset = new Text(local, SWT.BORDER);
 				GridData gd = new GridData();
@@ -365,7 +364,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fLoadExecutable = new Button(comp, SWT.CHECK);
-			fLoadExecutable.setText(Messages.getString("StartupTab.loadImage_Text"));
+			fLoadExecutable.setText(Messages.StartupTab_loadImage_Text);
 		}
 
 		{
@@ -378,8 +377,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			{
 				fUseProjectBinaryForImage = new Button(local, SWT.RADIO);
-				fUseProjectBinaryForImage.setText(Messages.getString("StartupTab.useProjectBinary_Label"));
-				fUseProjectBinaryForImage.setToolTipText(Messages.getString("StartupTab.useProjectBinary_ToolTipText"));
+				fUseProjectBinaryForImage.setText(Messages.StartupTab_useProjectBinary_Label);
+				fUseProjectBinaryForImage.setToolTipText(Messages.StartupTab_useProjectBinary_ToolTipText);
 
 				fProjBinaryLabel1 = new Label(local, SWT.NONE);
 				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -389,20 +388,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			{
 				fUseFileForImage = new Button(local, SWT.RADIO);
-				fUseFileForImage.setText(Messages.getString("StartupTab.useFile_Label"));
+				fUseFileForImage.setText(Messages.StartupTab_useFile_Label);
 
 				fImageFileName = new Text(local, SWT.BORDER);
 				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				fImageFileName.setLayoutData(gd);
 
-				fImageFileBrowseWs = createPushButton(local, Messages.getString("StartupTab.FileBrowseWs_Label"), null);
+				fImageFileBrowseWs = createPushButton(local, Messages.StartupTab_FileBrowseWs_Label, null);
 
-				fImageFileBrowse = createPushButton(local, Messages.getString("StartupTab.FileBrowse_Label"), null);
+				fImageFileBrowse = createPushButton(local, Messages.StartupTab_FileBrowse_Label, null);
 			}
 
 			{
 				fImageOffsetLabel = new Label(local, SWT.NONE);
-				fImageOffsetLabel.setText(Messages.getString("StartupTab.imageOffsetLabel_Text"));
+				fImageOffsetLabel.setText(Messages.StartupTab_imageOffsetLabel_Text);
 
 				fImageOffset = new Text(local, SWT.BORDER);
 				GridData gd = new GridData();
@@ -452,14 +451,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		fImageFileBrowseWs.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseWsButtonSelected(Messages.getString("StartupTab.imageFileBrowseWs_Title"), fImageFileName);
+				browseWsButtonSelected(Messages.StartupTab_imageFileBrowseWs_Title, fImageFileName);
 			}
 		});
 
 		fImageFileBrowse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseButtonSelected(Messages.getString("StartupTab.imageFileBrowse_Title"), fImageFileName);
+				browseButtonSelected(Messages.StartupTab_imageFileBrowse_Title, fImageFileName);
 			}
 		});
 
@@ -495,14 +494,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		fSymbolsFileBrowseWs.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseWsButtonSelected(Messages.getString("StartupTab.symbolsFileBrowseWs_Title"), fSymbolsFileName);
+				browseWsButtonSelected(Messages.StartupTab_symbolsFileBrowseWs_Title, fSymbolsFileName);
 			}
 		});
 
 		fSymbolsFileBrowse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseButtonSelected(Messages.getString("StartupTab.symbolsFileBrowse_Title"), fSymbolsFileName);
+				browseButtonSelected(Messages.StartupTab_symbolsFileBrowse_Title, fSymbolsFileName);
 			}
 		});
 
@@ -539,7 +538,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		Group group = new Group(parent, SWT.NONE);
 		{
-			group.setText(Messages.getString("StartupTab.runOptionGroup_Text"));
+			group.setText(Messages.StartupTab_runOptionGroup_Text);
 			GridLayout layout = new GridLayout();
 			group.setLayout(layout);
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -557,8 +556,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 
 		fDoDebugInRam = new Button(comp, SWT.CHECK);
-		fDoDebugInRam.setText(Messages.getString("StartupTab.doDebugInRam_Text"));
-		fDoDebugInRam.setToolTipText(Messages.getString("StartupTab.doDebugInRam_ToolTipText"));
+		fDoDebugInRam.setText(Messages.StartupTab_doDebugInRam_Text);
+		fDoDebugInRam.setToolTipText(Messages.StartupTab_doDebugInRam_ToolTipText);
 
 		// ----- Actions ------------------------------------------------------
 
@@ -606,7 +605,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		Group group = new Group(parent, SWT.NONE);
 		{
-			group.setText(Messages.getString("StartupTab.runGroup_Text"));
+			group.setText(Messages.StartupTab_runGroup_Text);
 			GridLayout layout = new GridLayout();
 			group.setLayout(layout);
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -625,11 +624,11 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fDoSecondReset = new Button(comp, SWT.CHECK);
-			fDoSecondReset.setText(Messages.getString("StartupTab.doSecondReset_Text"));
-			fDoSecondReset.setToolTipText(Messages.getString("StartupTab.doSecondReset_ToolTipText"));
+			fDoSecondReset.setText(Messages.StartupTab_doSecondReset_Text);
+			fDoSecondReset.setToolTipText(Messages.StartupTab_doSecondReset_ToolTipText);
 
 			fSecondResetWarning = new Label(comp, SWT.NONE);
-			fSecondResetWarning.setText(Messages.getString("StartupTab.secondResetWarning_Text"));
+			fSecondResetWarning.setText(Messages.StartupTab_secondResetWarning_Text);
 
 			GridData gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
@@ -638,7 +637,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fRunCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
-			fRunCommands.setToolTipText(Messages.getString("StartupTab.runCommands_ToolTipText"));
+			fRunCommands.setToolTipText(Messages.StartupTab_runCommands_ToolTipText);
 			GridData gd = new GridData(GridData.FILL_BOTH);
 			gd.heightHint = 60;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
@@ -647,11 +646,11 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fSetPcRegister = new Button(comp, SWT.CHECK);
-			fSetPcRegister.setText(Messages.getString("StartupTab.setPcRegister_Text"));
-			fSetPcRegister.setToolTipText(Messages.getString("StartupTab.setPcRegister_ToolTipText"));
+			fSetPcRegister.setText(Messages.StartupTab_setPcRegister_Text);
+			fSetPcRegister.setToolTipText(Messages.StartupTab_setPcRegister_ToolTipText);
 
 			fPcRegister = new Text(comp, SWT.BORDER);
-			fPcRegister.setToolTipText(Messages.getString("StartupTab.pcRegister_ToolTipText"));
+			fPcRegister.setToolTipText(Messages.StartupTab_pcRegister_ToolTipText);
 			GridData gd = new GridData();
 			gd.widthHint = 100;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
@@ -660,8 +659,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fSetStopAt = new Button(comp, SWT.CHECK);
-			fSetStopAt.setText(Messages.getString("StartupTab.setStopAt_Text"));
-			fSetStopAt.setToolTipText(Messages.getString("StartupTab.setStopAt_ToolTipText"));
+			fSetStopAt.setText(Messages.StartupTab_setStopAt_Text);
+			fSetStopAt.setToolTipText(Messages.StartupTab_setStopAt_ToolTipText);
 
 			fStopAt = new Text(comp, SWT.BORDER);
 			GridData gd = new GridData();
@@ -672,8 +671,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fDoContinue = new Button(comp, SWT.CHECK);
-			fDoContinue.setText(Messages.getString("StartupTab.doContinue_Text"));
-			fDoContinue.setToolTipText(Messages.getString("StartupTab.doContinue_ToolTipText"));
+			fDoContinue.setText(Messages.StartupTab_doContinue_Text);
+			fDoContinue.setToolTipText(Messages.StartupTab_doContinue_ToolTipText);
 
 			GridData gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
@@ -771,7 +770,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		if (fLoadExecutable.getSelection()) {
 			if (!fUseProjectBinaryForImage.getSelection()) {
 				if (fImageFileName.getText().trim().isEmpty()) {
-					setErrorMessage(Messages.getString("StartupTab.imageFileName_not_specified"));
+					setErrorMessage(Messages.StartupTab_imageFileName_not_specified);
 					return false;
 				}
 
@@ -780,12 +779,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					path = DebugUtils.resolveAll(path, launchConfig.getAttributes());
 					IPath filePath = new Path(path);
 					if (!filePath.toFile().exists()) {
-						setErrorMessage(Messages.getString("StartupTab.imageFileName_does_not_exist"));
+						setErrorMessage(Messages.StartupTab_imageFileName_does_not_exist);
 						return false;
 					}
 				} catch (CoreException e) { // string substitution throws this
 											// if expression doesn't resolve
-					setErrorMessage(Messages.getString("StartupTab.imageFileName_does_not_exist"));
+					setErrorMessage(Messages.StartupTab_imageFileName_does_not_exist);
 					return false;
 				}
 			}
@@ -795,7 +794,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		if (fLoadSymbols.getSelection()) {
 			if (!fUseProjectBinaryForSymbols.getSelection()) {
 				if (fSymbolsFileName.getText().trim().isEmpty()) {
-					setErrorMessage(Messages.getString("StartupTab.symbolsFileName_not_specified"));
+					setErrorMessage(Messages.StartupTab_symbolsFileName_not_specified);
 					return false;
 				}
 
@@ -804,12 +803,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					path = DebugUtils.resolveAll(path, launchConfig.getAttributes());
 					IPath filePath = new Path(path);
 					if (!filePath.toFile().exists()) {
-						setErrorMessage(Messages.getString("StartupTab.symbolsFileName_does_not_exist"));
+						setErrorMessage(Messages.StartupTab_symbolsFileName_does_not_exist);
 						return false;
 					}
 				} catch (CoreException e) { // string substitution throws this
 											// if expression doesn't resolve
-					setErrorMessage(Messages.getString("StartupTab.symbolsFileName_does_not_exist"));
+					setErrorMessage(Messages.StartupTab_symbolsFileName_does_not_exist);
 					return false;
 				}
 			}
@@ -819,7 +818,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		if (fSetPcRegister.getSelection()) {
 			if (fPcRegister.getText().trim().isEmpty()) {
-				setErrorMessage(Messages.getString("StartupTab.pcRegister_not_specified"));
+				setErrorMessage(Messages.StartupTab_pcRegister_not_specified);
 				return false;
 			}
 		} else {
@@ -827,7 +826,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 		if (fSetStopAt.getSelection()) {
 			if (fStopAt.getText().trim().isEmpty()) {
-				setErrorMessage(Messages.getString("StartupTab.stopAt_not_specified"));
+				setErrorMessage(Messages.StartupTab_stopAt_not_specified);
 			}
 		} else {
 			setErrorMessage(null);
