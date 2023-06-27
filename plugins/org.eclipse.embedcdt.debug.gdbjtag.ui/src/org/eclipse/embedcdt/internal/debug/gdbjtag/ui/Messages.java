@@ -15,14 +15,11 @@
 
 package org.eclipse.embedcdt.internal.debug.gdbjtag.ui;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
-	private static final String MESSAGES = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
+	private static final String MESSAGES = "org.eclipse.embedcdt.internal.debug.gdbjtag.ui.messages"; //$NON-NLS-1$
 
 	public static String PeripheralsView_NameColumn_text;
 	public static String PeripheralsView_AddressColumn_text;
@@ -57,33 +54,14 @@ public class Messages extends NLS {
 	public static String TabSvd_button_Browse_text;
 	public static String TabSvd_button_Variables_text;
 
+	public static String TabSvd_SelectSVDFile;
+
 	static {
 		// initialise above static strings
 		NLS.initializeMessages(MESSAGES, Messages.class);
 	}
 
-	private static ResourceBundle RESOURCE_BUNDLE;
-	static {
-		try {
-			RESOURCE_BUNDLE = ResourceBundle.getBundle(MESSAGES);
-		} catch (MissingResourceException e) {
-			Activator.log(e);
-		}
-	}
-
 	private Messages() {
-	}
-
-	public static String getString(String key) {
-		try {
-			return RESOURCE_BUNDLE.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		}
-	}
-
-	public static ResourceBundle getResourceBundle() {
-		return RESOURCE_BUNDLE;
 	}
 
 }

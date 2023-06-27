@@ -69,7 +69,7 @@ public class TabSvd extends AbstractLaunchConfigurationTab {
 			group.setLayout(layout);
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 			group.setLayoutData(gd);
-			group.setText(Messages.getString("TabSvd_group_text"));
+			group.setText(Messages.TabSvd_group_text);
 		}
 
 		Composite groupComp = new Composite(group, SWT.NONE);
@@ -84,8 +84,8 @@ public class TabSvd extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(groupComp, SWT.NONE);
-			label.setText(Messages.getString("TabSvd_label_text"));
-			label.setToolTipText(Messages.getString("TabSvd_label_tooltip"));
+			label.setText(Messages.TabSvd_label_text);
+			label.setToolTipText(Messages.TabSvd_label_tooltip);
 
 			Composite local = new Composite(groupComp, SWT.NONE);
 			GridLayout layout = new GridLayout();
@@ -100,13 +100,13 @@ public class TabSvd extends AbstractLaunchConfigurationTab {
 				fSvdPath = new Text(local, SWT.SINGLE | SWT.BORDER);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				fSvdPath.setLayoutData(gd);
-				fSvdPath.setToolTipText(Messages.getString("TabSvd_label_tooltip"));
+				fSvdPath.setToolTipText(Messages.TabSvd_label_tooltip);
 
 				fBrowseButton = new Button(local, SWT.NONE);
-				fBrowseButton.setText(Messages.getString("TabSvd_button_Browse_text"));
+				fBrowseButton.setText(Messages.TabSvd_button_Browse_text);
 
 				fVariablesButton = new Button(local, SWT.NONE);
-				fVariablesButton.setText(Messages.getString("TabSvd_button_Variables_text"));
+				fVariablesButton.setText(Messages.TabSvd_button_Variables_text);
 			}
 		}
 
@@ -121,7 +121,7 @@ public class TabSvd extends AbstractLaunchConfigurationTab {
 		fBrowseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseButtonSelected(Messages.getString("DebuggerTab.gdbServerExecutableBrowse_Title"), fSvdPath);
+				browseButtonSelected(Messages.TabSvd_SelectSVDFile, fSvdPath);
 			}
 		});
 
