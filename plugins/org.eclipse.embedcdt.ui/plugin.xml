@@ -34,7 +34,7 @@
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">
 					</instanceof>
-					<test forcePluginActivation="true" property="org.eclipse.embedcdt.managedbuild.cross.core.isGnuMcu">
+					<test forcePluginActivation="true" property="org.eclipse.embedcdt.core.isEmbeddedCdt">
 					</test>
 				</and>
 			</enabledWhen>

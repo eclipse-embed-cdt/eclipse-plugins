@@ -15,4 +15,14 @@
 
 <plugin>
 
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+		<propertyTester
+			class="org.eclipse.embedcdt.core.EmbeddedCdtPropertyTester"
+			id="org.eclipse.embedcdt.core.propertyTester"
+			namespace="org.eclipse.embedcdt.core"
+			properties="isEmbeddedCdt"
+			type="java.lang.Object">
+		</propertyTester>
+	</extension>
+
 </plugin>

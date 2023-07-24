@@ -12,7 +12,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package org.eclipse.embedcdt.managedbuild.cross.core;
+package org.eclipse.embedcdt.core;
 
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -28,15 +28,15 @@ import org.eclipse.core.resources.IProject;
  * Property tester for the Tools Paths page.
  *
  * The project must be managed and have an options with the toolchain name.
- * @deprecated See org.eclipse.embedcdt.core.EmbeddedCdtPropertyTester.
+ *
+ * This class deprecates org.eclipse.embedcdt.managedbuild.cross.core.GnuMcuPropertyTester.
  */
-@Deprecated
-public class GnuMcuPropertyTester extends PropertyTester {
+public class EmbeddedCdtPropertyTester extends PropertyTester {
 
 	@Override
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 
-		if ("isGnuMcu".equals(property)) {
+		if ("isEmbeddedCdt".equals(property)) {
 			if (receiver instanceof IProject) {
 
 				IProject project = (IProject) receiver;
