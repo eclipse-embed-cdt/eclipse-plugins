@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Wind River Systems, Inc. and others.
+ * Copyright (c) 2009, 2023 Wind River Systems, Inc. and others.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -17,6 +17,11 @@
 package org.eclipse.embedcdt.managedbuild.cross.riscv.core;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.cdt.core.cdtvariables.CdtVariableException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -30,7 +35,6 @@ import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.internal.managedbuild.cross.riscv.core.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
 
@@ -75,9 +79,9 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 		public static String name = "PATH"; //$NON-NLS-1$
 
-		private File path;
+		private String path;
 
-		private PathEnvironmentVariable(File path) {
+		private PathEnvironmentVariable(String path) {
 			// System.out.println("cpath=" + path);
 			this.path = path;
 		}
@@ -89,28 +93,23 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 			Boolean preferXpacksBin = Option.getOptionBooleanValue(configuration, Option.OPTION_PREFER_XPACKS_BIN);
 
-			String path = "";
+			List<String> path = new ArrayList<>();
 			if (preferXpacksBin) {
 				IPath projectPath = project.getWorkspace().getRoot().getLocation().append(project.getFullPath());
 				IPath xpackBinPath = projectPath.append("xpacks").append(".bin");
 
-				path = xpackBinPath.toOSString();
+				path.add(xpackBinPath.toOSString());
 			}
 
 			// Get the build tools path from the common store.
 			PersistentPreferences commonPersistentPreferences = org.eclipse.embedcdt.internal.managedbuild.cross.core.Activator
 					.getInstance().getPersistentPreferences();
 
+			// Get the build tools path from the common store.
 			String buildToolsPath = commonPersistentPreferences.getBuildToolsPath(project);
 
-			if (path.isEmpty()) {
-				path = buildToolsPath;
-			} else {
-				if (!buildToolsPath.isEmpty()) {
-					// Concatenate build tools path with toolchain path.
-					path += EclipseUtils.getPathSeparator();
-					path += buildToolsPath;
-				}
+			if (!buildToolsPath.isEmpty()) {
+				path.add(buildToolsPath);
 			}
 
 			IOption optionId;
@@ -129,35 +128,29 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			// Eclipse, defaults).
 			toolchainPath = persistentPreferences.getToolchainPath(toolchainId, toolchainName, project);
 
-			if (path.isEmpty()) {
-				path = toolchainPath;
-			} else {
-				if (!toolchainPath.isEmpty()) {
-					// Concatenate build tools path with toolchain path.
-					path += EclipseUtils.getPathSeparator();
-					path += toolchainPath;
-				}
+			if (!toolchainPath.isEmpty()) {
+				path.add(toolchainPath);
 			}
 
 			if (!path.isEmpty()) {
-
 				// if present, substitute macros
-				if (path.indexOf("${") >= 0) {
-					path = resolveMacros(path, configuration);
-				}
+				Stream<String> macrosResolved = path.stream().map(p -> {
+					if (p.indexOf("${") >= 0) {
+						p = resolveMacros(p, configuration);
+					}
+					return p;
+				});
+				// filter out empty entries and convert string to absolute paths
+				String pathVar = macrosResolved.filter(Predicate.not(String::isBlank)).map(File::new)
+						.map(File::getAbsolutePath).collect(Collectors.joining(File.pathSeparator));
 
-				File sysroot = new File(path);
-				// File bin = new File(sysroot, "bin"); //$NON-NLS-1$
-				// if (bin.isDirectory()) {
-				// sysroot = bin;
-				// }
 				if (DEBUG_PATH) {
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("riscv.PathEnvironmentVariable.create() PATH=" + sysroot + " cfg="
+						System.out.println("riscv.PathEnvironmentVariable.create() PATH=\"" + pathVar + "\" cfg="
 								+ configuration + " prj=" + configuration.getManagedProject().getOwner().getName());
 					}
 				}
-				return new PathEnvironmentVariable(sysroot);
+				return new PathEnvironmentVariable(pathVar);
 			}
 
 			if (Activator.getInstance().isDebugging()) {
@@ -208,7 +201,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 		@Override
 		public String getValue() {
-			return path.getAbsolutePath();
+			return path;
 		}
 
 	}
