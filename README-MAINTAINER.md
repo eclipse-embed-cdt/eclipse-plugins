@@ -42,7 +42,7 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- <https://download.eclipse.org/embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202304281106.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202307251916.zip>
 - <https://download.eclipse.org/embed-cdt/releases/6.4.0/p2/>
 
 The official download page is
@@ -182,8 +182,6 @@ Wait for the GitHub Actions CI job to confirm that the build passed.
 
 ### Trigger the Jenkins master build
 
-Note: this happens now automatically, at each push.
-
 - go to [https://ci.eclipse.org/embed-cdt/job/build-plug-ins/](https://ci.eclipse.org/embed-cdt/job/build-plug-ins/)
 - **login** (otherwise the next link will not be visible!)
 - click the **Scan Multibranch Pipeline Now** link
@@ -274,7 +272,7 @@ In Eclipse:
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release
 candidate p2 URL (like
-`https://download.eclipse.org/embed-cdt/release-candidates/6.4.0-202304281106/p2/`
+`https://download.eclipse.org/embed-cdt/release-candidates/6.4.0-202307251916/p2/`
 and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**
@@ -283,7 +281,7 @@ and press Enter
 - Save
 - stage `simrel.aggr` & `embedcdt.aggrcon`
 - commit with a message like:
-  - _embedcdt: update for 6.4.0-202304281106_,
+  - _embedcdt: update for 6.4.0-202307251916_,
   - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 - click the **Commit** button (do not Push yet)
 - right click, Show in local Terminal
@@ -313,7 +311,7 @@ In about 7-8 minutes it'll automatically rebuild the staging repo:
 
 Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
 use a subject like
-**Embed CDT v6.4.0-202304281106 release candidate**,
+**Embed CDT v6.4.0-202307251916 release candidate**,
 and pass a link to the release page, available at:
 
 - <https://projects.eclipse.org/projects/iot.embed-cdt/>
@@ -328,7 +326,7 @@ Go to the release candidate folder
 
 - [https://download.eclipse.org/embed-cdt/release-candidates/](https://download.eclipse.org/embed-cdt/release-candidates/)
 
-Copy the tag and enter it in Git, like `v6.4.0-202304281106` (with `v`).
+Copy the tag and enter it in Git, like `v6.4.0-202307251916` (with `v`).
 
 ## Publish the final release
 
@@ -382,12 +380,12 @@ In the `develop` branch, in `_posts/plugins/releases`, add a new release page.
 As links for the latest two, open <https://download.eclipse.org/embed-cdt/releases/>
 and get the archive URL, like:
 
-- <https://download.eclipse.org/embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202304281106.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202307251916.zip>
 
 Isolate the part starting with `/embed-cdt/...` and update the URLs to use the download redirect:
 
-- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202304281106.zip>
-- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202304281106.zip.sha>
+- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202307251916.zip>
+- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202307251916.zip.sha>
 
 Update the milestone URL.
 
