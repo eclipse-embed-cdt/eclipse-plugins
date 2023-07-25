@@ -387,6 +387,9 @@ Isolate the part starting with `/embed-cdt/...` and update the URLs to use the d
 - <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202307251916.zip>
 - <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202307251916.zip.sha>
 
+Go to <https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones> and
+update the fixed issues.
+
 Update the milestone URL.
 
 Copy/paste the features/plug-ins from the console output of the
