@@ -4,7 +4,7 @@
     type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
   <properties size='1'>
     <!-- timestamp made with `date +%s%3N` on Linux -->
-    <property name='p2.timestamp' value='1682680545949'/>
+    <property name='p2.timestamp' value='1690313001247'/>
   </properties>
   <children size='1'>
     <child location='../../releases/6.0.0/p2'/>
@@ -15,5 +15,6 @@
     <child location='../../releases/6.3.0/p2'/>
     <child location='../../releases/6.3.1/p2'/>
     <child location='../../releases/6.3.2/p2'/>
+    <child location='../../releases/6.4.0/p2'/>
   </children>
 </repository>
