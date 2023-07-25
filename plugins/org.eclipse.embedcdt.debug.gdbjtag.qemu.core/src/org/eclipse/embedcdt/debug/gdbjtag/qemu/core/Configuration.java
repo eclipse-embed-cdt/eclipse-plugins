@@ -104,15 +104,14 @@ public class Configuration {
 					}
 
 					if (project != null) {
-						IPath projectPath = project.getWorkspace().getRoot().getLocation()
-								.append(project.getFullPath());
-						IPath serverPath = projectPath.append("xpacks").append(".bin").append(name);
+						IPath xpackBinPath = project.getFolder("xpacks").getFolder(".bin").getLocation();
+						IPath serverPath = xpackBinPath.append(name);
 
 						if (serverPath.toFile().exists()) {
 							executable = serverPath.toString();
 						} else {
 							if (EclipseUtils.isWindows()) {
-								serverPath = projectPath.append("xpacks").append(".bin").append(name + ".cmd");
+								serverPath = xpackBinPath.append(name + ".cmd");
 								if (serverPath.toFile().exists()) {
 									executable = serverPath.toString();
 								}

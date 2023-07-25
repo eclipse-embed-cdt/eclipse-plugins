@@ -32,7 +32,6 @@ import org.eclipse.cdt.managedbuilder.envvar.IConfigurationEnvironmentVariableSu
 import org.eclipse.cdt.managedbuilder.envvar.IEnvironmentVariableProvider;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.embedcdt.internal.managedbuild.cross.arm.core.Activator;
 import org.eclipse.embedcdt.managedbuild.cross.core.preferences.PersistentPreferences;
@@ -94,10 +93,8 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 			List<String> path = new ArrayList<>();
 			if (preferXpacksBin) {
-				IPath projectPath = project.getWorkspace().getRoot().getLocation().append(project.getFullPath());
-				IPath xpackBinPath = projectPath.append("xpacks").append(".bin");
-
-				path.add(xpackBinPath.toOSString());
+				String xpackBinPath = project.getFolder("xpacks").getFolder(".bin").getLocation().toOSString();
+				path.add(xpackBinPath);
 			}
 
 			// Get the build tools path from the common store.
@@ -117,28 +114,31 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 				path.add(buildToolsPath);
 			}
 
-			IOption optionId;
-			optionId = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_ID); // $NON-NLS-1$
-			String toolchainId = (String) optionId.getValue();
+			if (!preferXpacksBin) {
+				IOption optionId;
+				optionId = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_ID); // $NON-NLS-1$
+				String toolchainId = (String) optionId.getValue();
 
-			IOption optionName;
-			optionName = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
-			String toolchainName = (String) optionName.getValue();
+				IOption optionName;
+				optionName = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
+				String toolchainName = (String) optionName.getValue();
 
-			String toolchainPath = "";
+				String toolchainPath = "";
 
-			// Get the toolchain path from this plug-in store.
-			PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
-			// Get the most specific toolchain path (project, workspace,
-			// Eclipse, defaults).
-			toolchainPath = persistentPreferences.getToolchainPath(toolchainId, toolchainName, project);
-			if (toolchainPath.isEmpty()) {
-				// Try to get from original gnuarmeclipse store.
-				toolchainPath = deprecatedPersistentPreferences.getToolchainPath(toolchainId, toolchainName, project);
-			}
+				// Get the toolchain path from this plug-in store.
+				PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
+				// Get the most specific toolchain path (project, workspace,
+				// Eclipse, defaults).
+				toolchainPath = persistentPreferences.getToolchainPath(toolchainId, toolchainName, project);
+				if (toolchainPath.isEmpty()) {
+					// Try to get from original gnuarmeclipse store.
+					toolchainPath = deprecatedPersistentPreferences.getToolchainPath(toolchainId, toolchainName,
+							project);
+				}
 
-			if (!toolchainPath.isEmpty()) {
-				path.add(toolchainPath);
+				if (!toolchainPath.isEmpty()) {
+					path.add(toolchainPath);
+				}
 			}
 
 			if (!path.isEmpty()) {
