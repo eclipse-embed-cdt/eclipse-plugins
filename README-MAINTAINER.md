@@ -25,7 +25,7 @@ on the Eclipse Foundation infrastructure (CBI); for local builds, use the
 The plug-ins are published on the Eclipse download servers both as update
 sites and as archives.
 
-Development builds are published as p2 sub-folders like:
+Development builds are automatically published as p2 sub-folders like:
 
 - <https://download.eclipse.org/embed-cdt/builds/develop/p2/>
 - <https://download.eclipse.org/embed-cdt/builds/master/p2/>
@@ -157,6 +157,8 @@ This will also trigger a GitHub Actions CI job that will run a maven build.
 
 ### Trigger the Jenkins development build
 
+Note: this happens now automatically, at each push.
+
 - go to [https://ci.eclipse.org/embed-cdt/job/build-plug-ins/](https://ci.eclipse.org/embed-cdt/job/build-plug-ins/)
 - **login** (otherwise the next link is not visible!)
 - click the **Scan Multibranch Pipeline Now** link
@@ -179,6 +181,8 @@ Wait for the GitHub Actions CI job to confirm that the build passed.
 - <https://github.com/eclipse-embed-cdt/eclipse-plugins/actions>
 
 ### Trigger the Jenkins master build
+
+Note: this happens now automatically, at each push.
 
 - go to [https://ci.eclipse.org/embed-cdt/job/build-plug-ins/](https://ci.eclipse.org/embed-cdt/job/build-plug-ins/)
 - **login** (otherwise the next link will not be visible!)
