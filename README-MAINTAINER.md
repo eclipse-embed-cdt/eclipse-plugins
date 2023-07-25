@@ -231,7 +231,7 @@ Click the **Edit** tab, **The Basics**; switch to Source mode
 Start with _Release candidate_ (Header 3).
 
 ```html
-<p>Version <strong>6.4.0</strong> is a maintenance release; it ....</p>
+<p>Version <strong>6.4.0</strong> is a maintenance/new minor release; it ....</p>
 
 <h3>Release candidate</h3>
 
