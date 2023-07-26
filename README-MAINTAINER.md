@@ -250,7 +250,7 @@ Click the bottom **Save** button.
 
 Install the plug-ins on several platforms.
 
-### Update SimRel for the release candidate
+### Update SimRel for the release candidate (optional)
 
 If everything is fine, update SimRel.
 
@@ -307,7 +307,7 @@ In about 7-8 minutes it'll automatically rebuild the staging repo:
 
 - <https://download.eclipse.org/staging/>
 
-### Announce release candidate
+### Announce release candidate (optional)
 
 Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
 use a subject like
@@ -490,12 +490,13 @@ later sent by e-mail, when the run completes.
 
 In Gerrit, click **CODE_REVIEW+2** and then **SUBMIT** to merge the changes.
 
-The commit will trigger the [SimRel](https://ci.eclipse.org/simrel/)
+After a while (it might take about 10 minutes),
+the commit will trigger the [SimRel](https://ci.eclipse.org/simrel/)
 Jenkins aggregator pipeline:
 
 - <https://ci.eclipse.org/simrel/job/simrel.runaggregator.pipeline/>
 
-In about 7-8 min it'll automatically rebuild the staging repo:
+After another while (about 10 min) it'll automatically rebuild the staging repo:
 
 - <https://download.eclipse.org/staging/>
 
@@ -555,11 +556,11 @@ available from:
 
 - <https://ci.eclipse.org/packaging/job/simrel.epp-tycho-build/lastSuccessfulBuild/artifact/org.eclipse.epp.packages/archive/>
 
-### Announce release
+## Announce release
 
 Announce the release to the **embed-cdt-dev@eclipse.org** list;
 use a subject like **Eclipse Embedded CDT plug-ins v6.4.0 released**, and
-pass a link to the release page.
+pass a link to the release page (<https://eclipse-embed-cdt.github.io/news/>).
 
 ## Share on Twitter
 

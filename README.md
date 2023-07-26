@@ -65,7 +65,7 @@ Please read the separate [README-MAINTAINER](README-MAINTAINER.md) page.
 
 ## License
 
-Copyright (c) 2012, 2021 Liviu Ionescu and others.
+Copyright (c) 2012, 2023 Liviu Ionescu and others.
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
