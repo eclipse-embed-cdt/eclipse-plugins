@@ -16,8 +16,12 @@
 package org.eclipse.embedcdt.debug.gdbjtag.core.services;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
@@ -32,8 +36,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.embedcdt.debug.gdbjtag.core.ILaunchConfigurationProvider;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.IPeripheralDMContext;
+import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.IPeripheralGroupDMContext;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.PeripheralDMContext;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.PeripheralDMNode;
+import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.PeripheralGroupDMContext;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.SvdUtils;
 import org.eclipse.embedcdt.internal.debug.gdbjtag.core.Activator;
 import org.eclipse.embedcdt.packs.core.data.DurationMonitor;
@@ -43,7 +49,9 @@ import org.osgi.framework.BundleContext;
 public class PeripheralsService extends AbstractDsfService implements IPeripheralsService {
 
 	private ICommandControlService fCommandControl;
-	private PeripheralDMContext[] fPeripheralsDMContexts = null;
+
+	private PeripheralGroupDMContext[] fPeripheralgroupsDMContexts = null;
+	private Map<String, PeripheralDMContext[]> groupNameToPeripheralsMap = new HashMap<>();
 
 	// ------------------------------------------------------------------------
 
@@ -112,15 +120,14 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 	}
 
 	@Override
-	public void getPeripherals(IContainerDMContext containerDMContext, DataRequestMonitor<IPeripheralDMContext[]> drm) {
+	public void getPeripheralGroups(IContainerDMContext context, DataRequestMonitor<IPeripheralGroupDMContext[]> drm) {
 
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("PeripheralsService.getPeripherals()");
-		}
+		// First time here, get the contexts.
+		if (fPeripheralgroupsDMContexts == null) {
 
-		if (fPeripheralsDMContexts == null) {
-
-			// First time here, get the contexts.
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("PeripheralsService.getPeripheralGroups() First time get PeripheralGroups");
+			}
 
 			if (!(fCommandControl instanceof ILaunchConfigurationProvider)) {
 				drm.setStatus(new Status(Status.ERROR, Activator.PLUGIN_ID, "No peripherals available."));
@@ -157,7 +164,82 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 				List<Leaf> list = SvdUtils.getPeripherals(tree);
 
 				// Prepare the data model context for the Peripherals view.
-				fPeripheralsDMContexts = createPeripheralsContexts(containerDMContext, list);
+				fPeripheralgroupsDMContexts = createPeripheralGroupsContexts(context, list);
+
+			} catch (CoreException e) {
+				drm.setStatus(e.getStatus());
+				drm.done();
+				return;
+			}
+		}
+
+		drm.setData(fPeripheralgroupsDMContexts);
+		drm.done();
+		return;
+	}
+
+	@Override
+	public void getPeripherals(IPeripheralGroupDMContext groupDmc, DataRequestMonitor<IPeripheralDMContext[]> drm) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsService.getPeripherals()");
+		}
+
+		PeripheralDMContext[] fPeripheralsDMContexts = groupNameToPeripheralsMap.get(groupDmc.getName());
+
+		if (fPeripheralsDMContexts == null) {
+
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("PeripheralsService.getPeripheralGroups() First time get Peripherals");
+			}
+
+			// First time here, get the contexts.
+			if (!(fCommandControl instanceof ILaunchConfigurationProvider)) {
+				drm.setStatus(new Status(Status.ERROR, Activator.PLUGIN_ID, "No peripherals available."));
+				drm.done();
+				return;
+			}
+
+			// The launch configuration is obtained from the command control, using a
+			// dedicated interface.
+			ILaunchConfiguration launchConfiguration = ((ILaunchConfigurationProvider) fCommandControl)
+					.getLaunchConfiguration();
+
+			try {
+
+				// Search for the SVD/XSVD in various locations (packages, extension points,
+				// etc)
+				IPath svdPath = SvdUtils.getSvdPath(launchConfiguration);
+
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("SVD path: " + svdPath);
+				}
+
+				Leaf tree;
+				{
+					DurationMonitor dm = new DurationMonitor();
+					dm.start();
+					// Read in the file, parse the original format (XML or JSON) and build the
+					// internal tree.
+					tree = SvdUtils.getTree(svdPath);
+					dm.stop();
+				}
+
+				// Extract the peripherals in a separate list.
+				Map<String, List<Leaf>> groupNameToPeripherals = SvdUtils.getPeripherals(tree).stream()
+						.collect(Collectors.groupingBy(node -> node.getProperty("groupName")));
+
+				// Prepare the data model context for the Peripherals view.
+				for (PeripheralGroupDMContext parent : fPeripheralgroupsDMContexts) {
+
+					String groupName = parent.getName();
+					List<Leaf> list = groupNameToPeripherals.get(groupName);
+
+					PeripheralDMContext[] createPeripheralsContexts = createPeripheralsContexts(parent, list);
+					groupNameToPeripheralsMap.put(groupName, createPeripheralsContexts);
+				}
+
+				fPeripheralsDMContexts = groupNameToPeripheralsMap.get(groupDmc.getName());
 
 			} catch (CoreException e) {
 				drm.setStatus(e.getStatus());
@@ -169,6 +251,27 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 		drm.setData(fPeripheralsDMContexts);
 		drm.done();
 		return;
+	}
+
+	private PeripheralGroupDMContext[] createPeripheralGroupsContexts(IDMContext parentIDMContext, List<Leaf> list) {
+
+		Set<String> groupNames = list.stream().map(node -> node.getProperty("groupName")).collect(Collectors.toSet());
+
+		PeripheralGroupDMContext contexts[] = new PeripheralGroupDMContext[groupNames.size()];
+		IDMContext[] parents;
+		if (parentIDMContext != null) {
+			parents = new IDMContext[] { parentIDMContext };
+		} else {
+			parents = new IDMContext[0];
+		}
+		int i = 0;
+		for (String groupName : groupNames) {
+			contexts[i] = new PeripheralGroupDMContext(getSession(), parents, groupName);
+			++i;
+		}
+		Arrays.sort(contexts);
+
+		return contexts;
 	}
 
 	private PeripheralDMContext[] createPeripheralsContexts(IDMContext parentIDMContext, List<Leaf> list) {
@@ -187,6 +290,7 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 			++i;
 		}
 		Arrays.sort(contexts);
+
 		return contexts;
 	}
 

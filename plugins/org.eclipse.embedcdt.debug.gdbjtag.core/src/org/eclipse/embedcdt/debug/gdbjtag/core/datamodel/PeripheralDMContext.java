@@ -45,6 +45,12 @@ public class PeripheralDMContext extends AbstractDMContext
 		fDMNode = instance;
 	}
 
+	public PeripheralDMContext(DsfSession session, PeripheralGroupDMContext group, PeripheralDMNode instance) {
+
+		super(session, new IDMContext[] { group });
+		fDMNode = instance;
+	}
+
 	// ------------------------------------------------------------------------
 
 	public PeripheralDMNode getPeripheralInstance() {

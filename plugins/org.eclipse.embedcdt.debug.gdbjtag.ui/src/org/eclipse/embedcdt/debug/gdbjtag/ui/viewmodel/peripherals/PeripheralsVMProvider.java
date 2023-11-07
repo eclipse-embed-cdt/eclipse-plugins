@@ -47,8 +47,13 @@ public class PeripheralsVMProvider extends AbstractDMVMProvider implements IColu
 		}
 
 		RootDMVMNode rootDMVMNode = new RootDMVMNode(this);
+
+		PeripheralGroupsVMNode groupVMNode = new PeripheralGroupsVMNode(this, getSession());
+		addChildNodes(rootDMVMNode, new IVMNode[] { groupVMNode });
+
 		PeripheralsVMNode peripheralVMNode = new PeripheralsVMNode(this, getSession());
-		addChildNodes(rootDMVMNode, new IVMNode[] { peripheralVMNode });
+		addChildNodes(groupVMNode, new IVMNode[] { peripheralVMNode });
+
 		setRootNode(rootDMVMNode);
 	}
 

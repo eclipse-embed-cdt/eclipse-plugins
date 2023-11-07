@@ -28,7 +28,6 @@ import org.eclipse.cdt.dsf.concurrent.ImmediateExecutor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.datamodel.IDMContext;
 import org.eclipse.cdt.dsf.debug.service.IRunControl;
-import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.cdt.dsf.ui.concurrent.ViewerDataRequestMonitor;
 import org.eclipse.cdt.dsf.ui.viewmodel.VMDelta;
@@ -54,6 +53,7 @@ import org.eclipse.debug.internal.ui.viewers.model.provisional.IModelDelta;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationContext;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IViewerUpdate;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.IPeripheralDMContext;
+import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.IPeripheralGroupDMContext;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.PeripheralDMContext;
 import org.eclipse.embedcdt.debug.gdbjtag.core.memory.PeripheralMemoryBlockRetrieval;
 import org.eclipse.embedcdt.debug.gdbjtag.core.services.IPeripheralsService;
@@ -219,27 +219,19 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 			System.out.println("PeripheralsVMNode.updateElementsInSessionThread() " + this + " " + update);
 		}
 
-		DsfServicesTracker tracker = getServicesTracker();
-		IPeripheralsService peripheralsService = tracker.getService(IPeripheralsService.class);
+		IPeripheralsService peripheralsService = getServicesTracker().getService(IPeripheralsService.class);
 		// System.out.println("got service " + peripheralsService);
 
 		final IRunControl.IContainerDMContext containerDMContext = findDmcInPath(update.getViewerInput(),
 				update.getElementPath(), IRunControl.IContainerDMContext.class);
 
-		if ((peripheralsService == null) || (containerDMContext == null)) {
+		final IPeripheralGroupDMContext groupDMContext = findDmcInPath(update.getViewerInput(), update.getElementPath(),
+				IPeripheralGroupDMContext.class);
+
+		if ((peripheralsService == null) || (containerDMContext == null) || (groupDMContext == null)) {
 			// Leave the view empty. This also happens after closing the
 			// session, since service is no longer there.
 			handleFailedUpdate(update);
-			return;
-		}
-
-		if (fPeripherals != null) {
-			// On subsequent calls, use cached values.
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("PeripheralsVMNode.updateElementsInSessionThread() use cached values");
-			}
-			fillUpdateWithVMCs(update, fPeripherals);
-			update.done();
 			return;
 		}
 
@@ -248,7 +240,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode
 		// executor = getSession().getExecutor();
 
 		// Get peripherals only on first call.
-		peripheralsService.getPeripherals(containerDMContext,
+		peripheralsService.getPeripherals(groupDMContext,
 				new ViewerDataRequestMonitor<IPeripheralDMContext[]>(executor, update) {
 
 					@Override

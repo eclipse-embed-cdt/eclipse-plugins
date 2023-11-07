@@ -19,13 +19,17 @@ import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.debug.service.IRunControl;
 import org.eclipse.cdt.dsf.service.IDsfService;
 import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.IPeripheralDMContext;
+import org.eclipse.embedcdt.debug.gdbjtag.core.datamodel.IPeripheralGroupDMContext;
 
 public interface IPeripheralsService extends IDsfService {
 
 	// ------------------------------------------------------------------------
 
-	public abstract void getPeripherals(IRunControl.IContainerDMContext containerDMContext,
+	public abstract void getPeripherals(IPeripheralGroupDMContext parentgroupContext,
 			DataRequestMonitor<IPeripheralDMContext[]> dataRequestMonitor);
+
+	public abstract void getPeripheralGroups(IRunControl.IContainerDMContext containerDMContext,
+			DataRequestMonitor<IPeripheralGroupDMContext[]> dataRequestMonitor);
 
 	// ------------------------------------------------------------------------
 }
