@@ -42,8 +42,8 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- <https://download.eclipse.org/embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202307251916.zip>
-- <https://download.eclipse.org/embed-cdt/releases/6.4.0/p2/>
+- <https://download.eclipse.org/embed-cdt/releases/6.5.0/org.eclipse.embedcdt.repository-6.5.0-202307251916.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.5.0/p2/>
 
 The official download page is
 
@@ -222,7 +222,7 @@ page, login and click the
 [Create a new release](https://projects.eclipse.org/node/18638/create-release/)
 link in the right side bar, below Releases (it shows only after login).
 
-Name it like `6.4.0` (no v).
+Name it like `6.5.0` (no v).
 
 Click the **Create and edit** button.
 
@@ -231,7 +231,7 @@ Click the **Edit** tab, **The Basics**; switch to Source mode
 Start with _Release candidate_ (Header 3).
 
 ```html
-<p>Version <strong>6.4.0</strong> is a maintenance/new minor release; it ....</p>
+<p>Version <strong>6.5.0</strong> is a maintenance/new minor release; it ....</p>
 
 <h3>Release candidate</h3>
 
@@ -272,7 +272,7 @@ In Eclipse:
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release
 candidate p2 URL (like
-`https://download.eclipse.org/embed-cdt/release-candidates/6.4.0-202307251916/p2/`
+`https://download.eclipse.org/embed-cdt/release-candidates/6.5.0-202307251916/p2/`
 and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**
@@ -281,7 +281,7 @@ and press Enter
 - Save
 - stage `simrel.aggr` & `embedcdt.aggrcon`
 - commit with a message like:
-  - _embedcdt: update for 6.4.0-202307251916_,
+  - _embedcdt: update for 6.5.0-202307251916_,
   - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 - click the **Commit** button (do not Push yet)
 - right click, Show in local Terminal
@@ -335,9 +335,9 @@ When the plug-ins are considered stable:
 - in `eclipse-plugins.git`, the master branch, edit both .xml files
   - `repositories/org.eclipse.embededcdt-repository/composite/compositeArtifacts.xml`
   - `repositories/org.eclipse.embededcdt-repository/composite/compositeContent.xml`
-  - add new child like `<child location='../../releases/6.4.0/p2'/>`
+  - add new child like `<child location='../../releases/6.5.0/p2'/>`
   - update `p2.timestamp` to the value shown at the end of the `make-release-candidate-from-master`
-- **commit** master with a message like _add 6.4.0 to composite_
+- **commit** master with a message like _add 6.5.0 to composite_
 - **push** master
 
 - go to <https://ci.eclipse.org/embed-cdt/>
@@ -360,7 +360,7 @@ Both can be used in Eclipse to **Install New Software**.
 The public update URLs are:
 
 - <https://download.eclipse.org/embed-cdt/updates/v6/>
-- <https://download.eclipse.org/embed-cdt/releases/6.4.0/p2/>
+- <https://download.eclipse.org/embed-cdt/releases/6.5.0/p2/>
 
 ### Update the Eclipse Marketplace records
 
@@ -380,12 +380,12 @@ In the `develop` branch, in `_posts/plugins/releases`, add a new release page.
 As links for the latest two, open <https://download.eclipse.org/embed-cdt/releases/>
 and get the archive URL, like:
 
-- <https://download.eclipse.org/embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202307251916.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.5.0/org.eclipse.embedcdt.repository-6.5.0-202307251916.zip>
 
 Isolate the part starting with `/embed-cdt/...` and update the URLs to use the download redirect:
 
-- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202307251916.zip>
-- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.4.0/org.eclipse.embedcdt.repository-6.4.0-202307251916.zip.sha>
+- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.5.0/org.eclipse.embedcdt.repository-6.5.0-202307251916.zip>
+- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.5.0/org.eclipse.embedcdt.repository-6.5.0-202307251916.zip.sha>
 
 Go to <https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones> and
 update the fixed issues.
@@ -432,7 +432,7 @@ and select the new release
 - replace the entire content with links to GitHub:
 
 ```html
-<p>Version <strong>6.4.0</strong> is a new major/minor/service release; it updates ...</p>
+<p>Version <strong>6.5.0</strong> is a new major/minor/service release; it updates ...</p>
 
 <p>Fore more details, please read the project web release pages:</p>
 
@@ -466,7 +466,7 @@ In Eclipse:
 - select **Mapped Repository**
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release p2 URL
-(like `https://download.eclipse.org/embed-cdt/releases/6.4.0/p2/`
+(like `https://download.eclipse.org/embed-cdt/releases/6.5.0/p2/`
 and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**

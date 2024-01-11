@@ -15,7 +15,7 @@
 <feature
       id="org.eclipse.embedcdt.packs"
       label="%featureName"
-      version="6.4.0.qualifier"
+      version="6.5.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.embedcdt.debug.packs"
       license-feature="org.eclipse.license"
