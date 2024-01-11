@@ -57,12 +57,13 @@ Install the **CBI Aggregator Editor** from:
 
 - <https://download.eclipse.org/cbi/updates/aggregator/ide/4.13>
 
-At first use, clone the SimRel Git repo:
+At first use, fork the SimRel Git repo from:
 
-```bash
-git clone ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build org.eclipse.simrel.build.git
-scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg org.eclipse.simrel.build.git/.git/hooks/
-```
+- <https://github.com/eclipse-simrel/simrel.build>
+
+to
+
+- <https://github.com/embed-cdt/simrel.build>
 
 ### SimRel deadline
 
