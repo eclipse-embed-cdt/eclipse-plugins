@@ -206,6 +206,11 @@
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.debug"
 					name="%option.optimization.level.debug">
 				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-Oz"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.size.aggressive"
+					name="%option.optimization.level.aggressive">
+				</enumeratedOptionValue>
 			</option>
 		</tool>
 		<tool
