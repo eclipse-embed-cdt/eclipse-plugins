@@ -14,13 +14,74 @@
 
 package org.eclipse.embedcdt.managedbuild.cross.core;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.eclipse.cdt.managedbuilder.makegen.gnu.GnuMakefileGenerator;
 
+@SuppressWarnings("deprecation")
 public class GnuMcuMakefileGenerator extends GnuMakefileGenerator {
+
+	private Pattern doubleQuotedOption = Pattern.compile("--?[a-zA-Z]+.*?\\\".*?\\\".*"); //$NON-NLS-1$
+	private Pattern singleQuotedOption = Pattern.compile("--?[a-zA-Z]+.*?'.*?'.*"); //$NON-NLS-1$
+	private static Pattern singleGroupOption = Pattern.compile("-Wl,--start-group (.*?) -Wl,--end-group"); //$NON-NLS-1$
 
 	@Override
 	public String ensurePathIsGNUMakeTargetRuleCompatibleSyntax(String path) {
-		return escapeWhitespaces(ensureUnquoted(path));
+		boolean isQuotedOption = false;
+		if (path.startsWith("-")) { //$NON-NLS-1$
+			isQuotedOption = checkIfQuotedOption(path);
+		}
+		if (checkIfGroupOption(path))
+			return escapeGroupWhitespaces(ensureUnquoted(path));
+		if (!isQuotedOption)
+			return escapeWhitespaces(ensureUnquoted(path));
+
+		return path;
+	}
+
+	static public String escapeGroupWhitespaces(String path) {
+		Matcher m = singleGroupOption.matcher(path);
+		while (m.find()) {
+			String grouplib = m.group(1).toString().trim();
+			if (grouplib.length() > 0) {
+				StringBuffer escapedPath = new StringBuffer();
+				String[] segments = grouplib.split("-l"); //$NON-NLS-1$
+				if (segments.length > 1) {
+					for (int index = 0; index < segments.length; ++index) {
+						String segment = segments[index].trim();
+						if (segment.length() > 0) {
+							escapedPath.append("-l");
+							escapedPath.append(escapeWhitespaces(segment));
+							if (index + 1 < segments.length) {
+								escapedPath.append(" "); //$NON-NLS-1$
+							}
+						}
+					}
+				} else {
+					escapedPath.append(grouplib);
+				}
+				path = path.replace(grouplib, escapedPath.toString().trim());
+			}
+		}
+		return path;
+	}
+
+	private boolean checkIfGroupOption(String path) {
+		Matcher m1 = singleGroupOption.matcher(path);
+		if (m1.matches())
+			return true;
+		return false;
+	}
+
+	private boolean checkIfQuotedOption(String path) {
+		Matcher m1 = doubleQuotedOption.matcher(path);
+		if (m1.matches())
+			return true;
+		Matcher m2 = singleQuotedOption.matcher(path);
+		if (m2.matches())
+			return true;
+		return false;
 	}
 
 	/**

@@ -651,6 +651,7 @@
 				command="-l"
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs"
 				isAbstract="true"
+				commandGenerator="org.eclipse.embedcdt.managedbuild.cross.core.GnuCppLibrariesCommandGenerator"
 				name="%option.linker.libs"
 				valueType="libs">
 			</option>
@@ -661,6 +662,13 @@
 				isAbstract="true"
 				name="%option.linker.paths"
 				valueType="libPaths">
+			</option>
+			<option
+				defaultValue="false"
+				id="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs.group"
+				isAbstract="true"
+				name="%option.linker.libs.group"
+				valueType="boolean">
 			</option>
 			<option
 				command="-Xlinker ${VALUE}"
