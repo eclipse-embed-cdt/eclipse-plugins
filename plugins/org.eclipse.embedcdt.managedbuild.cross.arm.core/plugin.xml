@@ -2908,6 +2908,11 @@
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.paths"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.paths">
 				</option>
+				<option
+                    category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.libs"
+                    id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.libs.group"
+                    superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs.group">
+                </option>
 				<optionCategory
 					id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.misc"
 					name="%optionCategory.linker.misc">
@@ -3098,6 +3103,11 @@
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.paths">
 				</option>
+				<option
+                    category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.libs"
+                    id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs.group"
+                    superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs.group">
+                </option>
 				<optionCategory
 					id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
 					name="%optionCategory.linker.misc">

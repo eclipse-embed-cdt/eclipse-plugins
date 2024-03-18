@@ -1819,6 +1819,11 @@
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.paths"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.paths">
 				</option>
+                <option
+                    category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.c.linker.libs"
+                    id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs.group"
+                    superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs.group">
+                </option>
 				<optionCategory
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.c.linker.misc"
 					name="%optionCategory.linker.misc">
@@ -2009,6 +2014,11 @@
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.paths"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.paths">
 				</option>
+                <option
+                    category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.cpp.linker.libs"
+                    id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs.group"
+                    superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs.group">
+                </option>
 				<optionCategory
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.cpp.linker.misc"
 					name="%optionCategory.linker.misc">
