@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
-<!-- 
-  Copyright (c) 2009, 2023 Wind River Systems, Inc. and others. 
+<!--
+  Copyright (c) 2009, 2023 Wind River Systems, Inc. and others.
 
-  This program and the accompanying materials 
-  are made available under the terms of the Eclipse Public License 2.0 
-  which accompanies this distribution, and is available at 
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
   https://www.eclipse.org/legal/epl-2.0/
 
-  SPDX-License-Identifier: EPL-2.0 
+  SPDX-License-Identifier: EPL-2.0
 
-  Contributors: 
-    Doug Schaefer (Wind River) - initial API and implementation 
-    Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project 
-    Liviu Ionescu - RISC-V version 
+  Contributors:
+    Doug Schaefer (Wind River) - initial API and implementation
+    Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project
+    Liviu Ionescu - RISC-V version
     Alexander Fedorov (ArSysOp) - extract UI part
     John Dallaway - use GNU ELF binary parser (#567)
 -->
@@ -595,7 +595,7 @@
 					command="-mno-strict-align"
 					name="%option.target.align.nostrict">
 				</enumeratedOptionValue>
-			</option>			
+			</option>
 		</tool>
 		<toolChain
 			archList="all"
@@ -1812,7 +1812,13 @@
 				<option
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.c.linker.libs"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs"
-					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs"
+					commandGenerator="org.eclipse.embedcdt.managedbuild.cross.riscv.core.LibrariesCommandGeneratorC">
+				</option>
+				<option
+					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.c.linker.libs"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.grouplibs"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.grouplibs">
 				</option>
 				<option
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.c.linker.libs"
@@ -2002,7 +2008,13 @@
 				<option
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.cpp.linker.libs"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs"
-					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs"
+					commandGenerator="org.eclipse.embedcdt.managedbuild.cross.riscv.core.LibrariesCommandGeneratorCpp">
+				</option>
+				<option
+					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.cpp.linker.libs"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.grouplibs"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.grouplibs">
 				</option>
 				<option
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.cpp.linker.libs"
@@ -2493,14 +2505,14 @@
 			name="FLASH Hex file"
 			priority="normal">
 		</content-type>
-		<!-- <content-type id="ilg.gnumcueclipse.managedbuild.cross.riscv.content-type.s" 
-			name=".s Assembly file" base-type="org.eclipse.cdt.core.asmSource" file-extensions="s" 
-			priority="high" /> <file-association content-type="org.eclipse.cdt.core.asmSource" 
+		<!-- <content-type id="ilg.gnumcueclipse.managedbuild.cross.riscv.content-type.s"
+			name=".s Assembly file" base-type="org.eclipse.cdt.core.asmSource" file-extensions="s"
+			priority="high" /> <file-association content-type="org.eclipse.cdt.core.asmSource"
 			file-extensions="s,S,asm"> </file-association> -->
 	</extension>
-	<!-- <extension point="org.eclipse.cdt.core.language"> <language class="org.eclipse.cdt.core.model.AssemblyLanguage" 
-		id="ilg.gnumcueclipse.managedbuild.cross.riscv.assembly" name="Assembly"> 
-		<contentType id="ilg.gnumcueclipse.managedbuild.cross.riscv.content-type.s"> 
+	<!-- <extension point="org.eclipse.cdt.core.language"> <language class="org.eclipse.cdt.core.model.AssemblyLanguage"
+		id="ilg.gnumcueclipse.managedbuild.cross.riscv.assembly" name="Assembly">
+		<contentType id="ilg.gnumcueclipse.managedbuild.cross.riscv.content-type.s">
 		</contentType> </language> </extension> -->
 	<extension point="org.eclipse.cdt.core.templates">
 		<template

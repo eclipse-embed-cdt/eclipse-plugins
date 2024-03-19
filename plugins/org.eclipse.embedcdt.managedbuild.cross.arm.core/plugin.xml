@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
-<!-- 
-  Copyright (c) 2009, 2023 Wind River Systems, Inc. and others. 
-  This program and the accompanying materials 
-  are made available under the terms of the Eclipse Public License 2.0 
-  which accompanies this distribution, and is available at 
+<!--
+  Copyright (c) 2009, 2023 Wind River Systems, Inc. and others.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
   https://www.eclipse.org/legal/epl-2.0/
 
-  SPDX-License-Identifier: EPL-2.0 
+  SPDX-License-Identifier: EPL-2.0
 
-  Contributors: 
-    Doug Schaefer (Wind River) - initial API and implementation 
-    Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project 
-    Liviu Ionescu - Arm version 
+  Contributors:
+    Doug Schaefer (Wind River) - initial API and implementation
+    Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project
+    Liviu Ionescu - Arm version
     John Dallaway - use GNU ELF binary parser (#567)
 -->
 <plugin>
@@ -1248,11 +1248,11 @@
 						</or>
 					</not>
 				</enablement>
-				<!-- <enablement attribute="defaultValue" extensionAdjustment="false" 
-					type="CONTAINER_ATTRIBUTE" value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv4spd16"> 
-					<checkOption holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base" 
-					optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family" 
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m4"> 
+				<!-- <enablement attribute="defaultValue" extensionAdjustment="false"
+					type="CONTAINER_ATTRIBUTE" value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv4spd16">
+					<checkOption holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
+					optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m4">
 					</checkOption> </enablement> -->
 				<enumeratedOptionValue
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.default"
@@ -2901,7 +2901,13 @@
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.libs"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.libs"
-					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs"
+					commandGenerator="org.eclipse.embedcdt.managedbuild.cross.arm.core.LibrariesCommandGeneratorC">
+				</option>
+				<option
+					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.libs"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.grouplibs"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.grouplibs">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.libs"
@@ -3091,7 +3097,13 @@
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.libs"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs"
-					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.libs"
+					commandGenerator="org.eclipse.embedcdt.managedbuild.cross.arm.core.LibrariesCommandGeneratorCpp">
+				</option>
+				<option
+					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.libs"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.grouplibs"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.grouplibs">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.libs"
@@ -3580,14 +3592,14 @@
 			name="FLASH Hex file"
 			priority="normal">
 		</content-type>
-		<!-- <content-type id="ilg.gnuarmeclipse.managedbuild.cross.content-type.s" 
-			name=".s Assembly file" base-type="org.eclipse.cdt.core.asmSource" file-extensions="s" 
-			priority="high" /> <file-association content-type="org.eclipse.cdt.core.asmSource" 
+		<!-- <content-type id="ilg.gnuarmeclipse.managedbuild.cross.content-type.s"
+			name=".s Assembly file" base-type="org.eclipse.cdt.core.asmSource" file-extensions="s"
+			priority="high" /> <file-association content-type="org.eclipse.cdt.core.asmSource"
 			file-extensions="s,S,asm"> </file-association> -->
 	</extension>
-	<!-- <extension point="org.eclipse.cdt.core.language"> <language class="org.eclipse.cdt.core.model.AssemblyLanguage" 
-		id="ilg.gnuarmeclipse.managedbuild.cross.assembly" name="Assembly"> <contentType 
-		id="ilg.gnuarmeclipse.managedbuild.cross.content-type.s"> </contentType> 
+	<!-- <extension point="org.eclipse.cdt.core.language"> <language class="org.eclipse.cdt.core.model.AssemblyLanguage"
+		id="ilg.gnuarmeclipse.managedbuild.cross.assembly" name="Assembly"> <contentType
+		id="ilg.gnuarmeclipse.managedbuild.cross.content-type.s"> </contentType>
 		</language> </extension> -->
 	<extension point="org.eclipse.cdt.core.templates">
 		<template

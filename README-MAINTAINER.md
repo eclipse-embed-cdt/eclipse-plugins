@@ -459,6 +459,8 @@ Use copy/paste/edit.
 
 **Pull** new commits.
 
+NOTE: to be updated for Pull Requests!
+
 In Eclipse:
 
 - import existing project `org.eclipse.simrel.build`

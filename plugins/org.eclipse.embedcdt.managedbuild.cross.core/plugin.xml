@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
-<!-- 
-  Copyright (c) 2009, 2011 Wind River Systems, Inc. and others. 
-  This program and the accompanying materials 
-  are made available under the terms of the Eclipse Public License 2.0 
-  which accompanies this distribution, and is available at 
+<!--
+  Copyright (c) 2009, 2011 Wind River Systems, Inc. and others.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 2.0
+  which accompanies this distribution, and is available at
   https://www.eclipse.org/legal/epl-2.0/
 
-  SPDX-License-Identifier: EPL-2.0 
- 
-  Contributors: 
-    Doug Schaefer (Wind River) - initial API and implementation 
-    Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to 
-      build a project 
-    Liviu Ionescu - MCU version 
+  SPDX-License-Identifier: EPL-2.0
+
+  Contributors:
+    Doug Schaefer (Wind River) - initial API and implementation
+    Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to
+      build a project
+    Liviu Ionescu - MCU version
 -->
 <plugin>
 	<extension point="org.eclipse.cdt.managedbuilder.core.buildDefinitions">
@@ -661,6 +661,13 @@
 				isAbstract="true"
 				name="%option.linker.paths"
 				valueType="libPaths">
+			</option>
+			<option
+				defaultValue="false"
+				id="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.grouplibs"
+				isAbstract="true"
+				name="%option.linker.grouplibs"
+				valueType="boolean">
 			</option>
 			<option
 				command="-Xlinker ${VALUE}"
