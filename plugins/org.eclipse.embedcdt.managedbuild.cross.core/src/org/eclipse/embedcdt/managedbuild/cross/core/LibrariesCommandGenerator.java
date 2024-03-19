@@ -23,8 +23,7 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IOptionCommandGenerator;
 import org.eclipse.cdt.utils.cdtvariables.CdtVariableResolver;
 import org.eclipse.cdt.utils.cdtvariables.IVariableSubstitutor;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.embedcdt.internal.managedbuild.cross.core.Activator;
 
 /**
  * An option command generator to group libraries on the GNU linker command line
@@ -58,7 +57,7 @@ public class LibrariesCommandGenerator implements IOptionCommandGenerator {
 				}
 			}
 		} catch (BuildException | CdtVariableException e) {
-			Platform.getLog(getClass()).log(Status.error("Error generating libraries command", e)); //$NON-NLS-1$
+			Activator.log("Error generating libraries command" + e); //$NON-NLS-1$
 		}
 		return null; // fallback to default command generator
 	}
