@@ -42,7 +42,7 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- <https://download.eclipse.org/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202401111557.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403192128.zip>
 - <https://download.eclipse.org/embed-cdt/releases/6.6.0/p2/>
 
 The official download page is
@@ -69,7 +69,7 @@ to
 
 The deadline for SimRel changes is **Wed 5pm Ottawa time**.
 
-### Clone EPP
+### Clone EPP (deprecated)
 
 At first use, clone the EPP Git repo:
 
@@ -79,7 +79,7 @@ mkdir -p org.eclipse.epp.packages.git/.git/hooks/
 scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg org.eclipse.epp.packages.git/.git/hooks/
 ```
 
-### EPP deadline
+### EPP deadline (deprecated)
 
 The deadline for EPP changes is **Thu 9am Ottawa time**.
 
@@ -93,7 +93,7 @@ page, click the
 [Milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/)
 button and add a
 [new](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/new/)
-milestone. As title, use the current version, like _v6.6.0_.
+milestone. As title, use the current version, like _6.6.0_.
 
 ### Update version in README-MAINTENANCE
 
@@ -273,7 +273,7 @@ In Eclipse:
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release
 candidate p2 URL (like
-`https://download.eclipse.org/embed-cdt/release-candidates/6.6.0-202401111557/p2/`
+`https://download.eclipse.org/embed-cdt/release-candidates/6.6.0-202403192128/p2/`
 and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**
@@ -282,7 +282,7 @@ and press Enter
 - Save
 - stage `simrel.aggr` & `embedcdt.aggrcon`
 - commit with a message like:
-  - _embedcdt: update for 6.6.0-202401111557_,
+  - _embedcdt: update for 6.6.0-202403192128_,
   - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 - click the **Commit** button (do not Push yet)
 - right click, Show in local Terminal
@@ -312,7 +312,7 @@ In about 7-8 minutes it'll automatically rebuild the staging repo:
 
 Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
 use a subject like
-**Embed CDT v6.6.0-202401111557 release candidate**,
+**Embed CDT v6.6.0-202403192128 release candidate**,
 and pass a link to the release page, available at:
 
 - <https://projects.eclipse.org/projects/iot.embed-cdt/>
@@ -327,7 +327,7 @@ Go to the release candidate folder
 
 - [https://download.eclipse.org/embed-cdt/release-candidates/](https://download.eclipse.org/embed-cdt/release-candidates/)
 
-Copy the tag and enter it in Git, like `v6.6.0-202401111557` (with `v`).
+Copy the tag and enter it in Git, like `v6.6.0-202403192128` (with `v`).
 
 ## Publish the final release
 
@@ -381,12 +381,12 @@ In the `develop` branch, in `_posts/plugins/releases`, add a new release page.
 As links for the latest two, open <https://download.eclipse.org/embed-cdt/releases/>
 and get the archive URL, like:
 
-- <https://download.eclipse.org/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202401111557.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403192128.zip>
 
 Isolate the part starting with `/embed-cdt/...` and update the URLs to use the download redirect:
 
-- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202401111557.zip>
-- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202401111557.zip.sha>
+- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403192128.zip>
+- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403192128.zip.sha>
 
 Go to <https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones> and
 update the fixed issues.
