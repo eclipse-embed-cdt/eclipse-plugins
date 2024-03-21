@@ -42,7 +42,7 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- <https://download.eclipse.org/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403192128.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403210905.zip>
 - <https://download.eclipse.org/embed-cdt/releases/6.6.0/p2/>
 
 The official download page is
@@ -209,7 +209,7 @@ Go to the release candidate folder
 
 - <https://download.eclipse.org/embed-cdt/release-candidates/>
 
-Get the timestamp and update the README-MAINTENANCE.md file.
+Get the timestamp (like 202403210905) and update the README-MAINTENANCE.md file.
 
 Commit with _README-MAINTAINER update timestamp_.
 
@@ -273,7 +273,7 @@ In Eclipse:
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release
 candidate p2 URL (like
-`https://download.eclipse.org/embed-cdt/release-candidates/6.6.0-202403192128/p2/`
+`https://download.eclipse.org/embed-cdt/release-candidates/6.6.0-202403210905/p2/`
 and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**
@@ -282,7 +282,7 @@ and press Enter
 - Save
 - stage `simrel.aggr` & `embedcdt.aggrcon`
 - commit with a message like:
-  - _embedcdt: update for 6.6.0-202403192128_,
+  - _embedcdt: update for 6.6.0-202403210905_,
   - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
 - click the **Commit** button (do not Push yet)
 - right click, Show in local Terminal
@@ -312,7 +312,7 @@ In about 7-8 minutes it'll automatically rebuild the staging repo:
 
 Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
 use a subject like
-**Embed CDT v6.6.0-202403192128 release candidate**,
+**Embed CDT v6.6.0-202403210905 release candidate**,
 and pass a link to the release page, available at:
 
 - <https://projects.eclipse.org/projects/iot.embed-cdt/>
@@ -327,7 +327,7 @@ Go to the release candidate folder
 
 - [https://download.eclipse.org/embed-cdt/release-candidates/](https://download.eclipse.org/embed-cdt/release-candidates/)
 
-Copy the tag and enter it in Git, like `v6.6.0-202403192128` (with `v`).
+Copy the tag and enter it in Git, like `v6.6.0-202403210905` (with `v`).
 
 ## Publish the final release
 
@@ -381,12 +381,12 @@ In the `develop` branch, in `_posts/plugins/releases`, add a new release page.
 As links for the latest two, open <https://download.eclipse.org/embed-cdt/releases/>
 and get the archive URL, like:
 
-- <https://download.eclipse.org/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403192128.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403210905.zip>
 
 Isolate the part starting with `/embed-cdt/...` and update the URLs to use the download redirect:
 
-- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403192128.zip>
-- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403192128.zip.sha>
+- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403210905.zip>
+- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202403210905.zip.sha>
 
 Go to <https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones> and
 update the fixed issues.
