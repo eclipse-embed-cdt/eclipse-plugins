@@ -69,20 +69,6 @@ to
 
 The deadline for SimRel changes is **Wed 5pm Ottawa time**.
 
-### Clone EPP (deprecated)
-
-At first use, clone the EPP Git repo:
-
-```bash
-git clone ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git org.eclipse.epp.packages.git
-mkdir -p org.eclipse.epp.packages.git/.git/hooks/
-scp -p -P 29418 lionescu@git.eclipse.org:hooks/commit-msg org.eclipse.epp.packages.git/.git/hooks/
-```
-
-### EPP deadline (deprecated)
-
-The deadline for EPP changes is **Thu 9am Ottawa time**.
-
 ### Create a new milestone
 
 If not already done, create a new milestone.
@@ -239,13 +225,13 @@ Start with _Release candidate_ (Header 3).
 <p>For those who want to beta test, the release candidate is available via <strong>Install New Software</strong> from:</p>
 
 <ul>
-	<li>https://download.eclipse.org/embed-cdt/updates/v6-test/</li>
+  <li>https://download.eclipse.org/embed-cdt/updates/v6-test/</li>
 </ul>
 ```
 
 Select the **Release Type** (major, minor, service).
 
-Click the bottom **Save** button.
+Click the bottom **Save** button. Leave the page.
 
 ### Test
 
@@ -253,51 +239,26 @@ Install the plug-ins on several platforms.
 
 ### Update SimRel for the release candidate (optional)
 
-If everything is fine, update SimRel.
+Full instructions are here: <https://github.com/orgs/eclipse-simrel/discussions/3>
+
+but the simple version is update and create a PR against <https://github.com/eclipse-simrel/simrel.build>
+
+If everything is fine, sync the SimRel fork:
+
+- <https://github.com/embed-cdt/simrel.build>
 
 With a Git client:
 
-- open `org.eclipse.simrel.build.git`
+- open `simrel.build-fork.git`
 - pull new commits
-
-Go to the release candidate folder
-
-- [https://download.eclipse.org/embed-cdt/release-candidates/](https://download.eclipse.org/embed-cdt/release-candidates/)
-
-In Eclipse:
-
-- import existing project `org.eclipse.simrel.build`
-- open `simrel.aggr`
-- expand the 'Contribution: Embedded CDT'
-- select **Mapped Repository**
-- right click: **Show Properties View**
-- in the right side, edit the **Location** field to the new release
-candidate p2 URL (like
-`https://download.eclipse.org/embed-cdt/release-candidates/6.6.0-202403210905/p2/`
-and press Enter
-- select all the features in the contribution, right-click and choose
-**Fix Versions**
-- select the Contribution and **Validate**
-- select the Aggregation and **Validate**
-- Save
-- stage `simrel.aggr` & `embedcdt.aggrcon`
+- edit `embedcdt.aggrcon`
+  - replace location to <https://download.eclipse.org/embed-cdt/release-candidates/6.6.0-202403210905/p2/>
+  - replace full version to `6.6.0.202403210905`
+  - replace short version to `6.6.0`
 - commit with a message like:
-  - _embedcdt: update for 6.6.0-202403210905_,
-  - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
-- click the **Commit** button (do not Push yet)
-- right click, Show in local Terminal
-
-```bash
-git push ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build HEAD:refs/for/master
-```
-
-This will trigger a Gerrit run.
-
-Check the console output, for the Gerrit link. If missed, it'll be
-later sent by e-mail, when the run completes.
-
-In Gerrit web page, if the check is successful and Verified+1 is shown,
-click **CODE_REVIEW+2** and then **SUBMIT** to merge the changes.
+  - _embedcdt: update for 6.6.0-202403210905 release candidate_,
+- push
+- create pull request
 
 The commit will trigger the [SimRel](https://ci.eclipse.org/simrel/)
 Jenkins aggregator pipeline:
@@ -469,8 +430,8 @@ In Eclipse:
 - select **Mapped Repository**
 - right click: **Show Properties View**
 - in the right side, edit the **Location** field to the new release p2 URL
-(like `https://download.eclipse.org/embed-cdt/releases/6.6.0/p2/`
-and press Enter
+  (like `https://download.eclipse.org/embed-cdt/releases/6.6.0/p2/`)
+  and press Enter
 - select all the features in the contribution, right-click and choose
 **Fix Versions**
 - select the Contribution and **Validate**
@@ -503,62 +464,6 @@ After another while (about 10 min) it'll automatically rebuild the staging repo:
 
 - <https://download.eclipse.org/staging/>
 
-## Check & update EPP
-
-If the list of features changed, it is necessary to
-update the EPP project.
-
-Pull new commits.
-
-- edit `packages/org.eclipse.epp.package.embedcpp.product/epp.product`
-- update the list of features
-
-### package.embedcpp
-
-To change the default preferences, edit the
-`packages/org.eclipse.epp.package.embedcpp/plugin_customization.ini`
-
-### package.embedcpp.feature
-
-If necessary, update the text displayed in the Downloads page, it is in
-`packages/org.eclipse.epp.package.embedcpp.feature/epp.website.xml` file, the
-`<description>` element.
-
-Update the version in **NewAndNoteworthy**, in the same file.
-
-### Compare to package.cpp
-
-Compare the three packages with the similar ones from CPP:
-
-```sh
-cd org.eclipse.epp.packages.git
-
-diff packages/org.eclipse.epp.package.cpp packages/org.eclipse.epp.package.embedcpp
-diff packages/org.eclipse.epp.package.cpp.feature packages/org.eclipse.epp.package.embedcpp.feature
-diff packages/org.eclipse.epp.package.cpp.product packages/org.eclipse.epp.package.embedcpp.product
-```
-
-### Commit & push
-
-Commit and push to Gerrit:
-
-```bash
-git commit -m 'embedcpp: ...'
-git push ssh://lionescu@git.eclipse.org:29418/epp/org.eclipse.epp.packages.git HEAD:refs/for/master
-```
-
-In Gerrit, click **CODE_REVIEW+2** and then **SUBMIT** to merge the changes.
-
-The commit will trigger the [EPP](https://ci.eclipse.org/packaging/)
-Jenkins job:
-
-- <https://ci.eclipse.org/packaging/job/simrel.epp-tycho-build/>
-
-In 1.5 hours the new test versions of the integrated epp builds are
-available from:
-
-- <https://ci.eclipse.org/packaging/job/simrel.epp-tycho-build/lastSuccessfulBuild/artifact/org.eclipse.epp.packages/archive/>
-
 ## Announce release
 
 Announce the release to the **embed-cdt-dev@eclipse.org** list;
@@ -567,7 +472,7 @@ pass a link to the release page (<https://eclipse-embed-cdt.github.io/news/>).
 
 ## Share on Twitter
 
-- in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
+- in a separate browser windows, open [X/Twitter](https://twitter.com/)
 - using the `@EmbedCDT` account, enter a message like
   **Eclipse Embedded CDT plug-ins v6.6.0 released** and on the next line
   paste the link to the release
