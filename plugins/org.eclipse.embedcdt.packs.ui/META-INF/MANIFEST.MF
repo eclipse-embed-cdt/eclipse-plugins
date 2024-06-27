@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: org.eclipse.embedcdt.packs.ui;singleton:=true
-Bundle-Version: 2.0.3.qualifier
+Bundle-Version: 2.0.100.qualifier
 Bundle-Activator: org.eclipse.embedcdt.internal.packs.ui.Activator
 Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.6.0",
  org.eclipse.embedcdt.packs.core;bundle-version="3.1.3",
@@ -11,7 +11,6 @@ Require-Bundle: org.eclipse.embedcdt.core;bundle-version="6.6.0",
  org.eclipse.core.filesystem;bundle-version="1.7.700",
  org.eclipse.core.runtime;bundle-version="3.19.0",
  org.eclipse.jface;bundle-version="3.21.0",
- org.eclipse.osgi.services;bundle-version="3.9.0",
  org.eclipse.ui;bundle-version="3.118.0",
  org.eclipse.ui.console;bundle-version="3.9.300",
  org.eclipse.ui.ide;bundle-version="3.17.200",
@@ -27,5 +26,6 @@ Export-Package: org.eclipse.embedcdt.internal.packs.ui;x-internal:=true,
  org.eclipse.embedcdt.packs.ui.handlers,
  org.eclipse.embedcdt.packs.ui.preferences,
  org.eclipse.embedcdt.packs.ui.views;x-friends:="org.eclipse.embedcdt.managedbuild.packs.ui"
+Import-Package: org.osgi.service.component.annotations;version="0.0.0"
 Service-Component: OSGI-INF/org.eclipse.embedcdt.internal.packs.ui.MessageConsoles.xml
 Automatic-Module-Name: org.eclipse.embedcdt.packs.ui
