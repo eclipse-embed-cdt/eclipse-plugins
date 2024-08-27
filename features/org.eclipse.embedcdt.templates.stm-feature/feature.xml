@@ -14,7 +14,7 @@
 <feature
       id="org.eclipse.embedcdt.templates.stm"
       label="%featureName"
-      version="6.6.0.qualifier"
+      version="6.6.1.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.embedcdt.templates.stm"
       license-feature="org.eclipse.license"
