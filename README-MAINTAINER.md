@@ -42,8 +42,8 @@ For archiving purposes, the release is also published in a separate folder
 for each version, with the archive in the top folder and the p2 repo as
 a sub-folder
 
-- <https://download.eclipse.org/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202404031712.zip>
-- <https://download.eclipse.org/embed-cdt/releases/6.6.0/p2/>
+- <https://download.eclipse.org/embed-cdt/releases/6.6.1/org.eclipse.embedcdt.repository-6.6.1-202404031712.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.6.1/p2/>
 
 The official download page is
 
@@ -85,7 +85,7 @@ page, click the
 [Milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/)
 button and add a
 [new](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones/new/)
-milestone. As title, use the current version, like _6.6.0_.
+milestone. As title, use the current version, like _6.6.1_.
 
 ### Update version in README-MAINTENANCE
 
@@ -114,17 +114,17 @@ For the plug-ins that were modified, increase the specific version
 
 Commit the MANIFEST.MF files as _update versions..._
 
-For all features, increase the common version (like _6.6.0_); be sure
+For all features, increase the common version (like _6.6.1_); be sure
 the composite records are not updated at this moment, they require
 new lines, added later.
 
 For all branding, edit the MANIFEST.MF and increase the
-`Bundle-Version` (like _6.6.0_).
+`Bundle-Version` (like _6.6.1_).
 
 For all other occurrences, except `compositeArtifacts.xml` and
 `compositeContent.xml`.
 
-Commit all with _update package version 6.6.0_.
+Commit all with _update package version 6.6.1_.
 
 ## Build locally
 
@@ -215,7 +215,7 @@ page, login and click the
 [Create a new release](https://projects.eclipse.org/node/18638/create-release/)
 link in the right side bar, below Releases (it shows only after login).
 
-Name it like `6.6.0` (no v).
+Name it like `6.6.1` (no v).
 
 Click the **Create and edit** button.
 
@@ -224,7 +224,7 @@ Click the **Edit** tab, **The Basics**; switch to Source mode
 Start with _Release candidate_ (Header 3).
 
 ```html
-<p>Version <strong>6.6.0</strong> is a maintenance/new minor release; it ....</p>
+<p>Version <strong>6.6.1</strong> is a maintenance/new minor release; it ....</p>
 
 <h3>Release candidate</h3>
 
@@ -258,11 +258,11 @@ With a Git client:
 - open `simrel.build-fork.git`
 - pull new commits
 - edit `embedcdt.aggrcon`
-  - replace location to <https://download.eclipse.org/embed-cdt/release-candidates/6.6.0-202404031712/p2/>
-  - replace full version to `6.6.0.202404031712`
-  - replace short version to `6.6.0`
+  - replace location to <https://download.eclipse.org/embed-cdt/release-candidates/6.6.1-202404031712/p2/>
+  - replace full version to `6.6.1.202404031712`
+  - replace short version to `6.6.1`
 - commit with a message like:
-  - _embedcdt: update for 6.6.0-202404031712 release candidate_,
+  - _embedcdt: update for 6.6.1-202404031712 release candidate_,
 - push
 - create pull request
 
@@ -279,7 +279,7 @@ In about 7-8 minutes it'll automatically rebuild the staging repo:
 
 Announce the release candidate to the **embed-cdt-dev@eclipse.org** list;
 use a subject like
-**Embed CDT v6.6.0-202404031712 release candidate**,
+**Embed CDT v6.6.1-202404031712 release candidate**,
 and pass a link to the release page, available at:
 
 - <https://projects.eclipse.org/projects/iot.embed-cdt/>
@@ -294,7 +294,7 @@ Go to the release candidate folder
 
 - <https://download.eclipse.org/embed-cdt/release-candidates/>
 
-Copy the tag and enter it in Git, like `v6.6.0-202404031712` (with `v`).
+Copy the tag and enter it in Git, like `v6.6.1-202404031712` (with `v`).
 
 ## Publish the final release
 
@@ -303,9 +303,9 @@ When the plug-ins are considered stable:
 - in `eclipse-plugins.git`, the master branch, edit both .xml files
   - `repositories/org.eclipse.embededcdt-repository/composite/compositeArtifacts.xml`
   - `repositories/org.eclipse.embededcdt-repository/composite/compositeContent.xml`
-  - add new child like `<child location='../../releases/6.6.0/p2'/>`
+  - add new child like `<child location='../../releases/6.6.1/p2'/>`
   - update `p2.timestamp` to the value shown at the end of the `make-release-candidate-from-master`
-- **commit** master with a message like _add 6.6.0 to composite_
+- **commit** master with a message like _add 6.6.1 to composite_
 - **push** master
 
 - go to <https://ci.eclipse.org/embed-cdt/>
@@ -328,7 +328,7 @@ Both can be used in Eclipse to **Install New Software**.
 The public update URLs are:
 
 - <https://download.eclipse.org/embed-cdt/updates/v6/>
-- <https://download.eclipse.org/embed-cdt/releases/6.6.0/p2/>
+- <https://download.eclipse.org/embed-cdt/releases/6.6.1/p2/>
 
 ### Update the Eclipse Marketplace records
 
@@ -348,12 +348,12 @@ In the `develop` branch, in `_posts/plugins/releases`, add a new release page.
 As links for the latest two, open <https://download.eclipse.org/embed-cdt/releases/>
 and get the archive URL, like:
 
-- <https://download.eclipse.org/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202404031712.zip>
+- <https://download.eclipse.org/embed-cdt/releases/6.6.1/org.eclipse.embedcdt.repository-6.6.1-202404031712.zip>
 
 Isolate the part starting with `/embed-cdt/...` and update the URLs to use the download redirect:
 
-- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202404031712.zip>
-- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.6.0/org.eclipse.embedcdt.repository-6.6.0-202404031712.zip.sha>
+- <https://www.eclipse.org/downloads/download.php?file=/embed-cdt/releases/6.6.1/org.eclipse.embedcdt.repository-6.6.1-202404031712.zip>
+- <https://www.eclipse.org/downloads/download.php?file=//embed-cdt/releases/6.6.1/org.eclipse.embedcdt.repository-6.6.1-202404031712.zip.sha>
 
 Go to <https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones> and
 update the fixed issues.
@@ -364,7 +364,7 @@ Copy/paste the features/plug-ins from the console output of the
 [make-release-from-master](https://ci.eclipse.org/embed-cdt/job/make-release-from-master/)
 Jenkins job.
 
-- commit with a message like _Eclipse Embedded CDT plug-ins v6.6.0 released_.
+- commit with a message like _Eclipse Embedded CDT plug-ins v6.6.1 released_.
 - push the `develop` branch
 - wait for GitHub Actions job to complete
   (<https://github.com/eclipse-embed-cdt/web-jekyll/actions>)
@@ -378,10 +378,10 @@ Jenkins job.
 
 In [GitHub releases](https://github.com/eclipse-embed-cdt/eclipse-plugins/releases) add a new release
 
-- tag: _v6.6.0_ (with `v`)
-- title _Eclipse Embedded CDT plug-ins v6.6.0_
+- tag: _v6.6.1_ (with `v`)
+- title _Eclipse Embedded CDT plug-ins v6.6.1_
 - copy/paste from the release page
-- add `[Continue reading »](https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.6.0-released/)` with a link to the web page
+- add `[Continue reading »](https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.6.1-released/)` with a link to the web page
 - do not attach files
 - click **Publish release**
 
@@ -389,7 +389,7 @@ In [GitHub releases](https://github.com/eclipse-embed-cdt/eclipse-plugins/releas
 
 In [GitHub milestones](https://github.com/eclipse-embed-cdt/eclipse-plugins/milestones):
 
-- close the v6.6.0 milestone
+- close the v6.6.1 milestone
 
 ### Update the Eclipse release record
 
@@ -400,13 +400,13 @@ and select the new release
 - replace the entire content with links to GitHub:
 
 ```html
-<p>Version <strong>6.6.0</strong> is a new major/minor/service release; it updates ...</p>
+<p>Version <strong>6.6.1</strong> is a new major/minor/service release; it updates ...</p>
 
 <p>Fore more details, please read the project web release pages:</p>
 
 <ul>
  <li><a href="https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/package-2020-12-released/">Eclipse IDE for Embedded C/C++ Developers 2020-12 released</a>&nbsp;(for installing a new Eclipse)</li>
- <li><a href="https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.6.0-released/">Eclipse Embedded CDT plug-ins v6.6.0 released</a>&nbsp;(for updating the plug-ins on an existing Eclipse)</li>
+ <li><a href="https://eclipse-embed-cdt.github.io/blog/YYYY/MM/DD/plugins-v6.6.1-released/">Eclipse Embedded CDT plug-ins v6.6.1 released</a>&nbsp;(for updating the plug-ins on an existing Eclipse)</li>
 </ul>
 ```
 
@@ -431,11 +431,11 @@ Use the <https://github.com/embed-cdt/simrel.build> fork.
 - open `simrel.build-fork.git`
 - pull new commits
 - edit `embedcdt.aggrcon`
-  - replace location to <https://download.eclipse.org/embed-cdt/releases/6.6.0/p2/>
-  - replace full version to `6.6.0.202404031712`
-  - replace short version to `6.6.0`
+  - replace location to <https://download.eclipse.org/embed-cdt/releases/6.6.1/p2/>
+  - replace full version to `6.6.1.202404031712`
+  - replace short version to `6.6.1`
 - commit with a message like:
-  - _embedcdt: update for 6.6.0_,
+  - _embedcdt: update for 6.6.1_,
 - push
 - create pull request
   - from <https://github.com/embed-cdt/simrel.build>
@@ -454,13 +454,13 @@ After another while (about 10 min) it'll automatically rebuild the staging repo:
 ## Announce release
 
 Announce the release to the **embed-cdt-dev@eclipse.org** list;
-use a subject like **Eclipse Embedded CDT plug-ins v6.6.0 released**, and
+use a subject like **Eclipse Embedded CDT plug-ins v6.6.1 released**, and
 pass a link to the release page (<https://eclipse-embed-cdt.github.io/news/>).
 
 ## Share on Twitter
 
 - in a separate browser windows, open [X/Twitter](https://twitter.com/)
 - using the `@EmbedCDT` account, enter a message like
-  **Eclipse Embedded CDT plug-ins v6.6.0 released** and on the next line
+  **Eclipse Embedded CDT plug-ins v6.6.1 released** and on the next line
   paste the link to the release
 - click the Tweet button
