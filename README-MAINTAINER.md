@@ -53,6 +53,10 @@ The official download page is
 
 ### Clone SimRel
 
+Update:
+
+- <https://github.com/eclipse-simrel>
+
 Install the **CBI Aggregator Editor** from:
 
 - <https://download.eclipse.org/cbi/updates/aggregator/ide/4.13>
@@ -64,6 +68,8 @@ At first use, fork the SimRel Git repo from:
 to
 
 - <https://github.com/embed-cdt/simrel.build>
+
+(in eclipse-embed-cdt it is not possible!)
 
 ### SimRel deadline
 
@@ -418,41 +424,22 @@ Use copy/paste/edit.
 
 ## Check & update SimRel
 
+Use the <https://github.com/embed-cdt/simrel.build> fork.
+
 **Pull** new commits.
 
-NOTE: to be updated for Pull Requests!
-
-In Eclipse:
-
-- import existing project `org.eclipse.simrel.build`
-- open `simrel.aggr`
-- expand the 'Contribution: Embedded CDT'
-- select **Mapped Repository**
-- right click: **Show Properties View**
-- in the right side, edit the **Location** field to the new release p2 URL
-  (like `https://download.eclipse.org/embed-cdt/releases/6.6.0/p2/`)
-  and press Enter
-- select all the features in the contribution, right-click and choose
-**Fix Versions**
-- select the Contribution and **Validate**
-- select the Aggregation and **Validate**
-- stage `embededcdt.aggrcom`
+- open `simrel.build-fork.git`
+- pull new commits
+- edit `embedcdt.aggrcon`
+  - replace location to <https://download.eclipse.org/embed-cdt/releases/6.6.0/p2/>
+  - replace full version to `6.6.0.202404031712`
+  - replace short version to `6.6.0`
 - commit with a message like:
-  - _embedcdt: update for 6.6.0_
-  - _Signed-off-by: Liviu Ionescu <ilg@livius.net>_
-- click the **Commit** button (do not push yet)
-- right click, Show in local Terminal
-
-```bash
-git push ssh://lionescu@git.eclipse.org:29418/simrel/org.eclipse.simrel.build HEAD:refs/for/master
-```
-
-This will trigger a Gerrit run.
-
-Check the console output, for the Gerrit link. If missed, it'll be
-later sent by e-mail, when the run completes.
-
-In Gerrit, click **CODE_REVIEW+2** and then **SUBMIT** to merge the changes.
+  - _embedcdt: update for 6.6.0_,
+- push
+- create pull request
+  - from <https://github.com/embed-cdt/simrel.build>
+  - to <https://github.com/eclipse-simrel/simrel.build/pull>
 
 After a while (it might take about 10 minutes),
 the commit will trigger the [SimRel](https://ci.eclipse.org/simrel/)
