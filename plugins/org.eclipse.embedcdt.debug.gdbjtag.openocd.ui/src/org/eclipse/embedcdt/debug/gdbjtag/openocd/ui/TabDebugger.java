@@ -94,6 +94,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Text fGdbServerOtherOptions;
 
+	private Button fDoConnectToRunning;
+
 	private Button fDoGdbServerAllocateConsole;
 	private Button fDoGdbServerAllocateTelnetConsole;
 
@@ -117,11 +119,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private DefaultPreferences fDefaultPreferences;
 	private PersistentPreferences fPersistentPreferences;
 
+	private TabStartup fTabStartup;
+
 	// ------------------------------------------------------------------------
 
 	protected TabDebugger(TabStartup tabStartup) {
 		super();
-
+		fTabStartup = tabStartup;
 		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 	}
@@ -232,12 +236,31 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-			fDoStartGdbServer = new Button(comp, SWT.CHECK);
-			fDoStartGdbServer.setText(Messages.DebuggerTab_doStartGdbServer_Text);
-			fDoStartGdbServer.setToolTipText(Messages.DebuggerTab_doStartGdbServer_ToolTipText);
-			GridData gd = new GridData();
+
+			Composite local = new Composite(comp, SWT.NONE);
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 2;
+			layout.marginHeight = 0;
+			layout.marginWidth = 0;
+			local.setLayout(layout);
+
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
-			fDoStartGdbServer.setLayoutData(gd);
+			local.setLayoutData(gd);
+			{
+				fDoStartGdbServer = new Button(local, SWT.CHECK);
+				fDoStartGdbServer.setText(Messages.DebuggerTab_doStartGdbServer_Text);
+				fDoStartGdbServer.setToolTipText(Messages.DebuggerTab_doStartGdbServer_ToolTipText);
+				gd = new GridData(GridData.FILL_HORIZONTAL);
+				fDoStartGdbServer.setLayoutData(gd);
+
+				fDoConnectToRunning = new Button(local, SWT.CHECK);
+				fDoConnectToRunning.setText(Messages.DebuggerTab_noReset_Text);
+				fDoConnectToRunning.setToolTipText(Messages.DebuggerTab_noReset_ToolTipText);
+				gd = new GridData(GridData.FILL_HORIZONTAL);
+				fDoConnectToRunning.setLayoutData(gd);
+			}
+
 		}
 
 		{
@@ -395,6 +418,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					fTargetIpAddress.setText(DefaultPreferences.REMOTE_IP_ADDRESS_LOCALHOST);
 					fTargetPortNumber.setText(fGdbServerGdbPort.getText());
 				}
+				scheduleUpdateJob();
+			}
+		});
+
+		fDoConnectToRunning.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// updateLaunchConfigurationDialog();
+				fTabStartup.doConnectToRunningChanged(fDoConnectToRunning.getSelection());
+
 				scheduleUpdateJob();
 			}
 		});
@@ -765,6 +798,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbClientOtherCommands.setEnabled(enabled);
 	}
 
+	private void propagateConnectToRunningChanged() {
+
+		if (fDoStartGdbServer.getSelection()) {
+
+			boolean enabled = fDoConnectToRunning.getSelection();
+			fTabStartup.doConnectToRunningChanged(!enabled);
+		}
+	}
+
 	protected void updateDecorations() {
 		if (fDoStartGdbServer.getSelection()) {
 			if (DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT.equals(fTargetIpAddress.getText())) {
@@ -803,6 +845,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				booleanDefault = fPersistentPreferences.getGdbServerDoStart();
 				fDoStartGdbServer.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER, booleanDefault));
+
+				fDoConnectToRunning
+						.setSelection(configuration.getAttribute(ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+								DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT));
 
 				// Executable
 				stringDefault = fPersistentPreferences.getGdbServerExecutable();
@@ -881,6 +927,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 
 			doStartGdbServerChanged();
+			propagateConnectToRunningChanged();
 
 			// Force thread update
 			boolean updateThreadsOnSuspend = configuration.getAttribute(
@@ -909,6 +956,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			// Start server locally
 			fDoStartGdbServer.setSelection(DefaultPreferences.DO_START_GDB_SERVER_DEFAULT);
+
+			fDoConnectToRunning.setSelection(DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
 
 			// Executable
 			stringDefault = fDefaultPreferences.getGdbServerExecutable();
@@ -1091,6 +1140,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			booleanValue = fDoStartGdbServer.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_START_GDB_SERVER, booleanValue);
 			fPersistentPreferences.putGdbServerDoStart(booleanValue);
+
+			// Connect to running
+			configuration.setAttribute(ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+					fDoConnectToRunning.getSelection());
 
 			// Executable
 			stringValue = fGdbServerExecutable.getText().trim();
