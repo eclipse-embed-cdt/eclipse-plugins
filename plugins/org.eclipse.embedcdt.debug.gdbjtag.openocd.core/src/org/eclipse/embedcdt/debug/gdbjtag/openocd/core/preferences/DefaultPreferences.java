@@ -39,6 +39,7 @@ public class DefaultPreferences extends org.eclipse.embedcdt.debug.gdbjtag.core.
 
 	// Not yet preferences
 	public static final boolean DO_START_GDB_SERVER_DEFAULT = true;
+	public static final boolean DO_CONNECT_TO_RUNNING_DEFAULT = false;
 	public static final String GDB_SERVER_CONNECTION_ADDRESS_DEFAULT = "";
 	public static final int GDB_SERVER_GDB_PORT_NUMBER_DEFAULT = 3333;
 	public static final int GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT = 4444;

@@ -75,15 +75,19 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 			return status;
 		}
 
-		if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
-				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
-				&& !DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
-						DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)) {
+		boolean doConnectToRunning = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+				DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
+		if (!doConnectToRunning) {
+			if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
+					IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
+					&& !DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
+							DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)) {
 
-			status = addLoadImageCommands(commandsList);
+				status = addLoadImageCommands(commandsList);
 
-			if (!status.isOK()) {
-				return status;
+				if (!status.isOK()) {
+					return status;
+				}
 			}
 		}
 
@@ -93,7 +97,10 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 	@Override
 	public IStatus addGnuMcuStartCommands(List<String> commandsList) {
 
-		IStatus status = addStartRestartCommands(true, commandsList);
+		boolean doReset = !DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+				DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
+
+		IStatus status = addStartRestartCommands(doReset, commandsList);
 
 		if (!status.isOK()) {
 			return status;
@@ -107,18 +114,24 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 	@Override
 	public IStatus addFirstResetCommands(List<String> commandsList) {
 
-		if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_FIRST_RESET,
-				DefaultPreferences.DO_FIRST_RESET_DEFAULT)) {
+		boolean noReset = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+				DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
 
-			String commandStr = DefaultPreferences.DO_FIRST_RESET_COMMAND;
-			String resetType = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.FIRST_RESET_TYPE,
-					DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
-			commandsList.add(commandStr + resetType);
+		if (!noReset) {
+			String commandStr;
+			if (DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_FIRST_RESET,
+					DefaultPreferences.DO_FIRST_RESET_DEFAULT)) {
 
-			// Although the manual claims that reset always does a
-			// halt, better issue it explicitly
-			commandStr = DefaultPreferences.HALT_COMMAND;
-			commandsList.add(commandStr);
+				commandStr = DefaultPreferences.DO_FIRST_RESET_COMMAND;
+				String resetType = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.FIRST_RESET_TYPE,
+						DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
+				commandsList.add(commandStr + resetType);
+
+				// Although the manual claims that reset always does a
+				// halt, better issue it explicitly
+				commandStr = DefaultPreferences.HALT_COMMAND;
+				commandsList.add(commandStr);
+			}
 		}
 
 		String otherInits = DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_INIT_COMMANDS,
@@ -155,17 +168,17 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 				commandStr = DefaultPreferences.HALT_COMMAND;
 				commandsList.add(commandStr);
 			}
-		}
 
 		if (DebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
 				&& DebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
 						DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)) {
 
-			IStatus status = addLoadImageCommands(commandsList);
+				IStatus status = addLoadImageCommands(commandsList);
 
-			if (!status.isOK()) {
-				return status;
+				if (!status.isOK()) {
+					return status;
+				}
 			}
 		}
 
