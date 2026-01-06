@@ -20,11 +20,11 @@ import java.util.List;
 
 import org.eclipse.cdt.dsf.datamodel.DMContexts;
 import org.eclipse.cdt.dsf.datamodel.IDMContext;
-import org.eclipse.cdt.dsf.debug.model.DsfMemoryBlockRetrieval;
 import org.eclipse.cdt.dsf.debug.service.IMemory;
 import org.eclipse.cdt.dsf.debug.service.IMemory.IMemoryDMContext;
 import org.eclipse.cdt.dsf.debug.service.IRunControl.IExitedDMEvent;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
+import org.eclipse.cdt.dsf.gdb.internal.memory.GdbMemoryBlockRetrieval;
 import org.eclipse.cdt.dsf.internal.DsfPlugin;
 import org.eclipse.cdt.dsf.service.DsfServiceEventHandler;
 import org.eclipse.cdt.dsf.service.DsfSession;
@@ -46,7 +46,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 @SuppressWarnings("restriction")
-public class PeripheralMemoryBlockRetrieval extends DsfMemoryBlockRetrieval {
+public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 
 	// ------------------------------------------------------------------------
 
