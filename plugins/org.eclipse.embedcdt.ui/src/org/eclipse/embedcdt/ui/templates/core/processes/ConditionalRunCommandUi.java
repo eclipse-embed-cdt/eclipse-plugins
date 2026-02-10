@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,6 @@ import org.eclipse.cdt.core.templateengine.TemplateCore;
 import org.eclipse.cdt.core.templateengine.process.ProcessArgument;
 import org.eclipse.cdt.core.templateengine.process.ProcessFailureException;
 import org.eclipse.cdt.core.templateengine.process.ProcessRunner;
-import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -117,9 +117,6 @@ public class ConditionalRunCommandUi extends ProcessRunner {
 			}
 		}
 
-		// Inherit from parent process.
-		String envp[] = null;
-
 		String substitutedCwd = EclipseUtils.performStringSubstitution(cwd);
 		if (substitutedCwd == null) {
 			// If substitution fails, revert to the original string, to alert
@@ -150,7 +147,10 @@ public class ConditionalRunCommandUi extends ProcessRunner {
 				try {
 					BufferedReader reader = null;
 					pm.worked(1);
-					Process process = ProcessFactory.getFactory().exec(cmdArray, envp, dir);
+					ProcessBuilder processBuilder = new ProcessBuilder(Arrays.asList(cmdArray));
+					processBuilder.directory(dir);
+
+					Process process = processBuilder.start();
 					pm.worked(1);
 					reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
