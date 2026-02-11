@@ -30,6 +30,8 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
+import org.eclipse.cdt.utils.pty.PTY;
+import org.eclipse.cdt.utils.pty.PTY.Mode;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
@@ -522,7 +524,12 @@ public class EclipseUtils {
 		List<String> outputLines = new ArrayList<>();
 		try {
 			BufferedReader reader = null;
-			Process process = ProcessFactory.getFactory().exec(cmdArray, envp);
+			Process process;
+			if (!PTY.isSupported(Mode.TERMINAL) || Platform.OS_WIN32.equals(Platform.getOS())) {
+				process = ProcessFactory.getFactory().exec(cmdArray, envp);
+			} else {
+				process = ProcessFactory.getFactory().exec(cmdArray, envp, null, new PTY(Mode.TERMINAL));
+			}
 			reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
 			String line;

@@ -26,6 +26,8 @@ import org.eclipse.cdt.core.templateengine.TemplateCore;
 import org.eclipse.cdt.core.templateengine.process.ProcessArgument;
 import org.eclipse.cdt.core.templateengine.process.ProcessFailureException;
 import org.eclipse.cdt.core.templateengine.process.ProcessRunner;
+import org.eclipse.cdt.utils.pty.PTY;
+import org.eclipse.cdt.utils.pty.PTY.Mode;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -33,6 +35,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.embedcdt.core.EclipseUtils;
 import org.eclipse.embedcdt.core.StringUtils;
 import org.eclipse.embedcdt.internal.core.Activator;
@@ -150,7 +153,12 @@ public class ConditionalRunCommand extends ProcessRunner {
 
 		try {
 			BufferedReader reader = null;
-			Process process = ProcessFactory.getFactory().exec(cmdArray, envp, dir);
+			Process process;
+			if (!PTY.isSupported(Mode.TERMINAL) || Platform.OS_WIN32.equals(Platform.getOS())) {
+				process = ProcessFactory.getFactory().exec(cmdArray, envp, dir);
+			} else {
+				process = ProcessFactory.getFactory().exec(cmdArray, envp, dir, new PTY(Mode.TERMINAL));
+			}
 			reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
 			String line;
