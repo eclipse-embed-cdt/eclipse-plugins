@@ -333,73 +333,72 @@ public class InstallJob extends Job {
 		boolean result = true;
 
 		// Get the zip file content.
-		ZipInputStream zipInput;
-		zipInput = new ZipInputStream(new FileInputStream(archiveFile));
-		// Get the zipped file list entry
-		ZipEntry zipEntry = zipInput.getNextEntry();
+		try (ZipInputStream zipInput = new ZipInputStream(new FileInputStream(archiveFile))) {
+			// Get the zipped file list entry
+			ZipEntry zipEntry = zipInput.getNextEntry();
 
-		int countFiles = 0;
-		int countBytes = 0;
-		while (zipEntry != null && (result == true)) {
+			int countFiles = 0;
+			int countBytes = 0;
+			while (zipEntry != null && (result == true)) {
 
-			// Skip the folder definitions, we automatically create them.
-			if (!zipEntry.isDirectory()) {
+				// Skip the folder definitions, we automatically create them.
+				if (!zipEntry.isDirectory()) {
 
-				String fileName = zipEntry.getName();
+					String fileName = zipEntry.getName();
 
-				IPath path = destRelativePath.append(fileName);
-				File outFile = PacksStorage.getFileObject(path.toString());
-				if (!outFile.getParentFile().exists()) {
-					outFile.getParentFile().mkdirs();
-				}
-				fOut.println("Writing \"" + outFile + "\"...");
+					IPath path = destRelativePath.append(fileName);
+					File outFile = PacksStorage.getFileObject(path.toString());
+					if (!outFile.getParentFile().exists()) {
+						outFile.getParentFile().mkdirs();
+					}
+					fOut.println("Writing \"" + outFile + "\"...");
 
-				OutputStream output = new FileOutputStream(outFile);
+					OutputStream output = new FileOutputStream(outFile);
 
-				byte[] buf = new byte[1024];
-				int bytesRead;
-				while ((bytesRead = zipInput.read(buf)) > 0) {
+					byte[] buf = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = zipInput.read(buf)) > 0) {
+						try {
+							output.write(buf, 0, bytesRead);
+						} catch (IOException e) {
+							String msg = e.getMessage() + ", file: " + outFile.getName();
+							fOut.println("Error: " + msg);
+							DataUtils.reportError(msg);
+
+							result = false;
+							break;
+						}
+						countBytes += bytesRead;
+					}
 					try {
-						output.write(buf, 0, bytesRead);
+						output.close();
 					} catch (IOException e) {
 						String msg = e.getMessage() + ", file: " + outFile.getName();
 						fOut.println("Error: " + msg);
 						DataUtils.reportError(msg);
 
 						result = false;
-						break;
 					}
-					countBytes += bytesRead;
-				}
-				try {
-					output.close();
-				} catch (IOException e) {
-					String msg = e.getMessage() + ", file: " + outFile.getName();
-					fOut.println("Error: " + msg);
-					DataUtils.reportError(msg);
 
-					result = false;
+					outFile.setReadOnly();
+					++countFiles;
+
 				}
 
-				outFile.setReadOnly();
-				++countFiles;
-
+				zipEntry = zipInput.getNextEntry();
 			}
 
-			zipEntry = zipInput.getNextEntry();
-		}
+			fMonitor.worked(1);
 
-		fMonitor.worked(1);
-
-		zipInput.closeEntry();
-		zipInput.close();
-		if (countBytes > 0) {
-			fOut.println(countFiles + " files written, " + StringUtils.convertSizeToString(countBytes) + ".");
-		} else {
-			fOut.println("No files written.");
-			result = false;
+			zipInput.closeEntry();
+			if (countBytes > 0) {
+				fOut.println(countFiles + " files written, " + StringUtils.convertSizeToString(countBytes) + ".");
+			} else {
+				fOut.println("No files written.");
+				result = false;
+			}
+			return result;
 		}
-		return result;
 	}
 
 }

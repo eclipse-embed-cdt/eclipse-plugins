@@ -435,35 +435,34 @@ public class SvdUtils {
 				out.println("Decompressing zipped SVD file \"" + path.toOSString() + "\"...");
 
 				// This is the signature of ZIP files.
-				ZipInputStream zipInput;
-				zipInput = new ZipInputStream(new FileInputStream(file));
-				// Get the zipped file list entry
-				ZipEntry zipEntry = zipInput.getNextEntry();
-				while (zipEntry != null) {
-					if (!zipEntry.isDirectory()) {
-						String fileName = zipEntry.getName();
+				try (ZipInputStream zipInput = new ZipInputStream(new FileInputStream(file))) {
+					// Get the zipped file list entry
+					ZipEntry zipEntry = zipInput.getNextEntry();
+					while (zipEntry != null) {
+						if (!zipEntry.isDirectory()) {
+							String fileName = zipEntry.getName();
 
-						File outFile = PacksStorage.getCachedFileObject(fileName);
-						if (!outFile.getParentFile().exists()) {
-							outFile.getParentFile().mkdirs();
+							File outFile = PacksStorage.getCachedFileObject(fileName);
+							if (!outFile.getParentFile().exists()) {
+								outFile.getParentFile().mkdirs();
+							}
+							out.println("Writing \"" + outFile + "\"...");
+
+							OutputStream output = new FileOutputStream(outFile);
+
+							byte[] buf = new byte[1024];
+							int bytesRead;
+							while ((bytesRead = zipInput.read(buf)) > 0) {
+								output.write(buf, 0, bytesRead);
+							}
+							output.close();
+							actualPath = new Path(outFile.getAbsolutePath());
+							break;
 						}
-						out.println("Writing \"" + outFile + "\"...");
-
-						OutputStream output = new FileOutputStream(outFile);
-
-						byte[] buf = new byte[1024];
-						int bytesRead;
-						while ((bytesRead = zipInput.read(buf)) > 0) {
-							output.write(buf, 0, bytesRead);
-						}
-						output.close();
-						actualPath = new Path(outFile.getAbsolutePath());
-						break;
+						zipEntry = zipInput.getNextEntry();
 					}
-					zipEntry = zipInput.getNextEntry();
+					zipInput.closeEntry();
 				}
-				zipInput.closeEntry();
-				zipInput.close();
 
 				file = actualPath.toFile();
 				reader = new FileReader(file);
