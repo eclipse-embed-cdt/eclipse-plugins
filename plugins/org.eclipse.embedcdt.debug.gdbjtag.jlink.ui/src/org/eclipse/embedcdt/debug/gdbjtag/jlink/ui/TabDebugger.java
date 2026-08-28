@@ -1211,6 +1211,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			boolean enabled = fDoConnectToRunning.getSelection();
 
 			fDoGdbServerInitRegs.setEnabled(!enabled);
+
+			fTabStartup.doConnectToRunningChanged(!enabled);
 		}
 	}
 
