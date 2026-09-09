@@ -301,8 +301,8 @@ Copy the tag and enter it in Git, like `v6.8.0-202608251538` (with `v`).
 When the plug-ins are considered stable:
 
 - in `eclipse-plugins.git`, the master branch, edit both .xml files
-  - `repositories/org.eclipse.embededcdt-repository/composite/compositeArtifacts.xml`
-  - `repositories/org.eclipse.embededcdt-repository/composite/compositeContent.xml`
+  - `repositories/org.eclipse.embedcdt-repository/composite/compositeArtifacts.xml`
+  - `repositories/org.eclipse.embedcdt-repository/composite/compositeContent.xml`
   - add new child like `<child location='../../releases/6.8.0/p2'/>`
   - update `p2.timestamp` to the value shown at the end of the `make-release-candidate-from-master`
 - **commit** master with a message like _add 6.8.0 to composite_
