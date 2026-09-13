@@ -782,6 +782,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		fDoContinue.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 	}
 
+	public void doConnectToRunningChanged(boolean flag) {
+
+		fDoFirstReset.setEnabled(!flag);
+		fFirstResetType.setEnabled(!flag);
+
+		fDoSecondReset.setEnabled(!flag);
+		fSecondResetType.setEnabled(!flag);
+		fSecondResetWarning.setEnabled(!flag);
+
+		fLoadExecutable.setEnabled(!flag);
+
+		fSetPcRegister.setEnabled(!flag);
+		fPcRegister.setEnabled(!flag);
+	}
+
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		if (!super.isValid(launchConfig))
@@ -985,6 +1000,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			pcRegisterChanged();
 			stopAtChanged();
 			updateUseFileEnablement();
+			doConnectToRunningChanged(configuration.getAttribute(ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+					DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT));
 
 		} catch (CoreException e) {
 			Activator.log(e.getStatus());

@@ -30,6 +30,8 @@ public interface ConfigurationAttributes extends org.eclipse.embedcdt.debug.gdbj
 
 	public static final String DO_START_GDB_SERVER = PREFIX + ".doStartGdbServer"; //$NON-NLS-1$
 
+	public static final String DO_CONNECT_TO_RUNNING = PREFIX + ".doConnectToRunning"; //$NON-NLS-1$
+
 	public static final String GDB_SERVER_EXECUTABLE = PREFIX + ".gdbServerExecutable"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_CONNECTION_ADDRESS = PREFIX + ".gdbServerConnectionAddress"; //$NON-NLS-1$

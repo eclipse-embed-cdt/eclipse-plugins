@@ -1339,6 +1339,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			updateUseFileEnablement();
 
+			doConnectToRunningChanged(configuration.getAttribute(ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+					DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT));
+
 		} catch (CoreException e) {
 			Activator.log(e.getStatus());
 		}
