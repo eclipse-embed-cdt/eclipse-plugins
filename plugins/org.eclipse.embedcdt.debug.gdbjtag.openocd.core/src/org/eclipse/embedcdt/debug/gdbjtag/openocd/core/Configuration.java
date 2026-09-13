@@ -82,17 +82,17 @@ public class Configuration {
 			lst.add(executable);
 
 			lst.add("-c");
-			lst.add("gdb_port "
+			lst.add("gdb port "
 					+ Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 							DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
 			lst.add("-c");
-			lst.add("telnet_port "
+			lst.add("telnet port "
 					+ Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 							DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
 			lst.add("-c");
-			lst.add("tcl_port " + configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TCL_PORT_NUMBER,
+			lst.add("tcl port " + configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TCL_PORT_NUMBER,
 					DefaultPreferences.GDB_SERVER_TCL_PORT_NUMBER_DEFAULT));
 
 			String other = configuration
