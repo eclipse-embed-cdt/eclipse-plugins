@@ -627,6 +627,8 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 
 	// Start/stop the GDB server.
 	protected class GdbServerStep extends InitializationShutdownStep {
+		private StringBuffer fStartupErrBuffer = new StringBuffer();
+		private StringBuffer fStartupOutBuffer = new StringBuffer();
 
 		public GdbServerStep(Direction direction) {
 			super(direction);
@@ -718,17 +720,15 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 
 					boolean success = false;
 
-					StringBuffer outBuffer = new StringBuffer();
-					StringBuffer errBuffer = new StringBuffer();
 
 					// Check if the server started properly
 
-					success = checkServer(serverLaunchRequestMonitor, monitor, outBuffer, errBuffer);
+					success = checkServer(serverLaunchRequestMonitor, monitor, fStartupOutBuffer, fStartupErrBuffer);
 					if (success || serverLaunchRequestMonitor.isSuccess())
 						// Create a wrapper for the original process, to have
 						// some
 						// control over the I/O stream.
-						fServerPipedProcess = new PushBackProcess(fServerProcess, outBuffer, errBuffer);
+						fServerPipedProcess = new PushBackProcess(fServerProcess, fStartupOutBuffer, fStartupErrBuffer);
 
 					// This monitor will further complete the initialise().
 					if (!serverLaunchRequestMonitor.isCanceled()) {
@@ -792,7 +792,7 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 						// Notify initialise(rm) directly.
 						rm.setStatus(
 								new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.TARGET_REQUEST_FAILED,
-										getStartingServerJobName() + " timed out.", null)); //$NON-NLS-1$
+										getStartingServerJobName() + " timed out." + getStartupOutput(), null)); //$NON-NLS-1$
 						rm.done();
 					}
 				}
@@ -904,6 +904,34 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 				System.out.println("GdbServerStep.shutdown() return");
 			}
 		}
+
+		/**
+		 * Gets the standard output and error output of the GDB Server during the startup phase (e.g., CheckServer phase).
+		 * @return A string containing the stdout and stderr content, or an empty string if there is none.
+		 */
+		private String getStartupOutput() {
+			String stderrSnapshot;
+			String stdoutSnapshot;
+			synchronized (fStartupErrBuffer) {
+				stderrSnapshot = fStartupErrBuffer.toString();
+			}
+
+			synchronized (fStartupOutBuffer) {
+				stdoutSnapshot = fStartupOutBuffer.toString();
+			}
+
+			StringBuilder result = new StringBuilder();
+			if (stderrSnapshot != null && !stderrSnapshot.isEmpty()) {
+				result.append("\n[stderr]\n").append(stderrSnapshot);
+			}
+
+			if (stdoutSnapshot != null && !stdoutSnapshot.isEmpty()) {
+				result.append("\n[stdout]\n").append(stdoutSnapshot);
+			}
+
+			return result.toString();
+		}
+
 	}
 
 	// ========================================================================
