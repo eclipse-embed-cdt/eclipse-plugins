@@ -82,18 +82,18 @@ public class Configuration {
 			lst.add(executable);
 
 			lst.add("-c");
-			lst.add("gdb_port "
-					+ Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
-							DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
+			lst.add(portCommand("gdb",
+					Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
+							DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT))));
 
 			lst.add("-c");
-			lst.add("telnet_port "
-					+ Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-							DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+			lst.add(portCommand("telnet",
+					Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
+							DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT))));
 
 			lst.add("-c");
-			lst.add("tcl_port " + configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TCL_PORT_NUMBER,
-					DefaultPreferences.GDB_SERVER_TCL_PORT_NUMBER_DEFAULT));
+			lst.add(portCommand("tcl", configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TCL_PORT_NUMBER,
+					DefaultPreferences.GDB_SERVER_TCL_PORT_NUMBER_DEFAULT)));
 
 			String other = configuration
 					.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, DefaultPreferences.GDB_SERVER_OTHER_DEFAULT)
@@ -116,6 +116,12 @@ public class Configuration {
 		lst.add("echo \"Started by GNU MCU Eclipse\"");
 
 		return lst.toArray(new String[0]);
+	}
+
+	// OpenOCD after v0.12.0 has "gdb port"; v0.12.0 has only "gdb_port".
+	private static String portCommand(String server, String value) {
+		return "if {[llength [info commands " + server + "]]} {" + server + " port " + value + "} else {" + server
+				+ "_port " + value + "}";
 	}
 
 	public static String getGdbServerCommandName(ILaunchConfiguration config) {
